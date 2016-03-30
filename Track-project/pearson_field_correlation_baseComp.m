@@ -1,4 +1,4 @@
-function [pearson_r] = pearson_field_correlation()
+function [pearson_r] = pearson_field_correlation_baseComp()
 %%%%%%%%%%%%%%%%%%%%%%
 % Purpose: The function calculate place field correlation based on Pearson's correlation. 
 % 1st Author: Joonyeup Lee

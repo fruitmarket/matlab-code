@@ -16,11 +16,11 @@ fieldsize_cutoff = 10;
 field_ratio = [72 48];
 
 %% Loading data
-[ttfile, ncell] = tfilecollector;
+[ttfile, nCell] = tfilecollector;
 load ('VT1.mat');
 ttdata = LoadSpikes(ttfile,'tsflag','ts','verbose',0);
 
-for icell = 1:1
+for icell = 1:nCell
     [cellpath,cellname,~] = fileparts(ttfile{icell});
     disp(['### Analyzing ',ttfile{icell},'...']);
     cd(cellpath);
@@ -103,48 +103,6 @@ for iComp = 1:numel(compFields)
     compPearson_r(iComp) = corr(base_ratemap(base_visit_map&visitmapComp.(compFields{iComp})), ratemapComp.(compFields{iComp})(base_visit_map&visitmapComp.(compFields{iComp})),'type','Pearson');
 end
 
-    
-%     for iRow = 1:nTrial/10
-%        for iColumn = 1:nTirla/10
-%             window = ([sensorTime(10*iRow-9,1),sensorTime(10*iColumn-9,1);sensorTime(10*iRow,8),sensorTime(10*iColumn,8)]);
-%             
-% 
-%         % Timewindow set
-%             session.pre = find(window(1,1)<=timestamp/1000 & timestamp/1000<=window(2,1)); % window(1,1): 1st session start, window(1,2): 1st session end
-%             session.post = find(window(1,2)<=timestamp/1000 & timestamp/1000<=window(2,2)); % window(2,1): 2nd session start, window(2,2): 2nd session end
-%         
-%         % Time & position set
-%             time.pre = timestamp(session.pre);
-%             posi.pre = position(session.pre,:); % Position (x,y)
-%     
-%             time.post = timestamp(session.post);
-%             posi.post = position(session.post,:);    
-%     
-%        % Field map analysis
-%             [pre_fr_map, pre_visit_map, ~, ~] = findmaps(time.pre, posi.pre, spkData, field_ratio);
-%             if isempty(find(pre_visit_map))
-%                 pre_meanrate = 0;
-%             else
-%                 pre_meanrate = sum(sum(pre_fr_map))/sum(sum(pre_visit_map));
-%             end
-%             
-%             [post_fr_map, post_visit_map, ~, ~] = findmaps(time.post, posi.post, spkData, field_ratio);
-%             if isempty(find(post_visit_map))
-%                 post_meanrate = 0;
-%             else
-%                 post_meanrate = sum(sum(post_fr_map))/sum(sum(post_visit_map));
-%             end
-%     
-%       %% Temporal field map analysis
-% %     whos pre_visit_map; % used for code checking        
-%         [pre_ratemap, ~, ~] = compute_rate72x48(pre_visit_map, pre_fr_map, alpha_v, pre_meanrate,...
-%             fr_threshold, fieldsize_cutoff);
-%         [post_ratemap, ~, ~] = compute_rate72x48(post_visit_map, post_fr_map, alpha_v, post_meanrate,...
-%             fr_threshold, fieldsize_cutoff);
-%             
-%         pearson_r(iRow,iColumn) = corr(pre_ratemap(pre_visit_map & post_visit_map),post_ratemap(pre_visit_map & post_visit_map),'type','Pearson');
-%        end
-%     end
     save ([cellname, '.mat'],...
         'pearson_r','-append');
 end

@@ -8,6 +8,7 @@ for iCell = 1:nCell
     disp(['### Analyzing ',ttFile{iCell},' ...']);
     [cellPath, cellName, ~] = fileparts(ttFile{iCell});
     cd(cellPath);
+    fileParts = strsplit(cellPath,'\');
     
     load('Events.mat'); % unit: msec
     
@@ -38,7 +39,8 @@ for iCell = 1:nCell
         frNormalized = [];
     end
     
-    save([cellName, '.mat'],...
+%     save([fileParts{3},'_',fileParts{4},'_',cellName,'.mat'],...
+    save([cellName,'.mat'],...
         'frBase','frTest','frBaseTen','frTestTen','frNormalized',...
         'xpt','ypt');  
 end

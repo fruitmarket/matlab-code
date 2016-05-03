@@ -37,6 +37,9 @@ for iFile = 1:nFile
     end
 end
 
+nCNO = length(CNOfrBaseTen);
+nDMSO = length(DMSOfrBaseTen);
+
 % Raw firing rate
 ms_CNOfrBase = [mean(CNOfrBase), std(CNOfrBase,1,1)/size(CNOfrBase,1)];
 ms_CNOfrBaseTen = [mean(CNOfrBaseTen), std(CNOfrBaseTen,1,1)/size(CNOfrBase,1)];
@@ -100,6 +103,7 @@ nCol = 4;
 nRowSub = 8; % for the left column
 nRowMain = 5; % for the main figure
 
+% firing rate of CNO & DMSO
 hfrRate(1) = axes('Position',axpt(2,2,1,1,[],wideInterval));
     hold on;
     hbar(1) = bar(1,ms_CNOfrBaseTen(1),0.3,...
@@ -117,6 +121,7 @@ hfrRate(1) = axes('Position',axpt(2,2,1,1,[],wideInterval));
     hbar(4) = bar(3,ms_DMSOfrTestTen(1),0.3,...
         'FaceColor',colorBlue,'EdgeColor','k');
 
+% Normalized firing rate of CNO & DMSO
 hfrRate(2) = axes('Position',axpt(2,2,1,2,[],wideInterval));
     hold on;
     hbar(5) = bar(1,mean(CNOfrBaseTen./CNOfrBaseTen),0.3,...

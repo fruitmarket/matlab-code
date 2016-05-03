@@ -110,7 +110,7 @@ for iFile = 1:nFile
             'XLim',[1 32], 'YLim',yLimWaveform*1.05);
     
     %% Tagging
-    if ~isempty(lightTime.Modu);
+    if ~isempty(lightTime.Tag);
     % Blue tag
       if isfield(lightTime,'Tag') && exist('xptTagBlue','var');
         lightDuration = 10;

@@ -10,7 +10,7 @@ function psthtrack(sessionFolder)
 narginchk(0,2);
 
 % Task variables
-binSize = 10; % Unit: msec (=10 msec)
+binSize = 5; % Unit: msec (=10 msec)
 resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
@@ -66,7 +66,7 @@ for iCell = 1:nCell
         'win','xpt','ypt','psthtime','psthbar','psthconv','psthconvz');
     
     % Light Modulation
-    if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)>100;
+    if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu);
         spikeTimeModuBlue = spikeWin(spikeData,lightTime.Modu,winTagBlue);
         [xptModuBlue, yptModuBlue, psthtimeModuBlue, psthModuBlue,~,~] = rasterPSTH(spikeTimeModuBlue,true(size(lightTime.Modu)),winTagBlue,binSizeTagBlue,resolution,1);
         save([cellName,'.mat'],...
@@ -80,7 +80,7 @@ for iCell = 1:nCell
     
     
     % Tagging
-    if isfield(lightTime,'Tag') && ~isempty(lightTime.Tag) && size(lightTime.Modu,1) > 100;
+    if isfield(lightTime,'Tag') && ~isempty(lightTime.Tag);
        spikeTimeTagBlue = spikeWin(spikeData,lightTime.Tag,winTagBlue);
        [xptTagBlue, yptTagBlue, psthtimeTagBlue, psthTagBlue,~,~] = rasterPSTH(spikeTimeTagBlue,true(size(lightTime.Tag)),winTagBlue,binSizeTagBlue,resolution,1);
        save([cellName,'.mat'],...

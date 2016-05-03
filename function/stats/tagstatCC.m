@@ -3,10 +3,10 @@ function tagstatCC(sessionFolder)
 
 % Variables
 dt = 0.2;
-testRangeTag = 20; % unit: ms
-baseRangeTag = 400; % baseline
-testRangeModu = 20;
-baseRangeModu = 400;
+testRangeTag = 20; % unit: ms 
+baseRangeTag = 400; % baseline 
+testRangeModu = 20; % 8Hz: 20 // 20Hz: 20
+baseRangeModu = 100; % 8Hz: 100 // 20Hz: 15
 
 % Find files
 if nargin == 0; sessionFolder = {}; end;
@@ -19,16 +19,16 @@ for iCell = 1:nCell
     [cellPath,cellName,~] = fileparts(tList{iCell});
     cd(cellPath);
     
-    clear blueOnsetTime redOnsetTime
+    clear lightTime
     load('Events.mat','lightTime');
     spikeData = tData{iCell};
     
-    [timeTag, censorBlue] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag, baseRangeTag);
+    [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag, baseRangeTag);
     [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu, testRangeModu, baseRangeModu);
     
-    [p_tagBlue,time_tagBlue,H1_tagBlue,H2_tagBlue] = logRankTest(timeTag, censorBlue);
+    [p_tag,time_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag);
     save([cellName,'.mat'],...
-        'p_tagBlue','time_tagBlue','H1_tagBlue','H2_tagBlue',...
+        'p_tag','time_tag','H1_tag','H2_tag',...
         '-append');
     
     [p_saltTag, l_saltTag] = saltTest(timeTag, testRangeTag, dt);
@@ -37,6 +37,9 @@ for iCell = 1:nCell
         '-append');
     
     [p_Modu,time_Modu,H1_Modu,H2_Modu] = logRankTest(timeModu, censorModu);
+    if isempty(p_Modu)
+        p_Modu = 1;
+    end
     save([cellName,'.mat'],...
         'p_Modu','time_Modu','H1_Modu','H2_Modu',...
         '-append');

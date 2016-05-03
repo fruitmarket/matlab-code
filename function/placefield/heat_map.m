@@ -14,12 +14,12 @@ fieldsize_cutoff = 10;
 field_ratio = [72 48];
 
 %% Loading data
-[ttfile, ~] = tfilecollector;
+[ttfile, nCell] = tfilecollector;
 load ('VT1.mat');
 ttdata = LoadSpikes(ttfile,'tsflag','ts','verbose',0);
 
-%% 
-for icell = 1:1
+%% 0
+for icell = 1:nCell
     [cellpath,cellname,~] = fileparts(ttfile{icell});
     disp(['### Analyzing ',ttfile{icell}, '...']);
     cd(cellpath);
@@ -45,21 +45,21 @@ for icell = 1:1
     p_post = position(win.post,:);
     
     %% Field map analysis
-    [pre_fr_map, pre_visit_map, pre_visit_dur, pre_flags] = findmaps(t_pre, p_pre, spkdata, field_ratio);
+    [pre_fr_map, pre_visit_map, pre_visit_dur, pre_flags] = findmaps_trim(t_pre, p_pre, spkdata, field_ratio);
     if isempty(find(pre_visit_map))
         pre_meanrate = 0;
     else
         pre_meanrate = sum(pre_fr_map)/sum(pre_visit_map);
     end
         
-    [stm_fr_map, stm_visit_map, stm_visit_dur, stm_flags] = findmaps(t_stm, p_stm, spkdata, field_ratio);
+    [stm_fr_map, stm_visit_map, stm_visit_dur, stm_flags] = findmaps_trim(t_stm, p_stm, spkdata, field_ratio);
     if isempty(find(stm_visit_map));
         stm_meanrate = 0;
     else
         stm_meanrate = sum(stm_fr_map)/sum(stm_visit_map);
     end
     
-    [post_fr_map, post_visit_map, post_visit_dur, post_flags] = findmaps(t_post, p_post, spkdata, field_ratio);
+    [post_fr_map, post_visit_map, post_visit_dur, post_flags] = findmaps_trim(t_post, p_post, spkdata, field_ratio);
     if isempty(find(post_visit_map))
         post_meanrate = 0;
     else

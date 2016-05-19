@@ -86,128 +86,128 @@ save([miceLine,'.mat'],...
     'p_CNOTen','p_DMSOTen','p_norCNOTen','p_norDMSOTen')
 
 
-%% Plot
-% figure properties
-
-% firing rate of Camk2a CNO & DMSO
-hfrRate(1) = axes('Position',axpt(nCol,nRowMain,3,1,[],wideInterval));
-    hold on;
-    hRbpbar(1) = bar(1,ms_CNOfrBaseTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hRbpbar(2) = bar(1.5,ms_CNOfrTestTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hRbpbar(3) = bar(2.5,ms_DMSOfrBaseTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    hold on;
-    hRbpbar(4) = bar(3,ms_DMSOfrTestTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    
-    hError(1) = errorbar(1,ms_CNOfrBaseTen(:,1),ms_CNOfrBaseTen(:,2));
-    hError(2) = errorbar(1.5,ms_CNOfrTestTen(:,1),ms_CNOfrTestTen(:,2));
-%     errorbarT(hError(1),1,1,80);
-%     errorbarT(hError(2),0.5,1,80);
-
-
-% Normalized firing rate of CNO & DMSO
-hfrRate(2) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
-    hold on;
-    hRbpbar(5) = bar(1,mean(CNOfrBaseTen./CNOfrBaseTen),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hRbpbar(6) = bar(1.5,ms_norCNOTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hRbpbar(7) = bar(2.5,mean(DMSOfrBase./DMSOfrBase),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    hold on;
-    hRbpbar(8) = bar(3,ms_norDMSOTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    
-    set(hfrRate(1),'LineWidth',lineL,'YLim',[0, 2]);
-    set(hfrRate(2),'LineWidth',lineL,'YLim',[0, 1.5]);
-    set(hRbpbar(1:4),'LineWidth',lineL);
-    set(hRbpbar(5:8),'LineWidth',lineL);
-    
-% firing rate of DG CNO & DMSO
-hfrRate(3) = axes('Position',axpt(nCol,nRowMain,3,1,[],wideInterval));
-    hold on;
-    hGrik4bar(1) = bar(1,ms_CNOfrBaseTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hGrik4bar(2) = bar(1.5,ms_CNOfrTestTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hGrik4bar(3) = bar(2.5,ms_DMSOfrBaseTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    hold on;
-    hGrik4bar(4) = bar(3,ms_DMSOfrTestTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    
-    hError(1) = errorbar(1,ms_CNOfrBaseTen(:,1),ms_CNOfrBaseTen(:,2));
-    hError(2) = errorbar(1.5,ms_CNOfrTestTen(:,1),ms_CNOfrTestTen(:,2));
-%     errorbarT(hError(1),1,1,80);
-%     errorbarT(hError(2),0.5,1,80);
-
-
-% Normalized firing rate of CNO & DMSO
-hfrRate(4) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
-    hold on;
-    hGrik4bar(5) = bar(1,mean(CNOfrBaseTen./CNOfrBaseTen),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hGrik4bar(6) = bar(1.5,ms_norCNOTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hGrik4bar(7) = bar(2.5,mean(DMSOfrBase./DMSOfrBase),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    hold on;
-    hGrik4bar(8) = bar(3,ms_norDMSOTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    
-    set(hfrRate(1),'LineWidth',lineL,'YLim',[0, 2]);
-    set(hfrRate(2),'LineWidth',lineL,'YLim',[0, 1.5]);
-    set(hbar(1:4),'LineWidth',lineL);
-    set(hbar(5:8),'LineWidth',lineL);
-
-% firing rate of Camk2a CNO & DMSO
-hfrRate(5) = axes('Position',axpt(nCol,nRowMain,3,1,[],wideInterval));
-    hold on;
-    hCamk2abar(1) = bar(1,ms_CNOfrBaseTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hCamk2abar(2) = bar(1.5,ms_CNOfrTestTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hCamk2abar(3) = bar(2.5,ms_DMSOfrBaseTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    hold on;
-    hCamk2abar(4) = bar(3,ms_DMSOfrTestTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    
-    hError(1) = errorbar(1,ms_CNOfrBaseTen(:,1),ms_CNOfrBaseTen(:,2));
-    hError(2) = errorbar(1.5,ms_CNOfrTestTen(:,1),ms_CNOfrTestTen(:,2));
-%     errorbarT(hError(1),1,1,80);
-%     errorbarT(hError(2),0.5,1,80);
-
-
-% Normalized firing rate of CNO & DMSO
-hfrRate(6) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
-    hold on;
-    hCamk2abar(5) = bar(1,mean(CNOfrBaseTen./CNOfrBaseTen),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hCamk2abar(6) = bar(1.5,ms_norCNOTen(1),0.3,...
-        'FaceColor',colorRed,'EdgeColor','k');
-    hold on;
-    hCamk2abar(7) = bar(2.5,mean(DMSOfrBase./DMSOfrBase),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    hold on;
-    hCamk2abar(8) = bar(3,ms_norDMSOTen(1),0.3,...
-        'FaceColor',colorBlue,'EdgeColor','k');
-    
-    set(hfrRate(1),'LineWidth',lineL,'YLim',[0, 2]);
-    set(hfrRate(2),'LineWidth',lineL,'YLim',[0, 1.5]);
-    set(hbar(1:4),'LineWidth',lineL);
-    set(hbar(5:8),'LineWidth',lineL);
+% %% Plot
+% % figure properties
+% 
+% % firing rate of Camk2a CNO & DMSO
+% hfrRate(1) = axes('Position',axpt(nCol,nRowMain,3,1,[],wideInterval));
+%     hold on;
+%     hRbpbar(1) = bar(1,ms_CNOfrBaseTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hRbpbar(2) = bar(1.5,ms_CNOfrTestTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hRbpbar(3) = bar(2.5,ms_DMSOfrBaseTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     hold on;
+%     hRbpbar(4) = bar(3,ms_DMSOfrTestTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     
+%     hError(1) = errorbar(1,ms_CNOfrBaseTen(:,1),ms_CNOfrBaseTen(:,2));
+%     hError(2) = errorbar(1.5,ms_CNOfrTestTen(:,1),ms_CNOfrTestTen(:,2));
+% %     errorbarT(hError(1),1,1,80);
+% %     errorbarT(hError(2),0.5,1,80);
+% 
+% 
+% % Normalized firing rate of CNO & DMSO
+% hfrRate(2) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
+%     hold on;
+%     hRbpbar(5) = bar(1,mean(CNOfrBaseTen./CNOfrBaseTen),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hRbpbar(6) = bar(1.5,ms_norCNOTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hRbpbar(7) = bar(2.5,mean(DMSOfrBase./DMSOfrBase),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     hold on;
+%     hRbpbar(8) = bar(3,ms_norDMSOTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     
+%     set(hfrRate(1),'LineWidth',lineL,'YLim',[0, 2]);
+%     set(hfrRate(2),'LineWidth',lineL,'YLim',[0, 1.5]);
+%     set(hRbpbar(1:4),'LineWidth',lineL);
+%     set(hRbpbar(5:8),'LineWidth',lineL);
+%     
+% % firing rate of DG CNO & DMSO
+% hfrRate(3) = axes('Position',axpt(nCol,nRowMain,3,1,[],wideInterval));
+%     hold on;
+%     hGrik4bar(1) = bar(1,ms_CNOfrBaseTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hGrik4bar(2) = bar(1.5,ms_CNOfrTestTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hGrik4bar(3) = bar(2.5,ms_DMSOfrBaseTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     hold on;
+%     hGrik4bar(4) = bar(3,ms_DMSOfrTestTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     
+%     hError(1) = errorbar(1,ms_CNOfrBaseTen(:,1),ms_CNOfrBaseTen(:,2));
+%     hError(2) = errorbar(1.5,ms_CNOfrTestTen(:,1),ms_CNOfrTestTen(:,2));
+% %     errorbarT(hError(1),1,1,80);
+% %     errorbarT(hError(2),0.5,1,80);
+% 
+% 
+% % Normalized firing rate of CNO & DMSO
+% hfrRate(4) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
+%     hold on;
+%     hGrik4bar(5) = bar(1,mean(CNOfrBaseTen./CNOfrBaseTen),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hGrik4bar(6) = bar(1.5,ms_norCNOTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hGrik4bar(7) = bar(2.5,mean(DMSOfrBase./DMSOfrBase),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     hold on;
+%     hGrik4bar(8) = bar(3,ms_norDMSOTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     
+%     set(hfrRate(1),'LineWidth',lineL,'YLim',[0, 2]);
+%     set(hfrRate(2),'LineWidth',lineL,'YLim',[0, 1.5]);
+%     set(hbar(1:4),'LineWidth',lineL);
+%     set(hbar(5:8),'LineWidth',lineL);
+% 
+% % firing rate of Camk2a CNO & DMSO
+% hfrRate(5) = axes('Position',axpt(nCol,nRowMain,3,1,[],wideInterval));
+%     hold on;
+%     hCamk2abar(1) = bar(1,ms_CNOfrBaseTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hCamk2abar(2) = bar(1.5,ms_CNOfrTestTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hCamk2abar(3) = bar(2.5,ms_DMSOfrBaseTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     hold on;
+%     hCamk2abar(4) = bar(3,ms_DMSOfrTestTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     
+%     hError(1) = errorbar(1,ms_CNOfrBaseTen(:,1),ms_CNOfrBaseTen(:,2));
+%     hError(2) = errorbar(1.5,ms_CNOfrTestTen(:,1),ms_CNOfrTestTen(:,2));
+% %     errorbarT(hError(1),1,1,80);
+% %     errorbarT(hError(2),0.5,1,80);
+% 
+% 
+% % Normalized firing rate of CNO & DMSO
+% hfrRate(6) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
+%     hold on;
+%     hCamk2abar(5) = bar(1,mean(CNOfrBaseTen./CNOfrBaseTen),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hCamk2abar(6) = bar(1.5,ms_norCNOTen(1),0.3,...
+%         'FaceColor',colorRed,'EdgeColor','k');
+%     hold on;
+%     hCamk2abar(7) = bar(2.5,mean(DMSOfrBase./DMSOfrBase),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     hold on;
+%     hCamk2abar(8) = bar(3,ms_norDMSOTen(1),0.3,...
+%         'FaceColor',colorBlue,'EdgeColor','k');
+%     
+%     set(hfrRate(1),'LineWidth',lineL,'YLim',[0, 2]);
+%     set(hfrRate(2),'LineWidth',lineL,'YLim',[0, 1.5]);
+%     set(hbar(1:4),'LineWidth',lineL);
+%     set(hbar(5:8),'LineWidth',lineL);

@@ -26,7 +26,16 @@ probeQuad.NW = quad.NW(probeTrial,:);
 fields = fieldnames(probeQuad);
 
 %% Group discrimination
-%%%%%%%%%%%%%%%%%% Camk2a %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% Rbp4 %%%%%%%%%%%%%%%%%%%%%%
+% 1:1-1                 10:3-1
+% 2:1-2                 11:3-2
+% 3:1-3                 12:3-3
+% 4:1-4                 13:3-4 (No expression on L.hemi)
+% 5:2-1                 14:4-1 
+% 6:2-2                 15:4-2 (No expression on L.hemi)
+% 7:2-3 (No expression) 16:4-3
+% 8:2-4                 17:4-4
+% 9:2-5                 18:4-5
 
 
 %%%%%%%%%%%%%%%%%% Grik4 %%%%%%%%%%%%%%%%%%%%%%

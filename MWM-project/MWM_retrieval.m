@@ -26,8 +26,17 @@ probeQuad.NW = quad.NW(probeTrial,:);
 fields = fieldnames(probeQuad);
 
 %% Group discrimination
-%%%%%%%%%%%%%%%%%% Camk2a %%%%%%%%%%%%%%%%%%%%%%
-
+%%%%%%%%%%%%%%%%%% Rbp4 %%%%%%%%%%%%%%%%%%%%%%
+% DMSO                  % CNO
+% 1:1-1                 10:3-1
+% 2:1-2                 11:3-2
+% 3:1-3 Out             12:3-3
+% 4:1-4                 13:3-4 (No expression on L.hemi)
+% 5:2-1 Out             14:4-1 
+% 6:2-2                 15:4-2 (No expression on L.hemi)
+% 7:2-3 (No expression) 16:4-3
+% 8:2-4 Out             17:4-4 Out
+% 9:2-5                 18:4-5
 
 %%%%%%%%%%%%%%%%%% Grik4 %%%%%%%%%%%%%%%%%%%%%%
 % 1:1-1(No expression on R.hemi)    9:3-1(No expresssion on R.hemi)
@@ -39,7 +48,6 @@ fields = fieldnames(probeQuad);
 % 7:2-3                            15:4-3
 % 8:2-4                            16:4-4 
 %                                  17:4-5
-
 
 %%%%%%%%%%%%%%%%%% Camk2a %%%%%%%%%%%%%%%%%%%%%%
 %CNO group:             DMSO group
@@ -57,13 +65,12 @@ fields = fieldnames(probeQuad);
 % 25                        21:
 % 26: No expression         22: Unilateral expression
 
-
 if regexp(fileName,'Rbp4');
-    idxCNO = [];
-    idxDMSO = [];
+    idxCNO = [10:12,14:16,18];
+    idxDMSO = [1:9];
 elseif regexp(fileName,'Grik4');
-    idxCNO = [];
-    idxDMSO = [];
+    idxCNO = [5:8,10:12,17];
+    idxDMSO = [1:4,13:16];
 else regexp(fileName,'Camk2a');
     idxCNO = [10:18,25];
     idxDMSO = [1:9,19,20,21,22];

@@ -18,7 +18,7 @@ field_ratio = [72 48];
 load ('VT1.mat');
 ttdata = LoadSpikes(ttfile,'tsflag','ts','verbose',0);
 
-%% 0
+%% 
 for icell = 1:nCell
     [cellpath,cellname,~] = fileparts(ttfile{icell});
     disp(['### Analyzing ',ttfile{icell}, '...']);

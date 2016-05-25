@@ -46,7 +46,7 @@ field_ratio = [72 48];
     [comp2.ratemap,~,~] = compute_rate72x48(comp2.visit_map,comp1.fr_map,alpha_v,comp1.meanrate,fr_threshold,fieldsize_cutoff);
     
     % Pearson's correlation
-    pearson_r = corr(comp1.ratemap(comp1.visit_map&comp2.visit_map), comp2.ratemap(comp1.visit_map&comp2.visit_map),'type','Pearson');
+    pearson_r = corr(comp1.ratemap(comp1.visit_map & comp2.visit_map), comp2.ratemap(comp1.visit_map&comp2.visit_map),'type','Pearson');
     return;
     
     

@@ -20,11 +20,11 @@ field_ratio = [72 48];
 %     load ('VT1.mat');
     pearson_r = zeros(1);
     
-    comp1.time = timestamp(period1(1)<= timestamp & timestamp<=period1(end));
-    comp1.position = position(period1(1)<= timestamp & timestamp<=period1(end),:);
+    comp1.time = timestamp(period1(1)<=timestamp & timestamp<=period1(end));
+    comp1.position = position(period1(1)<=timestamp & timestamp<=period1(end),:);
     
-    comp2.time = timestamp(period2(1)<= timestamp & timestamp<=period2(end));
-    comp2.position = position(period2(1)<= timestamp & timestamp<=period2(end),:);
+    comp2.time = timestamp(period2(1)<=timestamp & timestamp<=period2(end));
+    comp2.position = position(period2(1)<=timestamp & timestamp<=period2(end),:);
     
     % Field map & Visit map    
     [comp1.fr_map, comp1.visit_map, comp1.visit_dur, comp1.flags] = findmaps_trim(comp1.time, comp1.position, spkData, field_ratio);

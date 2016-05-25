@@ -85,12 +85,14 @@ else regexp(fileName,'Camk2a');
     nCNO = length(idxCNO);
     nDMSO = length(idxDMSO);
 end
-    
+
 for iField = 1:numel(fields)
     probeQuadCNO.(fields{iField})(1) = mean(probeQuad.(fields{iField})(idxCNO));
     probeQuadCNO.(fields{iField})(2) = std(probeQuad.(fields{iField})(idxCNO),1)/sqrt(length(idxCNO));
+    probeQuadCNO.raw(iField,:) = probeQuad.(fields{iField})(idxCNO);
     probeQuadDMSO.(fields{iField})(1) = mean(probeQuad.(fields{iField})(idxDMSO));
     probeQuadDMSO.(fields{iField})(2) = std(probeQuad.(fields{iField})(idxDMSO),1)/sqrt(length(idxDMSO));
+    probeQuadDMSO.raw(iField,:) = probeQuad.(fields{iField})(idxDMSO);
 end
 
 if regexp(fileName,'Rbp4');

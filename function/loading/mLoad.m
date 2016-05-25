@@ -7,7 +7,7 @@ function mList = mLoad(mFile)
 %   Version 1.0 (2016/1/13)
 switch nargin
     case 0
-        mList = FindFiles('T*.mat','CheckSubdirs',0); 
+        mList = FindFiles('T*.mat','CheckSubdirs',1); 
     case 1 % ex: mLoad({})
         if ~iscell(mFile) 
             disp('Input argument is wrong. It should be cell array.');

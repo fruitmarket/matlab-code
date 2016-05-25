@@ -8,7 +8,7 @@ function [tData, tList] = tLoad(tFile)
 %   Author: Dohoung Kim
 %   Version 1.0 (2016/1/13)
 if nargin == 0
-    tList = FindFiles('T*.t','CheckSubdirs',0); 
+    tList = FindFiles('T*.t','CheckSubdirs',1); 
 else
     if ~iscell(tFile)
         disp('Input argument is wrong. It should be cell array.');

@@ -1,4 +1,4 @@
-function psthplottrack(cellFolder)
+function trackplot()
 % psthtrack Converts data from MClust t files to Matlab mat files
 % ##### Modified Dohyoung Kim's code. Thanks to Dohyoung! ##### %
 [matFile, nFile] = matfilecollector;
@@ -158,7 +158,7 @@ for iFile = 1:nFile
         set(hTagBlue(3),'XLim',winHTag,'XTick',winHTag,...
             'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
 %         xlabel('Time (ms)','FontSize',fontS);
-        else;
+        else
         end
         ylabel('H(t)','FontSize',fontS);
         set(hTagBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
@@ -194,9 +194,6 @@ for iFile = 1:nFile
         align_ylabel(hTagYel)          
     end
     
-    
-
-
     %% Modulation
     % Blue modulation
     if isfield(lightTime,'Modu') && exist('xptModuBlue','var') && ~isempty(xptModuBlue)
@@ -239,8 +236,7 @@ for iFile = 1:nFile
         xlabel('Time (ms)','FontSize',fontS);
         ylabel('H(t)','FontSize',fontS);
         set(hModuBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
-        align_ylabel(hModuBlue)
-        
+        align_ylabel(hModuBlue)     
     end
 
     % Yello Modulation
@@ -274,8 +270,7 @@ for iFile = 1:nFile
        lightDurationColor = [1, 1, 1];
     end
     
-    
-    
+       
     %% Heat map
         hMap(1) = axes('Position',axpt(nCol,nRowMain,1,2,[],wideInterval));
             hold on;
@@ -313,7 +308,8 @@ for iFile = 1:nFile
                 else exist('xptModuYel','var');
                 plot(x,y,'LineWidth',5,'color',colorYellow);
                 end
-            else end;
+            else
+            end;
 
         hMap(3) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
             hold on;
@@ -364,7 +360,6 @@ for iFile = 1:nFile
 %         set(hCorr,'XTick',1:9,'XTicklabel',{'Pre1', 'Pre2', 'Pre3', 'Stm1', 'Stm2', 'Stm3', 'Post1', 'Post2', 'Post3'},'FontSize',fontM);
 %         set(hCorr,'XAxisLocation','top','XTickLabelRotation',45);
 %         set(hCorr,'YTick',1:9,'YTicklabel',{'Pre1', 'Pre2', 'Pre3', 'Stm1', 'Stm2', 'Stm3', 'Post1', 'Post2', 'Post3'},'FontSize',fontM);
-
 
        %% Sensor aligned
         for iSensor = 1:nSensor

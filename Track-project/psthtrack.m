@@ -39,10 +39,14 @@ for iCell = 1:nCell
     fr_base = sum(histc(spikeData,baseTime))/(diff(baseTime)/1000);
     fr_task = sum(histc(spikeData,taskTime))/(diff(taskTime)/1000);
     
+    % Burst index
+    spkBase = baseTime(1)<spikeData & spikeData<baseTime(2);
+    spkTask = taskTime(1)<spikeData & spikeData<taskTime(2);
+    
+    isiBase = diff(spikeData(spkBase));
+    isiTask = diff(spikeData(spkTask));
+    
     % spike data aligned to events
-%     spikeTime.S1 = spikeWin(spikeData, sensor.S1(:,1), win(1,:));
-%     spikeTime.S2 = spikeWin(spikeData, sensor.S2(:,2), win(1,:));
-
     for iSensor = 1:nSensor
         spikeTime.(fields{iSensor}) = spikeWin(spikeData, sensor.(fields{iSensor}), win(1,:));
     end

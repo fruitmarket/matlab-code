@@ -8,7 +8,7 @@ function [ttfile, ncell] = tfilecollector()
 %%%%%%%%%%%%%%%%%%%%
 switch nargin
     case 0 % without input
-        ttfile = FindFiles('TT*.t','CheckSubdirs',0);
+        ttfile = FindFiles('TT*.t','CheckSubdirs',1);
         if isempty(ttfile)
             disp('TT file does not exist');
             return;

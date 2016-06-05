@@ -2,8 +2,7 @@ clc; clear all; close all;
 
 event2mat;
 vt2mat;
-matfilecollector;
-psthtrack;
+psthTrack;
 waveform;
 heat_map;
 pearson_field_correlation_baseComp_Track;

@@ -15,13 +15,13 @@ function [eData eList] = eLoad(eFile)
 % Make lists of event files
 narginchk(0, 2);
 if nargin == 0
-    eList = FindFiles('Events.nev','CheckSubdirs',0);
+    eList = FindFiles('Events.nev','CheckSubdirs',1);
 elseif nargin >= 1
     if ~iscell(eFile)
         disp('Input argument is wrong. It should be cell array.');
         return;
     elseif isempty(eFile)
-        eList = FindFiles('Events.nev','CheckSubdirs',0);
+        eList = FindFiles('Events.nev','CheckSubdirs',1);
     else
         nFolder = length(eFile);
         eList = cell(0,1);

@@ -7,8 +7,11 @@ function event2mat%(filename)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-    [timeStamp, eventStrings] = Nlx2MatEV('Events.nev', [1 0 0 0 1], 0, 1, []);
-    timeStamp = timeStamp'/1000; % unit: ms
+%     [timeStamp, eventStrings] = Nlx2MatEV('Events.nev', [1 0 0 0 1], 0, 1, []);
+%     timeStamp = timeStamp'/1000; % unit: ms
+    [eData, eList] = eLoad;
+    timeStamp = eData.t;
+    eventStrings = eData.s;
     
     % Time bins
     recStart = find(strcmp(eventStrings,'Starting Recording'));

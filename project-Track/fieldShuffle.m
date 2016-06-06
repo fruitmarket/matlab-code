@@ -7,7 +7,6 @@ field_ratio = [72, 48];
 
 
 %% Loading data
-% [ttFile, nCell] = tfilecollector;
 
 [tData, tList] = tLoad;
 nCell = length(tList);
@@ -32,14 +31,14 @@ for icell = 1:nCell
     
     spkData = tData{icell}; %unit: msec
     
-    r.original = fieldPcorr(period1,period2,timestamp,position,spkData);
+    pCorrIntra.original = fieldPcorr(period1,period2,timestamp,position,spkData);
     
     for iShuffle = 1:1000
-        r.rand(iShuffle,1) = fieldPcorr(period1, period2, timestamp, randPosition{iShuffle,1}, spkData);
+        pCorrIntra.rand(iShuffle,1) = fieldPcorr(period1, period2, timestamp, randPosition{iShuffle,1}, spkData);
     end
-    pCorr = length(find(r.rand>r.original))/1000;
+    pShf = length(find(pCorrIntra.rand>pCorrIntra.original))/1000;
 
-save([cellName,'.mat'],'r','pCorr','-append')
+save([cellName,'.mat'],'pCorrIntra','pShfIntra','-append')
     
 end
 

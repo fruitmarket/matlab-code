@@ -17,7 +17,6 @@ fieldsize_cutoff = 10;
 field_ratio = [72 48];
 
 %% Loading data
-%     load ('VT1.mat');
     pearson_r = zeros(1);
     
     comp1.time = timestamp(period1(1)<=timestamp & timestamp<=period1(end));

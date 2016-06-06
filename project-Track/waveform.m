@@ -6,9 +6,9 @@ function waveform()
 % Last modified: 4. 20. 2015
 %%%%%%%%%%%%%%%%%%%
 %% Load t files
-[ttfile, ncell]= tfilecollector();
+[ttfile, nCell]= tfilecollector();
 
-for icell = 1:ncell
+for icell = 1:nCell
     [cellPath,cellname,~] = fileparts(ttfile{icell});
     ttname = strsplit(cellname,'_');
     cd(cellPath);
@@ -56,7 +56,6 @@ for icell = 1:ncell
     end
     
 %% Save file    
-%     save([fileParts{3},'_',fileParts{4},'_',cellname,'.mat'],...
     save([cellname,'.mat'],...
         'spkwv','spkwth','spkpvr','hfvwth',...
         '-append');

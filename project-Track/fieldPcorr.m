@@ -1,4 +1,4 @@
-function pearson_r = fieldPcorr(period1,period2,timestamp,position,spkData)
+function [rCorr, pCorr]= fieldPcorr(period1,period2,timestamp,position,spkData)
 %%%%%%%%%%%%%%%%%%%%%%
 % Purpose: The function calculate place field correlation based on Pearson's correlation. 
 % 1st Author: Joonyeup Lee
@@ -17,7 +17,7 @@ fieldsize_cutoff = 10;
 field_ratio = [72 48];
 
 %% Loading data
-    pearson_r = zeros(1);
+    rCorr = zeros(1);
     
     comp1.time = timestamp(period1(1)<=timestamp & timestamp<=period1(end));
     comp1.position = position(period1(1)<=timestamp & timestamp<=period1(end),:);
@@ -45,7 +45,7 @@ field_ratio = [72 48];
     [comp2.ratemap,~,~] = compute_rate72x48(comp2.visit_map,comp1.fr_map,alpha_v,comp1.meanrate,fr_threshold,fieldsize_cutoff);
     
     % Pearson's correlation
-    pearson_r = corr(comp1.ratemap(comp1.visit_map(:)&comp2.visit_map(:)), comp2.ratemap(comp1.visit_map(:)&comp2.visit_map(:)),'type','Pearson');
+    [rCorr, pCorr] = corr(comp1.ratemap(comp1.visit_map(:)&comp2.visit_map(:)), comp2.ratemap(comp1.visit_map(:)&comp2.visit_map(:)),'type','Pearson');
     return;
     
     

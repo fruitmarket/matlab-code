@@ -11,7 +11,7 @@ field_ratio = [72, 48];
 [tData, tList] = tLoad;
 nCell = length(tList);
 
-for iCell = 119:nCell
+for iCell = 1:nCell
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     disp(['### Analyzing ',tList{iCell}, '...']);
     cd(cellPath);

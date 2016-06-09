@@ -4,7 +4,7 @@ clearvars;
 [tData, tList] = tLoad;
 nCell = length(tList);
 
-for iCell = 100:nCell
+for iCell = 1:nCell
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     disp(['### Analyzing ',tList{iCell}, '...']);
     cd(cellPath);
@@ -22,10 +22,10 @@ for iCell = 100:nCell
     period4 = [sensor.S1(61), sensor.S12(90)];
     
     spkData = tData{iCell};
-    [r.CorrIntra, p.CorrIntra] = fieldPcorr(period1, period2, vtTimestamp, vtPosition, spkData);
-    [r.CorrInter, p.CorrInter] = fieldPcorr(period3, period4, vtTimestamp, vtPosition, spkData);
+    [r_CorrIntra, p_CorrIntra] = fieldPcorr(period1, period2, vtTimestamp, vtPosition, spkData);
+    [r_CorrInter, p_CorrInter] = fieldPcorr(period3, period4, vtTimestamp, vtPosition, spkData);
     
-    save([cellName, '.mat'], 'r','p','-append');
+    save([cellName, '.mat'], 'r_CorrIntra','r_CorrInter','p_CorrIntra','p_CorrInter','-append');
 end
 
 disp('### Shuffling is done! ###');

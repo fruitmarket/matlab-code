@@ -6,7 +6,7 @@ dt = 0.2;
 testRangeTag = 20; % unit: ms 
 baseRangeTag = 400; % baseline 
 testRangeModu = 20; % 8Hz: 20 // 20Hz: 20
-baseRangeModu = 100; % 8Hz: 100 // 20Hz: 15
+baseRangeModu = 80; % 8Hz: 100 // 20Hz: 15
 
 % Find files
 if nargin == 0; sessionFolder = {}; end;
@@ -36,12 +36,12 @@ for iCell = 1:nCell
         'p_saltTag','l_saltTag',...
         '-append');
     
-    [p_Modu,time_Modu,H1_Modu,H2_Modu] = logRankTest(timeModu, censorModu);
-    if isempty(p_Modu)
-        p_Modu = 1;
+    [p_modu,time_modu,H1_modu,H2_modu] = logRankTest(timeModu, censorModu);
+    if isempty(p_modu)
+        p_modu = 1;
     end
     save([cellName,'.mat'],...
-        'p_Modu','time_Modu','H1_Modu','H2_Modu',...
+        'p_modu','time_modu','H1_modu','H2_modu',...
         '-append');
 end
 disp('### Tag stat test done!');

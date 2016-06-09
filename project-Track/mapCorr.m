@@ -1,11 +1,12 @@
 function mapCorr()
+clearvars;
 
 [tData, tList] = tLoad;
 nCell = length(tList);
 
-for iCell = 1:nCell
+for iCell = 100:nCell
     [cellPath, cellName, ~] = fileparts(tList{iCell});
-    disp('### Analyzing ',tList{iCell}, '...');
+    disp(['### Analyzing ',tList{iCell}, '...']);
     cd(cellPath);
     
     load('Events.mat','sensor','nSensor','nTrial');

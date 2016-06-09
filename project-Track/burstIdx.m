@@ -13,7 +13,7 @@ nCell = length(tList);
 
 for iCell = 1:nCell
     [cellPath, cellName, ~] = fileparts(tList{iCell});
-    disp(['### Analyzing... ',tList{iCell},' ...']);
+    disp(['### Analyzing ',tList{iCell},' ...']);
     cd(cellPath);
     
     load('Events.mat','taskTime');
@@ -24,7 +24,6 @@ for iCell = 1:nCell
     burstIdx = length(find(spkISI<mean(spkISI)/4))/length(spkISI);
     
     save([cellName, '.mat'],'burstIdx','-append');
-    clearvars;
 end
 
 disp('### Burst index calculation is done!');

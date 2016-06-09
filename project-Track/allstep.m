@@ -1,4 +1,4 @@
-clc; clear all; close all;
+close all;
 
 event2mat;
 vt2mat;
@@ -8,5 +8,5 @@ heat_map;
 pearson_field_correlation_baseComp_Track;
 tagstatTrack;
 mapCorr;
-
+burstIdx;
 % trackplot;

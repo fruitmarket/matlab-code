@@ -28,12 +28,14 @@ for iPath = 1:nPath;
     nCell = length(cellFile);
         
     for iCell = 1:nCell
-        [~, matName, ~] = fileparts(cellFile{iCell});
+        [matPath, matName, ~] = fileparts(cellFile{iCell});
         load(cellFile{iCell});
         
         tagRatio = length(xptTagBlue{1})/length(lightTime.Tag);
-        if ~exist('xptModuBlue')
-            save([matName,'.mat'],'tagRatio','-append');
+        
+        if regexp(matPath,'nolight')
+            moduRatio = NaN;
+            save([matName,'.mat'],'tagRatio','moduRatio','-append');
         else
             moduRatio = length(xptModuBlue{1})/length(lightTime.Modu);
             save([matName,'.mat'],'tagRatio','moduRatio','-append');

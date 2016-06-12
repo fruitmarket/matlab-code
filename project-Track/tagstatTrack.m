@@ -40,6 +40,7 @@ for iCell = 1:nCell
     if isempty(p_modu)
         p_modu = 1;
     end
+    
     save([cellName,'.mat'],...
         'p_modu','time_modu','H1_modu','H2_modu',...
         '-append');

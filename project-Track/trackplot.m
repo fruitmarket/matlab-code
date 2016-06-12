@@ -39,12 +39,11 @@ lineS = 0.2; % line width small
 lineM = 0.5; % line width middle
 lineL = 1; % line width large
 
-% colorBlue = [0 153 227] ./ 255;
 colorBlue = [33 150 243] ./ 255;
 colorLightBlue = [223 239 252] ./ 255;
 colorRed = [237 50 52] ./ 255;
 colorLightRed = [242 138 130] ./ 255;
-colorGray = [204 204 204] ./ 255;
+colorGray = [189 189 189] ./ 255;
 colorYellow = [255 243 3] ./ 255;
 colorLightYellow = [255 249 196] ./ 255;
 

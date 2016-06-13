@@ -18,7 +18,7 @@ for iFile = 1:nFile
     taskType = categorical(cellstr(fileSeg{9}));
     taskProb = categorical(cellstr(fileSeg{10}));
        
-    temT = table(mouseLine,taskType,{matFile(iFile)},taskProb,fr_base,fr_task,burstIdx,{spkwv},spkwth,hfvwth,p_tag,p_modu,p_CorrInter,p_CorrIntra,r_CorrInter,r_CorrIntra,tagRatio,moduRatio,...
+    temT = table(mouseLine,taskType,matFile(iFile),taskProb,fr_base,fr_task,burstIdx,{spkwv},spkwth,hfvwth,p_tag,p_modu,p_CorrInter,p_CorrIntra,r_CorrInter,r_CorrIntra,tagRatio,moduRatio,...
         'VariableNames',{'mouseLine','taskType','Path','taskProb','fr_base','fr_task','burstIdx','spkwv','spkwth','hfwth','p_tag','p_modu','p_CorrInter','p_CorrIntra','r_CorrInter','r_CorrIntra','tagRatio','moduRatio'});
     
     T = [T; temT];

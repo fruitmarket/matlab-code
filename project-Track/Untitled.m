@@ -1,5 +1,3 @@
-
-
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [244, 67, 54]./255,... % During stimulation
     [38, 50, 56]./255}; % After stimulation
@@ -33,10 +31,14 @@ markerL = 6.6;
 
 %%%%%%%%%%%%%%%
 
-load('cellList.mat');
-cutPval = 0.05;
-cutFr = 0.01;
-cellCut = T.fr_task>cutFr;
+load('cellList_DRw.mat');
+thr_ptag = 0.05;
+thr_pModu = 0.05;
+thr_moduRatio = 0.01;
+thr_tagRatio = 0.01;
+thr_Fr = 0.01;
+
+cellCut = T.fr_task>thr_Fr;
 
 
 T.burstIdx(cellCut);
@@ -73,6 +75,24 @@ hold on;
     
     set(hCell,'TickDir','out','Box','off');
 
-(T.taskType == 'DRw') && T.T.fr_task > 0.05 && T.p_modu<0.05 && T.moduRaio>0.01
+% (T.taskType == 'DRw') && T.T.fr_task > 0.05 && T.p_modu<0.05 && T.moduRaio>0.01
+
+%%
+T.p_tag(T.tagRatio > 0.01);
+
+cutTag = T.p_tag < thr_ptag;
+cutModu = T.p_modu < thr_pModu;
+
+
+
+cutted_ratio = (T.tagRatio > 0.01) | (T.moduRatio > 0.1);
+cutted_tagstat = (T.p_tag < 0.05) | (T.p_modu < 0.05);
+
+lightCell = cutted_ratio & cutted_tagstat;
+nolightCell = cutt_ratio & ~cutted_tagstat;
+
+
+
+
 
 

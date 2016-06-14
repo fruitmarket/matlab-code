@@ -1,4 +1,4 @@
-load cellList2.mat
+load cellList.mat
 totalT = T;
 
 % DRun & 100% 

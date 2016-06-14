@@ -92,15 +92,15 @@ ratemapComp.post1 = ratemap.p7;
 ratemapComp.post2 = ratemap.p8;
 ratemapComp.post3 = ratemap.p9;
 
-visitmapComp.stm1 = visit_map.p4;
-visitmapComp.stm2 = visit_map.p5;
-visitmapComp.stm3 = visit_map.p6;
-visitmapComp.post1 = visit_map.p7;
-visitmapComp.post2 = visit_map.p8;
-visitmapComp.post3 = visit_map.p9;
+visitmapComp.stm1 = visit_map.p4(:);
+visitmapComp.stm2 = visit_map.p5(:);
+visitmapComp.stm3 = visit_map.p6(:);
+visitmapComp.post1 = visit_map.p7(:);
+visitmapComp.post2 = visit_map.p8(:);
+visitmapComp.post3 = visit_map.p9(:);
 
 for iComp = 1:numel(compFields)
-    compPearson_r(iComp) = corr(base_ratemap(base_visit_map&visitmapComp.(compFields{iComp})), ratemapComp.(compFields{iComp})(base_visit_map&visitmapComp.(compFields{iComp})),'type','Pearson');
+    compPearson_r(iComp) = corr(base_ratemap(base_visit_map(:)&visitmapComp.(compFields{iComp})), ratemapComp.(compFields{iComp})(base_visit_map(:)&visitmapComp.(compFields{iComp})),'type','Pearson');
 end
 
     save ([cellname, '.mat'],...

@@ -1,8 +1,11 @@
-function trackplot()
+function trackplot2()
 % psthtrack Converts data from MClust t files to Matlab mat files
 % ##### Modified Dohyoung Kim's code. Thanks to Dohyoung! ##### %
-[matFile, nFile] = matfilecollector;
+load('cellList_DRw');
 rtdir = pwd;
+
+matFile = T.Path;
+nFile = length(matFile);
 
 % Plot properties
 lineClr = {[0.8 0 0], ... % Cue A, Rw, no mod
@@ -320,25 +323,6 @@ for iFile = 1:nFile
         set(hField,'linestyle','none');       
         set(hMap,'XLim',[15 75],'YLim',[5 45],'XTick',[5:5:45],'YTick',[5:5:45],'visible','off');
 
-%         axes('Position',[startpoints(2,1) 0.15 0.8 0.1])
-%             text(0.10,0.5,[num2str(ceil(max(max(pre_ratemap))*sfreq(1))), ' Hz'],'color','k','FontSize',10);
-%             text(0.06,0.2,'Pre-Stimulation','FontSize',9);
-%             text(0.32,0.51,[num2str(ceil(max(max(stm_ratemap))*sfreq(1))), ' Hz'],'color','k','FontSize',10);
-%             rectangle('Position',[0.29, 0.10, 0.018, 0.18], 'EdgeColor','none','Facecolor',[0.2 0.6 1.0]);
-%             text(0.31,0.2,': Stimulation','FontSize',9);
-%             text(0.57,0.5,[num2str(ceil(max(max(post_ratemap))*sfreq(1))), ' Hz'],'color','k','FontSize',10);
-%             text(0.525,0.2,'Post-Stimulation','FontSize',9);
-%             set(gca,'XLim',[0 1],'YLim',[0 1]);
-%             set(gca,'visible','off');
-
-%         % Field size
-%         load(matfile{ifile},'pre_field_info','stm_field_info','post_field_info');
-%         pre_fieldsize = pre_field_info(1)/(72*48)*100;
-%         stm_fieldsize = stm_field_info(1)/(72*48)*100;
-%         post_fieldsize = post_field_info(1)/(72*48)*100;
-%         load(matfile{ifile},'mean_fr',...
-%             'pre_infos','stm_infos','post_infos')
-
         % Pearson's correlation
         hCorr = axes('Position',axpt(8,1,1:5,1,axpt(nCol,nRowMain,4,2,[],wideInterval),tightInterval));
         xptPcomp = 1:3;
@@ -405,143 +389,8 @@ for iFile = 1:nFile
             set(hPsth(iSensor),'YLim',[0 ylimpsth(iSensor)]);
         end
 
-               
-%         hRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,1,3,[],wideInterval),wideInterval));
-%         hold on;
-%         plot([xpt.(fields{1}){1} xpt.(fields{1}){2}, xpt.(fields{1}){3}],[ypt.(fields{1}){1}, ypt.(fields{1}){2}, ypt.(fields{1}){3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-%         rec(1) = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
-%         ylabel('Trial','FontSize',fontS);
-%         title('Sensor1','FontSize',fontM);
-%         hPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,1,3,[],wideInterval),wideInterval));
-%         ylimpsth(1) = ceil(max(psthconv.S1(:))*1.1+0.0001);
-%         hold on;
-%         for iType = 1:3
-%             plot(psthtime.(fields{1}),psthconv.(fields{1})(iType,:),...
-%             'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType})
-%         end
-% 
-%         hRaster(2) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,2,3,[],wideInterval),wideInterval));
-%         rec(2) = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
-%         hold on;
-%         plot([xpt.(fields{2}){1} xpt.(fields{2}){2}, xpt.(fields{2}){3}],[ypt.(fields{2}){1}, ypt.(fields{2}){2}, ypt.(fields{2}){3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-%         ylabel('Trial','FontSize',fontS);
-%         title('Sensor2','FontSize',fontM);
-%         hPsth(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,2,3,[],wideInterval),wideInterval));
-%         hold on;
-%         ylimpsth(2) = ceil(max(psthconv.S2(:))*1.1+0.0001);
-%         for iType = 1:3
-%             plot(psthtime.S2,psthconv.S2(iType,:),...
-%             'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType})
-%         end
-%         
-%         hRaster(3) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,3,3,[],wideInterval),wideInterval));
-%         rec(3) = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
-%         hold on;
-%         plot([xpt.S3{1} xpt.S3{2}, xpt.S3{3}],[ypt.S3{1}, ypt.S3{2}, ypt.S3{3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-%         ylabel('Trial','FontSize',fontS);
-%         title('Sensor4','FontSize',fontM);        
-%         hPsth(3) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,3,3,[],wideInterval),wideInterval));
-%         hold on;
-%         ylimpsth(3) = ceil(max(psthconv.S3(:))*1.1+0.0001);
-%         for iType = 1:3
-%             plot(psthtime.S3, psthconv.S3(iType,:),...
-%             'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType});
-%         end
-% 
-%         hRaster(4) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,4,3,[],wideInterval),wideInterval));
-%         rec(4) = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
-%         hold on;
-%         plot([xpt.S4{1} xpt.S4{2}, xpt.S4{3}],[ypt.S4{1}, ypt.S4{2}, ypt.S4{3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-%         ylabel('Trial','FontSize',fontS);
-%         title('Sensor5','FontSize',fontM);        
-%         hPsth(4) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,4,3,[],wideInterval),wideInterval));
-%         hold on;
-%         ylimpsth(4) = ceil(max(psthconv.S4(:))*1.1+0.0001);
-%         for iType = 1:3
-%             plot(psthtime.S4, psthconv.S4(iType,:),...
-%             'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType});
-%         end
-%         ylabel('Rate (Hz)','FontSize',fontS);
-% 
-%         hRaster(5) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,1,4,[],wideInterval),wideInterval));
-%         rec(5) = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
-%         hold on;
-%         plot([xpt.S5{1} xpt.S5{2}, xpt.S5{3}],[ypt.S5{1}, ypt.S5{2}, ypt.S5{3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-%         ylabel('Trial','FontSize',fontS);
-%         title('Sensor7','FontSize',fontM);        
-%         hPsth(5) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,1,4,[],wideInterval),wideInterval));
-%         hold on;
-%         ylimpsth(5) = ceil(max(psthconv.S5(:))*1.1+0.0001);
-%         for iType = 1:3
-%             plot(psthtime.S5, psthconv.S5(iType,:),...
-%             'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType});
-%         end
-%         ylabel('Rate (Hz)','FontSize',fontS);
-% 
-%         hRaster(6) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,2,4,[],wideInterval),wideInterval));
-%         rec(6) = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
-%         hold on;
-%         plot([xpt.S6{1} xpt.S6{2}, xpt.S6{3}],[ypt.S6{1}, ypt.S6{2}, ypt.S6{3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-%         ylabel('Trial','FontSize',fontS);
-%         title('Sensor8 & Light','FontSize',fontM);        
-%         hPsth(6) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,2,4,[],wideInterval),wideInterval));
-%         hold on;
-%         ylimpsth(6) = ceil(max(psthconv.S6(:))*1.1+0.0001);
-%         for iType = 1:3
-%             plot(psthtime.S6, psthconv.S6(iType,:),...
-%             'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType});    
-%         end
-%         ylabel('Rate (Hz)','FontSize',fontS);
-% 
-%         hRaster(7) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,3,4,[],wideInterval),wideInterval));
-%         rec(7) = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
-%         hold on;
-%         plot([xpt.S7{1} xpt.S7{2}, xpt.S7{3}],[ypt.S7{1}, ypt.S7{2}, ypt.S7{3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-%         ylabel('Trial','FontSize',fontS);
-%         title('Sensor10','FontSize',fontM);        
-%         hPsth(7) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,3,4,[],wideInterval),wideInterval));
-%         hold on;
-%         ylimpsth(7) = ceil(max(psthconv.S7(:))*1.1+0.0001);
-%         for iType = 1:3
-%             plot(psthtime.S7, psthconv.S7(iType,:),...
-%             'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType});    
-%         end
-%         ylabel('Rate (Hz)','FontSize',fontS);
-% 
-%         hRaster(8) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,4,4,[],wideInterval),wideInterval));
-%         rec(8) = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
-%         hold on;
-%         plot([xpt.S8{1} xpt.S8{2}, xpt.S8{3}],[ypt.S8{1}, ypt.S8{2}, ypt.S8{3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');   
-%         ylabel('Trial','FontSize',fontS);
-%         title('Sensor11','FontSize',fontM);
-%         hPsth(8) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,4,4,[],wideInterval),wideInterval));
-%         hold on;
-%         ylimpsth(8) = ceil(max(psthconv.S8(:))*1.1+0.0001);
-%         for iType = 1:3
-%             plot(psthtime.S8, psthconv.S8(iType,:),...
-%             'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType});
-%         end
-%         ylabel('Rate (Hz)','FontSize',fontS);
-% 
-%         set(hRaster, 'Box', 'off', 'TickDir', 'out', 'LineWidth', lineS, 'FontSize', fontS, ...
-%             'XLim',[-1, 1],'XTick',[],'YLim',[0 90],'YTick',[0:30:90]);
-%         uistack(rec(1),'bottom')
-%         
-%         set(hPsth, 'Box', 'off', 'TickDir', 'out', 'LineWidth', lineS, 'FontSize', fontS, ...
-%             'XLim',[-1, 1],'XTick',[-1:0.2:1]);
-%         
-%         for iPsth = 1:size(hPsth)
-%             set(hPsth(iPsth),'YLim',[0 ylimpsth(iPsth)]);
-%         end
-%         
+%       
+        cd(rtdir);  
         print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
         close;
 end

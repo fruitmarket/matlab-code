@@ -32,13 +32,16 @@ for iPath = 1:nPath;
         load(cellFile{iCell});
         
         tagRatio = length(xptTagBlue{1})/length(lightTime.Tag);
+        ntagLightspk = length(xptTagBlue{1});
         
         if regexp(matPath,'nolight')
             moduRatio = NaN;
-            save([matName,'.mat'],'tagRatio','moduRatio','-append');
+            nmoduLightspk = NaN;
+            save([matName,'.mat'],'tagRatio','ntagLightspk','nmoduLightspk','moduRatio','-append');
         else
             moduRatio = length(xptModuBlue{1})/length(lightTime.Modu);
-            save([matName,'.mat'],'tagRatio','moduRatio','-append');
+            nmoduLightspk = length(xptModuBlue{1});
+            save([matName,'.mat'],'tagRatio','moduRatio','ntagLightspk','nmoduLightspk','-append');
         end
     end
 end

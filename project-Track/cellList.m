@@ -12,14 +12,17 @@ nFile = length(matFile);
 
 T = table();
 for iFile = 1:nFile
-    load(matFile{iFile},'fr_base','fr_task','burstIdx','spkwv','spkwth','hfvwth','p_tag','p_modu','p_CorrInter','p_CorrIntra','r_CorrInter','r_CorrIntra','tagRatio','moduRatio');
+    load(matFile{iFile},'fr_base','fr_task','burstIdx','spkwv','spkwth','hfvwth','p_tag','p_modu','tagRatio','moduRatio','ntagLightspk','nmoduLightspk',...
+        'r_Corrbfxaft','r_Corrbfxdr','r_Corrdrxaft','r_Corrhfxhf','p_Corrbfxaft','p_Corrbfxdr','p_Corrdrxaft','p_Corrhfxhf');
     fileSeg = strsplit(matFile{iFile},{'\','_'});
     mouseLine = categorical(cellstr(fileSeg{5}));
     taskType = categorical(cellstr(fileSeg{9}));
     taskProb = categorical(cellstr(fileSeg{10}));
        
-    temT = table(mouseLine,taskType,matFile(iFile),taskProb,fr_base,fr_task,burstIdx,{spkwv},spkwth,hfvwth,p_tag,p_modu,p_CorrInter,p_CorrIntra,r_CorrInter,r_CorrIntra,tagRatio,moduRatio,...
-        'VariableNames',{'mouseLine','taskType','Path','taskProb','fr_base','fr_task','burstIdx','spkwv','spkwth','hfwth','p_tag','p_modu','p_CorrInter','p_CorrIntra','r_CorrInter','r_CorrIntra','tagRatio','moduRatio'});
+    temT = table(mouseLine,taskType,matFile(iFile),taskProb,fr_base,fr_task,burstIdx,{spkwv},spkwth,hfvwth,p_tag,p_modu,tagRatio,moduRatio,ntagLightspk,nmoduLightspk,...
+        r_Corrbfxaft,r_Corrbfxdr,r_Corrdrxaft,r_Corrhfxhf,p_Corrbfxaft,p_Corrbfxdr,p_Corrdrxaft,p_Corrhfxhf,...
+        'VariableNames',{'mouseLine','taskType','Path','taskProb','fr_base','fr_task','burstIdx','spkwv','spkwth','hfwth','p_tag','p_modu','tagRatio','moduRatio','ntagLightspk','nmoduLightspk',...
+        'r_Corrbfxaft','r_Corrbfxdr','r_Corrdrxaft','r_Corrhfxhf','p_Corrbfxaft','p_Corrbfxdr','p_Corrdrxaft','p_Corrhfxhf'});
     
     T = [T; temT];
 end

@@ -41,5 +41,5 @@ for iCell = 1:nCell
         'r_Corrhfxhf', 'p_Corrhfxhf', 'r_Corrbfxdr', 'p_Corrbfxdr', 'r_Corrbfxaft', 'p_Corrbfxaft', 'r_Corrdrxaft','p_Corrdrxaft','-append');
 end
 
-disp('### Shuffling is done! ###');
+disp('### Correlation calculation is done! ###');
 end

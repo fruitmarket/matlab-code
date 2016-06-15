@@ -1,5 +1,5 @@
-% startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp8';'D:\Projects\Track_151213-2_Rbp14'};
-startingDir = {'D:\Projects\Track_151029-5_Rbp8'};
+startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp8';'D:\Projects\Track_151213-2_Rbp14'};
+% startingDir = {'D:\Projects\Track_151029-5_Rbp8'};
 
 matFile = [];
 nDir = size(startingDir,1);
@@ -19,5 +19,7 @@ nPath = length(cellPath);
 
 for iPath = 1:nPath
     cd(cellPath{iPath});
-    allstep;
+    mapCorr;
 end
+
+disp('### Done! ###');

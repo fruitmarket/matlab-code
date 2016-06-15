@@ -20,6 +20,12 @@ colorGray = [189 189 189] ./ 255;
 colorYellow = [255 243 3] ./ 255;
 colorLightYellow = [255 249 196] ./ 255;
 
+% four group color
+colorPink = [183, 28, 28]./255;
+colorPurple = [74, 20, 140]./255;
+colorBlue3 = [13, 71, 161]./255;
+colorOrange = [27, 94, 32]./255;
+
 tightInterval = [0.02 0.02];
 wideInterval = [0.09 0.09];
 
@@ -72,45 +78,55 @@ ypt_corrInDRw = [tDRw.r_Corrhfxhf(inDRw); tDRw.r_Corrbfxdr(inDRw); tDRw.r_Corrbf
 ypt_corrInDRun = [tDRun.r_Corrhfxhf(inDRun); tDRun.r_Corrbfxdr(inDRun); tDRun.r_Corrbfxaft(inDRun); tDRun.r_Corrdrxaft(inDRun)];
 ypt_corrInNolight = [tNolight.r_Corrhfxhf(inNolight); tNolight.r_Corrbfxdr(inNolight); tNolight.r_Corrbfxaft(inNolight); tNolight.r_Corrdrxaft(inNolight)];
 
-xpt_corrPnDRw = [0.5+rand(1,npnDRw),3.5+rand(1,npnDRw),6.5+rand(1,npnDRw),9.5+rand(1,npnDRw)];
-xpt_corrPnDRun = [0.5+rand(1,npnDRun),3.5+rand(1,npnDRun),6.5+rand(1,npnDRun),9.5+rand(1,npnDRun)];
-xpt_corrPnNolight = [0.5+rand(1,npnNolight),3.5+rand(1,npnNolight),6.5+rand(1,npnNolight),9.5+rand(1,npnNolight)];
+xpt_corrPnDRw = [ones(npnDRw,1);ones(npnDRw,1)*2; ones(npnDRw,1)*3; ones(npnDRw,1)*4];
+xpt_corrPnDRun = [ones(npnDRun,1);ones(npnDRun,1)*2;ones(npnDRun,1)*3;ones(npnDRun,1)*4];
+xpt_corrPnNolight = [ones(npnNolight,1);ones(npnNolight,1)*2;ones(npnNolight,1)*3;ones(npnNolight,1)*4];
 
-xpt_corrInDRw = [0.5+rand(1,ninDRw),3.5+rand(1,ninDRw),6.5+rand(1,ninDRw),9.5+rand(1,ninDRw)];
-xpt_corrInDRun = [0.5+rand(1,ninDRun),3.5+rand(1,ninDRun),6.5+rand(1,ninDRun),9.5+rand(1,ninDRun)];
-xpt_corrInNolight = [0.5+rand(1,ninNolight),3.5+rand(1,ninNolight),6.5+rand(1,ninNolight),9.5+rand(1,ninNolight)];
+xpt_corrInDRw = [ones(ninDRw,1); ones(ninDRw,1)*2; ones(ninDRw,1)*3; ones(ninDRw,1)*4];
+xpt_corrInDRun = [ones(ninDRun,1); ones(ninDRun,1)*2; ones(ninDRun,1)*3; ones(ninDRun,1)*4];
+xpt_corrInNolight = [ones(ninNolight,1); ones(ninNolight,1)*2; ones(ninNolight,1)*3; ones(ninNolight,1)*4];
 
+% z-transformation
+[ypt_ZcorrPnDRw, ~] = fisherZ(ypt_corrPnDRw);
+[ypt_ZcorrPnDRun, ~] = fisherZ(ypt_corrPnDRun);
+[ypt_ZcorrPnNolight, ~] = fisherZ(ypt_corrPnNolight);
+
+[ypt_ZcorrInDRw, ~] = fisherZ(ypt_corrInDRw);
+[ypt_ZcorrInDRun, ~] = fisherZ(ypt_corrInDRun);
+[ypt_ZcorrInNolight, ~] = fisherZ(ypt_corrInNolight);
 
 %% Pearson's correlation
-% figure(4)
-% hCorr(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85], wideInterval));
-% hold on;
-% plot(xpt_corrPnDRw, ypt_corrPnDRw,'o');
-% title('Stimulation during Reward zone (PN)');
-% 
-% hCorr(2) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85], wideInterval));
-% hold on;
-% plot(xpt_corrPnDRun, ypt_corrPnDRun,'o');
-% title('Stimulation during Running zone (PN)');
-% 
-% hCorr(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85], wideInterval));
-% hold on;
-% plot(xpt_corrPnNolight, ypt_corrPnNolight,'o');
-% title('No Stimulation (PN)');
-% 
-% hCorr(4) = axes('Position',axpt(3,2,1,2,[0.1 0.1 0.85 0.85], wideInterval));
-% plot(xpt_corrInDRw, ypt_corrInDRw,'o');
-% title('Stimulation during Reward zone (IN)');
-% 
-% hCorr(5) = axes('Position',axpt(3,2,2,2,[0.1 0.1 0.85 0.85], wideInterval));
-% plot(xpt_corrInDRun, ypt_corrInDRun,'o');
-% title('Stimulation during Running zone (IN)');
-% 
-% hCorr(6) = axes('Position',axpt(3,2,3,2,[0.1 0.1 0.85 0.85], wideInterval));
-% plot(xpt_corrInNolight, ypt_corrInNolight,'o');
-% title('No Stimulation (IN)');
-% 
-% set(hCorr,'TickDir','out','Box','off','XLim',[0,11],'YLim',[-1.2,1.2],'XTick',[1,4,7,10],'XTickLabel',[{'hf x hf','bf x dur', 'bf x aft','dur x aft'}]);
+figure(4)
+hCorr(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrPnDRw,xpt_corrPnDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('Stimulation during Reward zone (PN)');
+
+hCorr(2) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrPnDRun,xpt_corrPnDRun,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('Stimulation during Running zone (PN)');
+
+hCorr(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrPnNolight,xpt_corrPnNolight,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('No Stimulation (PN)');
+
+hCorr(4) = axes('Position',axpt(3,2,1,2,[0.1 0.1 0.85 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrInDRw,xpt_corrInDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('Stimulation during Reward zone (IN)');
+
+hCorr(5) = axes('Position',axpt(3,2,2,2,[0.1 0.1 0.85 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrInDRun,xpt_corrInDRun,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('Stimulation during Running zone (IN)');
+
+hCorr(6) = axes('Position',axpt(3,2,3,2,[0.1 0.1 0.85 0.85], wideInterval));
+MyScatterBarPlot(ypt_corrInNolight,xpt_corrInNolight,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('No Stimulation (IN)');
+
+set(hCorr,'TickDir','out','Box','off','XLim',[0,5],'YLim',[-1.2,1.2],'XTick',[1,2,3,4],'XTickLabel',[{'hf x hf','bf x dur', 'bf x aft','dur x aft'}],'FontSize',fontL);
 
 
 %% Fisher's transformation

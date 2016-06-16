@@ -100,34 +100,34 @@ figure(4)
 hCorr(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrPnDRw,xpt_corrPnDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
-title('Stimulation during Reward zone (PN)');
+title('Stimulation during Reward zone (PN)','FontSize',fontM);
 
 hCorr(2) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrPnDRun,xpt_corrPnDRun,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
-title('Stimulation during Running zone (PN)');
+title('Stimulation during Running zone (PN)','FontSize',fontM);
 
 hCorr(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrPnNolight,xpt_corrPnNolight,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
-title('No Stimulation (PN)');
+title('No Stimulation (PN)','FontSize',fontM);
 
 hCorr(4) = axes('Position',axpt(3,2,1,2,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrInDRw,xpt_corrInDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
-title('Stimulation during Reward zone (IN)');
+title('Stimulation during Reward zone (IN)','FontSize',fontM);
 
 hCorr(5) = axes('Position',axpt(3,2,2,2,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrInDRun,xpt_corrInDRun,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
-title('Stimulation during Running zone (IN)');
+title('Stimulation during Running zone (IN)','FontSize',fontM);
 
 hCorr(6) = axes('Position',axpt(3,2,3,2,[0.1 0.1 0.85 0.85], wideInterval));
 MyScatterBarPlot(ypt_corrInNolight,xpt_corrInNolight,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
-title('No Stimulation (IN)');
+title('No Stimulation (IN)','FontSize',fontM);
 
-set(hCorr,'TickDir','out','Box','off','XLim',[0,5],'YLim',[-1.2,1.2],'XTick',[1,2,3,4],'XTickLabel',[{'hf x hf','bf x dur', 'bf x aft','dur x aft'}],'FontSize',fontL);
-
+set(hCorr,'TickDir','out','Box','off','XLim',[0,5],'YLim',[-1.2,1.2],'XTick',[1,2,3,4],'XTickLabel',[{'hf x hf','bf x dur', 'bf x aft','dur x aft'}],'FontSize',fontM);
+print(gcf, '-depsc','-r300','Indv_Correlation');
 
 %% Fisher's transformation
 % figure(5)
@@ -166,12 +166,11 @@ hCell(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
     plot(tDRw.burstIdx,tDRw.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
     hold on;
-    line([0.4, 0.4], [-1, ylimFr],'LineStyle','--','Color',colorGray,'LineWidth',1);
-    line([-0.1, xlimBurst], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
+    line([-0.1, 1], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
     set(hCell(1),'XLim',[-0.1, 1],'YLim',[-1, ylimFr]);
     xlabel('Burst Index (% ISI < (mean ISI)/4)');
     ylabel('Firing rate (Hz)');
-    
+    title('Stimulation during Reward');
 
 hCell(2) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
@@ -203,12 +202,11 @@ hCell(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
     plot(tDRun.burstIdx,tDRun.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
     hold on;
-    line([0.4, 0.4], [-1, ylimFr],'LineStyle','--','Color',colorGray,'LineWidth',1);
-    line([-0.1, xlimBurst], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
+    line([-0.1, 1], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
     set(hCell(1),'XLim',[-0.1, 1],'YLim',[-1, ylimFr]);
     xlabel('Burst Index (% ISI < (mean ISI)/4)');
     ylabel('Firing rate (Hz)');
-    
+    title('Stimulation during Run');
 
 hCell(2) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
@@ -240,12 +238,11 @@ hCell(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
     plot(tNolight.burstIdx,tNolight.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
     hold on;
-    line([0.4, 0.4], [-1, ylimFr],'LineStyle','--','Color',colorGray,'LineWidth',1);
-    line([-0.1, xlimBurst], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
+    line([-0.1, 1], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
     set(hCell(1),'XLim',[-0.1, 1],'YLim',[-1, ylimFr]);
     xlabel('Burst Index (% ISI < (mean ISI)/4)');
     ylabel('Firing rate (Hz)');
-    
+    title('No Stimulation');    
 
 hCell(2) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;

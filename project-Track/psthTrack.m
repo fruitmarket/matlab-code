@@ -72,11 +72,12 @@ for iCell = 1:nCell
         [xptModuBlue, yptModuBlue, psthtimeModuBlue, psthModuBlue,~,~] = rasterPSTH(spikeTimeModuBlue,true(size(lightTime.Modu)),winTagBlue,binSizeTagBlue,resolution,1);
         save([cellName,'.mat'],...
             'spikeTimeModuBlue','xptModuBlue','yptModuBlue','psthtimeModuBlue','psthModuBlue','-append');
-    else isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60;
+    elseif isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60;
         spikeTimeModuYel = spikeWin(spikeData,lightTime.Modu,winTagYel);
         [xptModuYel, yptModuYel, psthtimeModuYel, psthModuYel,~,~] = rasterPSTH(spikeTimeModuYel,true(size(lightTime.Modu)),winTagYel,binSizeTagYel,resolution,1);
         save([cellName,'.mat'],...
             'spikeTimeModuYel','xptModuYel','yptModuYel','psthtimeModuYel','psthModuYel','-append');
+    else
     end
     
     

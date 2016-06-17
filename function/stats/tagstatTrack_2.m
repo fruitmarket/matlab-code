@@ -1,51 +1,34 @@
-function tagstatTrack(sessionFolder)
-%tagstatCC calculates statistical significance using log-rank test
+function stats = tagstatTrack_2()
+%tagstatWM does statistical tests for optogenetic tagging
+
+% if nargin == 0; stats = []; return; end;
+[tData, tList] = tLoad();
+% if isempty(tList); return; end;
 
 % Variables
 dt = 0.1;
-testRangeTag = 10; % unit: ms 
-baseRangeTag = 400; % baseline 
-testRangeModu = 10; % 8Hz: 20 // 20Hz: 20
-baseRangeModu = 60; % 8Hz: 100 // 20Hz: 15
+testWindow = 15;
+baseWindow = 80;
 
-% Find files
-if nargin == 0; sessionFolder = {}; end;
-[tData, tList] = tLoad(sessionFolder);
-if isempty(tList); return; end;
+nT = length(tList);
+[pSalt, lSalt, pLR] = deal(zeros(nT, 1));
+[timeLR, H1LR, H2LR] = deal({});
+for iT = 1:nT
+    disp(['### Analyzing ', tList{iT}]);
+    [cellPath, cellName,~] = fileparts(tList{iT});
 
-nCell = length(tList);
-for iCell = 1:nCell
-    disp(['### Tag stat test: ',tList{iCell}]);
-    [cellPath,cellName,~] = fileparts(tList{iCell});
-    cd(cellPath);
-    
-    clear lightTime
-    load('Events.mat','lightTime');
-    spikeData = tData{iCell};
-    
-    [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag, baseRangeTag);
-    [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu, testRangeModu, baseRangeModu);
-    
-    [p_tag,time_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag);
-    save([cellName,'.mat'],...
-        'p_tag','time_tag','H1_tag','H2_tag',...
-        '-append');
-    
-    [p_saltTag, l_saltTag] = saltTest(timeTag, testRangeTag, dt);
-    save([cellName,'.mat'],...
-        'p_saltTag','l_saltTag',...
-        '-append');
-    
-    [p_modu,time_modu,H1_modu,H2_modu] = logRankTest(timeModu, censorModu);
-    if isempty(p_modu)
-        p_modu = 1;
-    end
-    
-    save([cellName,'.mat'],...
-        'p_modu','time_modu','H1_modu','H2_modu',...
-        '-append');
+    load([cellPath,'\Events.mat'], 'lightTime');
+    lighttime = lightTime.Modu;
+
+    [spikeLatency, spikeCensor] = tagDataLoad(tData{iT}, lighttime', testWindow, baseWindow);
+
+    [pSalt(iT), lSalt(iT)] = saltTest(spikeLatency, testWindow, dt);
+    [pLR(iT), time, H1, H2] = logRankTest(spikeLatency, spikeCensor);
+    timeLR = [timeLR; {time}];
+    H1LR = [H1LR; {H1}];
+    H2LR = [H2LR; {H2}];
 end
-disp('### Tag stat test done!');
+stats = table(pSalt, lSalt, pLR, timeLR, H1LR, H2LR);
 
 function [time, censor] = tagDataLoad(spikeData, onsetTime, testRange, baseRange)
 %tagDataLoad makes dataset for statistical tests
@@ -67,11 +50,11 @@ if isempty(onsetTime); time = []; censor = []; return; end;
 nLight = length(onsetTime);
 
 % Rearrange data
-bin = [-floor(baseRange/testRange)*testRange:testRange:0]; % because of the latency (5ms), changed from 0 to 5.
+bin = [-floor(baseRange/testRange)*testRange:testRange:0];
 nBin = length(bin);
 
 binMat = ones(nLight,nBin)*diag(bin);
-lightBin = (repmat(onsetTime',nBin,1)+binMat');
+lightBin = repmat(onsetTime,nBin,1)+binMat';
 time = zeros(nBin,nLight);
 censor = zeros(nBin,nLight);
 

@@ -3,10 +3,10 @@ function tagstatTrack(sessionFolder)
 
 % Variables
 dt = 0.1;
-testRangeTag = 10; % unit: ms 
+testRangeTag = 20; % unit: ms 
 baseRangeTag = 400; % baseline 
-testRangeModu = 10; % 8Hz: 20 // 20Hz: 20
-baseRangeModu = 60; % 8Hz: 100 // 20Hz: 15
+testRangeModu = 20; % 8Hz: 20 // 20Hz: 20
+baseRangeModu = 80; % 8Hz: 100 // 20Hz: 15
 
 % Find files
 if nargin == 0; sessionFolder = {}; end;
@@ -42,6 +42,9 @@ for iCell = 1:nCell
         'p_saltTag','l_saltTag','-append');
     
     [p_saltModu, l_saltModu] = saltTest(timeModu, testRangeModu, dt);
+    if isempty(p_saltModu)
+        p_saltModu = 1;
+    end
     save([cellName,'.mat'],...
         'p_saltModu','l_saltModu','-append');
     

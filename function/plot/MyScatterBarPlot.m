@@ -33,7 +33,8 @@ for iGroup = 1:nGroup
     yMin(iGroup) = min([min(yPoint) yMean-ySem]);
 
     h(iGroup).bar = bar(iGroup,yMean,'FaceColor',xColor{iGroup},'LineStyle','none','BarWidth',barWidth);
-    h(iGroup).errorbar = errorbar(iGroup,yMean,ySem,'LineWidth',2,'Color',xColor{iGroup});
+    %     h(iGroup).errorbar = errorbar(iGroup,yMean,ySem,'LineWidth',2,'Color',xColor{iGroup});
+    h(iGroup).errorbar = errorbar(iGroup,yMean,ySem,'LineWidth',2,'Color',[0, 0, 0]);
     errorbarT(h(iGroup).errorbar, 0.2, 0.5);
     
     plot(xPoint,yPoint,'LineStyle','none','Marker','.','MarkerSize',6,'Color',xColor{iGroup});

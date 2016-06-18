@@ -1,4 +1,4 @@
-function z = fisherZ(r)
+function [z, error] = fisherZ(r)
 % Fisher's z-transformation
 %
 % r: matrix (ex. results from Pearson's correlation values)
@@ -10,5 +10,5 @@ function z = fisherZ(r)
 r = r(:);
 n = length(r);
     z = 1/2.*log((1+r)./(1-r));
-    stdError = 1/(sqrt(n-3));
+    error = 1/(sqrt(n-3));
 end

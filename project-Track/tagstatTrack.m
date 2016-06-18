@@ -28,22 +28,23 @@ for iCell = 1:nCell
     
     [p_tag,time_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag);
     save([cellName,'.mat'],...
-        'p_tag','time_tag','H1_tag','H2_tag',...
-        '-append');
-    
-    [p_saltTag, l_saltTag] = saltTest(timeTag, testRangeTag, dt);
-    save([cellName,'.mat'],...
-        'p_saltTag','l_saltTag',...
-        '-append');
-    
+        'p_tag','time_tag','H1_tag','H2_tag','-append');
+      
     [p_modu,time_modu,H1_modu,H2_modu] = logRankTest(timeModu, censorModu);
     if isempty(p_modu)
         p_modu = 1;
     end
-    
     save([cellName,'.mat'],...
-        'p_modu','time_modu','H1_modu','H2_modu',...
-        '-append');
+        'p_modu','time_modu','H1_modu','H2_modu','-append');
+    
+    [p_saltTag, l_saltTag] = saltTest(timeTag, testRangeTag, dt);
+    save([cellName,'.mat'],...
+        'p_saltTag','l_saltTag','-append');
+    
+    [p_saltModu, l_saltModu] = saltTest(timeModu, testRangeModu, dt);
+    save([cellName,'.mat'],...
+        'p_saltModu','l_saltModu','-append');
+    
 end
 disp('### Tag stat test done!');
 

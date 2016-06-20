@@ -2,16 +2,22 @@ load cellList.mat
 totalT = T;
 
 % DRun & 100% 
-sessRun = (totalT.taskType == 'DRun') & (totalT.taskProb == '100');
+% sessRun = (totalT.taskType == 'DRun') & (totalT.taskProb == '100');
 % sessRun = (totalT.taskType == 'DRun') & (totalT.taskProb == '50');
 % sessRun = (totalT.taskType == 'DRun') & (totalT.taskProb == '25');
-% sessRun = (totalT.taskType == 'DRun') & (totalT.taskProb == '10');
+sessRun = (totalT.taskType == 'DRun') & (totalT.taskProb == '10');
  
 % DRw % 100%
-sessRw = (totalT.taskType == 'DRw') & (totalT.taskProb == '100');
- 
+% sessRw = (totalT.taskType == 'DRw') & (totalT.taskProb == '100');
+% sessRw = (totalT.taskType == 'DRw') & (totalT.taskProb == '50');
+% sessRw = (totalT.taskType == 'DRw') & (totalT.taskProb == '25');
+sessRw = (totalT.taskType == 'DRw') & (totalT.taskProb == '10');
+
 % Nolight & 100%
-sessNo = (totalT.taskType == 'nolight') & (totalT.taskProb == '100');
+% sessNo = (totalT.taskType == 'nolight') & (totalT.taskProb == '100');
+% sessNo = (totalT.taskType == 'nolight') & (totalT.taskProb == '50');
+% sessNo = (totalT.taskType == 'nolight') & (totalT.taskProb == '25');
+sessNo = (totalT.taskType == 'nolight') & (totalT.taskProb == '10');
 
 %% DRun & 100 %
 cellList = totalT.Path(sessRun);
@@ -35,7 +41,7 @@ for iFile = 1:nFile
     T = [T; temT];
 end
 
-save('cellList_DRun.mat','T');
+save(['cellList_DRun_10.mat'],'T');
 clear T cellList nFile;
 
 %% DRw & 100%
@@ -60,7 +66,7 @@ for iFile = 1:nFile
     T = [T; temT];
 end
 
-save('cellList_DRw.mat','T');
+save(['cellList_DRw_10.mat'],'T');
 clear T cellList nFile;
 
 %% Nolight & 100 %
@@ -84,5 +90,5 @@ for iFile = 1:nFile
     
     T = [T; temT];
 end
-save('cellList_Nolight.mat','T');
+save(['cellList_Nolight_10.mat'],'T');
 clear T cellList nFile;

@@ -38,13 +38,13 @@ markerM = 4.4;
 markerL = 6.6;
 
 %%
-load('cellList_DRw.mat','T');
+load('cellList_DRw_10.mat','T');
 tDRw = T;
 
-load('cellList_DRun.mat','T');
+load('cellList_DRun_10.mat','T');
 tDRun = T;
 
-load('cellList_Nolight.mat','T');
+load('cellList_Nolight_10.mat','T');
 tNolight = T;
 
 ylimFr = 50;
@@ -90,10 +90,25 @@ xpt_corrInNolight = [ones(ninNolight,1); ones(ninNolight,1)*2; ones(ninNolight,1
 [ypt_ZcorrPnDRw, ~] = fisherZ(ypt_corrPnDRw);
 [ypt_ZcorrPnDRun, ~] = fisherZ(ypt_corrPnDRun);
 [ypt_ZcorrPnNolight, ~] = fisherZ(ypt_corrPnNolight);
-
 [ypt_ZcorrInDRw, ~] = fisherZ(ypt_corrInDRw);
 [ypt_ZcorrInDRun, ~] = fisherZ(ypt_corrInDRun);
 [ypt_ZcorrInNolight, ~] = fisherZ(ypt_corrInNolight);
+
+% multiway ANOVA
+[~, ~, statsPnDRw] = anovan(ypt_ZcorrPnDRw,{xpt_corrPnDRw},'display','off');
+[~, ~, statsPnDRun] = anovan(ypt_ZcorrPnDRun,{xpt_corrPnDRun},'display','off');
+[~, ~, statsPnNolight] = anovan(ypt_ZcorrPnNolight,{xpt_corrPnNolight},'display','off');
+[~, ~, statsInDRw] = anovan(ypt_ZcorrInDRw,{xpt_corrInDRw},'display','off');
+[~, ~, statsInDRun] = anovan(ypt_ZcorrInDRun,{xpt_corrInDRun},'display','off');
+[~, ~, statsInNolight] = anovan(ypt_ZcorrInNolight,{xpt_corrInNolight},'display','off');
+
+% Multiple comparison
+mulPnDRw = multcompare(statsPnDRw,'display','off');
+mulPnDRun = multcompare(statsPnDRun,'display','off');
+mulPnNolight = multcompare(statsPnNolight,'display','off');
+mulInDRw = multcompare(statsInDRw,'display','off');
+mulInDRun = multcompare(statsInDRun,'display','off');
+mulInNolight = multcompare(statsInNolight,'display','off');
 
 %% Pearson's correlation
 figure(4)
@@ -101,169 +116,36 @@ hCorr(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrPnDRw,xpt_corrPnDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('Stimulation during Reward zone (PN)','FontSize',fontM);
+text(4, -0.8,['n = ', num2str(npnDRw)]);
 
 hCorr(2) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrPnDRun,xpt_corrPnDRun,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('Stimulation during Running zone (PN)','FontSize',fontM);
+text(4, -0.8,['n = ', num2str(npnDRun)]);
 
 hCorr(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrPnNolight,xpt_corrPnNolight,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('No Stimulation (PN)','FontSize',fontM);
+text(4, -0.8,['n = ', num2str(npnNolight)]);
 
 hCorr(4) = axes('Position',axpt(3,2,1,2,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrInDRw,xpt_corrInDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('Stimulation during Reward zone (IN)','FontSize',fontM);
+text(4, -0.8,['n = ', num2str(ninDRw)]);
 
 hCorr(5) = axes('Position',axpt(3,2,2,2,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrInDRun,xpt_corrInDRun,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('Stimulation during Running zone (IN)','FontSize',fontM);
+text(4, -0.8,['n = ', num2str(ninDRun)]);
 
 hCorr(6) = axes('Position',axpt(3,2,3,2,[0.1 0.1 0.85 0.85], wideInterval));
 MyScatterBarPlot(ypt_corrInNolight,xpt_corrInNolight,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('No Stimulation (IN)','FontSize',fontM);
+text(4, -0.8,['n = ', num2str(ninNolight)]);
 
 set(hCorr,'TickDir','out','Box','off','XLim',[0,5],'YLim',[-1.2,1.2],'XTick',[1,2,3,4],'XTickLabel',[{'hf x hf','bf x dur', 'bf x aft','dur x aft'}],'FontSize',fontM);
-print(gcf, '-depsc','-r300','Indv_Correlation');
-
-%% Fisher's transformation
-% figure(5)
-% hFisher(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85], wideInterval));
-% hold on;
-% plot(xpt_corrPnDRw, fisherZ(ypt_corrPnDRw),'o');
-% title('Stimulation during Reward zone (PN)');
-% 
-% hFisher(2) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85], wideInterval));
-% hold on;
-% plot(xpt_corrPnDRun, fisherZ(ypt_corrPnDRun),'o');
-% title('Stimulation during Running zone (PN)');
-% 
-% hFisher(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85], wideInterval));
-% hold on;
-% plot(xpt_corrPnNolight, fisherZ(ypt_corrPnNolight),'o');
-% title('No Stimulation (PN)');
-% 
-% hFisher(4) = axes('Position',axpt(3,2,1,2,[0.1 0.1 0.85 0.85], wideInterval));
-% plot(xpt_corrInDRw, fisherZ(ypt_corrInDRw),'o');
-% title('Stimulation during Reward zone (IN)');
-% 
-% hFisher(5) = axes('Position',axpt(3,2,2,2,[0.1 0.1 0.85 0.85], wideInterval));
-% plot(xpt_corrInDRun, fisherZ(ypt_corrInDRun),'o');
-% title('Stimulation during Running zone (IN)');
-% 
-% hFisher(6) = axes('Position',axpt(3,2,3,2,[0.1 0.1 0.85 0.85], wideInterval));
-% plot(xpt_corrInNolight, fisherZ(ypt_corrInNolight),'o');
-% title('No Stimulation (IN)');
-% 
-% set(hFisher,'TickDir','out','Box','off','XLim',[0,11],'XTick',[1,4,7,10],'XTickLabel',[{'hf x hf','bf x dur', 'bf x aft','dur x aft'}]);
-
-%%
-figure(1)
-hCell(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tDRw.burstIdx,tDRw.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    hold on;
-    line([-0.1, 1], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
-    set(hCell(1),'XLim',[-0.1, 1],'YLim',[-1, ylimFr]);
-    xlabel('Burst Index (% ISI < (mean ISI)/4)');
-    ylabel('Firing rate (Hz)');
-    title('Stimulation during Reward');
-
-hCell(2) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tDRw.spkwth,tDRw.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(2),'XLim',[50, 500],'YLim',[-1, 50]);
-    xlabel('Spike width (ms)');
-    ylabel('Firing rate (Hz)');
-    
-hCell(3) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tDRw.hfwth,tDRw.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(3),'XLim',[50, 650],'YLim',[-1, 50]);
-    xlabel('Half valley width (ms)');
-    ylabel('Firing rate (Hz)');
-    
-hCell(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tDRw.burstIdx,tDRw.hfwth,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(4),'YLim',[0, 650]);
-    xlabel('Burst Index (% ISI < (mean ISI)/4)');
-    ylabel('Half valley width (ms)');
-    
-    set(hCell,'TickDir','out','Box','off');
-    print(gcf,'-dtiff','-r300','fig1_DRw')
-
-%%
-figure(2)
-hCell(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tDRun.burstIdx,tDRun.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    hold on;
-    line([-0.1, 1], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
-    set(hCell(1),'XLim',[-0.1, 1],'YLim',[-1, ylimFr]);
-    xlabel('Burst Index (% ISI < (mean ISI)/4)');
-    ylabel('Firing rate (Hz)');
-    title('Stimulation during Run');
-
-hCell(2) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tDRun.spkwth,tDRun.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(2),'XLim',[50, 500],'YLim',[-1, 50]);
-    xlabel('Spike width (ms)');
-    ylabel('Firing rate (Hz)');
-    
-hCell(3) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tDRun.hfwth,tDRun.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(3),'XLim',[50, 650],'YLim',[-1, 50]);
-    xlabel('Half valley width (ms)');
-    ylabel('Firing rate (Hz)');
-    
-hCell(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tDRun.burstIdx,tDRun.hfwth,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(4),'YLim',[0, 650]);
-    xlabel('Burst Index (% ISI < (mean ISI)/4)');
-    ylabel('Half valley width (ms)');
-    
-    set(hCell,'TickDir','out','Box','off');
-    print(gcf,'-dtiff','-r300','fig1_DRun')
-
-%%
-figure(3)
-hCell(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tNolight.burstIdx,tNolight.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    hold on;
-    line([-0.1, 1], [10, 10],'LineStyle','--','Color',colorGray,'LineWidth',1);
-    set(hCell(1),'XLim',[-0.1, 1],'YLim',[-1, ylimFr]);
-    xlabel('Burst Index (% ISI < (mean ISI)/4)');
-    ylabel('Firing rate (Hz)');
-    title('No Stimulation');    
-
-hCell(2) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tNolight.spkwth,tNolight.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(2),'XLim',[50, 500],'YLim',[-1, 50]);
-    xlabel('Spike width (ms)');
-    ylabel('Firing rate (Hz)');
-    
-hCell(3) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tNolight.hfwth,tNolight.fr_task,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(3),'XLim',[50, 650],'YLim',[-1, 50]);
-    xlabel('Half valley width (ms)');
-    ylabel('Firing rate (Hz)');
-    
-hCell(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
-hold on;
-    plot(tNolight.burstIdx,tNolight.hfwth,'o','MarkerSize',markerM,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-    set(hCell(4),'YLim',[0, 650]);
-    xlabel('Burst Index (% ISI < (mean ISI)/4)');
-    ylabel('Half valley width (ms)');
-    
-    set(hCell,'TickDir','out','Box','off');
-    print(gcf,'-dtiff','-r300','fig1_Nolight')
+print(gcf, '-depsc','-r300','Indv_Correlation_10');

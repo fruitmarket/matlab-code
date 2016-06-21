@@ -40,13 +40,13 @@ markerL = 6.6;
 rtpath = pwd;
 
 %% Data load
-load('cellList_DRw.mat','T');
+load('cellList_DRw_10.mat','T');
 tDRw = T;
 
-load('cellList_DRun.mat','T');
+load('cellList_DRun_10.mat','T');
 tDRun = T;
 
-load('cellList_Nolight.mat','T');
+load('cellList_Nolight_10.mat','T');
 tNolight = T;
 
 %%
@@ -110,12 +110,12 @@ for iPath = 1:nPath
     r_sessDRwin_Corrdrxaft(iPath,1) = mean(r_DRwin_Corrdrxaft);
     r_sessDRwin_Corrhfxhf(iPath,1) = mean(r_DRwin_Corrhfxhf);
 end
-nPnDRw = length(isnan(r_sessDRwpn_Corrbfxaft));
-nInDRw = length(isnan(r_sessDRwin_Corrbfxaft));
+nSessionPnDRw = length(isnan(r_sessDRwpn_Corrbfxaft));
+nSessionInDRw = length(isnan(r_sessDRwin_Corrbfxaft));
 cd(rtpath);
-save(['sessionCorrelation_DRw','.mat'],...
-    'r_sessDRwpn_Corrbfxaft','r_sessDRwpn_Corrbfxdr','r_sessDRwpn_Corrdrxaft','r_sessDRwpn_Corrhfxhf',...
-    'r_sessDRwin_Corrbfxaft','r_sessDRwin_Corrbfxdr','r_sessDRwin_Corrdrxaft','r_sessDRwin_Corrhfxhf');
+% save(['sessionCorrelation_DRw','.mat'],...
+%     'r_sessDRwpn_Corrbfxaft','r_sessDRwpn_Corrbfxdr','r_sessDRwpn_Corrdrxaft','r_sessDRwpn_Corrhfxhf',...
+%     'r_sessDRwin_Corrbfxaft','r_sessDRwin_Corrbfxdr','r_sessDRwin_Corrdrxaft','r_sessDRwin_Corrhfxhf');
 
 %% DRun
 matFile = tDRun.Path;
@@ -163,11 +163,11 @@ for iPath = 1:nPath
     r_sessDRunin_Corrhfxhf(iPath,1) = mean(r_DRunin_Corrhfxhf);
 end
 cd(rtpath);
-nPnDRun = length(isnan(r_sessDRunpn_Corrbfxaft));
-nInDRun = length(isnan(r_sessDRunin_Corrbfxaft));
-save(['sessionCorrelation_DRun','.mat'],...
-    'r_sessDRunpn_Corrbfxaft','r_sessDRunpn_Corrbfxdr','r_sessDRunpn_Corrdrxaft','r_sessDRunpn_Corrhfxhf',...
-    'r_sessDRunin_Corrbfxaft','r_sessDRunin_Corrbfxdr','r_sessDRunin_Corrdrxaft','r_sessDRunin_Corrhfxhf');
+nSessionPnDRun = length(isnan(r_sessDRunpn_Corrbfxaft));
+nSessionInDRun = length(isnan(r_sessDRunin_Corrbfxaft));
+% save(['sessionCorrelation_DRun','.mat'],...
+%     'r_sessDRunpn_Corrbfxaft','r_sessDRunpn_Corrbfxdr','r_sessDRunpn_Corrdrxaft','r_sessDRunpn_Corrhfxhf',...
+%     'r_sessDRunin_Corrbfxaft','r_sessDRunin_Corrbfxdr','r_sessDRunin_Corrdrxaft','r_sessDRunin_Corrhfxhf');
 
 %% Nolight
 matFile = tNolight.Path;
@@ -215,30 +215,54 @@ for iPath = 1:nPath
     r_sessNolightin_Corrhfxhf(iPath,1) = mean(r_Nolightin_Corrhfxhf);
 end
 cd(rtpath);
-nPnNolight = sum(double((~isnan(r_sessNolightpn_Corrbfxaft))));
-nInNolight = sum(double((~isnan(r_sessNolightin_Corrbfxaft))));
-
-save(['sessionCorrelation_Nolight','.mat'],...
-    'r_sessNolightpn_Corrbfxaft','r_sessNolightpn_Corrbfxdr','r_sessNolightpn_Corrdrxaft','r_sessNolightpn_Corrhfxhf',...
-    'r_sessNolightin_Corrbfxaft','r_sessNolightin_Corrbfxdr','r_sessNolightin_Corrdrxaft','r_sessNolightin_Corrhfxhf');
+nSessionPnNolight = sum(double((~isnan(r_sessNolightpn_Corrbfxaft))));
+nSessionInNolight = sum(double((~isnan(r_sessNolightin_Corrbfxaft))));
+% 
+% save(['sessionCorrelation_Nolight','.mat'],...
+%     'r_sessNolightpn_Corrbfxaft','r_sessNolightpn_Corrbfxdr','r_sessNolightpn_Corrdrxaft','r_sessNolightpn_Corrhfxhf',...
+%     'r_sessNolightin_Corrbfxaft','r_sessNolightin_Corrbfxdr','r_sessNolightin_Corrdrxaft','r_sessNolightin_Corrhfxhf');
 
 %%
-    xpt_corrPnDRw = [ones(nPnDRw,1);ones(nPnDRw,1)*2;ones(nPnDRw,1)*3;ones(nPnDRw,1)*4];
-    xpt_corrInDRw = [ones(nInDRw,1);ones(nInDRw,1)*2;ones(nInDRw,1)*3;ones(nInDRw,1)*4];
+    xpt_corrPnDRw = [ones(nSessionPnDRw,1);ones(nSessionPnDRw,1)*2;ones(nSessionPnDRw,1)*3;ones(nSessionPnDRw,1)*4];
+    xpt_corrInDRw = [ones(nSessionInDRw,1);ones(nSessionInDRw,1)*2;ones(nSessionInDRw,1)*3;ones(nSessionInDRw,1)*4];
     ypt_corrPnDRw = [r_sessDRwpn_Corrbfxaft;r_sessDRwpn_Corrbfxdr;r_sessDRwpn_Corrdrxaft;r_sessDRwpn_Corrhfxhf];
     ypt_corrInDRw = [r_sessDRwin_Corrbfxaft;r_sessDRwin_Corrbfxdr;r_sessDRwin_Corrdrxaft;r_sessDRwin_Corrhfxhf];
       
-    xpt_corrPnDRun = [ones(nPnDRun,1);ones(nPnDRun,1)*2;ones(nPnDRun,1)*3;ones(nPnDRun,1)*4];
-    xpt_corrInDRun = [ones(nInDRun,1);ones(nInDRun,1)*2;ones(nInDRun,1)*3;ones(nInDRun,1)*4];
+    xpt_corrPnDRun = [ones(nSessionPnDRun,1);ones(nSessionPnDRun,1)*2;ones(nSessionPnDRun,1)*3;ones(nSessionPnDRun,1)*4];
+    xpt_corrInDRun = [ones(nSessionInDRun,1);ones(nSessionInDRun,1)*2;ones(nSessionInDRun,1)*3;ones(nSessionInDRun,1)*4];
     ypt_corrPnDRun = [r_sessDRunpn_Corrbfxaft;r_sessDRunpn_Corrbfxdr;r_sessDRunpn_Corrdrxaft;r_sessDRunpn_Corrhfxhf]; 
     ypt_corrInDRun = [r_sessDRunin_Corrbfxaft;r_sessDRunin_Corrbfxdr;r_sessDRunin_Corrdrxaft;r_sessDRunin_Corrhfxhf];
     
-    xpt_corrPnNolight = [ones(nPnNolight,1);ones(nPnNolight,1)*2;ones(nPnNolight,1)*3;ones(nPnNolight,1)*4];
-    xpt_corrInNolight = [ones(nInNolight,1);ones(nInNolight,1)*2;ones(nInNolight,1)*3;ones(nInNolight,1)*4];
+    xpt_corrPnNolight = [ones(nSessionPnNolight,1);ones(nSessionPnNolight,1)*2;ones(nSessionPnNolight,1)*3;ones(nSessionPnNolight,1)*4];
+    xpt_corrInNolight = [ones(nSessionInNolight,1);ones(nSessionInNolight,1)*2;ones(nSessionInNolight,1)*3;ones(nSessionInNolight,1)*4];
     ypt_corrPnNolight = [r_sessNolightpn_Corrbfxaft;r_sessNolightpn_Corrbfxdr;r_sessNolightpn_Corrdrxaft;r_sessNolightpn_Corrhfxhf];
     ypt_corrInNolight = [r_sessNolightin_Corrbfxaft;r_sessNolightin_Corrbfxdr;r_sessNolightin_Corrdrxaft;r_sessNolightin_Corrhfxhf];
     ypt_corrInNolight(isnan(ypt_corrInNolight)) = [];
-   
+
+%% Z-transformation
+[ypt_ZcorrPnDRw, ~] = fisherZ(ypt_corrPnDRw);
+[ypt_ZcorrPnDRun, ~] = fisherZ(ypt_corrPnDRun);
+[ypt_ZcorrPnNolight, ~] = fisherZ(ypt_corrPnNolight);
+[ypt_ZcorrInDRw, ~] = fisherZ(ypt_corrInDRw);
+[ypt_ZcorrInDRun, ~] = fisherZ(ypt_corrInDRun);
+[ypt_ZcorrInNolight, ~] = fisherZ(ypt_corrInNolight);
+    
+% Statistics
+[~, ~, statsPnDRw] = anovan(ypt_ZcorrPnDRw,{xpt_corrPnDRw},'display','off');
+[~, ~, statsPnDRun] = anovan(ypt_ZcorrPnDRun,{xpt_corrPnDRun},'display','off');
+[~, ~, statsPnNolight] = anovan(ypt_ZcorrPnNolight,{xpt_corrPnNolight},'display','off');
+[~, ~, statsInDRw] = anovan(ypt_ZcorrInDRw,{xpt_corrInDRw},'display','off');
+[~, ~, statsInDRun] = anovan(ypt_ZcorrInDRun,{xpt_corrInDRun},'display','off');
+[~, ~, statsInNolight] = anovan(ypt_ZcorrInNolight,{xpt_corrInNolight},'display','off');
+
+% Multiple comparison
+mulPnDRw = multcompare(statsPnDRw,'display','off');
+mulPnDRun = multcompare(statsPnDRun,'display','off');
+mulPnNolight = multcompare(statsPnNolight,'display','off');
+mulInDRw = multcompare(statsInDRw,'display','off');
+mulInDRun = multcompare(statsInDRun,'display','off');
+mulInNolight = multcompare(statsInNolight,'display','off');    
+
     
 %% Plot
     hSessCorr(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
@@ -246,31 +270,37 @@ save(['sessionCorrelation_Nolight','.mat'],...
     MyScatterBarPlot(ypt_corrPnDRw,xpt_corrPnDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
     ylabel('Correlation');
     title('Stimulation during Reward zone (PN)','FontSize',fontM);
+    text(4, 1,['n = ',num2str(nSessionPnDRw)]);
     
     hSessCorr(2) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
     hold on;
     MyScatterBarPlot(ypt_corrPnDRun,xpt_corrPnDRun,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
     title('Stimulation during Running zone (PN)','FontSize',fontM);
+    text(4, 1,['n = ',num2str(nSessionPnDRun)]);
     
     hSessCorr(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85],wideInterval));
     hold on;
     MyScatterBarPlot(ypt_corrPnNolight,xpt_corrPnNolight,0.36,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
     title('No stimulation (PN)','FontSize',fontM);
+    text(4, 1,['n = ',num2str(nSessionPnNolight)]);
     
     hSessCorr(4) = axes('Position',axpt(3,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
     hold on;
     MyScatterBarPlot(ypt_corrInDRw,xpt_corrInDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
     title('Stimulation during Reward zone (IN)','FontSize',fontM);
+    text(4, 1,['n = ',num2str(nSessionInDRw)]);
     
     hSessCorr(5) = axes('Position',axpt(3,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
     hold on;
     MyScatterBarPlot(ypt_corrInDRun,xpt_corrInDRun,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
     title('Stimulation during Running zone (IN)','FontSize',fontM);
+    text(4, 1,['n = ',num2str(nSessionInDRun)]);
     
     hSessCorr(6) = axes('Position',axpt(3,2,3,2,[0.1 0.1 0.85 0.85],wideInterval));
     hold on;
     MyScatterBarPlot(ypt_corrInNolight,xpt_corrInNolight,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
     title('No Stimulation (IN)','FontSize',fontM);
+    text(4, 1,['n = ',num2str(nSessionInNolight)]);
     
     set(hSessCorr,'TickDir','out','Box','off','XLim',[0,5],'YLim',[-0,1.2],'XTick',[1,2,3,4],'XTickLabel',[{'hf x hf','bf x dur', 'bf x aft','dur x aft'}],'FontSize',fontM);
-print(gcf, '-depsc','-r300','Sess_Correlation');
+print(gcf, '-depsc','-r300','Sess_Correlation_10');

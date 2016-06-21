@@ -38,13 +38,13 @@ markerM = 4.4;
 markerL = 6.6;
 
 %%
-load('cellList_DRw_10.mat','T');
+load('cellList_DRw_100.mat','T');
 tDRw = T;
 
-load('cellList_DRun_10.mat','T');
+load('cellList_DRun_100.mat','T');
 tDRun = T;
 
-load('cellList_Nolight_10.mat','T');
+load('cellList_Nolight_100.mat','T');
 tNolight = T;
 
 ylimFr = 50;
@@ -111,7 +111,7 @@ mulInDRun = multcompare(statsInDRun,'display','off');
 mulInNolight = multcompare(statsInNolight,'display','off');
 
 %% Pearson's correlation
-figure(4)
+figure(1)
 hCorr(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85], wideInterval));
 hold on;
 MyScatterBarPlot(ypt_corrPnDRw,xpt_corrPnDRw,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
@@ -148,4 +148,4 @@ title('No Stimulation (IN)','FontSize',fontM);
 text(4, -0.8,['n = ', num2str(ninNolight)]);
 
 set(hCorr,'TickDir','out','Box','off','XLim',[0,5],'YLim',[-1.2,1.2],'XTick',[1,2,3,4],'XTickLabel',[{'hf x hf','bf x dur', 'bf x aft','dur x aft'}],'FontSize',fontM);
-print(gcf, '-depsc','-r300','Indv_Correlation_10');
+print(gcf, '-depsc','-r300','Indv_Correlation_100');

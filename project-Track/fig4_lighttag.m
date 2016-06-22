@@ -89,6 +89,8 @@ line([0, 1],[0.05, 0.05],'LineStyle',':','Color',colorRed,'LineWidth',1);
 xlabel('Salt test (tagging)');
 ylabel('Salt test (modulation)');
 
+set(hLight,'FontSize',fontM,'TickDir','out');
+
 hText(1) = axes('Position',axpt(3,3,3,1:2,[0.1, 0.1, 0.85, 0.85],tightInterval));
 hold on;
 text(0, 0.99, ['Total neuron: n = ',num2str(sum(double(neuron)))],'FontSize',fontL);
@@ -97,9 +99,10 @@ text(0, 0.8, ['Salt test positive (tag): n = ',num2str(sum(double(stagPosi)))],'
 text(0, 0.7, ['Log-Rank test positive (modu): n = ',num2str(sum(double(moduPosi)))],'FontSize',fontL);
 text(0, 0.6, ['Salt test positive (modu): n = ',num2str(sum(double(smoduPosi)))],'FontSize',fontL);
 text(0, 0.5, ['Log-Rank (tag) & Salt positive (tag): n = ',num2str(sum(double(tagstagPosi)))],'FontSize',fontL);
-text(0, 0.4, ['Log-Rank (tag) & Log-Rank (modu): n = ',num2str(sum(double(tagmoduPosi)))],'FontWeight','bold','FontSize',fontL);
+text(0, 0.4, ['Log-Rank (tag) & Log-Rank (modu): n = ',num2str(sum(double(tagmoduPosi)))],'FontSize',fontL);
 text(0, 0.3, ['Log-Rank (modu) & Salt (modu): n = ',num2str(sum(double(modusmoduPosi)))],'FontSize',fontL);
-text(0, 0.2, ['Salt (tag) & Salt (modu): n = ',num2str(sum(double(stagsmoduPosi)))],'FontWeight','bold','FontSize',fontL);
+text(0, 0.2, ['Salt (tag) & Salt (modu): n = ',num2str(sum(double(stagsmoduPosi)))],'FontSize',fontL);
+
 set(hText, 'Box','off','Visible','off');
 
 print(gcf,'-dtiff','-r300','fig4_lightTag');

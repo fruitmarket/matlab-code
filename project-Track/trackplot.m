@@ -1,8 +1,12 @@
 function trackplot()
 % psthtrack Converts data from MClust t files to Matlab mat files
 % ##### Modified Dohyoung Kim's code. Thanks to Dohyoung! ##### %
-[matFile, nFile] = matfilecollector;
 rtdir = pwd;
+[matFile, nFile] = matfilecollector;
+
+% load cellList_Nolight_100.mat
+% matFile = T.Path;
+% nFile = length(matFile);
 
 % Plot properties
 lineClr = {[0.8 0 0], ... % Cue A, Rw, no mod
@@ -57,8 +61,6 @@ nRowMain = 5; % for the main figure
 markerS = 2.2;
 markerM = 4.4;
 markerL = 6.6;
-
-% properties
 
 for iFile = 1:nFile
     [cellDir,cellName,~] = fileparts(matFile{iFile});
@@ -143,8 +145,6 @@ for iFile = 1:nFile
             'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
         xlabel('Time (ms)', 'FontSize', fontS);
         ylabel('Rate (Hz)', 'FontSize', fontS);
-%         set(hTagBlue, 'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
-%         align_ylabel(hTagBlue)
         
         hTagBlue(3) = axes('Position',axpt(1,20,1,1:8,axpt(nCol,nRowMain,4,1,[],wideInterval),tightInterval));
         hold on;
@@ -267,8 +267,7 @@ for iFile = 1:nFile
     end
     else
        lightDurationColor = [1, 1, 1];
-    end
-    
+    end  
        
     %% Heat map
         hMap(1) = axes('Position',axpt(nCol,nRowMain,1,2,[],wideInterval));
@@ -404,7 +403,6 @@ for iFile = 1:nFile
         for iSensor = 1:nSensor
             set(hPsth(iSensor),'YLim',[0 ylimpsth(iSensor)]);
         end
-
                
 %         hRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,1,3,[],wideInterval),wideInterval));
 %         hold on;
@@ -541,7 +539,8 @@ for iFile = 1:nFile
 %         for iPsth = 1:size(hPsth)
 %             set(hPsth(iPsth),'YLim',[0 ylimpsth(iPsth)]);
 %         end
-%         
+%       
+%         cd(rtdir);
         print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
         close;
 end

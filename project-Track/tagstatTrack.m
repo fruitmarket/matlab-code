@@ -26,7 +26,7 @@ for iCell = 1:nCell
     [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag, baseRangeTag);
     [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu, testRangeModu, baseRangeModu);
     
-    [p_tag,time_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag);
+    [p_tag,time_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag); % H1: light induced firing H2: baseline
     save([cellName,'.mat'],...
         'p_tag','time_tag','H1_tag','H2_tag','-append');
       
@@ -37,6 +37,7 @@ for iCell = 1:nCell
     save([cellName,'.mat'],...
         'p_modu','time_modu','H1_modu','H2_modu','-append');
     
+    % Salt test
     [p_saltTag, l_saltTag] = saltTest(timeTag, testRangeTag, dt);
     save([cellName,'.mat'],...
         'p_saltTag','l_saltTag','-append');
@@ -48,6 +49,37 @@ for iCell = 1:nCell
     save([cellName,'.mat'],...
         'p_saltModu','l_saltModu','-append');
     
+    % Modulation direction (activation/inactivation) & light latency
+    if ~isempty(nonzeros(H1_tag)) && ~isempty(nonzeros(H2_tag))
+        if H1_tag(end) > H2_tag(end)
+            lightDir_tag = 1; % Activation
+        else
+            lightDir_tag = 0; % Inactivation
+        end
+        latency_tag = min(time_tag(find((H1_tag(end)/10<H1_tag),1,'first')));
+    else
+        lightDir_tag = 2; % No modulation
+        latency_tag = NaN;
+    end
+    
+    if isempty(lightTime.Modu);
+        lightDir_modu = 2; % No modulation
+        latency_modu = NaN;
+    else
+        if ~isempty(nonzeros(H1_modu)) && ~isempty(nonzeros(H2_modu))
+            if H1_modu(end) > H2_modu(end)
+                lightDir_modu = 1;
+            else
+                lightDir_modu = 0;
+            end
+            latency_modu = min(time_modu(find((H1_modu(end)/10<H1_modu),1,'first')));
+        else
+            lightDir_modu = 2;
+            latency_modu = NaN;
+        end
+    end
+    save([cellName, '.mat'],...
+        'lightDir_tag','lightDir_modu','latency_tag','latency_modu','-append');
 end
 disp('### Tag stat test done!');
 

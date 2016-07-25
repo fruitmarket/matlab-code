@@ -24,7 +24,7 @@ binSizeTagYel = 20;
 ttData = LoadSpikes(ttFile,'tsflag','ts','verbose',0);
 
 for iCell = 1:nCell
-    disp(['### Anlyzing ',ttFile{iCell},'...']);
+    disp(['### Analyzing ',ttFile{iCell},'...']);
     [cellPath,cellName,~] = fileparts(ttFile{iCell});
     cd(cellPath);
     
@@ -60,11 +60,11 @@ for iCell = 1:nCell
 %     xpt.S1 = cellfun(@(x) x/1000, xpt.S1, 'UniformOutput', false); psthtime.S1 = psthtime.S1/10^3;
 %     [xpt.S2, ypt.S2, psthtime.S2, psthbar.S2, psthconv.S2, psthconvz.S2] = rasterPSTH(spikeTime.S2, trialIndex, win, binSize, resolution, 1);
 
-    
     save([cellName,'.mat'],...
         'fr_base','fr_task','burstIdx',...
         'spikeTime',...
         'win','xpt','ypt','psthtime','psthbar','psthconv','psthconvz');
+
     
     % Light Modulation
     if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu);
@@ -72,14 +72,12 @@ for iCell = 1:nCell
         [xptModuBlue, yptModuBlue, psthtimeModuBlue, psthModuBlue,~,~] = rasterPSTH(spikeTimeModuBlue,true(size(lightTime.Modu)),winTagBlue,binSizeTagBlue,resolution,1);
         save([cellName,'.mat'],...
             'spikeTimeModuBlue','xptModuBlue','yptModuBlue','psthtimeModuBlue','psthModuBlue','-append');
-    elseif isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60;
+    else isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60;
         spikeTimeModuYel = spikeWin(spikeData,lightTime.Modu,winTagYel);
         [xptModuYel, yptModuYel, psthtimeModuYel, psthModuYel,~,~] = rasterPSTH(spikeTimeModuYel,true(size(lightTime.Modu)),winTagYel,binSizeTagYel,resolution,1);
         save([cellName,'.mat'],...
             'spikeTimeModuYel','xptModuYel','yptModuYel','psthtimeModuYel','psthModuYel','-append');
-    else
     end
-    
     
     % Tagging
     if isfield(lightTime,'Tag') && ~isempty(lightTime.Tag);
@@ -87,12 +85,11 @@ for iCell = 1:nCell
        [xptTagBlue, yptTagBlue, psthtimeTagBlue, psthTagBlue,~,~] = rasterPSTH(spikeTimeTagBlue,true(size(lightTime.Tag)),winTagBlue,binSizeTagBlue,resolution,1);
        save([cellName,'.mat'],...
            'spikeTimeTagBlue','xptTagBlue','yptTagBlue','psthtimeTagBlue','psthTagBlue','-append');
-    elseif isfield(lightTime,'Tag') && ~isempty(lightTime.Tag) && size(lightTime.Modu,1) < 60;
+    else isfield(lightTime,'Tag') && ~isempty(lightTime.Tag) && size(lightTime.Modu,1) < 60;
         spikeTimeTagYel = spikeWin(spikeData,lightTime.Tag,winTagYel);
         [xptTagYel, yptTagYel, psthtimeTagYel, psthTagYel,~,~] = rasterPSTH(spikeTimeTagYel,true(size(lightTime.Tag)),winTagYel,binSizeTagYel,resolution,1);
         save([cellName,'.mat'],...
             'spikeTimeTagYel','xptTagYel','yptTagYel','psthtimeTagYel','psthTagYel','-append');
-    else
     end
 end
 disp('### Making Raster, PSTH is done!');

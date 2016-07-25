@@ -1,4 +1,10 @@
 function mapCorr()
+%mapCorr calculates correlation between pre/stm/post laps and save the
+%values to each cell's mat-file.
+%
+%   Author: Joonyeup Lee   
+%   Version 1.0 (6/15/2016)
+
 clearvars;
 
 [tData, tList] = tLoad;

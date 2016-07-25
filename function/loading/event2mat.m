@@ -1,9 +1,9 @@
-function event2mat%(filename)
+function event2mat %(filename)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Purpose: Creating event file
 % Writer: Jun (Modified DK's eventmat.m)
 % First written: 03/31/2015
-% Last modified: 11. 22. 2015
+% Last modified: 7. 25. 2016
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -125,17 +125,65 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
             postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
     end
  
+%% Pseudo light generation
+
+eventFile = FindFiles('Events.nev');
+[filePath, ~, ~] = fileparts(eventFile{1});
+psdlightPre = [];
+psdlightPost = [];
+
+if(regexp(filePath,'DRw')) % DRw session
+    for iLap = 31:60
+        lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);              
+        temp_psdlightPre = sensor10(iLap-30)+lightLap;
+        temp_psdlightPost = sensor10(iLap+30)+lightLap;        
+        psdlightPre = [psdlightPre; temp_psdlightPre];
+        psdlightPost = [psdlightPost; temp_psdlightPost];        
+    end
+    
+elseif(regexp(filePath,'DRun')); % DRun session
+    for iLap = 31:60
+        lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap))) - sensor10(iLap);                
+        temp_psdlightPre = sensor6(iLap-30)+lightLap;
+        temp_psdlightPost = sensor6(iLap+30)+lightLap;        
+        psdlightPre = [psdlightPre; temp_psdlightPre];
+        psdlightPost = [psdlightPost; temp_psdlightPost];        
+    end
+    
+else(regexp(filePath,'Nolight')); % Nolight session
+    if lightTime.Modu(1) - sensor6(31) > lightTime.Modu(1) - sensor10(31) % DRw session
+        for iLap = 31:60
+        lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);                
+        temp_psdlightPre = sensor10(iLap-30)+lightLap;
+        temp_psdlightPost = sensor10(iLap+30)+lightLap;        
+        psdlightPre = [psdlightPre; temp_psdlightPre];
+        psdlightPost = [psdlightPost; temp_psdlightPost];        
+        end
+    else % DRun session
+        for iLap = 31:60
+        lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap))) - sensor10(iLap);                
+        temp_psdlightPre = sensor6(iLap-30)+lightLap;
+        temp_psdlightPost = sensor6(iLap+30)+lightLap;        
+        psdlightPre = [psdlightPre; temp_psdlightPre];
+        psdlightPost = [psdlightPost; temp_psdlightPost];        
+        end
+    end 
+end
+
+%% Save variables
     if exist('tagTime','var');
         save('Events.mat',...
         'baseTime','preTime','stmTime','postTime','taskTime','tagTime',...
         'sensor','fields',...
         'nTrial','nSensor','trialIndex',...
+        'psdlightPre','psdlightPost',...
         'lightTime');
     else
         save('Events.mat',...
         'baseTime','preTime','stmTime','postTime','taskTime',...
         'sensor','fields',...
         'nTrial','nSensor','trialIndex',...
+        'psdlightPre','psdlightPost',...
         'lightTime');
     end
 end

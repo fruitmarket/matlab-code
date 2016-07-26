@@ -1,4 +1,4 @@
-function lightcheck()
+function psthLight()
 % Check whether the cell has light response or not.
 % It calculates both in-block and between-block responses.
 %
@@ -7,7 +7,7 @@ function lightcheck()
 %   Version 1.0 (7/25/2016)
 
 % Task variables
-binSize = 5; % Unit: msec (=10 msec)
+binSize = 10; % Unit: msec 
 resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
@@ -29,33 +29,60 @@ for iCell = 1:nCell
     win = [-1, 1]*1000; % unit:msec, window for binning
     
     % Load spike data
-
-
+    % tData{iCell} unit: msec
     
-    % Pseudo light
-    if exist('psdlightPre','var') && exist('psdlightPost','var') % doesn't consider ChETA / iC++ 
-        spikeTime_psdPre = spikeWin(spikeData,psdlightPre,winTagBlue); % Pseudo light Pre
-        [xptPsdPre, yptPsdPre, psthtimePsdPre, psthPsdPre,~,~] = rasterPSTH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+    % Light
+    if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu); % ChETA
+        spikeTimeModuBlue = spikeWin(tData{iCell},lightTime.Modu,winTagBlue);
+        [xptModuBlue, yptModuBlue, psthtimeModuBlue, psthModuBlue,~,~] = rasterPSTH(spikeTimeModuBlue,true(size(lightTime.Modu)),winTagBlue,binSizeTagBlue,resolution,1);
         
-        spikeTime_psdPost = spikeWin(spikeData,psdlightPost,winTagBlue); % Pseudo light Post
-        [xptPsdPost, yptPsdPost, psthtimePsdPost, psthPsdPost,~,~] = rasterPSTH(spikeTime_psdPost,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+        lightSpk = sum(0<xptModuBlue{1} & xptModuBlue{1}<20);
+        lightPreSpk = sum(-20<xptModuBlue{1} & xptModuBlue{1}<0);
+        lightPostSpk = sum(20<xptModuBlue{1} & xptModuBlue{1}<40);
         
         save([cellName,'.mat'],...
-            'spikeTime_psdPre','xptPsdPre','yptPsdPre','psthtimePsdPre','psthPsdPre',...
-            'spikeTime_psdPost','xptPsdPost','yptPsdPost','psthtimePsdPost','psthPsdPost','-append');
-    end
-
-
-
-
-mList = mLoad;
-nFile = length(mList);
-
-for iFile = 1:nFile
+            'spikeTimeModuBlue','xptModuBlue','yptModuBlue','psthtimeModuBlue','psthModuBlue',...
+            'lightSpk','lightPreSpk','lightPostSpk','-append');
     
+    else isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60; % iC++ (inhibition)
+        spikeTimeModuYel = spikeWin(tData{iCell},lightTime.Modu,winTagYel);
+        [xptModuYel, yptModuYel, psthtimeModuYel, psthModuYel,~,~] = rasterPSTH(spikeTimeModuYel,true(size(lightTime.Modu)),winTagYel,binSizeTagYel,resolution,1);
+        
+        lightSpk = sum(0<xptModuYel{1} & xptModuYel{1}<20);
+        lightPreSpk = sum(-20<xptModuYel{1} & xptModuYel{1}<0);
+        lightPostSpk = sum(20<xptModuYel{1} & xptModuYel{1}<40);
+        
+        save([cellName,'.mat'],...
+            'spikeTimeModuYel','xptModuYel','yptModuYel','psthtimeModuYel','psthModuYel',...
+            'lightSpk','lightPreSpk','lightPostSpk','-append');
+    end
+        
+    % Pseudo light 
+    if exist('psdlightPre','var') && exist('psdlightPost','var')
+        if ~isempty(lightTime.Modu) && size(lightTime.Modu,1)>60 % ChETA
+            spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTagBlue); % Pseudo light Pre
+            [xptPsdPre, yptPsdPre, psthtimePsdPre, psthPsdPre,~,~] = rasterPSTH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+            spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
+            [xptPsdPost, yptPsdPost, psthtimePsdPost, psthPsdPost,~,~] = rasterPSTH(spikeTime_psdPost,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+            
+            psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<20);
+            psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<20);
+            save([cellName,'.mat'],...
+                'psdPreSpk','psdPostSpk','-append');
+                        
+        else ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60 % iC++ (inhibition)
+            spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTagBlue); % Pseudo light Pre
+            [xptPsdPre, yptPsdPre, psthtimePsdPre, psthPsdPre,~,~] = rasterPSTH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+            spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
+            [xptPsdPost, yptPsdPost, psthtimePsdPost, psthPsdPost,~,~] = rasterPSTH(spikeTime_psdPost,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+            
+            psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<20);
+            psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<20);
+            save([cellName,'.mat'],...
+                'psdPreSpk','psdPostSpk','-append');
+        end
+    end        
 end
-
-
 
 
 function spikeTime = spikeWin(spikeData, eventTime, win)

@@ -39,7 +39,7 @@ for iCell = 1:nCell
     fr_base = sum(histc(spikeData,baseTime))/(diff(baseTime)/1000);
     fr_task = sum(histc(spikeData,taskTime))/(diff(taskTime)/1000);
     
-    % Busrst index (Ref: HJ's paper)
+    % Busrst index (Ref: Hyunjung's paper)
     spikeIdx = [taskTime(1)<spikeData & spikeData<taskTime(2)];
     spikeISI = diff(spikeData(spikeIdx));
     burstIdx = length(find(spikeISI<mean(spikeISI)/4))/length(spikeISI);

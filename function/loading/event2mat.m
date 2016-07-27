@@ -150,24 +150,45 @@ elseif(regexp(filePath,'DRun')); % DRun session
         psdlightPost = [psdlightPost; temp_psdlightPost];        
     end
     
-else(regexp(filePath,'Nolight')); % Nolight session
-    if lightTime.Modu(1) - sensor6(31) > lightTime.Modu(1) - sensor10(31) % DRw session
-        for iLap = 31:60
-        lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);                
-        temp_psdlightPre = sensor10(iLap-30)+lightLap;
-        temp_psdlightPost = sensor10(iLap+30)+lightLap;        
-        psdlightPre = [psdlightPre; temp_psdlightPre];
-        psdlightPost = [psdlightPost; temp_psdlightPost];        
-        end
-    else % DRun session
-        for iLap = 31:60
-        lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap))) - sensor10(iLap);                
-        temp_psdlightPre = sensor6(iLap-30)+lightLap;
-        temp_psdlightPost = sensor6(iLap+30)+lightLap;        
-        psdlightPre = [psdlightPre; temp_psdlightPre];
-        psdlightPost = [psdlightPost; temp_psdlightPost];        
-        end
-    end 
+elseif(regexp(filePath,'noRw')); % Nolight session
+    switch ~isempty(lightTime.Modu)
+        case 0
+            laserDelay = 3+randn(30,1);
+            for iLap = 31:60
+                tempLighttime = sensor10(iLap)+laserDelay(iLap)+125*(1:(floor((sensor11(iLap)-sensor10(iLap))/125)-1))'
+                LightTime.Modu = [LightTime.Modu;tempLighttime];
+            end
+    1111111111111111111111111111111111111111
+        case 1
+            if lightTime.Modu(1) - sensor6(31) > lightTime.Modu(1) - sensor10(31) % DRw session
+                for iLap = 31:60
+                lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);                
+                temp_psdlightPre = sensor10(iLap-30)+lightLap;
+                temp_psdlightPost = sensor10(iLap+30)+lightLap;        
+                psdlightPre = [psdlightPre; temp_psdlightPre];
+                psdlightPost = [psdlightPost; temp_psdlightPost];        
+                end
+            else % DRun session
+                for iLap = 31:60
+                lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap))) - sensor10(iLap);                
+                temp_psdlightPre = sensor6(iLap-30)+lightLap;
+                temp_psdlightPost = sensor6(iLap+30)+lightLap;        
+                psdlightPre = [psdlightPre; temp_psdlightPre];
+                psdlightPost = [psdlightPost; temp_psdlightPost];        
+                end
+            end
+    end
+    
+else(regexp(filePath,'noRun'));
+    switch ~isempty(lightTime.Modu)
+        case 0
+            
+            
+            
+        case 1
+          
+    
+    
 end
 
 %% Save variables

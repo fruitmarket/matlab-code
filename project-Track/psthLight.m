@@ -36,25 +36,26 @@ for iCell = 1:nCell
         spikeTimeModuBlue = spikeWin(tData{iCell},lightTime.Modu,winTagBlue);
         [xptModuBlue, yptModuBlue, psthtimeModuBlue, psthModuBlue,~,~] = rasterPSTH(spikeTimeModuBlue,true(size(lightTime.Modu)),winTagBlue,binSizeTagBlue,resolution,1);
         
-        lightSpk = sum(0<xptModuBlue{1} & xptModuBlue{1}<20);
-        lightPreSpk = sum(-20<xptModuBlue{1} & xptModuBlue{1}<0);
-        lightPostSpk = sum(20<xptModuBlue{1} & xptModuBlue{1}<40);
+        lightSpk = sum(0<xptModuBlue{1} & xptModuBlue{1}<15);
+        lightPreSpk = sum(-15<xptModuBlue{1} & xptModuBlue{1}<0);
+        lightPostSpk = sum(15<xptModuBlue{1} & xptModuBlue{1}<30);
         
         save([cellName,'.mat'],...
             'spikeTimeModuBlue','xptModuBlue','yptModuBlue','psthtimeModuBlue','psthModuBlue',...
             'lightSpk','lightPreSpk','lightPostSpk','-append');
     
-    else isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60; % iC++ (inhibition)
+    elseif isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60; % iC++ (inhibition)
         spikeTimeModuYel = spikeWin(tData{iCell},lightTime.Modu,winTagYel);
         [xptModuYel, yptModuYel, psthtimeModuYel, psthModuYel,~,~] = rasterPSTH(spikeTimeModuYel,true(size(lightTime.Modu)),winTagYel,binSizeTagYel,resolution,1);
         
-        lightSpk = sum(0<xptModuYel{1} & xptModuYel{1}<20);
-        lightPreSpk = sum(-20<xptModuYel{1} & xptModuYel{1}<0);
-        lightPostSpk = sum(20<xptModuYel{1} & xptModuYel{1}<40);
+        lightSpk = sum(0<xptModuYel{1} & xptModuYel{1}<15);
+        lightPreSpk = sum(-15<xptModuYel{1} & xptModuYel{1}<0);
+        lightPostSpk = sum(15<xptModuYel{1} & xptModuYel{1}<30);
         
         save([cellName,'.mat'],...
             'spikeTimeModuYel','xptModuYel','yptModuYel','psthtimeModuYel','psthModuYel',...
             'lightSpk','lightPreSpk','lightPostSpk','-append');
+    else
     end
         
     % Pseudo light 
@@ -65,22 +66,32 @@ for iCell = 1:nCell
             spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
             [xptPsdPost, yptPsdPost, psthtimePsdPost, psthPsdPost,~,~] = rasterPSTH(spikeTime_psdPost,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
             
-            psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<20);
-            psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<20);
+            psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<15);
+            psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<15);
             save([cellName,'.mat'],...
                 'psdPreSpk','psdPostSpk','-append');
                         
-        else ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60 % iC++ (inhibition)
+        else ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60; % iC++ (inhibition)
             spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTagBlue); % Pseudo light Pre
             [xptPsdPre, yptPsdPre, psthtimePsdPre, psthPsdPre,~,~] = rasterPSTH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
             spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
             [xptPsdPost, yptPsdPost, psthtimePsdPost, psthPsdPost,~,~] = rasterPSTH(spikeTime_psdPost,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
             
-            psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<20);
-            psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<20);
+            psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<15);
+            psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<15);
             save([cellName,'.mat'],...
                 'psdPreSpk','psdPostSpk','-append');
         end
+        
+        if psdPreSpk*11/10 < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
+            interLightDir = 1;
+        elseif psdPreSpk*9/10 > lightSpk % If spikes at light duration less than 10% of spikes during pre = activation
+            interLightDir = -1;
+        else
+            interLightDir = 0;
+        end
+        save([cellName,'.mat'],'interLightDir','-append');
+        
     end        
 end
 

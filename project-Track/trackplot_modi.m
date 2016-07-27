@@ -345,7 +345,7 @@ for iFile = 1:nFile
                     'EdgeColor',[0,0,0],'FaceColor',colorBar3(ibar,:));
             end
             title('In-block','FontSize',fontM);
-            set(hLight(2),'YLim',[0,1.2*max(yptLight_intra)+0.01],'XTick',1:3,'XTickLabel',{'-20~0','0~20','20~40'},'FontSize',fontS,'LineWidth',lineS,'TickDir','out');
+            set(hLight(2),'YLim',[0,1.2*max(yptLight_intra)+0.01],'XTick',1:3,'XTickLabel',{'-15~0','0~15','15~30'},'FontSize',fontS,'LineWidth',lineS,'TickDir','out');
         end
 
        %% Sensor aligned

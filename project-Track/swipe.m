@@ -8,10 +8,10 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp
 matFile = [];
 nDir = size(startingDir,1);
 for iDir = 1:nDir
-%     tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-%     matFile = [matFile; tempmatFile];    
-    tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
-    matFile = [matFile;tempEventFile];
+    tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+    matFile = [matFile; tempmatFile];    
+%     tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
+%     matFile = [matFile;tempEventFile];
 end
 nFile = length(matFile);
 
@@ -26,7 +26,7 @@ nPath = length(filePath);
 %% Swiping contents
 for iPath = 1:nPath
     cd(filePath{iPath});
-%     psthLight;
+    psthLight;
 %     event2mat_track;
 end
 

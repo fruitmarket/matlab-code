@@ -1,4 +1,4 @@
-function event2mat %(filename)
+function event2mat_track %(filename)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Purpose: Creating event file
 % Writer: Jun (Modified DK's eventmat.m)
@@ -9,7 +9,7 @@ function event2mat %(filename)
 %%
 %     [timeStamp, eventStrings] = Nlx2MatEV('Events.nev', [1 0 0 0 1], 0, 1, []);
 %     timeStamp = timeStamp'/1000; % unit: ms
-    [eData, eList] = eLoad;
+    [eData, eList] = eLoad; % Unit: msec
     timeStamp = eData.t;
     eventStrings = eData.s;
     
@@ -143,7 +143,7 @@ if(regexp(filePath,'DRw')) % DRw session
     
 elseif(regexp(filePath,'DRun')); % DRun session
     for iLap = 31:60
-        lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap))) - sensor10(iLap);                
+        lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap))) - sensor6(iLap);                
         temp_psdlightPre = sensor6(iLap-30)+lightLap;
         temp_psdlightPost = sensor6(iLap+30)+lightLap;        
         psdlightPre = [psdlightPre; temp_psdlightPre];
@@ -153,11 +153,16 @@ elseif(regexp(filePath,'DRun')); % DRun session
 elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
     switch ~isempty(lightTime.Modu)
         case 0
-            laserDelay = 3+randn(30,1);
+            laserDelay = randn(30,1);
             for iLap = 31:60
-                tempLighttime = sensor10(iLap)+laserDelay(iLap)+125*(1:(floor((sensor11(iLap)-sensor10(iLap))/125)-1))'
+                tempLighttime = sensor10(iLap)+laserDelay(iLap-30)+125*(1:((sensor11(iLap)-sensor10(iLap))/125))';
                 lightTime.Modu = [lightTime.Modu;tempLighttime];
-            end   
+                lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);                
+                temp_psdlightPre = sensor10(iLap-30)+lightLap;
+                temp_psdlightPost = sensor10(iLap+30)+lightLap;        
+                psdlightPre = [psdlightPre; temp_psdlightPre];
+                psdlightPost = [psdlightPost; temp_psdlightPost];        
+            end
         case 1
             for iLap = 31:60
                 lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);                
@@ -171,10 +176,15 @@ elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
 else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
     switch ~isempty(lightTime.Modu)
         case 0
-            laserDelay = 3+randn(30,1);
+            laserDelay = randn(30,1);
             for iLap = 31:60
-                tempLighttime = sensor6(iLap)+laserDelay(iLap)+125*(1:(floor((sensor10(iLap)-sensor6(iLap))/125)-1))';
+                tempLighttime = sensor6(iLap)+laserDelay(iLap-30)+125*(1:((sensor9(iLap)-sensor6(iLap))/125))';
                 lightTime.Modu = [lightTime.Modu; tempLighttime];
+                lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap)))-sensor6(iLap);
+                temp_psdlightPre = sensor6(iLap-30)+lightLap;
+                temp_psdlightPost = sensor6(iLap+30)+lightLap;
+                psdlightPre = [psdlightPre; temp_psdlightPre];
+                psdlightPost = [psdlightPost; temp_psdlightPost];
             end           
         case 1
             for iLap = 31:60

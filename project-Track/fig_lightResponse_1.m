@@ -50,37 +50,29 @@ npnDRw = sum(double(pnDRw));
 inDRw = tDRw.fr_task > 10;
 ninDRw = sum(double(inDRw));
 
-intraPnAc = tDRw.lightPreSpk(pnDRw) < tDRw.lightSpk(pnDRw);
-intraPnIn = tDRw.lightPreSpk(pnDRw) > tDRw.lightSpk(pnDRw);
-intraPnNo = tDRw.lightPreSpk(pnDRw) == tDRw.lightSpk(pnDRw);
+intraAc = tDRw.lightPreSpk < tDRw.lightSpk;
+intraIn = tDRw.lightPreSpk > tDRw.lightSpk;
+intraNo = tDRw.lightPreSpk == tDRw.lightSpk;
 
-npnintraAc = sum(double(intraPnAc));
-npnintraIn = sum(double(intraPnIn));
-npnintraNo = sum(double(intraPnNo));
+interAc = tDRw.psdPreSpk < tDRw.lightSpk;
+interIn = tDRw.psdPreSpk > tDRw.lightSpk;
+interNo = tDRw.psdPreSpk == tDRw.lightSpk;
 
-interPnAc = tDRw.psdPreSpk(pnDRw) < tDRw.lightSpk(pnDRw);
-interPnIn = tDRw.psdPreSpk(pnDRw) > tDRw.lightSpk(pnDRw);
-interPnNo = tDRw.psdPreSpk(pnDRw) == tDRw.lightSpk(pnDRw);
+npnintraAc = sum(double(intraAc&pnDRw));
+npnintraIn = sum(double(intraIn&pnDRw));
+npnintraNo = sum(double(intraNo&pnDRw));
 
-npninterAc = sum(double(interPnAc));
-npninterIn = sum(double(interPnIn));
-npninterNo = sum(double(interPnNo));
+npninterAc = sum(double(interAc&pnDRw));
+npninterIn = sum(double(interIn&pnDRw));
+npninterNo = sum(double(interNo&pnDRw));
 
-intraInAc = tDRw.lightPreSpk(inDRw) < tDRw.lightSpk(inDRw);
-intraInIn = tDRw.lightPreSpk(inDRw) > tDRw.lightSpk(inDRw);
-intraInNo = tDRw.lightPreSpk(inDRw) == tDRw.lightSpk(inDRw);
+ninintraAc = sum(double(intraAc&inDRw));
+ninintraIn = sum(double(intraIn&inDRw));
+ninintraNo = sum(double(intraNo&inDRw));
 
-ninintraAc = sum(double(intraInAc));
-ninintraIn = sum(double(intraInIn));
-ninintraNo = sum(double(intraInNo));
-
-interInAc = tDRw.psdPreSpk(inDRw) < tDRw.lightSpk(inDRw);
-interInIn = tDRw.psdPreSpk(inDRw) > tDRw.lightSpk(inDRw);
-interInNo = tDRw.psdPreSpk(inDRw) == tDRw.lightSpk(inDRw);
-
-nininterAc = sum(double(interInAc));
-nininterIn = sum(double(interInIn));
-nininterNo = sum(double(interInNo));
+nininterAc = sum(double(interAc&inDRw));
+nininterIn = sum(double(interIn&inDRw));
+nininterNo = sum(double(interNo&inDRw));
 
 %% Pyramidal neuron & Intra session
 % 1. total population distribution
@@ -94,9 +86,9 @@ xpt_pnintraIn = [ones(npnintraIn,1); ones(npnintraIn,1)*2];
 xpt_pnintraNo = [ones(npnintraNo,1); ones(npnintraNo,1)*2];
 
 ypt_pnlighttotal = [tDRw.lightPreSpk(pnDRw); tDRw.lightSpk(pnDRw)];
-ypt_pnintraAc = [tDRw.lightPreSpk(intraPnAc); tDRw.lightSpk(intraPnAc)];
-ypt_pnintraIn = [tDRw.lightPreSpk(intraPnIn); tDRw.lightSpk(intraPnIn)];
-ypt_pnintraNo = [tDRw.lightPreSpk(intraPnNo); tDRw.lightSpk(intraPnNo)];
+ypt_pnintraAc = [tDRw.lightPreSpk(intraAc&pnDRw); tDRw.lightSpk(intraAc&pnDRw)];
+ypt_pnintraIn = [tDRw.lightPreSpk(intraIn&pnDRw); tDRw.lightSpk(intraIn&pnDRw)];
+ypt_pnintraNo = [tDRw.lightPreSpk(intraNo&pnDRw); tDRw.lightSpk(intraNo&pnDRw)];
 
 %% Pyramidal neuron & inter
 xpt_pninterAc = [ones(npninterAc,1); ones(npninterAc,1)*2];
@@ -104,9 +96,9 @@ xpt_pninterIn = [ones(npninterIn,1); ones(npninterIn,1)*2];
 xpt_pninterNo = [ones(npninterNo,1); ones(npninterNo,1)*2];
 
 ypt_pnpsdlighttotal = [tDRw.psdPreSpk(pnDRw); tDRw.lightSpk(pnDRw)];
-ypt_pninterAc = [tDRw.psdPreSpk(interPnAc); tDRw.lightSpk(interPnAc)];
-ypt_pninterIn = [tDRw.psdPreSpk(interPnIn); tDRw.lightSpk(interPnIn)];
-ypt_pninterNo = [tDRw.psdPreSpk(interPnNo); tDRw.lightSpk(interPnNo)];
+ypt_pninterAc = [tDRw.psdPreSpk(interAc&pnDRw); tDRw.lightSpk(interAc&pnDRw)];
+ypt_pninterIn = [tDRw.psdPreSpk(interIn&pnDRw); tDRw.lightSpk(interIn&pnDRw)];
+ypt_pninterNo = [tDRw.psdPreSpk(interNo&pnDRw); tDRw.lightSpk(interNo&pnDRw)];
 
 xpt_pn = {xpt_pnDRw; xpt_pnintraAc; xpt_pnintraIn; xpt_pnintraNo; 
           xpt_pnDRw; xpt_pninterAc; xpt_pninterIn; xpt_pninterNo};
@@ -120,9 +112,9 @@ xpt_inintraIn = [ones(ninintraIn,1); ones(ninintraIn,1)*2];
 xpt_inintraNo = [ones(ninintraNo,1); ones(ninintraNo,1)*2];
 
 ypt_inlighttotal = [tDRw.lightPreSpk(inDRw); tDRw.lightSpk(inDRw)];
-ypt_inintraAc = [tDRw.lightPreSpk(intraInAc); tDRw.lightSpk(intraInAc)];
-ypt_inintraIn = [tDRw.lightPreSpk(intraInIn); tDRw.lightSpk(intraInIn)];
-ypt_inintraNo = [tDRw.lightPreSpk(intraInNo); tDRw.lightSpk(intraInNo)];
+ypt_inintraAc = [tDRw.lightPreSpk(intraAc&inDRw); tDRw.lightSpk(intraAc&inDRw)];
+ypt_inintraIn = [tDRw.lightPreSpk(intraIn&inDRw); tDRw.lightSpk(intraIn&inDRw)];
+ypt_inintraNo = [tDRw.lightPreSpk(intraNo&inDRw); tDRw.lightSpk(intraNo&inDRw)];
 
 %% Interneuron & inter
 xpt_ininterAc = [ones(nininterAc,1); ones(nininterAc,1)*2];
@@ -130,9 +122,9 @@ xpt_ininterIn = [ones(nininterIn,1); ones(nininterIn,1)*2];
 xpt_ininterNo = [ones(nininterNo,1); ones(nininterNo,1)*2];
 
 ypt_pnpsdlighttotal = [tDRw.psdPreSpk(inDRw); tDRw.lightSpk(inDRw)];
-ypt_ininterAc = [tDRw.psdPreSpk(interInAc); tDRw.lightSpk(interInAc)];
-ypt_ininterIn = [tDRw.psdPreSpk(interInIn); tDRw.lightSpk(interInIn)];
-ypt_ininterNo = [tDRw.psdPreSpk(interInNo); tDRw.lightSpk(interInNo)];
+ypt_ininterAc = [tDRw.psdPreSpk(interAc&inDRw); tDRw.lightSpk(interAc&inDRw)];
+ypt_ininterIn = [tDRw.psdPreSpk(interIn&inDRw); tDRw.lightSpk(interIn&inDRw)];
+ypt_ininterNo = [tDRw.psdPreSpk(interNo&inDRw); tDRw.lightSpk(interNo&inDRw)];
 
 xpt_in = {xpt_inDRw; xpt_inintraAc; xpt_inintraIn; xpt_inintraNo;
           xpt_inDRw; xpt_ininterAc; xpt_ininterIn; xpt_ininterNo};

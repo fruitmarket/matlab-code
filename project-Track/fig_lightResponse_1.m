@@ -38,25 +38,31 @@ nRow = 3;
 nCol = 4;
 %%
 
-load('newT.mat')
+load('cellList_new.mat');
+T((T.taskType == 'nolight'),:) = [];
+T(~(T.taskProb == '100'),:) = [];
+
 tDRw = T;
 
 % load()
 % tNoRw = T;
-
 
 pnDRw = tDRw.fr_task > 0.01 & tDRw.fr_task < 10;
 npnDRw = sum(double(pnDRw));
 inDRw = tDRw.fr_task > 10;
 ninDRw = sum(double(inDRw));
 
-intraAc = tDRw.lightPreSpk < tDRw.lightSpk;
-intraIn = tDRw.lightPreSpk > tDRw.lightSpk;
-intraNo = tDRw.lightPreSpk == tDRw.lightSpk;
+intraAc = tDRw.intraLightDir==1;
+intraIn = tDRw.intraLightDir==-1;
+intraNo = tDRw.intraLightDir==0;
 
-interAc = tDRw.psdPreSpk < tDRw.lightSpk;
-interIn = tDRw.psdPreSpk > tDRw.lightSpk;
-interNo = tDRw.psdPreSpk == tDRw.lightSpk;
+interAc = tDRw.interLightDir==1;
+interIn = tDRw.interLightDir==-1;
+interNo = tDRw.interLightDir==0;
+
+tagAc = tDRw.tagLightDir==1;
+tagIn = tDRw.tagLightDir==-1;
+tagNo = tDRw.tagLightDir==0;
 
 npnintraAc = sum(double(intraAc&pnDRw));
 npnintraIn = sum(double(intraIn&pnDRw));
@@ -74,6 +80,15 @@ nininterAc = sum(double(interAc&inDRw));
 nininterIn = sum(double(interIn&inDRw));
 nininterNo = sum(double(interNo&inDRw));
 
+%% Population separation track(intra) vs track(inter)
+subTbl_trXtr = [sum(double(pnDRw&intraAc&interAc)), sum(double(pnDRw&intraAc&interIn)), sum(double(pnDRw&intraAc&interNo));
+            sum(double(pnDRw&intraIn&interAc)), sum(double(pnDRw&intraIn&interIn)), sum(double(pnDRw&intraIn&interNo));
+            sum(double(pnDRw&intraNo&interAc)), sum(double(pnDRw&intraNo&interIn)), sum(double(pnDRw&intraNo&interNo))];
+
+%% Population separation track vs tag
+subTbl_trXtg = [sum(double(pnDRw&intraAc&tagAc)), sum(double(pnDRw&intraAc&tagIn)), sum(double(pnDRw&intraAc&tagNo));
+            sum(double(pnDRw&intraIn&tagAc)), sum(double(pnDRw&intraIn&tagIn)), sum(double(pnDRw&intraIn&tagNo));
+            sum(double(pnDRw&intraNo&tagAc)), sum(double(pnDRw&intraNo&tagIn)), sum(double(pnDRw&intraNo&tagNo))];
 %% Pyramidal neuron & Intra session
 % 1. total population distribution
 % 2. light activated
@@ -104,7 +119,8 @@ xpt_pn = {xpt_pnDRw; xpt_pnintraAc; xpt_pnintraIn; xpt_pnintraNo;
           xpt_pnDRw; xpt_pninterAc; xpt_pninterIn; xpt_pninterNo};
 ypt_pn = {ypt_pnlighttotal; ypt_pnintraAc; ypt_pnintraIn; ypt_pnintraNo;
           ypt_pnpsdlighttotal; ypt_pninterAc; ypt_pninterIn; ypt_pninterNo};
-    
+num_pn = {npnDRw;npnintraAc;npnintraIn;npnintraNo;npnDRw;npninterAc;npninterIn;npninterNo};    
+
 %% Interneuron & intra
 xpt_inDRw = [ones(ninDRw,1); ones(ninDRw,1)*2];
 xpt_inintraAc = [ones(ninintraAc,1); ones(ninintraAc,1)*2];
@@ -130,7 +146,7 @@ xpt_in = {xpt_inDRw; xpt_inintraAc; xpt_inintraIn; xpt_inintraNo;
           xpt_inDRw; xpt_ininterAc; xpt_ininterIn; xpt_ininterNo};
 ypt_in = {ypt_inlighttotal; ypt_inintraAc; ypt_inintraIn; ypt_inintraNo;
           ypt_pnpsdlighttotal; ypt_ininterAc; ypt_ininterIn; ypt_ininterNo};
-
+num_in = {ninDRw;ninintraAc;ninintraIn;ninintraNo;ninDRw;nininterAc;nininterIn;nininterNo};
 %%
 ttl = {'In block (total)';'In block (Increase)';'In block (Decrease)';'In block (No change)';
        'Bwt block (total)';'Bwt block (Increase)';'Bwt block (Decrease)';'Bwt block (No change)'};
@@ -141,7 +157,8 @@ for iFigure = 1:4
     hPnLight(iFigure) = axes('Position',axpt(nCol,nRow,iFigure,2,fullAxis,wideInterval));
     hold on;
     MyScatterBarPlot(ypt_pn{iFigure},xpt_pn{iFigure},0.5,{colorGray,colorBlue},[]);
-    title(ttl{iFigure},'FontSize',fontM);    
+    title(ttl{iFigure},'FontSize',fontM);
+    text(2,max(ypt_pn{iFigure}-10),['n = ',num2str(num_pn{iFigure})]);
 end
 
 for iFigure = 5:8
@@ -149,7 +166,12 @@ for iFigure = 5:8
     hold on;
     MyScatterBarPlot(ypt_pn{iFigure},xpt_pn{iFigure},0.5,{colorGray,colorBlue},[]);
     title(ttl{iFigure},'FontSize',fontM);
+    text(2,max(ypt_pn{iFigure}-10),['n = ',num2str(num_pn{iFigure})]);
 end
+
+set(hPnLight,'TickDir','out','Box','off'); 
+print(gcf,'-dtiff','-r300','fig1_lightResponse');
+
 
 figure(2)
 % for iFigure = 1:4

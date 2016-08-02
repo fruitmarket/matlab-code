@@ -1,4 +1,6 @@
-clearvars; clf; close all;
+function fig6_lightSeparation(intra_inter,intra_tag)
+% clearvars;
+clf; close all;
 
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [244, 67, 54]./255,... % During stimulation
@@ -193,6 +195,7 @@ mulTagPnNoAc = multcompare(statsTagPnNoAc,'display','off');
 mulTagPnNoIn = multcompare(statsTagPnNoIn,'display','off');
 mulTagPnNoNo = multcompare(statsTagPnNoNo,'display','off');
 
+% In-block vs Between block comparison
 figure(1)
 hCorr(1) = axes('Position',axpt(3,3,1,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
 hold on;
@@ -249,4 +252,63 @@ title('PN & intraAc & interAc','FontSize',fontM);
 text(3.5,-0.8,['n = ',num2str(nPnNoNo)]);
 
 set(hCorr,'YLim',[-1.2 1.2],'XTick',[1,2,3,4],'XTickLabel',{'hf x hf','bf x dur', 'bf x aft', 'dur x aft'},'FontSize',fontM);
-% figure(2)
+print(gcf,'-depsc','-r300',['PN_intra_inter_',num2str(intra_inter)]);
+
+% In-block vs tag comparison
+figure(2)
+hCorrTag(1) = axes('Position',axpt(3,3,1,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnAcAc,xpt_corrTagPnAcAc,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnAcAc)]);
+
+hCorrTag(2) = axes('Position',axpt(3,3,2,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnAcIn,xpt_corrTagPnAcIn,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnAcIn)]);
+
+hCorrTag(3) = axes('Position',axpt(3,3,3,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnAcNo,xpt_corrTagPnAcNo,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnAcNo)]);
+
+hCorrTag(4) = axes('Position',axpt(3,3,1,2,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnInAc,xpt_corrTagPnInAc,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnInAc)]);
+
+hCorrTag(5) = axes('Position',axpt(3,3,2,2,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnInIn,xpt_corrTagPnInIn,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnInIn)]);
+
+hCorrTag(6) = axes('Position',axpt(3,3,3,2,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnInNo,xpt_corrTagPnInNo,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnInNo)]);
+
+hCorrTag(7) = axes('Position',axpt(3,3,1,3,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnNoAc,xpt_corrTagPnNoAc,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnNoAc)]);
+
+hCorrTag(8) = axes('Position',axpt(3,3,2,3,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnNoIn,xpt_corrTagPnNoIn,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnNoIn)]);
+
+hCorrTag(9) = axes('Position',axpt(3,3,3,3,[0.1, 0.1, 0.85, 0.85], wideInterval));
+hold on;
+MyScatterBarPlot(ypt_corrTagPnNoNo,xpt_corrTagPnNoNo,0.35,{colorPink,colorPurple,colorBlue3,colorOrange},[]);
+title('PN & intraAc & tagAc','FontSize',fontM);
+text(3.5,-0.8,['n = ',num2str(nTagPnNoNo)]);
+
+set(hCorrTag,'YLim',[-1.2 1.2],'XTick',[1,2,3,4],'XTickLabel',{'hf x hf','bf x dur', 'bf x aft', 'dur x aft'},'FontSize',fontM);
+print(gcf,'-depsc','-r300',['PN_intra_tag_',num2str(intra_tag)]);

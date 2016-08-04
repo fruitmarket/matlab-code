@@ -2,7 +2,35 @@ function trackplot_modi()
 % psthtrack Converts data from MClust t files to Matlab mat files
 % ##### Modified Dohyoung Kim's code. Thanks to Dohyoung! ##### %
 rtdir = pwd;
-[matFile, nFile] = matfilecollector;
+% [matFile, nFile] = matfilecollector;
+
+load('cellList_new.mat');
+T((T.taskType == 'nolight'),:) = [];
+T(~(T.taskProb == '100'),:) = [];
+T((T.taskType == 'DRun'),:) = [];
+T((T.taskType == 'noRun'),:) = [];
+tDRw = T;
+
+pnDRw = tDRw.fr_task > 0.01 & tDRw.fr_task < 10;
+npnDRw = sum(double(pnDRw));
+inDRw = tDRw.fr_task > 10;
+ninDRw = sum(double(inDRw));
+
+intraAc = tDRw.intraLightDir==1;
+intraIn = tDRw.intraLightDir==-1;
+intraNo = tDRw.intraLightDir==0;
+
+interAc = tDRw.interLightDir==1;
+interIn = tDRw.interLightDir==-1;
+interNo = tDRw.interLightDir==0;
+
+tagAc = tDRw.tagLightDir==1;
+tagIn = tDRw.tagLightDir==-1;
+tagNo = tDRw.tagLightDir==0;
+
+matFile = T.Path(pnDRw&intraAc&interAc);
+nFile = length(matFile);
+
 
 % load cellList_Nolight_100.mat
 % matFile = T.Path;
@@ -400,7 +428,8 @@ for iFile = 1:nFile
         for iSensor = 1:nSensor
             set(hPsth(iSensor),'YLim',[0 ylimpsth(iSensor)]);
         end
-
+        
+        cd(rtdir);
         print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
         close;
 end

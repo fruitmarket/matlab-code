@@ -26,7 +26,7 @@ nPath = length(filePath);
 %% Swiping contents
 for iPath = 1:nPath
     cd(filePath{iPath});
-    psthLight(20);
+    psthLight(90);
 %     event2mat_track;
 end
 

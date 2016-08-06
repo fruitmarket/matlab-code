@@ -1,4 +1,3 @@
-
 function [fr_map, visit_map, visit_dur, flags] = findmaps_trim(time, position, spkdata, field_ratio)
 %%%%%%%%%%%%%%%%%%%%
 % Purpose: Generate maps (firing rate map, visit map, visit duration, flags(portion of bad detection)
@@ -9,19 +8,23 @@ function [fr_map, visit_map, visit_dur, flags] = findmaps_trim(time, position, s
 
 %%
 % time: msec unit.
-mapThreshold = 7;
-spk = histc(spkdata*10, time*10); % spk: usec unit
+% mapThreshold = 1; Not using so far
+
+spk = histc(spkdata*10, time*10); % spk: 100u-sec unit
+% spk = histc(spkdata, time); % spk: 100u-sec unit
 
 pos_prod = prod(position,2);
 position(pos_prod==0,:) = 0;
 
 [dt, newVTflag] = VTRecBreakProcess(time*10);
-if newVTflag 
+switch newVTflag
+    case 1
     original_resol = [720 480];
-else
+    case 0
     original_resol = [640 480];
 end
 
+original_resol = [720 480];
 position(position(:,1) > original_resol(1),:) = 0; % x-position limit
 position(position(:,2) > 480,:) = 0; % y-position limit
 nz_position_idx = find(position(:,1));
@@ -32,13 +35,11 @@ visit_time = zeros(original_resol);
 
 for iposition = 1:length(nz_position_idx)
     firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = ...
-        firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) +...
-        spk(nz_position_idx(iposition));
+        firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + spk(nz_position_idx(iposition));
     num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = ...
         num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + 1;
-    visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) =...
-        visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) +...
-        dt(nz_position_idx(iposition));
+    visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = ...
+        visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + dt(nz_position_idx(iposition));
 end
 % nz_num_visit = find(num_visit);
 % map_resol = original_resol/field_ratio;
@@ -52,12 +53,9 @@ map_ratio = [720 480]./field_ratio;
 
 for xpt = 1:field_ratio(1) % Generating 72x48 map
     for ypt = 1:field_ratio(2)
-        re_firing_map(xpt,ypt) = sum(sum(firing_map(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
-        re_num_visit(xpt,ypt) = sum(sum(num_visit(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
-        re_visit_time(xpt,ypt) = sum(sum(visit_time(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_firing_map(xpt,ypt) = sum(sum(firing_map(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_num_visit(xpt,ypt) = sum(sum(num_visit(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_visit_time(xpt,ypt) = sum(sum(visit_time(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
     end
 end
 
@@ -66,7 +64,7 @@ fr_map = re_firing_map;
 visit_map = re_num_visit;
 
 % Trim the field.
-visit_map(visit_map<mapThreshold) = 0;
+% visit_map(visit_map<mapThreshold) = 0;
 for irow = 2:size(visit_map,1)-1
     for icol = 2:size(visit_map,2)-1
         if sum(sum(visit_map(irow-1:irow+1,icol-1:icol+1)==0))>=7; % if the array is surrounded by zeros, then make that array zero

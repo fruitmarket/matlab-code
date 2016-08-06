@@ -27,6 +27,7 @@ nPath = length(filePath);
 for iPath = 1:nPath
     cd(filePath{iPath});
     psthLight(90);
+%     mapCorrEvOd;
 %     event2mat_track;
 end
 

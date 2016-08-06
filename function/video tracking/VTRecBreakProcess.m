@@ -2,12 +2,13 @@ function [dT, newVTflag] = VTRecBreakProcess(time)
 
 % Date: Jan-19-2015
 dT = diff(time); % T: 100usec
-newVTflag = min(dT)<10000/30; % Is the sampling frequency 30Hz or 60Hz?
-    % 30Hz == 1, 60Hz == 0;
-if newVTflag
-    sampleFq = 30;
-else
-    sampleFq = 60;
+newVTflag = mean(dT)>10000/40; % Is the sampling frequency 30Hz or 60Hz?
+    % 30Hz == 1 (New Cheetah), 60Hz == 0 (Old Cheetah);
+switch newVTflag
+    case 1
+    sampleFq = 30; % New Cheetah version
+    case 0
+    sampleFq = 60; % Old Cheetah version
 end
 meanDT = 10000/sampleFq; % mean dT = 33.3 msec(30Hz) or 16.7 msec(60Hz)
 RecBreak_idx = (dT>400);

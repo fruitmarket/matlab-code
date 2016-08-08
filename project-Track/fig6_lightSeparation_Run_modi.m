@@ -181,43 +181,81 @@ subTbl_trXtg_noRun = [sum(double(pnnoRun&intraAc_noRun&tagAc_noRun)), sum(double
             sum(double(pnnoRun&intraIn_noRun&tagAc_noRun)), sum(double(pnnoRun&intraIn_noRun&tagIn_noRun)), sum(double(pnnoRun&intraIn_noRun&tagNo_noRun));
             sum(double(pnnoRun&intraNo_noRun&tagAc_noRun)), sum(double(pnnoRun&intraNo_noRun&tagIn_noRun)), sum(double(pnnoRun&intraNo_noRun&tagNo_noRun))];
 
-ypt_corrPnAcAc = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interAc_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interAc_noRun)];
-ypt_corrPnAcIn = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interIn_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interIn_noRun)];
-ypt_corrPnAcNo = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interNo_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interNo_noRun)];
-ypt_corrPnInAc = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interAc_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interAc_noRun)];
-ypt_corrPnInIn = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interIn_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interIn_noRun)];
-ypt_corrPnInNo = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interNo_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interNo_noRun)];
-ypt_corrPnNoAc = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interAc_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interAc_noRun)];
-ypt_corrPnNoIn = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interIn_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interIn_noRun)];
-ypt_corrPnNoNo = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interNo_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interNo_noRun)];
+ypt_corrPnAcAc = [tDRun.r_CorrEvOd(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interAc_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interAc_noRun)];
+ypt_corrPnAcIn = [tDRun.r_CorrEvOd(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interIn_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interIn_noRun)];
+ypt_corrPnAcNo = [tDRun.r_CorrEvOd(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interNo_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interNo_noRun)];
+ypt_corrPnInAc = [tDRun.r_CorrEvOd(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interAc_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interAc_noRun)];
+ypt_corrPnInIn = [tDRun.r_CorrEvOd(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interIn_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interIn_noRun)];
+ypt_corrPnInNo = [tDRun.r_CorrEvOd(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interNo_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interNo_noRun)];
+ypt_corrPnNoAc = [tDRun.r_CorrEvOd(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interAc_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interAc_noRun)];
+ypt_corrPnNoIn = [tDRun.r_CorrEvOd(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interIn_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interIn_noRun)];
+ypt_corrPnNoNo = [tDRun.r_CorrEvOd(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interNo_DRun);...
+                 tnoRun.r_CorrEvOd(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interNo_noRun)];
 
-ypt_corrTagPnAcAc = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagAc_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagAc_noRun)];
-ypt_corrTagPnAcIn = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagIn_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagIn_noRun)];
-ypt_corrTagPnAcNo = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagNo_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagNo_noRun)];
-ypt_corrTagPnInAc = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagAc_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagAc_noRun)];
-ypt_corrTagPnInIn = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagIn_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagIn_noRun)];
-ypt_corrTagPnInNo = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagNo_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagNo_noRun)];
-ypt_corrTagPnNoAc = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagAc_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagAc_noRun)];
-ypt_corrTagPnNoIn = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagIn_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagIn_noRun)];
-ypt_corrTagPnNoNo = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagNo_DRun);...
-                    tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagNo_noRun)];
+ypt_corrTagPnAcAc = [tDRun.r_CorrEvOd(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagAc_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagAc_noRun)];
+ypt_corrTagPnAcIn = [tDRun.r_CorrEvOd(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagIn_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagIn_noRun)];
+ypt_corrTagPnAcNo = [tDRun.r_CorrEvOd(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagNo_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagNo_noRun)];
+ypt_corrTagPnInAc = [tDRun.r_CorrEvOd(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagAc_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagAc_noRun)];
+ypt_corrTagPnInIn = [tDRun.r_CorrEvOd(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagIn_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagIn_noRun)];
+ypt_corrTagPnInNo = [tDRun.r_CorrEvOd(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagNo_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagNo_noRun)];
+ypt_corrTagPnNoAc = [tDRun.r_CorrEvOd(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagAc_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagAc_noRun)];
+ypt_corrTagPnNoIn = [tDRun.r_CorrEvOd(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagIn_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagIn_noRun)];
+ypt_corrTagPnNoNo = [tDRun.r_CorrEvOd(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagNo_DRun);...
+                    tnoRun.r_CorrEvOd(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagNo_noRun)];
+
+% ypt_corrPnAcAc = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interAc_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interAc_noRun)];
+% ypt_corrPnAcIn = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interIn_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interIn_noRun)];
+% ypt_corrPnAcNo = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&interNo_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&interNo_noRun)];
+% ypt_corrPnInAc = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interAc_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interAc_noRun)];
+% ypt_corrPnInIn = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interIn_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interIn_noRun)];
+% ypt_corrPnInNo = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&interNo_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&interNo_noRun)];
+% ypt_corrPnNoAc = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interAc_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interAc_noRun)];
+% ypt_corrPnNoIn = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interIn_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interIn_noRun)];
+% ypt_corrPnNoNo = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&interNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&interNo_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&interNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&interNo_noRun)];
+% 
+% ypt_corrTagPnAcAc = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagAc_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagAc_noRun)];
+% ypt_corrTagPnAcIn = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagIn_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagIn_noRun)];
+% ypt_corrTagPnAcNo = [tDRun.r_Corrhfxhf(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraAc_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraAc_DRun&tagNo_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraAc_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraAc_noRun&tagNo_noRun)];
+% ypt_corrTagPnInAc = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagAc_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagAc_noRun)];
+% ypt_corrTagPnInIn = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagIn_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagIn_noRun)];
+% ypt_corrTagPnInNo = [tDRun.r_Corrhfxhf(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraIn_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraIn_DRun&tagNo_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraIn_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraIn_noRun&tagNo_noRun)];
+% ypt_corrTagPnNoAc = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagAc_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagAc_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagAc_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagAc_noRun)];
+% ypt_corrTagPnNoIn = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagIn_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagIn_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagIn_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagIn_noRun)];
+% ypt_corrTagPnNoNo = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrbfxdr(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrbfxaft(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_Corrdrxaft(pnDRun&intraNo_DRun&tagNo_DRun);...
+%                     tnoRun.r_Corrhfxhf(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrbfxdr(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrbfxaft(pnnoRun&intraNo_noRun&tagNo_noRun); tnoRun.r_Corrdrxaft(pnnoRun&intraNo_noRun&tagNo_noRun)];
 
 % z-transformation
 % [ypt_ZcorrPnAcAc, ~] = fisherZ(ypt_corrPnAcAc);
@@ -242,11 +280,11 @@ ypt_corrTagPnNoNo = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_
 
 % multiway ANOVA
 [~, ~, statsPnAcAc] = anovan(ypt_corrPnAcAc,{xpt_corrPnAcAc},'display','off');
-[~, ~, statsPnAcIn] = anovan(ypt_corrPnAcIn,{xpt_corrPnAcIn},'display','off');
+% [~, ~, statsPnAcIn] = anovan(ypt_corrPnAcIn,{xpt_corrPnAcIn},'display','off');
 [~, ~, statsPnAcNo] = anovan(ypt_corrPnAcNo,{xpt_corrPnAcNo},'display','off');
-[~, ~, statsPnInAc] = anovan(ypt_corrPnInAc,{xpt_corrPnInAc},'display','off');
+% [~, ~, statsPnInAc] = anovan(ypt_corrPnInAc,{xpt_corrPnInAc},'display','off');
 [~, ~, statsPnInIn] = anovan(ypt_corrPnInIn,{xpt_corrPnInIn},'display','off');
-[~, ~, statsPnInNo] = anovan(ypt_corrPnInNo,{xpt_corrPnInNo},'display','off');
+% [~, ~, statsPnInNo] = anovan(ypt_corrPnInNo,{xpt_corrPnInNo},'display','off');
 [~, ~, statsPnNoAc] = anovan(ypt_corrPnNoAc,{xpt_corrPnNoAc},'display','off');
 [~, ~, statsPnNoIn] = anovan(ypt_corrPnNoIn,{xpt_corrPnNoIn},'display','off');
 [~, ~, statsPnNoNo] = anovan(ypt_corrPnNoNo,{xpt_corrPnNoNo},'display','off');
@@ -263,11 +301,11 @@ ypt_corrTagPnNoNo = [tDRun.r_Corrhfxhf(pnDRun&intraNo_DRun&tagNo_DRun); tDRun.r_
 
 % Multiple comparison
 mulPnAcAc = multcompare(statsPnAcAc,'display','off');
-mulPnAcIn = multcompare(statsPnAcIn,'display','off');
+% mulPnAcIn = multcompare(statsPnAcIn,'display','off');
 mulPnAcNo = multcompare(statsPnAcNo,'display','off');
-mulPnInAc = multcompare(statsPnInAc,'display','off');
+% mulPnInAc = multcompare(statsPnInAc,'display','off');
 mulPnInIn = multcompare(statsPnInIn,'display','off');
-mulPnInNo = multcompare(statsPnInNo,'display','off');
+% mulPnInNo = multcompare(statsPnInNo,'display','off');
 mulPnNoAc = multcompare(statsPnNoAc,'display','off');
 mulPnNoIn = multcompare(statsPnNoIn,'display','off');
 mulPnNoNo = multcompare(statsPnNoNo,'display','off');
@@ -293,7 +331,7 @@ text(6.5,-0.8,['n = ',num2str(nPnAcAc_noRun)]);
 
 hCorr(2) = axes('Position',axpt(3,3,2,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
 hold on;
-MyScatterBarPlot(ypt_corrPnAcIn,xpt_corrPnAcIn,0.35,{colorPink,colorPurple,colorBlue3,colorOrange,colorPink,colorPurple,colorBlue3,colorOrange},[]);
+% MyScatterBarPlot(ypt_corrPnAcIn,xpt_corrPnAcIn,0.35,{colorPink,colorPurple,colorBlue3,colorOrange,colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('PN & intraAc & interAc','FontSize',fontL);
 text(2.5,-0.8,['n = ',num2str(nPnAcIn_DRun)]);
 text(6.5,-0.8,['n = ',num2str(nPnAcIn_noRun)]);
@@ -307,7 +345,7 @@ text(6.5,-0.8,['n = ',num2str(nPnAcNo_noRun)]);
 
 hCorr(4) = axes('Position',axpt(3,3,1,2,[0.1, 0.1, 0.85, 0.85], wideInterval));
 hold on;
-MyScatterBarPlot(ypt_corrPnInAc,xpt_corrPnInAc,0.35,{colorPink,colorPurple,colorBlue3,colorOrange,colorPink,colorPurple,colorBlue3,colorOrange},[]);
+% MyScatterBarPlot(ypt_corrPnInAc,xpt_corrPnInAc,0.35,{colorPink,colorPurple,colorBlue3,colorOrange,colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('PN & intraAc & interAc','FontSize',fontL);
 text(2.5,-0.8,['n = ',num2str(nPnInAc_DRun)]);
 text(6.5,-0.8,['n = ',num2str(nPnInAc_noRun)]);
@@ -321,7 +359,7 @@ text(6.5,-0.8,['n = ',num2str(nPnInIn_noRun)]);
 
 hCorr(6) = axes('Position',axpt(3,3,3,2,[0.1, 0.1, 0.85, 0.85], wideInterval));
 hold on;
-MyScatterBarPlot(ypt_corrPnInNo,xpt_corrPnInNo,0.35,{colorPink,colorPurple,colorBlue3,colorOrange,colorPink,colorPurple,colorBlue3,colorOrange},[]);
+% MyScatterBarPlot(ypt_corrPnInNo,xpt_corrPnInNo,0.35,{colorPink,colorPurple,colorBlue3,colorOrange,colorPink,colorPurple,colorBlue3,colorOrange},[]);
 title('PN & intraAc & interAc','FontSize',fontL);
 text(2.5,-0.8,['n = ',num2str(nPnInNo_DRun)]);
 text(6.5,-0.8,['n = ',num2str(nPnInNo_noRun)]);
@@ -347,8 +385,9 @@ title('PN & intraAc & interAc','FontSize',fontL);
 text(2.5,-0.8,['n = ',num2str(nPnNoNo_DRun)]);
 text(6.5,-0.8,['n = ',num2str(nPnNoNo_noRun)]);
 
-set(hCorr,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1,2,3,4,5,6,7,8],'XTickLabel',{'hf x hf','bf x dur', 'bf x aft', 'dur x aft','hf x hf','bf x dur', 'bf x aft', 'dur x aft'},'FontSize',fontM);
-print(gcf,'-depsc','-r300',['PN_Run_intra_inter2_',num2str(intra_inter)]);
+% set(hCorr,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1,2,3,4,5,6,7,8],'XTickLabel',{'hf x hf','bf x dur', 'bf x aft', 'dur x aft','hf x hf','bf x dur', 'bf x aft', 'dur x aft'},'FontSize',fontM);
+set(hCorr,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1,2,3,4,5,6,7,8],'XTickLabel',{'hf-hf(EO)','bf-du', 'bf-af', 'du-af','hf-hf','bf-du', 'bf-af', 'du-af'},'FontSize',fontM);
+print(gcf,'-depsc','-r300',['PN_Run_intra_inter_',num2str(intra_inter),'_EvOd']);
 
 % In-block vs tag comparison
 figure(2)
@@ -415,5 +454,6 @@ title('PN & intraAc & tagAc','FontSize',fontL);
 text(2.5,-0.8,['n = ',num2str(nTagPnNoNo_DRun)]);
 text(6.5,-0.8,['n = ',num2str(nTagPnNoNo_noRun)]);
 
-set(hCorrTag,'YLim',[-1.2 1.2],'XTick',[1,2,3,4,5,6,7,8],'XTickLabel',{'hf x hf','bf x dur', 'bf x aft', 'dur x aft','hf x hf','bf x dur', 'bf x aft', 'dur x aft'},'FontSize',fontM);
-print(gcf,'-depsc','-r300',['PN_Run_intra_tag_',num2str(intra_tag)]);
+% set(hCorrTag,'YLim',[-1.2 1.2],'XTick',[1,2,3,4,5,6,7,8],'XTickLabel',{'hf x hf','bf x dur', 'bf x aft', 'dur x aft','hf x hf','bf x dur', 'bf x aft', 'dur x aft'},'FontSize',fontM);
+set(hCorrTag,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1,2,3,4,5,6,7,8],'XTickLabel',{'hf-hf(EO)','bf-du', 'bf-af', 'du-af','hf-hf','bf-du', 'bf-af', 'du-af'},'FontSize',fontM);
+print(gcf,'-depsc','-r300',['PN_Run_intra_tag_',num2str(intra_tag),'_EvOd']);

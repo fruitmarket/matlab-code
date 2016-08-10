@@ -82,39 +82,61 @@ nolaserTrack_post = tnoRw.lightPostSpk(pnnoRw);
 
 figure(1) % Baseline firing rate comparison
 hBaseFR(1) = axes('Position',axpt(2,1,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([laserBase_pre; laserBase_stm; laserBase_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnDRw
     plot([1, 2, 3],[laserBase_pre(iCell), laserBase_stm(iCell), laserBase_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
     hold on;
+    plot(2,laserBase_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    hold on;
 end
 plot([1, 2, 3],[mean(laserBase_pre), mean(laserBase_stm), mean(laserBase_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,max([laserBase_pre; laserBase_stm; laserBase_post])-10,['n = ',num2str(npnDRw)]);
+ylabel('Spikes number');
+title('Baseline response (track stimulation)','fontSize',fontM);
 
 hBaseFR(2) = axes('Position',axpt(2,1,2,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([laserBase_pre; laserBase_stm; laserBase_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnnoRw
     plot([1,2,3],[nolaserBase_pre(iCell), nolaserBase_stm(iCell), nolaserBase_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
     hold on;
+    plot(2,nolaserBase_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    hold on;
 end
 plot([1,2,3],[mean(nolaserBase_pre), mean(nolaserBase_stm), mean(nolaserBase_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
-set(hBaseFR, 'XLim',[0,4],'YLim',[-1, max([laserBase_pre; laserBase_stm; laserBase_post])+10]);
+text(3,max([nolaserBase_pre; nolaserBase_stm; nolaserBase_post])-10,['n = ',num2str(npnnoRw)]);
+title('Baseline response (track without stimulation)','fontSize',fontM);
+set(hBaseFR, 'XLim',[0,4],'YLim',[-1, max([laserBase_pre; laserBase_stm; laserBase_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
 
 figure(2) % Track firing rate comparison
 hTrackFR(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([laserTrack_pre;laserTrack_stm;laserTrack_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnDRw
     plot([1,2,3],[laserTrack_pre(iCell), laserTrack_stm(iCell), laserTrack_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
     hold on;
+    plot(2,laserTrack_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    hold on;
 end
 plot([1,2,3],[mean(laserTrack_pre),mean(laserTrack_stm),mean(laserTrack_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,max([laserTrack_pre; laserTrack_stm; laserTrack_post])-10,['n = ',num2str(npnDRw)]);
+ylabel('Spikes number');
+title('On-Track response (with stimulation)','fontSize',fontM);
 
 hTrackFR(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
+rectangle('Position',[1.7,0,0.6,max([laserTrack_pre;laserTrack_stm;laserTrack_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 for iCell = 1:npnnoRw
     plot([1, 2, 3],[nolaserTrack_pre(iCell), nolaserTrack_stm(iCell), nolaserTrack_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
     hold on;
+    plot(2,nolaserTrack_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    hold on;
 end
 plot([1,2,3],[mean(nolaserTrack_pre), mean(nolaserTrack_stm), mean(nolaserTrack_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
-set(hTrackFR,'XLim',[0,4],'YLim',[-1, max([laserTrack_pre;laserTrack_stm;laserTrack_post])+10]);
+text(3,max([laserTrack_pre; laserTrack_stm; laserTrack_post])-10,['n = ',num2str(npnnoRw)]);
+title('On-Track response (without stimulation)','fontSize',fontM);
+set(hTrackFR,'XLim',[0,4],'YLim',[-1, max([laserTrack_pre;laserTrack_stm;laserTrack_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
 
 
 intraAc_DRw = tDRw.intraLightDir==1;

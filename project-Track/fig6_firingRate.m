@@ -21,13 +21,10 @@ colorLightYellow = [255 249 196] ./ 255;
 % four group color
 colorDarkRed4 = [183, 28, 28]./255;
 colorLightRed4 = [211, 47, 47]./255;
-
 colorDarkOrange4 = [255, 111, 0]./255;
 colorLightOrange4 = [255, 160, 0]./255;
-
 colorDarkBlue4 = [13, 71, 161]./255;
 colorLightBlue4 = [25, 118, 210]./255;
-
 colorDarkGreen4 = [27, 94, 32]./255;
 colorLightGreen4 = [56, 142, 60]./255;
 
@@ -35,10 +32,6 @@ colorOrange = [27, 94, 32]./255;
 
 tightInterval = [0.02 0.02];
 wideInterval = [0.09 0.09];
-
-nCol = 4;
-nRowSub = 8; % for the left column
-nRowMain = 5; % for the main figure
 
 markerS = 2.2;
 markerM = 4.4;
@@ -63,364 +56,370 @@ innoRw = tnoRw.fr_task > 10;
 
 npnDRw = sum(double(pnDRw));
 npnnoRw = sum(double(pnnoRw));
+snpnDRw = sum(double(pnDRw & (tDRw.lighttagPreSpk<20)) & (tDRw.lighttagSpk<25));
+snpnnoRw = sum(double(pnnoRw & (tnoRw.lighttagPreSpk<20) & (tnoRw.lighttagSpk<25)));
+ninDRw = sum(double(inDRw));
+ninnoRw = sum(double(innoRw));
 
-laserBase_pre = tDRw.lighttagPreSpk(pnDRw);
-laserBase_stm = tDRw.lighttagSpk(pnDRw);
-laserBase_post = tDRw.lighttagPostSpk(pnDRw);
+% PN
+laserBasePN_pre = tDRw.lighttagPreSpk(pnDRw); % Baseline
+laserBasePN_stm = tDRw.lighttagSpk(pnDRw);
+laserBasePN_post = tDRw.lighttagPostSpk(pnDRw);
 
-nolaserBase_pre = tnoRw.lighttagPreSpk(pnnoRw);
-nolaserBase_stm = tnoRw.lighttagSpk(pnnoRw);
-nolaserBase_post = tnoRw.lighttagPostSpk(pnnoRw);
+nolaserBasePN_pre = tnoRw.lighttagPreSpk(pnnoRw);
+nolaserBasePN_stm = tnoRw.lighttagSpk(pnnoRw);
+nolaserBasePN_post = tnoRw.lighttagPostSpk(pnnoRw);
 
-laserTrack_pre = tDRw.lightPreSpk(pnDRw);
-laserTrack_stm = tDRw.lightSpk(pnDRw);
-laserTrack_post = tDRw.lightPostSpk(pnDRw);
+laserTrackPN_pre = tDRw.lightPreSpk(pnDRw); % Track
+laserTrackPN_stm = tDRw.lightSpk(pnDRw);
+laserTrackPN_post = tDRw.lightPostSpk(pnDRw);
 
-nolaserTrack_pre = tnoRw.lightPreSpk(pnnoRw);
-nolaserTrack_stm = tnoRw.lightSpk(pnnoRw);
-nolaserTrack_post = tnoRw.lightPostSpk(pnnoRw);
+nolaserTrackPN_pre = tnoRw.lightPreSpk(pnnoRw);
+nolaserTrackPN_stm = tnoRw.lightSpk(pnnoRw);
+nolaserTrackPN_post = tnoRw.lightPostSpk(pnnoRw);
 
+laserMeanFRPN_pre = tDRw.meanFR_pre(pnDRw); % Mean FR
+laserMeanFRPN_stm = tDRw.meanFR_stm(pnDRw);
+laserMeanFRPN_post = tDRw.meanFR_post(pnDRw);
+
+nolaserMeanFRPN_pre = tnoRw.meanFR_pre(pnnoRw);
+nolaserMeanFRPN_stm = tnoRw.meanFR_stm(pnnoRw);
+nolaserMeanFRPN_post = tnoRw.meanFR_post(pnnoRw);
+
+% Scale PN
+scalelaserBasePN_pre = tDRw.lighttagPreSpk(pnDRw & (tDRw.lighttagPreSpk<20) & (tDRw.lighttagSpk<25)); % Baseline
+scalelaserBasePN_stm = tDRw.lighttagSpk(pnDRw & (tDRw.lighttagPreSpk<20) & (tDRw.lighttagSpk<25));
+scalelaserBasePN_post = tDRw.lighttagPostSpk(pnDRw & (tDRw.lighttagPreSpk<20) & (tDRw.lighttagSpk<25));
+
+scalenolaserBasePN_pre = tnoRw.lighttagPreSpk(pnnoRw & (tnoRw.lighttagPreSpk<20) & (tnoRw.lighttagSpk<25));
+scalenolaserBasePN_stm = tnoRw.lighttagSpk(pnnoRw & (tnoRw.lighttagPreSpk<20) & (tnoRw.lighttagSpk<25));
+scalenolaserBasePN_post = tnoRw.lighttagPostSpk(pnnoRw & (tnoRw.lighttagPreSpk<20) & (tnoRw.lighttagSpk<25));
+
+scalelaserTrackPN_pre = tDRw.lightPreSpk(pnDRw & (tDRw.lightPreSpk<20) & (tDRw.lightSpk<25)); % Track
+scalelaserTrackPN_stm = tDRw.lightSpk(pnDRw & (tDRw.lightPreSpk<20<20) & (tDRw.lightSpk<25));
+scalelaserTrackPN_post = tDRw.lightPostSpk(pnDRw & (tDRw.lightPreSpk<20) & (tDRw.lightSpk<25));
+
+scalenolaserTrackPN_pre = tnoRw.lightPreSpk(pnnoRw & (tnoRw.lightPreSpk<20) & (tnoRw.lightSpk<25));
+scalenolaserTrackPN_stm = tnoRw.lightSpk(pnnoRw & (tnoRw.lightPreSpk<20) & (tnoRw.lightSpk<25));
+scalenolaserTrackPN_post = tnoRw.lightPostSpk(pnnoRw & (tnoRw.lightPreSpk<20) & (tnoRw.lightSpk<25));
+
+
+% IN
+laserBaseIN_pre = tDRw.lighttagPreSpk(inDRw);
+laserBaseIN_stm = tDRw.lighttagSpk(inDRw);
+laserBaseIN_post = tDRw.lighttagPostSpk(inDRw);
+
+nolaserBaseIN_pre = tnoRw.lighttagPreSpk(innoRw);
+nolaserBaseIN_stm = tnoRw.lighttagSpk(innoRw);
+nolaserBaseIN_post = tnoRw.lighttagPostSpk(innoRw);
+
+laserTrackIN_pre = tDRw.lightPreSpk(inDRw);
+laserTrackIN_stm = tDRw.lightSpk(inDRw);
+laserTrackIN_post = tDRw.lightPostSpk(inDRw);
+
+nolaserTrackIN_pre = tnoRw.lightPreSpk(innoRw);
+nolaserTrackIN_stm = tnoRw.lightSpk(innoRw);
+nolaserTrackIN_post = tnoRw.lightPostSpk(innoRw);
+
+laserMeanFRIN_pre = tDRw.meanFR_pre(inDRw); % Mean FR
+laserMeanFRIN_stm = tDRw.meanFR_stm(inDRw);
+laserMeanFRIN_post = tDRw.meanFR_post(inDRw);
+
+nolaserMeanFRIN_pre = tnoRw.meanFR_pre(innoRw);
+nolaserMeanFRIN_stm = tnoRw.meanFR_stm(innoRw);
+nolaserMeanFRIN_post = tnoRw.meanFR_post(innoRw);
+
+%%
 figure(1) % Baseline firing rate comparison
-hBaseFR(1) = axes('Position',axpt(2,1,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
-rectangle('Position',[1.7,0,0.6,max([laserBase_pre; laserBase_stm; laserBase_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+hBaseFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([laserBasePN_pre; laserBasePN_stm; laserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnDRw
-    plot([1, 2, 3],[laserBase_pre(iCell), laserBase_stm(iCell), laserBase_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+    plot([1, 2, 3],[laserBasePN_pre(iCell), laserBasePN_stm(iCell), laserBasePN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
     hold on;
-    plot(2,laserBase_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    plot(2,laserBasePN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
     hold on;
 end
-plot([1, 2, 3],[mean(laserBase_pre), mean(laserBase_stm), mean(laserBase_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
-text(3,max([laserBase_pre; laserBase_stm; laserBase_post])-10,['n = ',num2str(npnDRw)]);
+plot([1, 2, 3],[mean(laserBasePN_pre), mean(laserBasePN_stm), mean(laserBasePN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,max([laserBasePN_pre; laserBasePN_stm; laserBasePN_post])-10,['n = ',num2str(npnDRw)]);
 ylabel('Spikes number');
-title('Baseline response (track stimulation)','fontSize',fontM);
+title('Baseline response (track stimulation)','fontSize',fontL);
 
-hBaseFR(2) = axes('Position',axpt(2,1,2,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
-rectangle('Position',[1.7,0,0.6,max([laserBase_pre; laserBase_stm; laserBase_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+hBaseFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([laserBasePN_pre; laserBasePN_stm; laserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnnoRw
-    plot([1,2,3],[nolaserBase_pre(iCell), nolaserBase_stm(iCell), nolaserBase_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+    plot([1,2,3],[nolaserBasePN_pre(iCell), nolaserBasePN_stm(iCell), nolaserBasePN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
     hold on;
-    plot(2,nolaserBase_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    plot(2,nolaserBasePN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
     hold on;
 end
-plot([1,2,3],[mean(nolaserBase_pre), mean(nolaserBase_stm), mean(nolaserBase_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
-text(3,max([nolaserBase_pre; nolaserBase_stm; nolaserBase_post])-10,['n = ',num2str(npnnoRw)]);
-title('Baseline response (track without stimulation)','fontSize',fontM);
-set(hBaseFR, 'XLim',[0,4],'YLim',[-1, max([laserBase_pre; laserBase_stm; laserBase_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+plot([1,2,3],[mean(nolaserBasePN_pre), mean(nolaserBasePN_stm), mean(nolaserBasePN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,max([nolaserBasePN_pre; nolaserBasePN_stm; nolaserBasePN_post])-10,['n = ',num2str(npnnoRw)]);
+ylabel('Spikes number');
+title('Baseline response (track without stimulation)','fontSize',fontL);
 
-figure(2) % Track firing rate comparison
-hTrackFR(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
-rectangle('Position',[1.7,0,0.6,max([laserTrack_pre;laserTrack_stm;laserTrack_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+% Track firing rate comparison
+hBaseFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([laserTrackPN_pre;laserTrackPN_stm;laserTrackPN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnDRw
-    plot([1,2,3],[laserTrack_pre(iCell), laserTrack_stm(iCell), laserTrack_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+    plot([1,2,3],[laserTrackPN_pre(iCell), laserTrackPN_stm(iCell), laserTrackPN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
     hold on;
-    plot(2,laserTrack_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    plot(2,laserTrackPN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
     hold on;
 end
-plot([1,2,3],[mean(laserTrack_pre),mean(laserTrack_stm),mean(laserTrack_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
-text(3,max([laserTrack_pre; laserTrack_stm; laserTrack_post])-10,['n = ',num2str(npnDRw)]);
+plot([1,2,3],[mean(laserTrackPN_pre),mean(laserTrackPN_stm),mean(laserTrackPN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,max([laserTrackPN_pre; laserTrackPN_stm; laserTrackPN_post])-10,['n = ',num2str(npnDRw)]);
 ylabel('Spikes number');
-title('On-Track response (with stimulation)','fontSize',fontM);
+title('On-Track response (with stimulation)','fontSize',fontL);
 
-hTrackFR(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
+hBaseFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
-rectangle('Position',[1.7,0,0.6,max([laserTrack_pre;laserTrack_stm;laserTrack_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+rectangle('Position',[1.7,0,0.6,max([laserTrackPN_pre;laserTrackPN_stm;laserTrackPN_post])+10],'FaceColor',colorLightYellow,'EdgeColor','none');
 for iCell = 1:npnnoRw
-    plot([1, 2, 3],[nolaserTrack_pre(iCell), nolaserTrack_stm(iCell), nolaserTrack_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+    plot([1, 2, 3],[nolaserTrackPN_pre(iCell), nolaserTrackPN_stm(iCell), nolaserTrackPN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
     hold on;
-    plot(2,nolaserTrack_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    plot(2,nolaserTrackPN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
     hold on;
 end
-plot([1,2,3],[mean(nolaserTrack_pre), mean(nolaserTrack_stm), mean(nolaserTrack_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
-text(3,max([laserTrack_pre; laserTrack_stm; laserTrack_post])-10,['n = ',num2str(npnnoRw)]);
-title('On-Track response (without stimulation)','fontSize',fontM);
-set(hTrackFR,'XLim',[0,4],'YLim',[-1, max([laserTrack_pre;laserTrack_stm;laserTrack_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+plot([1,2,3],[mean(nolaserTrackPN_pre), mean(nolaserTrackPN_stm), mean(nolaserTrackPN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,max([laserTrackPN_pre; laserTrackPN_stm; laserTrackPN_post])-10,['n = ',num2str(npnnoRw)]);
+ylabel('Spikes number');
+title('On-Track response (without stimulation)','fontSize',fontL);
 
+set(hBaseFR(1),'XLim',[0,4],'YLim',[-1, max([laserBasePN_pre;laserBasePN_stm;laserBasePN_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+set(hBaseFR(2),'XLim',[0,4],'YLim',[-1, max([laserBasePN_pre;laserBasePN_stm;laserBasePN_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+set(hBaseFR(3),'XLim',[0,4],'YLim',[-1, max([laserTrackPN_pre;laserTrackPN_stm;laserTrackPN_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+set(hBaseFR(4),'XLim',[0,4],'YLim',[-1, max([laserTrackPN_pre;laserTrackPN_stm;laserTrackPN_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+print(gcf,'-dtiff','-r300','LightResponse_PN');
 
-intraAc_DRw = tDRw.intraLightDir==1;
-intraIn_DR = tDRw.intraLightDir==-1;
-intraNo_DR = tDRw.intraLightDir==0;
-
-interAc_DRw = tDRw.interLightDir==1;
-interIn_DRw = tDRw.interLightDir==-1;
-interNo_DRw = tDRw.interLightDir==0;
-
-tagAc_DRw = tDRw.tagLightDir==1;
-tagIn_DRw = tDRw.tagLightDir==-1;
-tagNo_DRw = tDRw.tagLightDir==0;
-
-% Between block
-nPnBtAc_DRw = sum(double(pnDRw&interAc_DRw));
-nPnBtIn_DRw = sum(double(pnDRw&interIn_DRw));
-nPnBtNo_DRw = sum(double(pnDRw&interNo_DRw));
-
-% Inblock
-nPnInAc_DRw = sum(double(pnDRw&intraAc_DRw));
-nPnInIn_DRw = sum(double(pnDRw&intraIn_DR));
-nPnInNo_DRw = sum(double(pnDRw&intraNo_DR));
-
-% Tag
-nPnTagAc_DRw = sum(double(pnDRw&tagAc_DRw));
-nPnTagIn_DRw = sum(double(pnDRw&tagIn_DRw));
-nPnTagNo_DRw = sum(double(pnDRw&tagNo_DRw));
-
-
-intraAc_noRw = tnoRw.intraLightDir==1;
-intraIn_noRw = tnoRw.intraLightDir==-1;
-intraNo_noRw = tnoRw.intraLightDir==0;
-
-interAc_noRw = tnoRw.interLightDir==1;
-interIn_noRw = tnoRw.interLightDir==-1;
-interNo_noRw = tnoRw.interLightDir==0;
-
-tagAc_noRw = tnoRw.tagLightDir==1;
-tagIn_noRw = tnoRw.tagLightDir==-1;
-tagNo_noRw = tnoRw.tagLightDir==0;
-
-% No light - Between
-nPnBtAc_noRw = sum(double(pnnoRw&interAc_noRw));
-nPnBtIn_noRw = sum(double(pnnoRw&interIn_noRw));
-nPnBtNo_noRw = sum(double(pnnoRw&interNo_noRw));
-
-% No light - Inblock
-nPnInAc_noRw = sum(double(pnnoRw&intraAc_noRw));
-nPnInIn_noRw = sum(double(pnnoRw&intraIn_noRw));
-nPnInNo_noRw = sum(double(pnnoRw&intraNo_noRw));
-
-% No light - Tag
-nPnTagAc_noRw = sum(double(pnnoRw&tagAc_noRw));
-nPnTagIn_noRw = sum(double(pnnoRw&tagIn_noRw));
-nPnTagNo_noRw = sum(double(pnnoRw&tagNo_noRw));
-
-
-% Between block (Inter: Bt)
-xpt_corrPnBtAc = [ones(nPnBtAc_DRw,1);ones(nPnBtAc_noRw,1)*2;
-                  ones(nPnBtAc_DRw,1)*3;ones(nPnBtAc_noRw,1)*4;
-                  ones(nPnBtAc_DRw,1)*5;ones(nPnBtAc_noRw,1)*6;
-                  ones(nPnBtAc_DRw,1)*7;ones(nPnBtAc_noRw,1)*8];
-xpt_corrPnBtIn = [ones(nPnBtIn_DRw,1);ones(nPnBtIn_noRw,1)*2;
-                  ones(nPnBtIn_DRw,1)*3;ones(nPnBtIn_noRw,1)*4;
-                  ones(nPnBtIn_DRw,1)*5;ones(nPnBtIn_noRw,1)*6;
-                  ones(nPnBtIn_DRw,1)*7;ones(nPnBtIn_noRw,1)*8];
-xpt_corrPnBtNo = [ones(nPnBtNo_DRw,1);ones(nPnBtNo_noRw,1)*2;
-                  ones(nPnBtNo_DRw,1)*3;ones(nPnBtNo_noRw,1)*4;
-                  ones(nPnBtNo_DRw,1)*5;ones(nPnBtNo_noRw,1)*6;
-                  ones(nPnBtNo_DRw,1)*7;ones(nPnBtNo_noRw,1)*8];
-
-% Intra (In)
-xpt_corrPnInAc = [ones(nPnInAc_DRw,1);ones(nPnInAc_noRw,1)*2;
-                  ones(nPnInAc_DRw,1)*3;ones(nPnInAc_noRw,1)*4;
-                  ones(nPnInAc_DRw,1)*5;ones(nPnInAc_noRw,1)*6;
-                  ones(nPnInAc_DRw,1)*7;ones(nPnInAc_noRw,1)*8];
-xpt_corrPnInIn = [ones(nPnInIn_DRw,1);ones(nPnInIn_noRw,1)*2;
-                  ones(nPnInIn_DRw,1)*3;ones(nPnInIn_noRw,1)*4;
-                  ones(nPnInIn_DRw,1)*5;ones(nPnInIn_noRw,1)*6;
-                  ones(nPnInIn_DRw,1)*7;ones(nPnInIn_noRw,1)*8];
-xpt_corrPnInNo = [ones(nPnInNo_DRw,1);ones(nPnInNo_noRw,1)*2;
-                  ones(nPnInNo_DRw,1)*3;ones(nPnInNo_noRw,1)*4;
-                  ones(nPnInNo_DRw,1)*5;ones(nPnInNo_noRw,1)*6;
-                  ones(nPnInNo_DRw,1)*7;ones(nPnInNo_noRw,1)*8];
-                
-% Tag
-xpt_corrPnTagAc = [ones(nPnTagAc_DRw,1);ones(nPnTagAc_noRw,1)*2;
-                   ones(nPnTagAc_DRw,1)*3;ones(nPnTagAc_noRw,1)*4;
-                   ones(nPnTagAc_DRw,1)*5;ones(nPnTagAc_noRw,1)*6;
-                   ones(nPnTagAc_DRw,1)*7;ones(nPnTagAc_noRw,1)*8];
-xpt_corrPnTagIn = [ones(nPnTagIn_DRw,1);ones(nPnTagIn_noRw,1)*2;
-                   ones(nPnTagIn_DRw,1)*3;ones(nPnTagIn_noRw,1)*4;
-                   ones(nPnTagIn_DRw,1)*5;ones(nPnTagIn_noRw,1)*6;
-                   ones(nPnTagIn_DRw,1)*7;ones(nPnTagIn_noRw,1)*8];
-xpt_corrPnTagNo = [ones(nPnTagNo_DRw,1);ones(nPnTagNo_noRw,1)*2;
-                   ones(nPnTagNo_DRw,1)*3;ones(nPnTagNo_noRw,1)*4;
-                   ones(nPnTagNo_DRw,1)*5;ones(nPnTagNo_noRw,1)*6;
-                   ones(nPnTagNo_DRw,1)*7;ones(nPnTagNo_noRw,1)*8];
-
-% Between block (inter: Bt)
-ypt_corrPnBtAc = [tDRw.r_CorrEvOd(pnDRw&interAc_DRw); tnoRw.r_CorrEvOd(pnnoRw&interAc_noRw);
-                  tDRw.r_Corrbfxdr(pnDRw&interAc_DRw); tnoRw.r_Corrbfxdr(pnnoRw&interAc_noRw);
-                  tDRw.r_Corrdrxaft(pnDRw&interAc_DRw); tnoRw.r_Corrdrxaft(pnnoRw&interAc_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&interAc_DRw); tnoRw.r_Corrbfxaft(pnnoRw&interAc_noRw)];
-              
-ypt_corrPnBtIn = [tDRw.r_CorrEvOd(pnDRw&interIn_DRw); tnoRw.r_Corrbfxdr(pnnoRw&interIn_noRw); 
-                  tDRw.r_Corrbfxdr(pnDRw&interIn_DRw); tnoRw.r_Corrbfxdr(pnnoRw&interIn_noRw);...
-                  tDRw.r_Corrdrxaft(pnDRw&interIn_DRw); tnoRw.r_Corrbfxdr(pnnoRw&interIn_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&interIn_DRw); tnoRw.r_Corrbfxaft(pnnoRw&interIn_noRw)];
-              
-ypt_corrPnBtNo = [tDRw.r_CorrEvOd(pnDRw&interNo_DRw); tnoRw.r_CorrEvOd(pnnoRw&interNo_noRw); 
-                  tDRw.r_Corrbfxdr(pnDRw&interNo_DRw); tnoRw.r_Corrbfxdr(pnnoRw&interNo_noRw);
-                  tDRw.r_Corrdrxaft(pnDRw&interNo_DRw); tnoRw.r_Corrdrxaft(pnnoRw&interNo_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&interNo_DRw); tnoRw.r_Corrbfxaft(pnnoRw&interNo_noRw)];
-
-[~, pPnBtAc_hfxhf, ~, statsPnBtAc_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&interAc_DRw), tnoRw.r_CorrEvOd(pnnoRw&interAc_noRw));
-[~, pPnBtAc_bfxdr, ~, statsPnBtAc_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&interAc_DRw), tnoRw.r_Corrbfxdr(pnnoRw&interAc_noRw));
-[~, pPnBtAc_drxaft, ~, statsPnBtAc_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&interAc_DRw), tnoRw.r_Corrdrxaft(pnnoRw&interAc_noRw));
-[~, pPnBtAc_bfxaft, ~, statsPnBtAc_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&interAc_DRw), tnoRw.r_Corrbfxaft(pnnoRw&interAc_noRw));
-
-[~, pPnBtIn_hfxhf, ~, statsPnBtIn_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&interIn_DRw), tnoRw.r_Corrbfxdr(pnnoRw&interIn_noRw));
-[~, pPnBtIn_bfxdr, ~, statsPnBtIn_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&interIn_DRw), tnoRw.r_Corrbfxdr(pnnoRw&interIn_noRw));
-[~, pPnBtIn_drxaft, ~, statsPnBtIn_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&interIn_DRw), tnoRw.r_Corrbfxdr(pnnoRw&interIn_noRw));
-[~, pPnBtIn_bfxaft, ~, statsPnBtIn_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&interIn_DRw), tnoRw.r_Corrbfxaft(pnnoRw&interIn_noRw));
-
-[~, pPnBtNo_hfxhf, ~, statsPnBtNo_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&interNo_DRw), tnoRw.r_CorrEvOd(pnnoRw&interNo_noRw));
-[~, pPnBtNo_bfxdr, ~, statsPnBtNo_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&interNo_DRw), tnoRw.r_Corrbfxdr(pnnoRw&interNo_noRw));
-[~, pPnBtNo_drxaft, ~, statsPnBtNo_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&interNo_DRw), tnoRw.r_Corrdrxaft(pnnoRw&interNo_noRw));
-[~, pPnBtNo_bfxaft, ~, statsPnBtNo_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&interNo_DRw), tnoRw.r_Corrbfxaft(pnnoRw&interNo_noRw));
-
-% Inblock (intra: In)
-ypt_corrPnInAc = [tDRw.r_CorrEvOd(pnDRw&intraAc_DRw); tnoRw.r_CorrEvOd(pnnoRw&intraAc_noRw);
-                  tDRw.r_Corrbfxdr(pnDRw&intraAc_DRw); tnoRw.r_Corrbfxdr(pnnoRw&intraAc_noRw);
-                  tDRw.r_Corrdrxaft(pnDRw&intraAc_DRw); tnoRw.r_Corrdrxaft(pnnoRw&intraAc_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&intraAc_DRw); tnoRw.r_Corrbfxaft(pnnoRw&intraAc_noRw)];
-              
-ypt_corrPnInIn = [tDRw.r_CorrEvOd(pnDRw&intraIn_DR); tnoRw.r_CorrEvOd(pnnoRw&intraIn_noRw); 
-                  tDRw.r_Corrbfxdr(pnDRw&intraIn_DR); tnoRw.r_Corrbfxdr(pnnoRw&intraIn_noRw);...
-                  tDRw.r_Corrdrxaft(pnDRw&intraIn_DR); tnoRw.r_Corrdrxaft(pnnoRw&intraIn_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&intraIn_DR); tnoRw.r_Corrbfxaft(pnnoRw&intraIn_noRw)];
-              
-ypt_corrPnInNo = [tDRw.r_CorrEvOd(pnDRw&intraNo_DR); tnoRw.r_CorrEvOd(pnnoRw&intraNo_noRw); 
-                  tDRw.r_Corrbfxdr(pnDRw&intraNo_DR); tnoRw.r_Corrbfxdr(pnnoRw&intraNo_noRw);
-                  tDRw.r_Corrdrxaft(pnDRw&intraNo_DR); tnoRw.r_Corrdrxaft(pnnoRw&intraNo_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&intraNo_DR); tnoRw.r_Corrbfxaft(pnnoRw&intraNo_noRw)];
-
-[~, pPnInAc_hfxhf, ~, statsPnInAc_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&intraAc_DRw), tnoRw.r_CorrEvOd(pnnoRw&interAc_noRw));
-[~, pPnInAc_bfxdr, ~, statsPnInAc_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&intraAc_DRw), tnoRw.r_Corrbfxdr(pnnoRw&interAc_noRw));
-[~, pPnInAc_drxaft, ~, statsPnInAc_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&intraAc_DRw), tnoRw.r_Corrdrxaft(pnnoRw&interAc_noRw));
-[~, pPnInAc_bfxaft, ~, statsPnInAc_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&intraAc_DRw), tnoRw.r_Corrbfxaft(pnnoRw&interAc_noRw));
-
-[~, pPnInIn_hfxhf, ~, statsPnInIn_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&intraIn_DR), tnoRw.r_CorrEvOd(pnnoRw&interIn_noRw));
-[~, pPnInIn_bfxdr, ~, statsPnInIn_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&intraIn_DR), tnoRw.r_Corrbfxdr(pnnoRw&interIn_noRw));
-[~, pPnInIn_drxaft, ~, statsPnInIn_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&intraIn_DR), tnoRw.r_Corrdrxaft(pnnoRw&interIn_noRw));
-[~, pPnInIn_bfxaft, ~, statsPnInIn_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&intraIn_DR), tnoRw.r_Corrbfxaft(pnnoRw&interIn_noRw));
-
-[~, pPnInNo_hfxhf, ~, statsPnInNo_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&intraNo_DR), tnoRw.r_CorrEvOd(pnnoRw&interNo_noRw));
-[~, pPnInNo_bfxdr, ~, statsPnInNo_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&intraNo_DR), tnoRw.r_Corrbfxdr(pnnoRw&interNo_noRw));
-[~, pPnInNo_drxaft, ~, statsPnInNo_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&intraNo_DR), tnoRw.r_Corrdrxaft(pnnoRw&interNo_noRw));
-[~, pPnInNo_bfxaft, ~, statsPnInNo_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&intraNo_DR), tnoRw.r_Corrbfxaft(pnnoRw&interNo_noRw));
-
-% Tag (tag)
-ypt_corrPnTagAc = [tDRw.r_CorrEvOd(pnDRw&tagAc_DRw); tnoRw.r_CorrEvOd(pnnoRw&tagAc_noRw);
-                  tDRw.r_Corrbfxdr(pnDRw&tagAc_DRw); tnoRw.r_Corrbfxdr(pnnoRw&tagAc_noRw);
-                  tDRw.r_Corrdrxaft(pnDRw&tagAc_DRw); tnoRw.r_Corrdrxaft(pnnoRw&tagAc_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&tagAc_DRw); tnoRw.r_Corrbfxaft(pnnoRw&tagAc_noRw)];
-              
-ypt_corrPnTagIn = [tDRw.r_CorrEvOd(pnDRw&tagIn_DRw); tnoRw.r_CorrEvOd(pnnoRw&tagIn_noRw); 
-                  tDRw.r_Corrbfxdr(pnDRw&tagIn_DRw); tnoRw.r_Corrbfxdr(pnnoRw&tagIn_noRw);...
-                  tDRw.r_Corrdrxaft(pnDRw&tagIn_DRw); tnoRw.r_Corrdrxaft(pnnoRw&tagIn_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&tagIn_DRw); tnoRw.r_Corrbfxaft(pnnoRw&tagIn_noRw)];
-              
-ypt_corrPnTagNo = [tDRw.r_CorrEvOd(pnDRw&tagNo_DRw); tnoRw.r_CorrEvOd(pnnoRw&tagNo_noRw); 
-                  tDRw.r_Corrbfxdr(pnDRw&tagNo_DRw); tnoRw.r_Corrbfxdr(pnnoRw&tagNo_noRw);
-                  tDRw.r_Corrdrxaft(pnDRw&tagNo_DRw); tnoRw.r_Corrdrxaft(pnnoRw&tagNo_noRw);
-                  tDRw.r_Corrbfxaft(pnDRw&tagNo_DRw); tnoRw.r_Corrbfxaft(pnnoRw&tagNo_noRw)];
-             
-% t-test
-[~, psPnTagAc_hfxhf, ~, statsPnTagAc_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&tagAc_DRw), tnoRw.r_CorrEvOd(pnnoRw&tagAc_noRw));
-[~, pPnTagAc_bfxdr, ~, statsPnTagAc_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&tagAc_DRw), tnoRw.r_Corrbfxdr(pnnoRw&tagAc_noRw));
-[~, pPnTagAc_drxaft, ~, statsPnTagAc_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&tagAc_DRw), tnoRw.r_Corrdrxaft(pnnoRw&tagAc_noRw));
-[~, pPnTagAc_bfxaft, ~, statsPnTagAc_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&tagAc_DRw), tnoRw.r_Corrbfxaft(pnnoRw&tagAc_noRw));
-
-[~, pPnTagIn_hfxhf, ~, statsPnTagIn_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&tagIn_DRw), tnoRw.r_CorrEvOd(pnnoRw&tagIn_noRw));
-[~, pPnTagIn_bfxdr, ~, statsPnTagIn_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&tagIn_DRw), tnoRw.r_Corrbfxdr(pnnoRw&tagIn_noRw));
-[~, pPnTagIn_drxaft, ~, statsPnTagIn_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&tagIn_DRw), tnoRw.r_Corrdrxaft(pnnoRw&tagIn_noRw));
-[~, pPnTagIn_bfxaft, ~, statsPnTagIn_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&tagIn_DRw), tnoRw.r_Corrbfxaft(pnnoRw&tagIn_noRw));
-
-[~, pPnTagNo_hfxhf, ~, statsPnTagNo_hfxhf] = ttest2(tDRw.r_CorrEvOd(pnDRw&tagNo_DRw), tnoRw.r_CorrEvOd(pnnoRw&tagNo_noRw));
-[~, pPnTagNo_bfxdr, ~, statsPnTagNo_bfxdr] = ttest2(tDRw.r_Corrbfxdr(pnDRw&tagNo_DRw), tnoRw.r_Corrbfxdr(pnnoRw&tagNo_noRw));
-[~, pPnTagNo_drxaft, ~, statsPnTagNo_drxaft] = ttest2(tDRw.r_Corrdrxaft(pnDRw&tagNo_DRw), tnoRw.r_Corrdrxaft(pnnoRw&tagNo_noRw));
-[~, pPnTagNo_bfxaft, ~, statsPnTagNo_bfxaft] = ttest2(tDRw.r_Corrbfxaft(pnDRw&tagNo_DRw), tnoRw.r_Corrbfxaft(pnnoRw&tagNo_noRw));
-
- 
-figure(1)
-hCorrBt(1) = axes('Position',axpt(3,1,1,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnBtAc,xpt_corrPnBtAc,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Between block Activation','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnBtAc_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnBtAc_noRw)]);
-
-hCorrBt(2) = axes('Position',axpt(3,1,2,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnBtIn,xpt_corrPnBtIn,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Between block Inactivation','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnBtIn_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnBtIn_noRw)]);
-
-hCorrBt(3) = axes('Position',axpt(3,1,3,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnBtNo,xpt_corrPnBtNo,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Between block No-change','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnBtNo_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnBtNo_noRw)]);
-set(hCorrBt,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1.5,3.5,5.5,7.5],'XTickLabel',{'hf-hf(EO)','bf-du', 'bf-af', 'du-af'},'FontSize',fontM);
-print(gcf,'-depsc','-r300',['PN_Rw_Bt_',num2str(cutoff),'_EvOd'])
-
-figure(2)
-hCorrIn(1) = axes('Position',axpt(3,1,1,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnInAc,xpt_corrPnInAc,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Inblock Activation','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnInAc_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnInAc_noRw)]);
-
-hCorrIn(2) = axes('Position',axpt(3,1,2,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnInIn,xpt_corrPnInIn,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Inblock Inactivation','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnInIn_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnInIn_noRw)]);
-
-hCorrIn(3) = axes('Position',axpt(3,1,3,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnInNo,xpt_corrPnInNo,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Inblock No-change','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnInNo_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnInNo_noRw)]);
-
-set(hCorrIn,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1.5,3.5,5.5,7.5],'XTickLabel',{'hf-hf(EO)','bf-du', 'bf-af', 'du-af'},'FontSize',fontM);
-print(gcf,'-depsc','-r300',['PN_Rw_In_',num2str(cutoff),'_EvOd'])
-
-figure(3)
-hCorrTag(1) = axes('Position',axpt(3,1,1,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnTagAc,xpt_corrPnTagAc,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Baseline Activation','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnTagAc_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnTagAc_noRw)]);
-
-hCorrTag(2) = axes('Position',axpt(3,1,2,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnTagIn,xpt_corrPnTagIn,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Baseline inactivation','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnTagIn_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnTagIn_noRw)]);
-
-hCorrTag(3) = axes('Position',axpt(3,1,3,1,[0.1, 0.1, 0.85, 0.85], wideInterval));
-hold on;
-MyScatterBarPlot(ypt_corrPnTagNo,xpt_corrPnTagNo,0.35,{colorDarkRed4,colorLightRed4,colorDarkBlue4,colorLightBlue4,colorDarkOrange4,colorLightOrange4,colorDarkGreen4,colorLightGreen4},[]);
-title('PN & Baseline no-change','FontSize',fontL);
-text(2.5,-0.8,['n = ',num2str(nPnTagNo_DRw)]);
-text(6.5,-0.8,['n = ',num2str(nPnTagNo_noRw)]);
-
-set(hCorrTag,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1.5,3.5,5.5,7.5],'XTickLabel',{'hf-hf(EO)','bf-du', 'bf-af', 'du-af'},'FontSize',fontM);
-print(gcf,'-depsc','-r300',['PN_Rw_Base_',num2str(cutoff),'_EvOd'])
-
-close all;
-
-
-% % Population separation track(intra) vs track(inter)
-% subTbl_trXtr_DRun = [sum(double(pnDRun&intraAc_DRun&interAc_DRun)), sum(double(pnDRun&intraAc_DRun&interIn_DRun)), sum(double(pnDRun&intraAc_DRun&interNo_DRun));
-%             sum(double(pnDRun&intraIn_DRun&interAc_DRun)), sum(double(pnDRun&intraIn_DRun&interIn_DRun)), sum(double(pnDRun&intraIn_DRun&interNo_DRun));
-%             sum(double(pnDRun&intraNo_DRun&interAc_DRun)), sum(double(pnDRun&intraNo_DRun&interIn_DRun)), sum(double(pnDRun&intraNo_DRun&interNo_DRun))];
-% subTbl_trXtr_noRun = [sum(double(pnnoRun&intraAc_noRun&interAc_noRun)), sum(double(pnnoRun&intraAc_noRun&interIn_noRun)), sum(double(pnnoRun&intraAc_noRun&interNo_noRun));
-%             sum(double(pnnoRun&intraIn_noRun&interAc_noRun)), sum(double(pnnoRun&intraIn_noRun&interIn_noRun)), sum(double(pnnoRun&intraIn_noRun&interNo_noRun));
-%             sum(double(pnnoRun&intraNo_noRun&interAc_noRun)), sum(double(pnnoRun&intraNo_noRun&interIn_noRun)), sum(double(pnnoRun&intraNo_noRun&interNo_noRun))];
+%%
+% figure(2) % Interneuron
+% hBaseFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+% rectangle('Position',[1.7,0,0.6,1000],'FaceColor',colorLightBlue,'EdgeColor','none');
+% hold on;
+% for iCell = 1:ninDRw
+%     plot([1, 2, 3],[laserBaseIN_pre(iCell), laserBaseIN_stm(iCell), laserBaseIN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+%     hold on;
+%     plot(2,laserBaseIN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+%     hold on;
+% end
+% plot([1, 2, 3],[mean(laserBaseIN_pre), mean(laserBaseIN_stm), mean(laserBaseIN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+% text(3,800,['n = ',num2str(ninDRw)]);
+% ylabel('Spikes number');
+% title('Baseline response (track stimulation)','fontSize',fontL);
 % 
-% % Population separation track vs tag
-% subTbl_trXtg_DRun = [sum(double(pnDRun&intraAc_DRun&tagAc_DRun)), sum(double(pnDRun&intraAc_DRun&tagIn_DRun)), sum(double(pnDRun&intraAc_DRun&tagNo_DRun));
-%             sum(double(pnDRun&intraIn_DRun&tagAc_DRun)), sum(double(pnDRun&intraIn_DRun&tagIn_DRun)), sum(double(pnDRun&intraIn_DRun&tagNo_DRun));
-%             sum(double(pnDRun&intraNo_DRun&tagAc_DRun)), sum(double(pnDRun&intraNo_DRun&tagIn_DRun)), sum(double(pnDRun&intraNo_DRun&tagNo_DRun))];
-% subTbl_trXtg_noRun = [sum(double(pnnoRun&intraAc_noRun&tagAc_noRun)), sum(double(pnnoRun&intraAc_noRun&tagIn_noRun)), sum(double(pnnoRun&intraAc_noRun&tagNo_noRun));
-%             sum(double(pnnoRun&intraIn_noRun&tagAc_noRun)), sum(double(pnnoRun&intraIn_noRun&tagIn_noRun)), sum(double(pnnoRun&intraIn_noRun&tagNo_noRun));
-%             sum(double(pnnoRun&intraNo_noRun&tagAc_noRun)), sum(double(pnnoRun&intraNo_noRun&tagIn_noRun)), sum(double(pnnoRun&intraNo_noRun&tagNo_noRun))];
+% hBaseFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+% rectangle('Position',[1.7,0,0.6,1000],'FaceColor',colorLightBlue,'EdgeColor','none');
+% hold on;
+% for iCell = 1:ninnoRw
+%     plot([1,2,3],[nolaserBaseIN_pre(iCell), nolaserBaseIN_stm(iCell), nolaserBaseIN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+%     hold on;
+%     plot(2,nolaserBaseIN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+%     hold on;
+% end
+% plot([1,2,3],[mean(nolaserBaseIN_pre), mean(nolaserBaseIN_stm), mean(nolaserBaseIN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+% text(3,800,['n = ',num2str(ninnoRw)]);
+% ylabel('Spikes number');
+% title('Baseline response (track without stimulation)','fontSize',fontL);
+% 
+% % Track firing rate comparison
+% hBaseFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+% rectangle('Position',[1.7,0,0.6,300],'FaceColor',colorLightBlue,'EdgeColor','none');
+% hold on;
+% for iCell = 1:ninDRw
+%     plot([1,2,3],[laserTrackIN_pre(iCell), laserTrackIN_stm(iCell), laserTrackIN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+%     hold on;
+%     plot(2,laserTrackIN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+%     hold on;
+% end
+% plot([1,2,3],[mean(laserTrackIN_pre),mean(laserTrackIN_stm),mean(laserTrackIN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+% text(3,200,['n = ',num2str(ninDRw)]);
+% ylabel('Spikes number');
+% title('On-Track response (with stimulation)','fontSize',fontL);
+% 
+% hBaseFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+% hold on;
+% rectangle('Position',[1.7,0,0.6,300],'FaceColor',colorLightYellow,'EdgeColor','none');
+% for iCell = 1:ninnoRw
+%     plot([1, 2, 3],[nolaserTrackIN_pre(iCell), nolaserTrackIN_stm(iCell), nolaserTrackIN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+%     hold on;
+%     plot(2,nolaserTrackIN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+%     hold on;
+% end
+% plot([1,2,3],[mean(nolaserTrackIN_pre), mean(nolaserTrackIN_stm), mean(nolaserTrackIN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+% text(3,200,['n = ',num2str(ninnoRw)]);
+% ylabel('Spikes number');
+% title('On-Track response (without stimulation)','fontSize',fontL);
+% set(hBaseFR(1),'XLim',[0,4],'YLim',[-1, 1000],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+% set(hBaseFR(2),'XLim',[0,4],'YLim',[-1, 1000],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+% set(hBaseFR(3),'XLim',[0,4],'YLim',[-1, 300],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+% set(hBaseFR(4),'XLim',[0,4],'YLim',[-1, 300],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+% print(gcf,'-dtiff','-r300','LightResponse_IN');
+
+%% Track meanFR chagne
+% figure(3)
+% hMeanFR(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+% rectangle('Position',[1.7,0,0.6,max([laserMeanFRPN_pre;laserMeanFRPN_stm;laserMeanFRPN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+% hold on;
+% for iCell = 1:npnDRw
+%     plot([1,2,3,],[laserMeanFRPN_pre(iCell),laserMeanFRPN_stm(iCell),laserMeanFRPN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+%     hold on;
+%     plot(2,laserMeanFRPN_stm,'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+%     hold on;
+% end
+% plot([1,2,3,],[mean(laserMeanFRPN_pre),mean(laserMeanFRPN_stm),mean(laserMeanFRPN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+% text(3,max([laserMeanFRPN_pre;laserMeanFRPN_pre;laserMeanFRPN_pre])-5,['n = ',num2str(npnDRw)]);
+% ylabel('Mean firing rate (Hz)');
+% title('Mean firing change (Stimulation sess)','fontSize',fontL);
+% 
+% hMeanFR(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
+% rectangle('Position',[1.7,0,0.6,max([nolaserMeanFRPN_pre;nolaserMeanFRPN_stm;nolaserMeanFRPN_post])+10],'FaceColor',colorLightYellow,'EdgeColor','none');
+% hold on;
+% for iCell = 1:npnnoRw
+%     plot([1,2,3,],[nolaserMeanFRPN_pre(iCell),nolaserMeanFRPN_stm(iCell),nolaserMeanFRPN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+%     hold on;
+%     plot(2,nolaserMeanFRPN_stm,'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+%     hold on;
+% end
+% plot([1,2,3,],[mean(nolaserMeanFRPN_pre),mean(nolaserMeanFRPN_stm),mean(nolaserMeanFRPN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+% text(3,max([nolaserMeanFRPN_pre;nolaserMeanFRPN_pre;nolaserMeanFRPN_pre])-5,['n = ',num2str(npnnoRw)]);
+% ylabel('Mean firing rate (Hz)');
+% title('Mean firing change (Stimulation sess)','fontSize',fontL);
+% 
+% hMeanFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+% rectangle('Position',[1.7,0,0.6,max([laserMeanFRIN_pre;laserMeanFRIN_stm;laserMeanFRIN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+% hold on;
+% for iCell = 1:ninDRw
+%     plot([1,2,3,],[laserMeanFRIN_pre(iCell),laserMeanFRIN_stm(iCell),laserMeanFRIN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+%     hold on;
+%     plot(2,laserMeanFRIN_stm,'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+%     hold on;
+% end
+% plot([1,2,3,],[mean(laserMeanFRIN_pre),mean(laserMeanFRIN_stm),mean(laserMeanFRIN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+% text(3,max([laserMeanFRIN_pre;laserMeanFRIN_pre;laserMeanFRIN_pre])-5,['n = ',num2str(ninDRw)]);
+% ylabel('Mean firing rate (Hz)');
+% title('Mean firing change (Stimulation sess)','fontSize',fontL);
+% 
+% hMeanFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+% rectangle('Position',[1.7,0,0.6,max([nolaserMeanFRIN_pre;nolaserMeanFRIN_stm;nolaserMeanFRIN_post])+10],'FaceColor',colorLightYellow,'EdgeColor','none');
+% hold on;
+% for iCell = 1:ninnoRw
+%     plot([1,2,3,],[nolaserMeanFRIN_pre(iCell),nolaserMeanFRIN_stm(iCell),nolaserMeanFRIN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+%     hold on;
+%     plot(2,nolaserMeanFRIN_stm,'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+%     hold on;
+% end
+% plot([1,2,3,],[mean(nolaserMeanFRIN_pre),mean(nolaserMeanFRIN_stm),mean(nolaserMeanFRIN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+% text(3,max([nolaserMeanFRIN_pre;nolaserMeanFRIN_pre;nolaserMeanFRIN_pre])-5,['n = ',num2str(ninnoRw)]);
+% ylabel('Mean firing rate (Hz)');
+% title('Mean firing change (Stimulation sess)','fontSize',fontL);
+% 
+% set(hMeanFR(1),'XLim',[0,4],'YLim',[-1, 10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+% set(hMeanFR(2),'XLim',[0,4],'YLim',[-1, 10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+% set(hMeanFR(3),'XLim',[0,4],'YLim',[-1, 50],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+% set(hMeanFR(4),'XLim',[0,4],'YLim',[-1, 50],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+% print(gcf,'-dtiff','-r300','LightResponse_MeanFR');
+
+%%
+figure(4)
+hScaleFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([scalelaserBasePN_pre; scalelaserBasePN_stm; scalelaserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+hold on;
+for iCell = 1:snpnDRw
+    plot([1, 2, 3],[scalelaserBasePN_pre(iCell), scalelaserBasePN_stm(iCell), scalelaserBasePN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+    hold on;
+    plot(2,scalelaserBasePN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    hold on;
+end
+plot([1, 2, 3],[mean(scalelaserBasePN_pre), mean(scalelaserBasePN_stm), mean(scalelaserBasePN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,20,['n = ',num2str(snpnDRw)]);
+ylabel('Spikes number');
+title('Baseline response (track stimulation)','fontSize',fontL);
+
+hScaleFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([scalelaserBasePN_pre; scalelaserBasePN_stm; scalelaserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+hold on;
+for iCell = 1:snpnnoRw
+    plot([1,2,3],[scalenolaserBasePN_pre(iCell), scalenolaserBasePN_stm(iCell), scalenolaserBasePN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+    hold on;
+    plot(2,scalenolaserBasePN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    hold on;
+end
+plot([1,2,3],[mean(scalenolaserBasePN_pre), mean(scalenolaserBasePN_stm), mean(scalenolaserBasePN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,20,['n = ',num2str(snpnnoRw)]);
+ylabel('Spikes number');
+title('Baseline response (track without stimulation)','fontSize',fontL);
+
+% Track firing rate comparison
+hScaleFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+rectangle('Position',[1.7,0,0.6,max([scalelaserTrackPN_pre;scalelaserTrackPN_stm;scalelaserTrackPN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
+hold on;
+for iCell = 1:snpnDRw
+    plot([1,2,3],[scalelaserTrackPN_pre(iCell), scalelaserTrackPN_stm(iCell), scalelaserTrackPN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+    hold on;
+    plot(2,scalelaserTrackPN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    hold on;
+end
+plot([1,2,3],[mean(scalelaserTrackPN_pre),mean(scalelaserTrackPN_stm),mean(scalelaserTrackPN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,20,['n = ',num2str(snpnDRw)]);
+ylabel('Spikes number');
+title('On-Track response (with stimulation)','fontSize',fontL);
+
+hScaleFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+rectangle('Position',[1.7,0,0.6,max([scalelaserTrackPN_pre;scalelaserTrackPN_stm;scalelaserTrackPN_post])+10],'FaceColor',colorLightYellow,'EdgeColor','none');
+for iCell = 1:snpnnoRw
+    plot([1, 2, 3],[scalenolaserTrackPN_pre(iCell), scalenolaserTrackPN_stm(iCell), scalenolaserTrackPN_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray);
+    hold on;
+    plot(2,scalenolaserTrackPN_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
+    hold on;
+end
+plot([1,2,3],[mean(scalenolaserTrackPN_pre), mean(scalenolaserTrackPN_stm), mean(scalenolaserTrackPN_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2);
+text(3,20,['n = ',num2str(snpnnoRw)]);
+ylabel('Spikes number');
+title('On-Track response (without stimulation)','fontSize',fontL);
+
+set(hScaleFR(1),'XLim',[0,4],'YLim',[-1, 25],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+set(hScaleFR(2),'XLim',[0,4],'YLim',[-1, 25],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+set(hScaleFR(3),'XLim',[0,4],'YLim',[-1, 25],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+set(hScaleFR(4),'XLim',[0,4],'YLim',[-1, 25],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
+print(gcf,'-dtiff','-r300','Scale up');
+
+%%
+figure(5)
+h2Dplot(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+line([0,25],[0,25],'Color','k','LineWidth',1);
+hold on;
+plot(scalelaserBasePN_stm,scalelaserBasePN_pre,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+xlabel('Spike number (Stm)');
+ylabel('Spike number (Pre)');
+
+h2Dplot(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+line([0,25],[0,25],'Color','k','LineWidth',1);
+hold on;
+plot(scalelaserBasePN_stm,scalelaserBasePN_post,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+xlabel('Spike number (Stm)');
+ylabel('Spike number (Post)');
+
+h2Dplot(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+line([0,25],[0,25],'Color','k','LineWidth',1);
+hold on;
+plot(scalenolaserBasePN_stm,scalenolaserBasePN_pre,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+xlabel('Spike number (Stm)');
+ylabel('Spike number (Pre)');
+
+h2Dplot(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+line([0,25],[0,25],'Color','k','LineWidth',1);
+hold on;
+plot(scalenolaserBasePN_stm,scalenolaserBasePN_post,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+xlabel('Spike number (Stm)');
+ylabel('Spike number (Post)');
+
+set(h2Dplot,'XLim',[-1,25],'YLim',[-1, 25],'TickDir','out');
+print(gcf,'-dtiff','-r300','2D-plot');

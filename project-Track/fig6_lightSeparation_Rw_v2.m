@@ -338,7 +338,7 @@ text(6.5,-0.8,['n = ',num2str(nPnTagNo_noRw)]);
 set(hCorrTag,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1.5,3.5,5.5,7.5],'XTickLabel',{'hf-hf(EO)','bf-du', 'bf-af', 'du-af'},'FontSize',fontM);
 print(gcf,'-depsc','-r300',['PN_Rw_Base_',num2str(cutoff),'_EvOd'])
 
-close all;
+% close all;
 
 
 % % Population separation track(intra) vs track(inter)

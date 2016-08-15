@@ -1,4 +1,4 @@
-function fig6_firingRate()
+function fig6_firingRate_Rw()
 % clearvars;
 clf; close all;
 
@@ -38,7 +38,7 @@ markerM = 4.4;
 markerL = 6.6;
 
 %
-load(['cellList_new_90','.mat']);
+load(['cellList_new_0','.mat']);
 T((T.taskType == 'nolight'),:) = [];
 T(~(T.taskProb == '100'),:) = [];
 % T(~(T.taskType == 'DRun' | T.taskType == 'noRun'),:) = [];
@@ -96,7 +96,7 @@ scalenolaserBasePN_stm = tnoRw.lighttagSpk(pnnoRw & (tnoRw.lighttagPreSpk<20) & 
 scalenolaserBasePN_post = tnoRw.lighttagPostSpk(pnnoRw & (tnoRw.lighttagPreSpk<20) & (tnoRw.lighttagSpk<25));
 
 scalelaserTrackPN_pre = tDRw.lightPreSpk(pnDRw & (tDRw.lightPreSpk<20) & (tDRw.lightSpk<25)); % Track
-scalelaserTrackPN_stm = tDRw.lightSpk(pnDRw & (tDRw.lightPreSpk<20<20) & (tDRw.lightSpk<25));
+scalelaserTrackPN_stm = tDRw.lightSpk(pnDRw & (tDRw.lightPreSpk<20) & (tDRw.lightSpk<25));
 scalelaserTrackPN_post = tDRw.lightPostSpk(pnDRw & (tDRw.lightPreSpk<20) & (tDRw.lightSpk<25));
 
 scalenolaserTrackPN_pre = tnoRw.lightPreSpk(pnnoRw & (tnoRw.lightPreSpk<20) & (tnoRw.lightSpk<25));
@@ -396,6 +396,7 @@ hold on;
 plot(scalelaserBasePN_stm,scalelaserBasePN_pre,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number (Stm)');
 ylabel('Spike number (Pre)');
+title('Laser session_Baseline','interpreter','none');
 
 h2Dplot(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
@@ -404,6 +405,7 @@ hold on;
 plot(scalelaserBasePN_stm,scalelaserBasePN_post,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number (Stm)');
 ylabel('Spike number (Post)');
+title('Laser session_Baseline','interpreter','none');
 
 h2Dplot(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
@@ -412,6 +414,7 @@ hold on;
 plot(scalenolaserBasePN_stm,scalenolaserBasePN_pre,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number (Stm)');
 ylabel('Spike number (Pre)');
+title('No laser session_Baseline','interpreter','none');
 
 h2Dplot(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
@@ -420,6 +423,48 @@ hold on;
 plot(scalenolaserBasePN_stm,scalenolaserBasePN_post,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number (Stm)');
 ylabel('Spike number (Post)');
+title('No laser session_Baseline','interpreter','none');
 
 set(h2Dplot,'XLim',[-1,25],'YLim',[-1, 25],'TickDir','out');
-print(gcf,'-dtiff','-r300','2D-plot');
+print(gcf,'-dtiff','-r300','2D-plotBaseline');
+
+%%
+figure(6)
+h2Dplot(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+line([0,25],[0,25],'Color','k','LineWidth',1);
+hold on;
+plot(scalelaserTrackPN_stm,scalelaserTrackPN_pre,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+xlabel('Spike number (Stm)');
+ylabel('Spike number (Pre)');
+title('Laser session_Baseline','interpreter','none');
+
+h2Dplot(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+line([0,25],[0,25],'Color','k','LineWidth',1);
+hold on;
+plot(scalelaserTrackPN_stm,scalelaserTrackPN_post,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+xlabel('Spike number (Stm)');
+ylabel('Spike number (Post)');
+title('Laser session_Baseline','interpreter','none');
+
+h2Dplot(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+line([0,25],[0,25],'Color','k','LineWidth',1);
+hold on;
+plot(scalenolaserTrackPN_stm,scalenolaserTrackPN_pre,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+xlabel('Spike number (Stm)');
+ylabel('Spike number (Pre)');
+title('No laser session_Baseline','interpreter','none');
+
+h2Dplot(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+hold on;
+line([0,25],[0,25],'Color','k','LineWidth',1);
+hold on;
+plot(scalenolaserTrackPN_stm,scalenolaserTrackPN_post,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+xlabel('Spike number (Stm)');
+ylabel('Spike number (Post)');
+title('No laser session_Baseline','interpreter','none');
+
+set(h2Dplot,'XLim',[-1,25],'YLim',[-1, 25],'TickDir','out');
+print(gcf,'-dtiff','-r300','2D-plot_Track');

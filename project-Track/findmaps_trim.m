@@ -10,7 +10,7 @@ function [fr_map, visit_map, visit_dur, flags] = findmaps_trim(time, position, s
 %%
 % time: msec unit.
 mapThreshold = 7;
-spk = histc(spkdata*10, time*10); % spk: usec unit
+spk = histc(spkdata*10, time*10); % spk: 100 usec unit
 
 pos_prod = prod(position,2);
 position(pos_prod==0,:) = 0;

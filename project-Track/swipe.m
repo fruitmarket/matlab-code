@@ -28,7 +28,7 @@ for iPath = 1:nPath
     cd(filePath{iPath});
     
 %     meanFR_block;
-    psthLight(0);
+    psthLight(0,5);
 %     mapCorrEvOd;
 %     event2mat_track;
 end

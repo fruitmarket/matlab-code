@@ -1,4 +1,4 @@
-function psthLight(criteria)
+function psthLight(criteria_multi,criteria_add)
 % Check whether the cell has light response or not.
 % It calculates both in-block and between-block responses.
 % criteria (%)
@@ -59,9 +59,9 @@ for iCell = 1:nCell
     else
     end
     
-    if lightPreSpk*(criteria/10+10)/10 < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
+    if lightPreSpk*(criteria_multi/10+10)/10 + criteria_add < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
         intraLightDir = 1;
-    elseif lightPreSpk*(10-criteria/10)/10 > lightSpk % If spikes at light duration less than 10% of spikes during pre = activation
+    elseif lightPreSpk*(10-criteria_multi/10)/10 - criteria_add > lightSpk % If spikes at light duration less than 10% of spikes during pre = activation
         intraLightDir = -1;
     else
         intraLightDir = 0;
@@ -93,9 +93,9 @@ for iCell = 1:nCell
                 'psdPreSpk','psdPostSpk','-append');
         end
         
-        if psdPreSpk*(criteria/10+10)/10 < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
+        if psdPreSpk*(criteria_multi/10+10)/10 + criteria_add < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
             interLightDir = 1;
-        elseif psdPreSpk*(10-criteria/10)/10 > lightSpk % If spikes at light duration less than 10% of spikes during pre = activation
+        elseif psdPreSpk*(10-criteria_multi/10)/10 - criteria_add > lightSpk % If spikes at light duration less than 10% of spikes during pre = inactivation
             interLightDir = -1;
         else
             interLightDir = 0;
@@ -128,9 +128,9 @@ for iCell = 1:nCell
             'spikeTimeModuYel','xptModuYel','yptModuYel','psthtimeModuYel','psthModuYel',...
             'lighttagSpk','lighttagPreSpk','lighttagPostSpk','-append');
     end
-    if lighttagPreSpk*(criteria/10+10)/10 < lighttagSpk % If spikes at light duration more than 10% of spikes during pre = activation
+    if lighttagPreSpk*(criteria_multi/10+10)/10 + criteria_add < lighttagSpk % If spikes at light duration more than 10% of spikes during pre = activation
         tagLightDir = 1;
-    elseif lighttagPreSpk*(10-criteria/10)/10 > lighttagSpk % If spikes at light duration less than 10% of spikes during pre = activation
+    elseif lighttagPreSpk*(10-criteria_multi/10)/10 - criteria_add > lighttagSpk % If spikes at light duration less than 10% of spikes during pre = activation
         tagLightDir = -1;
     else
         tagLightDir = 0;

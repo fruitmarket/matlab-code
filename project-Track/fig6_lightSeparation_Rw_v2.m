@@ -60,7 +60,7 @@ tnoRw = T;
 tDRw(~(tDRw.taskType == 'DRun'),:) = [];
 tnoRw(~(tnoRw.taskType == 'noRun'),:) = [];
 
-pnDRw = tDRw.fr_task > 0.01 & tDRw.fr_task < 10;
+pnDRw = tDRw.fr_task >0.01  & tDRw.fr_task < 10;
 % npnDRw = sum(double(pn));
 inDRw = tDRw.fr_task > 10;
 % ninDRw = sum(double(inDRw));
@@ -125,7 +125,6 @@ nPnInNo_noRw = sum(double(pnnoRw&intraNo_noRw));
 nPnTagAc_noRw = sum(double(pnnoRw&tagAc_noRw));
 nPnTagIn_noRw = sum(double(pnnoRw&tagIn_noRw));
 nPnTagNo_noRw = sum(double(pnnoRw&tagNo_noRw));
-
 
 % Between block (Inter: Bt)
 xpt_corrPnBtAc = [ones(nPnBtAc_DRw,1);ones(nPnBtAc_noRw,1)*2;
@@ -339,20 +338,3 @@ set(hCorrTag,'YLim',[-1.2 1.2],'XLim',[0, 9],'XTick',[1.5,3.5,5.5,7.5],'XTickLab
 print(gcf,'-depsc','-r300',['PN_Rw_Base_',num2str(cutoff),'_EvOd'])
 
 % close all;
-
-
-% % Population separation track(intra) vs track(inter)
-% subTbl_trXtr_DRun = [sum(double(pnDRun&intraAc_DRun&interAc_DRun)), sum(double(pnDRun&intraAc_DRun&interIn_DRun)), sum(double(pnDRun&intraAc_DRun&interNo_DRun));
-%             sum(double(pnDRun&intraIn_DRun&interAc_DRun)), sum(double(pnDRun&intraIn_DRun&interIn_DRun)), sum(double(pnDRun&intraIn_DRun&interNo_DRun));
-%             sum(double(pnDRun&intraNo_DRun&interAc_DRun)), sum(double(pnDRun&intraNo_DRun&interIn_DRun)), sum(double(pnDRun&intraNo_DRun&interNo_DRun))];
-% subTbl_trXtr_noRun = [sum(double(pnnoRun&intraAc_noRun&interAc_noRun)), sum(double(pnnoRun&intraAc_noRun&interIn_noRun)), sum(double(pnnoRun&intraAc_noRun&interNo_noRun));
-%             sum(double(pnnoRun&intraIn_noRun&interAc_noRun)), sum(double(pnnoRun&intraIn_noRun&interIn_noRun)), sum(double(pnnoRun&intraIn_noRun&interNo_noRun));
-%             sum(double(pnnoRun&intraNo_noRun&interAc_noRun)), sum(double(pnnoRun&intraNo_noRun&interIn_noRun)), sum(double(pnnoRun&intraNo_noRun&interNo_noRun))];
-% 
-% % Population separation track vs tag
-% subTbl_trXtg_DRun = [sum(double(pnDRun&intraAc_DRun&tagAc_DRun)), sum(double(pnDRun&intraAc_DRun&tagIn_DRun)), sum(double(pnDRun&intraAc_DRun&tagNo_DRun));
-%             sum(double(pnDRun&intraIn_DRun&tagAc_DRun)), sum(double(pnDRun&intraIn_DRun&tagIn_DRun)), sum(double(pnDRun&intraIn_DRun&tagNo_DRun));
-%             sum(double(pnDRun&intraNo_DRun&tagAc_DRun)), sum(double(pnDRun&intraNo_DRun&tagIn_DRun)), sum(double(pnDRun&intraNo_DRun&tagNo_DRun))];
-% subTbl_trXtg_noRun = [sum(double(pnnoRun&intraAc_noRun&tagAc_noRun)), sum(double(pnnoRun&intraAc_noRun&tagIn_noRun)), sum(double(pnnoRun&intraAc_noRun&tagNo_noRun));
-%             sum(double(pnnoRun&intraIn_noRun&tagAc_noRun)), sum(double(pnnoRun&intraIn_noRun&tagIn_noRun)), sum(double(pnnoRun&intraIn_noRun&tagNo_noRun));
-%             sum(double(pnnoRun&intraNo_noRun&tagAc_noRun)), sum(double(pnnoRun&intraNo_noRun&tagIn_noRun)), sum(double(pnnoRun&intraNo_noRun&tagNo_noRun))];

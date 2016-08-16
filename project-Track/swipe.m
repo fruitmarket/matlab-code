@@ -26,8 +26,9 @@ nPath = length(filePath);
 %% Swiping contents
 for iPath = 1:nPath
     cd(filePath{iPath});
-    meanFR_block;
-%     psthLight(90);
+    
+%     meanFR_block;
+    psthLight(0);
 %     mapCorrEvOd;
 %     event2mat_track;
 end

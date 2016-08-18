@@ -49,8 +49,8 @@ T(~(T.taskProb == '100'),:) = [];
 tDRw = T;
 tnoRw = T;
 
-tDRw(~(tDRw.taskType == 'DRun'),:) = [];
-tnoRw(~(tnoRw.taskType == 'noRun'),:) = [];
+tDRw(~(tDRw.taskType == 'DRw'),:) = [];
+tnoRw(~(tnoRw.taskType == 'noRw'),:) = [];
 
 pnDRw = tDRw.fr_task >0  & tDRw.fr_task < 10;
 % npnDRw = sum(double(pn));
@@ -219,7 +219,7 @@ rectangle('Position',[5,0.92,0.7,0.02],'FaceColor','none');
 hold on;
 rectangle('Position',[5,0.82,0.7,0.02],'FaceColor',[189, 189, 189]./255);
 ylabel('Place field correlation (r)');
-title('PN & Bewteen block Activation','FontSize',fontL);
+title('PN & Bewteen block Inactivation','FontSize',fontL);
 text(5,0.9,['Light-on (n = ',num2str(nPnBtAc_DRw),')'],'FontSize',fontM);
 text(5,0.8,['Light-off (n = ',num2str(nPnBtAc_noRw),')'],'FontSize',fontM);
 
@@ -235,11 +235,11 @@ hBarBt(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
 myBarFour(ypt_corrPnBtNoMean(:,1),ypt_corrPnBtNoMean(:,2),ypt_corrPnBtNoStd(:,1),ypt_corrPnBtNoStd(:,2))
 ylabel('Place field correlation (r)');
-title('PN & Bewteen block Activation','FontSize',fontL);
+title('PN & Bewteen block No change','FontSize',fontL);
 text(5,0.9,['n = ',num2str(nPnBtNo_DRw)],'FontSize',fontM);
 text(5,0.8,['n = ',num2str(nPnBtNo_noRw)],'FontSize',fontM);
 set(hBarBt,'YLim',[0,1],'FontSize',fontM);
-print(gcf,'-dtiff','-r300','PFcorrelation_Bt');
+print(gcf,'-dtiff','-r300',['PFcorrelation_Bt_Rw_',num2str(cutoff)]);
 %%
 figure(2)
 hBarIn(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
@@ -250,7 +250,7 @@ rectangle('Position',[5,0.92,0.7,0.02],'FaceColor','none');
 hold on;
 rectangle('Position',[5,0.82,0.7,0.02],'FaceColor',[189, 189, 189]./255);
 ylabel('Place field correlation (r)');
-title('PN & Bewteen block Activation','FontSize',fontL);
+title('PN & In block Activation','FontSize',fontL);
 text(5,0.9,['Light-on (n = ',num2str(nPnInAc_DRw),')'],'FontSize',fontM);
 text(5,0.8,['Light-off (n = ',num2str(nPnInAc_noRw),')'],'FontSize',fontM);
 
@@ -258,7 +258,7 @@ hBarIn(2) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
 myBarFour(ypt_corrPnInInMean(:,1),ypt_corrPnInInMean(:,2),ypt_corrPnBtInStd(:,1),ypt_corrPnBtInStd(:,2))
 ylabel('Place field correlation (r)');
-title('PN & Bewteen block Activation','FontSize',fontL);
+title('PN & In block Inactivation','FontSize',fontL);
 text(5,0.9,['n = ',num2str(nPnInIn_DRw)],'FontSize',fontM);
 text(5,0.8,['n = ',num2str(nPnInIn_noRw)],'FontSize',fontM);
 
@@ -266,11 +266,11 @@ hBarIn(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
 myBarFour(ypt_corrPnInNoMean(:,1),ypt_corrPnInNoMean(:,2),ypt_corrPnInNoStd(:,1),ypt_corrPnInNoStd(:,2))
 ylabel('Place field correlation (r)');
-title('PN & Bewteen block Activation','FontSize',fontL);
+title('PN & In block No change','FontSize',fontL);
 text(5,0.9,['n = ',num2str(nPnInNo_DRw)],'FontSize',fontM);
 text(5,0.8,['n = ',num2str(nPnInNo_noRw)],'FontSize',fontM);
 set(hBarIn,'YLim',[0,1],'FontSize',fontM);
-print(gcf,'-dtiff','-r300','PFcorrelation_In');
+print(gcf,'-dtiff','-r300',['PFcorrelation_In_Rw_',num2str(cutoff)]);
 %%
 figure(3)
 hBarNo(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
@@ -281,7 +281,7 @@ rectangle('Position',[5,0.92,0.7,0.02],'FaceColor','none');
 hold on;
 rectangle('Position',[5,0.82,0.7,0.02],'FaceColor',[189, 189, 189]./255);
 ylabel('Place field correlation (r)');
-title('PN & Bewteen block Activation','FontSize',fontL);
+title('PN & Tag Activation','FontSize',fontL);
 text(5,0.9,['Light-on (n = ',num2str(nPnTagAc_DRw),')'],'FontSize',fontM);
 text(5,0.8,['Light-off (n = ',num2str(nPnTagAc_noRw),')'],'FontSize',fontM);
 
@@ -289,7 +289,7 @@ hBarNo(2) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
 myBarFour(ypt_corrPnTagInMean(:,1),ypt_corrPnTagInMean(:,2),ypt_corrPnTagInStd(:,1),ypt_corrPnTagInStd(:,2))
 ylabel('Place field correlation (r)');
-title('PN & Bewteen block Activation','FontSize',fontL);
+title('PN & Tag Inactivation','FontSize',fontL);
 text(5,0.9,['n = ',num2str(nPnTagIn_DRw)],'FontSize',fontM);
 text(5,0.8,['n = ',num2str(nPnTagIn_noRw)],'FontSize',fontM);
 
@@ -297,8 +297,8 @@ hBarNo(3) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
 myBarFour(ypt_corrPnTagNoMean(:,1),ypt_corrPnTagNoMean(:,2),ypt_corrPnTagNoStd(:,1),ypt_corrPnTagNoStd(:,2))
 ylabel('Place field correlation (r)');
-title('PN & Bewteen block Activation','FontSize',fontL);
+title('PN & Tag no change','FontSize',fontL);
 text(5,0.9,['n = ',num2str(nPnTagNo_DRw)],'FontSize',fontM);
 text(5,0.8,['n = ',num2str(nPnTagNo_noRw)],'FontSize',fontM);
 set(hBarNo,'YLim',[0,1],'FontSize',fontM);
-print(gcf,'-dtiff','-r300','PFcorrelation_No');
+print(gcf,'-dtiff','-r300',['PFcorrelation_No_Rw_',num2str(cutoff)]);

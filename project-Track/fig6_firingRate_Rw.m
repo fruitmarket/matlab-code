@@ -32,7 +32,8 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 tightInterval = [0.02 0.02];
-wideInterval = [0.09 0.09];
+midInterval = [0.09 0.09];
+wideInterval = [0.14 0.14];
 
 markerS = 2.2;
 markerM = 4.4;

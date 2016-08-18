@@ -32,7 +32,9 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 tightInterval = [0.02 0.02];
-wideInterval = [0.09 0.09];
+midInterval = [0.09, 0.09];
+wideInterval = [0.14 0.14];
+
 
 markerS = 2.2;
 markerM = 4.4;
@@ -134,7 +136,7 @@ nolaserMeanFRIN_post = tnoRun.meanFR_post(innoRun);
 
 %%
 figure(1) % Baseline firing rate comparison
-hBaseFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+hBaseFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([laserBasePN_pre; laserBasePN_stm; laserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnDRun
@@ -148,7 +150,7 @@ text(3,max([laserBasePN_pre; laserBasePN_stm; laserBasePN_post])-10,['n = ',num2
 ylabel('Spikes number');
 title('Baseline response (track stimulation)','fontSize',fontL);
 
-hBaseFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+hBaseFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([laserBasePN_pre; laserBasePN_stm; laserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnnoRun
@@ -163,7 +165,7 @@ ylabel('Spikes number');
 title('Baseline response (track without stimulation)','fontSize',fontL);
 
 % Track firing rate comparison
-hBaseFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+hBaseFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([laserTrackPN_pre;laserTrackPN_stm;laserTrackPN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnDRun
@@ -177,7 +179,7 @@ text(3,max([laserTrackPN_pre; laserTrackPN_stm; laserTrackPN_post])-10,['n = ',n
 ylabel('Spikes number');
 title('On-Track response (with stimulation)','fontSize',fontL);
 
-hBaseFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+hBaseFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],midInterval));
 hold on;
 rectangle('Position',[1.7,0,0.6,max([laserTrackPN_pre;laserTrackPN_stm;laserTrackPN_post])+10],'FaceColor',colorLightGray,'EdgeColor','none');
 for iCell = 1:npnnoRun
@@ -200,7 +202,7 @@ print(gcf,'-dtiff','-r300','LightResponse_PN_Run');
 
 %%
 figure(2) % Interneuron
-hBaseFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+hBaseFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,1000],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:ninDRun
@@ -214,7 +216,7 @@ text(3,800,['n = ',num2str(ninDRun)]);
 ylabel('Spikes number');
 title('Baseline response (track stimulation)','fontSize',fontL);
 
-hBaseFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+hBaseFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,1000],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:ninnoRun
@@ -229,7 +231,7 @@ ylabel('Spikes number');
 title('Baseline response (track without stimulation)','fontSize',fontL);
 
 % Track firing rate comparison
-hBaseFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+hBaseFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,300],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:ninDRun
@@ -243,7 +245,7 @@ text(3,200,['n = ',num2str(ninDRun)]);
 ylabel('Spikes number');
 title('On-Track response (with stimulation)','fontSize',fontL);
 
-hBaseFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+hBaseFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],midInterval));
 hold on;
 rectangle('Position',[1.7,0,0.6,300],'FaceColor',colorLightGray,'EdgeColor','none');
 for iCell = 1:ninnoRun
@@ -265,7 +267,7 @@ print(gcf,'-dtiff','-r300','LightResponse_IN_Run');
 
 %% Track meanFR chagne
 figure(3)
-hMeanFR(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+hMeanFR(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([laserMeanFRPN_pre;laserMeanFRPN_stm;laserMeanFRPN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:npnDRun
@@ -279,7 +281,7 @@ text(3,max([laserMeanFRPN_pre;laserMeanFRPN_pre;laserMeanFRPN_pre])-5,['n = ',nu
 ylabel('Mean firing rate (Hz)');
 title('Mean firing change (Stimulation sess)','fontSize',fontL);
 
-hMeanFR(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
+hMeanFR(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([nolaserMeanFRPN_pre;nolaserMeanFRPN_stm;nolaserMeanFRPN_post])+10],'FaceColor',colorLightGray,'EdgeColor','none');
 hold on;
 for iCell = 1:npnnoRun
@@ -293,7 +295,7 @@ text(3,max([nolaserMeanFRPN_pre;nolaserMeanFRPN_pre;nolaserMeanFRPN_pre])-5,['n 
 ylabel('Mean firing rate (Hz)');
 title('Mean firing change (No stimulation sess)','fontSize',fontL);
 
-hMeanFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+hMeanFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([laserMeanFRIN_pre;laserMeanFRIN_stm;laserMeanFRIN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:ninDRun
@@ -307,7 +309,7 @@ text(3,max([laserMeanFRIN_pre;laserMeanFRIN_pre;laserMeanFRIN_pre])-5,['n = ',nu
 ylabel('Mean firing rate (Hz)');
 title('Mean firing change (Stimulation sess)','fontSize',fontL);
 
-hMeanFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+hMeanFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([nolaserMeanFRIN_pre;nolaserMeanFRIN_stm;nolaserMeanFRIN_post])+10],'FaceColor',colorLightGray,'EdgeColor','none');
 hold on;
 for iCell = 1:ninnoRun
@@ -330,7 +332,7 @@ print(gcf,'-dtiff','-r300','LightResponse_MeanFR_Run');
 
 %%
 figure(4)
-hScaleFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+hScaleFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([scalelaserBasePN_pre; scalelaserBasePN_stm; scalelaserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:snpnDRun
@@ -344,7 +346,7 @@ text(3,20,['n = ',num2str(snpnDRun)]);
 ylabel('Spikes number');
 title('Baseline response (track stimulation)','fontSize',fontL);
 
-hScaleFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
+hScaleFR(2) = axes('Position',axpt(2,2,2,1,[0.1, 0.1, 0.85, 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([scalelaserBasePN_pre; scalelaserBasePN_stm; scalelaserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:snpnnoRun
@@ -359,7 +361,7 @@ ylabel('Spikes number');
 title('Baseline response (track without stimulation)','fontSize',fontL);
 
 % Track firing rate comparison
-hScaleFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],wideInterval));
+hScaleFR(3) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([scalelaserTrackPN_pre;scalelaserTrackPN_stm;scalelaserTrackPN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:snpnDRun
@@ -373,7 +375,7 @@ text(3,20,['n = ',num2str(snpnDRun)]);
 ylabel('Spikes number');
 title('On-Track response (with stimulation)','fontSize',fontL);
 
-hScaleFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],wideInterval));
+hScaleFR(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85],midInterval));
 hold on;
 rectangle('Position',[1.7,0,0.6,max([scalelaserTrackPN_pre;scalelaserTrackPN_stm;scalelaserTrackPN_post])+10],'FaceColor',colorLightGray,'EdgeColor','none');
 for iCell = 1:snpnnoRun

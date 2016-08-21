@@ -1,41 +1,44 @@
-function trackplot_v2.0()
+function trackPlot_v3()
 % ##### Modified Dohyoung Kim's code. Thanks to Dohyoung! ##### %
+% This v3.0 is used for collecting cell figures.
 % Plot figure
+clearvars
 
-rtdir = pwd;
-% [matFile, nFile] = matfilecollector;
+rtdir = 'D:\Dropbox\SNL\P2_Track';
+cd(rtdir);
+load('cellList_new_0.mat');
 
-load('cellList_new.mat');
-T((T.taskType == 'nolight'),:) = [];
-T(~(T.taskProb == '100'),:) = [];
-T((T.taskType == 'DRun'),:) = [];
-T((T.taskType == 'noRun'),:) = [];
-tDRw = T;
+cds{1,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
+cds{2,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
+cds{3,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
+cds{4,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
+cds{5,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
+cds{6,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
+cds{7,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
+cds{8,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
+cds{9,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
+cds{10,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
+cds{11,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
+cds{12,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
 
-pnDRw = tDRw.fr_task > 0 & tDRw.fr_task < 10;
-npnDRw = sum(double(pnDRw));
-inDRw = tDRw.fr_task > 10;
-ninDRw = sum(double(inDRw));
+cds{1,2} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 1 & T.fr_task>10;
+cds{2,2} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 0 & T.fr_task>10;
+cds{3,2} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == -1 & T.fr_task>10;
+cds{4,2} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 1 & T.fr_task>10;
+cds{5,2} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 0 & T.fr_task>10;
+cds{6,2} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == -1 & T.fr_task>10;
+cds{7,2} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 1 & T.fr_task>10;
+cds{8,2} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 0 & T.fr_task>10;
+cds{9,2} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == -1 & T.fr_task>10;
+cds{10,2} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 1 & T.fr_task>10;
+cds{11,2} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 0 & T.fr_task>10;
+cds{12,2} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == -1 & T.fr_task>10;
 
-intraAc = tDRw.intraLightDir==1;
-intraIn = tDRw.intraLightDir==-1;
-intraNo = tDRw.intraLightDir==0;
+for iPath = 1:12
+   figList = T.Path(cds{iPath,2});
 
-interAc = tDRw.interLightDir==1;
-interIn = tDRw.interLightDir==-1;
-interNo = tDRw.interLightDir==0;
-
-tagAc = tDRw.tagLightDir==1;
-tagIn = tDRw.tagLightDir==-1;
-tagNo = tDRw.tagLightDir==0;
-
-matFile = T.Path(pnDRw&intraAc&interAc);
-nFile = length(matFile);
-
-
-% load cellList_Nolight_100.mat
-% matFile = T.Path;
-% nFile = length(matFile);
+% Saving location
+figPath{iPath,1} = ['C:\Users\Jun\Desktop\cellFig\',num2str(iPath)];
 
 % Plot properties
 lineClr = {[0.8 0 0], ... % Cue A, Rw, no mod
@@ -93,8 +96,10 @@ markerS = 2.2;
 markerM = 4.4;
 markerL = 6.6;
 
+nFile = length(figList);
+
 for iFile = 1:nFile
-    [cellDir,cellName,~] = fileparts(matFile{iFile});
+    [cellDir,cellName,~] = fileparts(figList{iFile});
     cellDirSplit = regexp(cellDir,'\','split');
     cellFigName = strcat(cellDirSplit(end-1),'_',cellDirSplit(end),'_',cellName);
     
@@ -111,14 +116,14 @@ for iFile = 1:nFile
     end
     
     cd(cellDir);
-    load(matFile{iFile});
+    load(figList{iFile});
     load('Events.mat');  
     
     % Cell information
     fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 18.3 13.725]);
     hText = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowSub,1,1:2,[],wideInterval),tightInterval));
     hold on;
-    text(0,1.5,matFile{iFile}, 'FontSize',fontM, 'Interpreter','none');
+    text(0,1.5,figList{iFile}, 'FontSize',fontM, 'Interpreter','none');
 %     text(0,0.9,['p_A = ',num2str(trialResult(1)/(trialResult(1)+trialResult(3)),2), ...
 %         ', p_B = ',num2str(trialResult(5)/(trialResult(5)+trialResult(7)),2)], 'FontSize', fontS);
     text(0,0.7,['Mean firing rate (baseline): ',num2str(fr_base,3), ' Hz'], 'FontSize',fontS);
@@ -342,16 +347,12 @@ for iFile = 1:nFile
 
         % Pearson's correlation
         hCorr = axes('Position',axpt(6,1,4,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),wideInterval));
-        xptPcomp = 1:3;
-        yptStim = compPearson_r(1:3);
-        yptPost = compPearson_r(4:6);
+        xptPcomp = 1:4;
+        yptStim = [r_Corrhfxhf;r_Corrbfxdr;r_Corrbfxaft;r_Corrdrxaft];
         hold on;
-        plot(xptPcomp,yptStim,...
-            'Marker','o','MarkerSize',markerL,'MarkerFaceColor',colorRed,'MarkerEdgeColor','k','Color',colorRed);
-        hold on;
-        plot(xptPcomp,yptPost,...
-            'Marker','s','MarkerSize',markerL,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','Color',colorBlue);
-        set(hCorr,'XLim',[0,4],'YLim',[-1.2 1.2],'XTick',1:3, 'XTickLabel',{'1','2','3'},'YTick',[-1:0.5:1],'FontSize',fontM,'LineWidth',lineS);
+        bar(xptPcomp,yptStim,0.6,...
+            'FaceColor',colorGray,'EdgeColor','k');
+        set(hCorr,'XLim',[0,5],'YLim',[-1.2 1.2],'XTick',1:4, 'XTickLabel',{'hxh','bxd','bxa','dxa'},'YTick',[-1:0.5:1],'FontSize',fontS,'LineWidth',lineM,'TickDir','out');
 
         % Light modulation direction 
         if exist('lightSpk','var') && exist('psdPreSpk','var')
@@ -430,10 +431,10 @@ for iFile = 1:nFile
             set(hPsth(iSensor),'YLim',[0 ylimpsth(iSensor)]);
         end
         
-        cd(rtdir);
+        cd(figPath{iPath,1});
         print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
         close;
 end
 cd(rtdir);
-
+end
 

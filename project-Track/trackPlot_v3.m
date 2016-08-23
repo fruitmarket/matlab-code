@@ -6,7 +6,7 @@ clearvars
 
 rtdir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtdir);
-load('cellList_new_0.mat');
+load('cellList_new_100.mat');
 
 cds{1,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
 cds{2,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
@@ -21,21 +21,21 @@ cds{10,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 1 & 
 cds{11,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
 cds{12,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
 
-cds{1,2} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 1 & T.fr_task>10;
-cds{2,2} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 0 & T.fr_task>10;
-cds{3,2} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == -1 & T.fr_task>10;
-cds{4,2} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 1 & T.fr_task>10;
-cds{5,2} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 0 & T.fr_task>10;
-cds{6,2} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == -1 & T.fr_task>10;
-cds{7,2} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 1 & T.fr_task>10;
-cds{8,2} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 0 & T.fr_task>10;
-cds{9,2} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == -1 & T.fr_task>10;
-cds{10,2} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 1 & T.fr_task>10;
-cds{11,2} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 0 & T.fr_task>10;
-cds{12,2} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == -1 & T.fr_task>10;
+cds{13,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 1 & T.fr_task>10;
+cds{14,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 0 & T.fr_task>10;
+cds{15,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == -1 & T.fr_task>10;
+cds{16,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 1 & T.fr_task>10;
+cds{17,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 0 & T.fr_task>10;
+cds{18,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == -1 & T.fr_task>10;
+cds{19,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 1 & T.fr_task>10;
+cds{20,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 0 & T.fr_task>10;
+cds{21,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == -1 & T.fr_task>10;
+cds{22,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 1 & T.fr_task>10;
+cds{23,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 0 & T.fr_task>10;
+cds{24,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == -1 & T.fr_task>10;
 
-for iPath = 1:12
-   figList = T.Path(cds{iPath,2});
+for iPath = 1:24
+   figList = T.Path(cds{iPath,1});
 
 % Saving location
 figPath{iPath,1} = ['C:\Users\Jun\Desktop\cellFig\',num2str(iPath)];
@@ -308,43 +308,60 @@ for iFile = 1:nFile
     end  
        
     %% Heat map
-        hMap(1) = axes('Position',axpt(6,1,1,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
-            hold on;
-            pre_ratemap(pre_ratemap==0) = NaN;
-            hField(1) = pcolor(pre_ratemap);
-            peak = max(max(pre_ratemap))*sfreq(1);
-            text(60, 10, [num2str(ceil(peak)), ' Hz'],'color','k','FontSize',fontM);
-            
-        hMap(2) = axes('Position',axpt(6,1,2,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
-            hold on;        
-            stm_ratemap(stm_ratemap==0) = NaN;
-            peak = max(max(stm_ratemap))*sfreq(1);          
-            hField(2) = pcolor(stm_ratemap);
-            text(60, 10, [num2str(ceil(peak)), ' Hz'],'color','k','FontSize',fontM);
-            % Drawing arc
-            if ~isempty(lightTime.Modu)
-                hold on;
-                arc_r = 20;
-                x = arc_r*cos(arc)+45;
-                y = arc_r*sin(arc)+25;
-                if exist('xptModuBlue','var');
-                plot(x,y,'LineWidth',5,'color',colorBlue);
-                else exist('xptModuYel','var');
-                plot(x,y,'LineWidth',5,'color',colorYellow);
-                end
-            else
-            end;
-
-        hMap(3) = axes('Position',axpt(6,1,3,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
-            hold on;
-            post_ratemap(post_ratemap==0) = NaN;
-            hField(3) = pcolor(post_ratemap);
-            peak = max(max(post_ratemap))*sfreq(1);
-            text(60, 10, [num2str(ceil(peak)), ' Hz'],'color','k','FontSize',fontM);
-            
-        set(hField,'linestyle','none');       
-        set(hMap,'XLim',[15 75],'YLim',[5 45],'XTick',[5:5:45],'YTick',[5:5:45],'visible','off');
-
+    pre_ratemap(pre_ratemap==0) = NaN;
+    peak_pre = max(max(pre_ratemap))*sfreq(1);
+    stm_ratemap(stm_ratemap==0) = NaN;
+    peak_stm = max(max(stm_ratemap))*sfreq(1);
+    post_ratemap(post_ratemap==0) = NaN;
+    peak_post = max(max(post_ratemap))*sfreq(1);
+    
+    totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
+    hMap(1) = axes('Position',axpt(nCol,nRowMain,1:2,2,[],wideInterval));
+        hold on;
+        hField = pcolor(totalmap);
+    set(hField,'linestyle','none');
+    set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
+    text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
+    text(17,0,'Pre-stm','color','k','FontSize',fontM);
+    text(65,0,'Stm','color','k','FontSize',fontM)
+    text(107,0,'Post-stm','color','k','FontSize',fontM)
+%         hMap(1) = axes('Position',axpt(6,1,1,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
+%             hold on;
+%             pre_ratemap(pre_ratemap==0) = NaN;
+%             hField(1) = pcolor(pre_ratemap);
+%             peak_pre = max(max(pre_ratemap))*sfreq(1);
+%             text(60, 10, [num2str(ceil(peak_pre)), ' Hz'],'color','k','FontSize',fontM);
+%             
+%         hMap(2) = axes('Position',axpt(6,1,2,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
+%             hold on;        
+%             stm_ratemap(stm_ratemap==0) = NaN;
+%             peak_stm = max(max(stm_ratemap))*sfreq(1);          
+%             hField(2) = pcolor(stm_ratemap);
+%             text(60, 10, [num2str(ceil(peak_stm)), ' Hz'],'color','k','FontSize',fontM);
+%             % Drawing arc
+%             if ~isempty(lightTime.Modu)
+%                 hold on;
+%                 arc_r = 20;
+%                 x = arc_r*cos(arc)+45;
+%                 y = arc_r*sin(arc)+25;
+%                 if exist('xptModuBlue','var');
+%                 plot(x,y,'LineWidth',5,'color',colorBlue);
+%                 else exist('xptModuYel','var');
+%                 plot(x,y,'LineWidth',5,'color',colorYellow);
+%                 end
+%             else
+%             end;
+% 
+%         hMap(3) = axes('Position',axpt(6,1,3,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
+%             hold on;
+%             post_ratemap(post_ratemap==0) = NaN;
+%             hField(3) = pcolor(post_ratemap);
+%             peak_post = max(max(post_ratemap))*sfreq(1);
+%             text(60, 10, [num2str(ceil(peak_post)), ' Hz'],'color','k','FontSize',fontM);
+%             
+%         set(hField,'linestyle','none');       
+%         set(hMap,'XLim',[15 75],'YLim',[5 45],'XTick',[5:5:45],'YTick',[5:5:45],'visible','off');
+% 
         % Pearson's correlation
         hCorr = axes('Position',axpt(6,1,4,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),wideInterval));
         xptPcomp = 1:4;

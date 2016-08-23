@@ -270,55 +270,66 @@ for iFile = 1:nFile
     end  
        
     %% Heat map
-        hMap(1) = axes('Position',axpt(nCol,nRowMain,1,2,[],wideInterval));
-            hold on;
-            pre_ratemap(pre_ratemap==0) = NaN;
-            hField(1) = pcolor(pre_ratemap);
-            peak = max(max(pre_ratemap))*sfreq(1);
-            text(60, 10, [num2str(ceil(peak)), ' Hz'],'color','k','FontSize',fontM);
-%             text(45.5, 34,'S12','FontSize',fontS); 
-%             text(50, 31,'S1','FontSize',fontS);
-%             text(54, 28,'S2','FontSize',fontS); 
-%             text(57.5, 25,'S3','FontSize',fontS);
-%             text(54, 22,'S4','FontSize',fontS);
-%             text(50, 19,'S5','FontSize',fontS);
-%             text(45.5, 16,'S6','FontSize',fontS);
-%             text(41.5, 19,'S7','FontSize',fontS);
-%             text(37.5, 22,'S8','FontSize',fontS);
-%             text(35, 25,'S9','FontSize',fontS);
-%             text(37.5, 28,'S10','FontSize',fontS);
-%             text(41.5, 31,'S11','FontSize',fontS);
-            
-        hMap(2) = axes('Position',axpt(nCol,nRowMain,2,2,[],wideInterval));
-            hold on;        
-            stm_ratemap(stm_ratemap==0) = NaN;
-            peak = max(max(stm_ratemap))*sfreq(1);          
-            hField(2) = pcolor(stm_ratemap);
-            text(60, 10, [num2str(ceil(peak)), ' Hz'],'color','k','FontSize',fontM);
-            % Drawing arc
-            if ~isempty(lightTime.Modu)
-                hold on;
-                arc_r = 20;
-                x = arc_r*cos(arc)+45;
-                y = arc_r*sin(arc)+25;
-                if exist('xptModuBlue','var');
-                plot(x,y,'LineWidth',5,'color',colorBlue);
-                else exist('xptModuYel','var');
-                plot(x,y,'LineWidth',5,'color',colorYellow);
-                end
-            else
-            end;
-
-        hMap(3) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
-            hold on;
-            post_ratemap(post_ratemap==0) = NaN;
-            hField(3) = pcolor(post_ratemap);
-            peak = max(max(post_ratemap))*sfreq(1);
-            text(60, 10, [num2str(ceil(peak)), ' Hz'],'color','k','FontSize',fontM);
-            
-        set(hField,'linestyle','none');       
-        set(hMap,'XLim',[15 75],'YLim',[5 45],'XTick',[5:5:45],'YTick',[5:5:45],'visible','off');
-
+    pre_ratemap(pre_ratemap==0) = NaN;
+    peak_pre = max(max(pre_ratemap))*sfreq(1);
+    stm_ratemap(stm_ratemap==0) = NaN;
+    peak_stm = max(max(stm_ratemap))*sfreq(1);
+    post_ratemap(post_ratemap==0) = NaN;
+    peak_post = max(max(post_ratemap))*sfreq(1);
+    
+    totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
+    hMap(1) = axes('Position',axpt(nCol,nRowMain,1:3,2,[],wideInterval));
+        hold on;
+        hField = pcolor(totalmap);
+        set(hField,'linestyle','none');
+        set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
+        text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
+        text(18,0,'Pre-stm','color','k','FontSize',fontM);
+        text(65,0,'Stm','color','k','FontSize',fontM)
+        text(109,0,'Post-stm','color','k','FontSize',fontM)
+%     hMap(1) = axes('Position',axpt(nCol,nRowMain,1,2,[],wideInterval));
+%             hold on;
+%             hField(1) = pcolor(pre_ratemap);
+%             text(60, 10, [num2str(ceil(peak_pre)), ' Hz'],'color','k','FontSize',fontM);
+% %             text(45.5, 34,'S12','FontSize',fontS); 
+% %             text(50, 31,'S1','FontSize',fontS);
+% %             text(54, 28,'S2','FontSize',fontS); 
+% %             text(57.5, 25,'S3','FontSize',fontS);
+% %             text(54, 22,'S4','FontSize',fontS);
+% %             text(50, 19,'S5','FontSize',fontS);
+% %             text(45.5, 16,'S6','FontSize',fontS);
+% %             text(41.5, 19,'S7','FontSize',fontS);
+% %             text(37.5, 22,'S8','FontSize',fontS);
+% %             text(35, 25,'S9','FontSize',fontS);
+% %             text(37.5, 28,'S10','FontSize',fontS);
+% %             text(41.5, 31,'S11','FontSize',fontS);
+%             
+%         hMap(2) = axes('Position',axpt(nCol,nRowMain,2,2,[],wideInterval));
+%             hold on;            
+%             hField(2) = pcolor(stm_ratemap);
+%             text(60, 10, [num2str(ceil(peak_stm)), ' Hz'],'color','k','FontSize',fontM);
+%             % Drawing arc
+%             if ~isempty(lightTime.Modu)
+%                 hold on;
+%                 arc_r = 20;
+%                 x = arc_r*cos(arc)+45;
+%                 y = arc_r*sin(arc)+25;
+%                 if exist('xptModuBlue','var');
+%                 plot(x,y,'LineWidth',5,'color',colorBlue);
+%                 else exist('xptModuYel','var');
+%                 plot(x,y,'LineWidth',5,'color',colorYellow);
+%                 end
+%             else
+%             end;
+%  % 
+%         hMap(3) = axes('Position',axpt(nCol,nRowMain,3,2,[],wideInterval));
+%             hold on;
+%             hField(3) = pcolor(post_ratemap);
+%             text(60, 10, [num2str(ceil(peak_post)), ' Hz'],'color','k','FontSize',fontM);
+% %             set(gca,'CLim',[0, max([peak_pre, peak_stm, peak_post])]);
+%         set(hField,'linestyle','none');       
+%         set(hMap,'XLim',[15 75],'YLim',[5 45],'XTick',[5:5:45],'YTick',[5:5:45],'visible','off');
+        
 %         axes('Position',[startpoints(2,1) 0.15 0.8 0.1])
 %             text(0.10,0.5,[num2str(ceil(max(max(pre_ratemap))*sfreq(1))), ' Hz'],'color','k','FontSize',10);
 %             text(0.06,0.2,'Pre-Stimulation','FontSize',9);

@@ -330,7 +330,7 @@ set(hMeanFR(4),'XLim',[0,4],'YLim',[-1, 50],'XTick',[1,2,3],'XTickLabel',{'Pre-s
 set(hMeanFR,'TickDir','out');
 print(gcf,'-dtiff','-r300','LightResponse_MeanFR_Run');
 
-%%
+%% Zoom in fig
 figure(4)
 hScaleFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],midInterval));
 rectangle('Position',[1.7,0,0.6,max([scalelaserBasePN_pre; scalelaserBasePN_stm; scalelaserBasePN_post])+10],'FaceColor',colorLightBlue,'EdgeColor','none');
@@ -397,6 +397,28 @@ set(hScaleFR,'TickDir','out');
 print(gcf,'-dtiff','-r300','Scale up_Run');
 
 %%
+% figure(1)
+% h2Dplot(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+% hold on;
+% line([0,25],[0,25],'Color','k','LineWidth',1);
+% hold on;
+% scatter([scalelaserBasePN_stm;scalenolaserBasePN_stm],[scalelaserBasePN_pre;scalenolaserBasePN_pre],scatterS,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray)
+% xlabel('Spike number (Stm)');
+% ylabel('Spike number (Pre)');
+% title('Laser session_Baseline','interpreter','none');
+% 
+% h2Dplot(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
+% hold on;
+% line([0,25],[0,25],'Color','k','LineWidth',1);
+% hold on;
+% scatter([scalelaserBasePN_stm;scalenolaserBasePN_stm],[scalelaserBasePN_post;scalenolaserBasePN_post],scatterS,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray)
+% text(20,10,['n = ',num2str(length(scalelaserBasePN_stm)+length(scalenolaserBasePN_stm))]);
+% xlabel('Spike number (Stm)');
+% ylabel('Spike number (Post)');
+% title('Laser session_Baseline','interpreter','none');
+% set(h2Dplot,'XLim',[-1,25],'YLim',[-1, 25],'TickDir','out');
+% print(gcf,'-dtiff','-r300','2D-plotBaseline_Run_total');
+
 figure(5)
 h2Dplot(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;
@@ -435,7 +457,7 @@ ylabel('Spike number (Post)');
 title('No laser session_Baseline','interpreter','none');
 
 set(h2Dplot,'XLim',[-1,25],'YLim',[-1, 25],'TickDir','out');
-print(gcf,'-dtiff','-r300','2D-plotBaseline_Run');
+print(gcf,'-dtiff','-r300','2D-plotBaseline_Run_total');
 
 %%
 figure(6)

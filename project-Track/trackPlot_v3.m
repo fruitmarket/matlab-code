@@ -102,17 +102,13 @@ for iFile = 1:nFile
     [cellDir,cellName,~] = fileparts(figList{iFile});
     cellDirSplit = regexp(cellDir,'\','split');
     cellFigName = strcat(cellDirSplit(end-1),'_',cellDirSplit(end),'_',cellName);
+    sfreq = [30 60];
     
     % Arc property
-    sfreq = [30 60];
     if ~isempty(strfind(cellDir,'DRun'));
-        arc = linspace(pi/6*5,pi/2*3,200); % s6-s10
-    elseif ~isempty(strfind(cellDir,'ARw'));
-        arc = linspace(pi,pi/6*10,200); % Optic stimulation position indicator
-    elseif ~isempty(strfind(cellDir,'BRw'));
-        arc = linspace(pi/6*5,pi/6*7,200); % Optic stimulation position indicator
+        arc = linspace(pi,pi/2*3,170); % s6-s9
     else ~isempty(strfind(cellDir,'DRw'));
-        arc = linspace(pi/6*5, pi/6*4,200);
+        arc = linspace(pi/6*5, pi/6*4,170);
     end
     
     cd(cellDir);
@@ -319,6 +315,19 @@ for iFile = 1:nFile
     hMap(1) = axes('Position',axpt(nCol,nRowMain,1:2,2,[],wideInterval));
         hold on;
         hField = pcolor(totalmap);
+        
+        if ~isempty(lightTime.Modu)
+            hold on;
+            arc_r = 20;
+            x = arc_r*cos(arc)+70;
+            y = arc_r*sin(arc)+25;
+            if exist('xptModuBlue','var');
+                plot(x,y,'LineWidth',4,'color',colorBlue);
+            else exist('xptModuYel','var');
+                plot(x,y,'LineWidth',4,'color',colorYellow);
+            end
+        else
+        end;
     set(hField,'linestyle','none');
     set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
     text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
@@ -339,18 +348,6 @@ for iFile = 1:nFile
 %             hField(2) = pcolor(stm_ratemap);
 %             text(60, 10, [num2str(ceil(peak_stm)), ' Hz'],'color','k','FontSize',fontM);
 %             % Drawing arc
-%             if ~isempty(lightTime.Modu)
-%                 hold on;
-%                 arc_r = 20;
-%                 x = arc_r*cos(arc)+45;
-%                 y = arc_r*sin(arc)+25;
-%                 if exist('xptModuBlue','var');
-%                 plot(x,y,'LineWidth',5,'color',colorBlue);
-%                 else exist('xptModuYel','var');
-%                 plot(x,y,'LineWidth',5,'color',colorYellow);
-%                 end
-%             else
-%             end;
 % 
 %         hMap(3) = axes('Position',axpt(6,1,3,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
 %             hold on;

@@ -263,7 +263,7 @@ set(hBaseFR(3),'XLim',[0,4],'YLim',[-1, 300],'XTick',[1,2,3],'XTickLabel',{'Pre-
 set(hBaseFR(4),'XLim',[0,4],'YLim',[-1, 300],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
 set(hBaseFR,'TickDir','out');
 print(gcf,'-dtiff','-r300','LightResponse_IN_Rw');
-
+% 
 %% Track meanFR chagne
 figure(3)
 hMeanFR(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
@@ -328,7 +328,7 @@ set(hMeanFR(3),'XLim',[0,4],'YLim',[-1, 50],'XTick',[1,2,3],'XTickLabel',{'Pre-s
 set(hMeanFR(4),'XLim',[0,4],'YLim',[-1, 50],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
 set(hMeanFR,'TickDir','out');
 print(gcf,'-dtiff','-r300','LightResponse_MeanFR_Rw');
-
+% 
 %%
 figure(4)
 hScaleFR(1) = axes('Position',axpt(2,2,1,1,[0.1, 0.1, 0.85, 0.85],wideInterval));
@@ -396,6 +396,28 @@ set(hScaleFR,'TickDir','out');
 print(gcf,'-dtiff','-r300','Scale up_Rw');
 
 %%
+% figure(1)
+% h2Dplot(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+% hold on;
+% line([0,25],[0,25],'Color','k','LineWidth',1);
+% hold on;
+% scatter([scalelaserBasePN_stm;scalenolaserBasePN_stm],[scalelaserBasePN_pre;scalenolaserBasePN_pre],scatterS,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray)
+% xlabel('Spike number (Stm)');
+% ylabel('Spike number (Pre)');
+% title('Laser session_Baseline','interpreter','none');
+% 
+% h2Dplot(2) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85],wideInterval));
+% hold on;
+% line([0,25],[0,25],'Color','k','LineWidth',1);
+% hold on;
+% scatter([scalelaserBasePN_stm;scalenolaserBasePN_stm],[scalelaserBasePN_post;scalenolaserBasePN_post],scatterS,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray)
+% xlabel('Spike number (Stm)');
+% ylabel('Spike number (Post)');
+% text(20,15,['n = ',num2str(length(scalelaserBasePN_stm)+length(scalenolaserBasePN_stm))]);
+% title('Laser session_Baseline','interpreter','none');
+% set(h2Dplot,'XLim',[-1,25],'YLim',[-1, 25],'TickDir','out');
+% print(gcf,'-dtiff','-r300','2D-plotBaseline_Rw_total');
+
 figure(5)
 h2Dplot(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
 hold on;

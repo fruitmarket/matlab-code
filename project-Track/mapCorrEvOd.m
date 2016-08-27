@@ -44,14 +44,14 @@ for iCell = 1:nCell
         t_odd = vtTime{1}(oddLap);
         p_odd = vtPosition{1}(oddLap,:);
         
-        [even_fr_map, temp_even_visit_map, ~, ~] = findmaps_trim(t_even,p_even,tData{iCell},field_ratio);
+        [even_fr_map, temp_even_visit_map, ~, ~] = findmaps(t_even,p_even,tData{iCell},field_ratio);
         if isempty(temp_even_visit_map~=0)
             even_meanrate = 0;
         else
             even_meanrate = sum(even_fr_map)/sum(temp_even_visit_map);
         end
         
-        [odd_fr_map, temp_odd_visit_map, ~, ~] = findmaps_trim(t_odd,p_odd,tData{iCell},field_ratio);
+        [odd_fr_map, temp_odd_visit_map, ~, ~] = findmaps(t_odd,p_odd,tData{iCell},field_ratio);
         if isempty(temp_odd_visit_map~=0)
             odd_meanrate = 0;
         else

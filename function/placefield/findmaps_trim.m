@@ -8,7 +8,7 @@ function [fr_map, visit_map, visit_dur, flags] = findmaps_trim(time, position, s
 
 %%
 % time: msec unit.
-% mapThreshold = 1; Not using so far
+mapThreshold = 5; % Not using so far
 
 spk = histc(spkdata*10, time*10); % spk: 100u-sec unit
 % spk = histc(spkdata, time); % spk: 100u-sec unit
@@ -64,7 +64,7 @@ fr_map = re_firing_map;
 visit_map = re_num_visit;
 
 % Trim the field.
-% visit_map(visit_map<mapThreshold) = 0;
+visit_map(visit_map<mapThreshold) = 0;
 for irow = 2:size(visit_map,1)-1
     for icol = 2:size(visit_map,2)-1
         if sum(sum(visit_map(irow-1:irow+1,icol-1:icol+1)==0))>=7; % if the array is surrounded by zeros, then make that array zero

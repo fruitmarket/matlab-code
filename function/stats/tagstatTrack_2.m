@@ -7,8 +7,9 @@ function stats = tagstatTrack_2()
 
 % Variables
 dt = 0.1;
-testWindow = 15;
-baseWindow = 80;
+testWindow = 10;
+baseWindow = 100;
+latency = 4;
 
 nT = length(tList);
 [pSalt, lSalt, pLR] = deal(zeros(nT, 1));
@@ -18,7 +19,7 @@ for iT = 1:nT
     [cellPath, cellName,~] = fileparts(tList{iT});
 
     load([cellPath,'\Events.mat'], 'lightTime');
-    lighttime = lightTime.Modu;
+    lighttime = lightTime.Modu+latency;
 
     [spikeLatency, spikeCensor] = tagDataLoad(tData{iT}, lighttime', testWindow, baseWindow);
 

@@ -19,13 +19,12 @@ binSizeTagBlue = 2;
 winTagYel = [-500 2000]; % unit: msec
 binSizeTagYel = 20;
 
-% Find files
-[ttFile, nCell] = tfilecollector;
-ttData = LoadSpikes(ttFile,'tsflag','ts','verbose',0);
+[tData, tList] = tLoad;
+nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Analyzing ',ttFile{iCell},'...']);
-    [cellPath,cellName,~] = fileparts(ttFile{iCell});
+    disp(['### Analyzing ',tList{iCell},'...']);
+    [cellPath,cellName,~] = fileparts(tList{iCell});
     cd(cellPath);
     
     % Load Events variables
@@ -33,7 +32,7 @@ for iCell = 1:nCell
     win = [-1, 1]*1000; % unit:msec, window for binning
     
     % Load Spike data
-    spikeData = Data(ttData{iCell})/10; % unit: msec
+    spikeData = tData{iCell}; % unit: msec
     
     % Mean firing rate
     fr_base = sum(histc(spikeData,baseTime))/(diff(baseTime)/1000);
@@ -64,7 +63,6 @@ for iCell = 1:nCell
         'fr_base','fr_task','burstIdx',...
         'spikeTime',...
         'win','xpt','ypt','psthtime','psthbar','psthconv','psthconvz');
-
     
     % Light Modulation
     if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu);

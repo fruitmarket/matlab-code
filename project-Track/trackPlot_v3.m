@@ -1,68 +1,10 @@
 function trackPlot_v3()
 % ##### Modified Dohyoung Kim's code. Thanks to Dohyoung! ##### %
-% This v3.0 is used for collecting cell figures.
-% Plot figure
-clearvars
-
-rtdir = 'D:\Dropbox\SNL\P2_Track';
-cd(rtdir);
-load('cellList_new_100.mat');
-
-cds{1,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
-cds{2,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
-cds{3,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
-cds{4,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
-cds{5,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
-cds{6,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
-cds{7,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
-cds{8,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
-cds{9,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
-cds{10,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 1 & T.fr_task>0 & T.fr_task<10;
-cds{11,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 0 & T.fr_task>0 & T.fr_task<10;
-cds{12,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == -1 & T.fr_task>0 & T.fr_task<10;
-
-cds{13,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 1 & T.fr_task>10;
-cds{14,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == 0 & T.fr_task>10;
-cds{15,1} = T.taskProb == '100' & T.taskType == 'DRun' & T.intraLightDir == -1 & T.fr_task>10;
-cds{16,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 1 & T.fr_task>10;
-cds{17,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == 0 & T.fr_task>10;
-cds{18,1} = T.taskProb == '100' & T.taskType == 'noRun' & T.intraLightDir == -1 & T.fr_task>10;
-cds{19,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 1 & T.fr_task>10;
-cds{20,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == 0 & T.fr_task>10;
-cds{21,1} = T.taskProb == '100' & T.taskType == 'DRw' & T.intraLightDir == -1 & T.fr_task>10;
-cds{22,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 1 & T.fr_task>10;
-cds{23,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == 0 & T.fr_task>10;
-cds{24,1} = T.taskProb == '100' & T.taskType == 'noRw' & T.intraLightDir == -1 & T.fr_task>10;
-
-for iPath = 1:24
-   figList = T.Path(cds{iPath,1});
-
-% Saving location
-figPath{iPath,1} = ['C:\Users\Jun\Desktop\cellFig\',num2str(iPath)];
+% This v3.0 draws figures which are based on mat-files in the folder
+%
+% 
 
 % Plot properties
-lineClr = {[0.8 0 0], ... % Cue A, Rw, no mod
-    [1 0.6 0.6], ... % Cue A, Rw, mod
-    [1 0.6 0], ... % Cue A, no Rw, no mod
-    [1 0.8 0.4], ... % Cue A, no Rw, mod
-    [0 0 0.8], ... % Cue B, Rw, no mod
-    [0.6 0.6 1], ... % Cue B, Rw, mod
-    [0 0.6 1], ... % Cue B, no Rw, no mod
-    [0.4 0.8 1], ... % Cue B, no Rw, mod
-    [1 0.6 0], ... % Cue C
-    [1 1 0.4], ...
-    [1 0.6 0], ...
-    [1 1 0.4], ...
-    [0 0.6 1], ... % Cue D
-    [0.4 1 1], ...
-    [0 0.6 1], ...
-    [0.4 1 1]};
-
-lineStl = {'-', '-', '-', '-', ...
-    '-', '-', '-', '-', ...
-    '-', '-', '-', '-', ...
-    '-', '-', '-', '-'};
-
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [244, 67, 54]./255,... % During stimulation
     [38, 50, 56]./255}; % After stimulation
@@ -96,10 +38,11 @@ markerS = 2.2;
 markerM = 4.4;
 markerL = 6.6;
 
-nFile = length(figList);
+matFile = mLoad;
+nFile = length(matFile);
 
 for iFile = 1:nFile
-    [cellDir,cellName,~] = fileparts(figList{iFile});
+    [cellDir,cellName,~] = fileparts(matFile{iFile});
     cellDirSplit = regexp(cellDir,'\','split');
     cellFigName = strcat(cellDirSplit(end-1),'_',cellDirSplit(end),'_',cellName);
     sfreq = [30 60];
@@ -112,14 +55,14 @@ for iFile = 1:nFile
     end
     
     cd(cellDir);
-    load(figList{iFile});
+    load(matFile{iFile});
     load('Events.mat');  
     
     % Cell information
     fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 18.3 13.725]);
     hText = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowSub,1,1:2,[],wideInterval),tightInterval));
     hold on;
-    text(0,1.5,figList{iFile}, 'FontSize',fontM, 'Interpreter','none');
+    text(0,1.5,matFile{iFile}, 'FontSize',fontM, 'Interpreter','none');
 %     text(0,0.9,['p_A = ',num2str(trialResult(1)/(trialResult(1)+trialResult(3)),2), ...
 %         ', p_B = ',num2str(trialResult(5)/(trialResult(5)+trialResult(7)),2)], 'FontSize', fontS);
     text(0,0.7,['Mean firing rate (baseline): ',num2str(fr_base,3), ' Hz'], 'FontSize',fontS);
@@ -157,7 +100,7 @@ for iFile = 1:nFile
         nBlue = length(lightTime.Tag);
         winBlue = [min(psthtimeTagBlue) max(psthtimeTagBlue)];
 
-        % Blue tag raster
+    % Blue tag raster
         hTagBlue(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,2,1,[],wideInterval),tightInterval));
         plot(xptTagBlue{1},yptTagBlue{1},...
             'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
@@ -166,7 +109,7 @@ for iFile = 1:nFile
         ylabel('Trials','FontSize',fontS);
         title('Tagging (2Hz)','FontSize',fontM);
         
-        % Blue tag psth
+    % Blue tag psth
         hTagBlue(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,2,1,[],wideInterval),tightInterval));
         hold on;
         yLimBarBlue = ceil(max(psthTagBlue(:))*1.05+0.0001);
@@ -182,9 +125,9 @@ for iFile = 1:nFile
         hTagBlue(3) = axes('Position',axpt(1,20,1,1:8,axpt(nCol,nRowMain,4,1,[],wideInterval),tightInterval));
         hold on;
         ylimH = min([ceil(max([H1_tag;H2_tag])*1100+0.0001)/1000 1]);
-        winHTag = [0 ceil(max(time_tag))];
-        stairs(time_tag, H2_tag, 'LineStyle',':','LineWidth',lineL,'Color','k');
-        stairs(time_tag, H1_tag,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
+        winHTag = [0 ceil(max(timeLR_tag))];
+        stairs(timeLR_tag, H2_tag, 'LineStyle',':','LineWidth',lineL,'Color','k');
+        stairs(timeLR_tag, H1_tag,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
         if ~isempty(H1_tag)
         text(winHTag(2)*0.1,ylimH*0.9,['p = ',num2str(p_tag,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
         set(hTagBlue(3),'XLim',winHTag,'XTick',winHTag,...
@@ -201,8 +144,7 @@ for iFile = 1:nFile
     if isfield(lightTime,'Tag') && exist('xptTagYel','var') && ~isempty(xptTagYel)
         nYel = length(lightTime.Tag);
         winYel = [min(psthtimeTagYel) max(psthtimeTagYel)];
-
-        % Yellow tag raster
+    % Yellow tag raster
         hTagYel(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,2,1,[],wideInterval),tightInterval));
         plot(xptTagYel{1},yptTagYel{1},...
             'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
@@ -210,7 +152,7 @@ for iFile = 1:nFile
             'YLim',[0 nYel], 'YTick', [0 nYel], 'YTickLabel', {[], nYel});
         ylabel('Trials','FontSize',fontS);
         title('Tagging','FontSize',fontM);
-        % Yellow tag psth
+    % Yellow tag psth
         hTagYel(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,2,1,[],wideInterval),tightInterval));
         hold on;
         yLimBarYel = ceil(max(psthTagYel(:))*1.05+0.0001);
@@ -232,7 +174,7 @@ for iFile = 1:nFile
         nBlue = length(lightTime.Modu);
         winBlue = [min(psthtimeModuBlue) max(psthtimeModuBlue)];
 
-        % Blue modulation raster
+    % Blue modulation raster
         hModuBlue(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,3,1,[],wideInterval),tightInterval));
         plot(xptModuBlue{1},yptModuBlue{1},...
             'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
@@ -241,7 +183,7 @@ for iFile = 1:nFile
         ylabel('Trials','FontSize',fontS);
         title('On track','FontSize',fontM);
         
-        % Blue modulation psth
+    % Blue modulation psth
         hModuBlue(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,3,1,[],wideInterval),tightInterval));
         hold on;
         yLimBarBlue = ceil(max(psthModuBlue(:))*1.05+0.0001);
@@ -257,9 +199,9 @@ for iFile = 1:nFile
         hModuBlue(3) = axes('Position',axpt(1,20,1,13:20,axpt(nCol,nRowMain,4,1,[],wideInterval),tightInterval));
         hold on;
         ylimH = min([ceil(max([H1_modu;H2_modu])*1100+0.0001)/1000 1]);
-        winHModu = [0 ceil(max(time_modu))];
-        stairs(time_modu, H2_modu, 'LineStyle',':','LineWidth',lineL,'Color','k');
-        stairs(time_modu, H1_modu,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
+        winHModu = [0 ceil(max(timeLR_modu))];
+        stairs(timeLR_modu, H2_modu, 'LineStyle',':','LineWidth',lineL,'Color','k');
+        stairs(timeLR_modu, H1_modu,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
         if ~isempty(H1_modu)
         text(winHModu(2)*0.1,ylimH*0.9,['p = ',num2str(p_modu,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
         set(hModuBlue(3),'XLim',winHModu,'XTick',winHModu,'XTickLabel',{winHModu(1);[num2str(winHModu(2)),'(ms)']},...
@@ -277,7 +219,7 @@ for iFile = 1:nFile
         nYel = length(lightTime.Modu);
         winYel = [min(psthtimeModuYel) max(psthtimeModuYel)];
 
-        % Yellow modulation raster
+    % Yellow modulation raster
         hModuYel(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,3,1,[],wideInterval),tightInterval));
         plot(xptModuYel{1},yptModuYel{1},...
             'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
@@ -285,7 +227,7 @@ for iFile = 1:nFile
             'YLim',[0 nYel], 'YTick', [0 nYel], 'YTickLabel', {[], nYel});
         ylabel('Trials','FontSize',fontS);
         title('On track','FontSize',fontM);
-        % Yellow modulation psth
+    % Yellow modulation psth
         hModuYel(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRowMain,3,1,[],wideInterval),tightInterval));
         hold on;
         yLimBarYel = ceil(max(psthModuYel(:))*1.05+0.0001);
@@ -328,38 +270,14 @@ for iFile = 1:nFile
             end
         else
         end;
-    set(hField,'linestyle','none');
-    set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
-    text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
-    text(17,0,'Pre-stm','color','k','FontSize',fontM);
-    text(65,0,'Stm','color','k','FontSize',fontM)
-    text(107,0,'Post-stm','color','k','FontSize',fontM)
-%         hMap(1) = axes('Position',axpt(6,1,1,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
-%             hold on;
-%             pre_ratemap(pre_ratemap==0) = NaN;
-%             hField(1) = pcolor(pre_ratemap);
-%             peak_pre = max(max(pre_ratemap))*sfreq(1);
-%             text(60, 10, [num2str(ceil(peak_pre)), ' Hz'],'color','k','FontSize',fontM);
-%             
-%         hMap(2) = axes('Position',axpt(6,1,2,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
-%             hold on;        
-%             stm_ratemap(stm_ratemap==0) = NaN;
-%             peak_stm = max(max(stm_ratemap))*sfreq(1);          
-%             hField(2) = pcolor(stm_ratemap);
-%             text(60, 10, [num2str(ceil(peak_stm)), ' Hz'],'color','k','FontSize',fontM);
-%             % Drawing arc
-% 
-%         hMap(3) = axes('Position',axpt(6,1,3,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),tightInterval));
-%             hold on;
-%             post_ratemap(post_ratemap==0) = NaN;
-%             hField(3) = pcolor(post_ratemap);
-%             peak_post = max(max(post_ratemap))*sfreq(1);
-%             text(60, 10, [num2str(ceil(peak_post)), ' Hz'],'color','k','FontSize',fontM);
-%             
-%         set(hField,'linestyle','none');       
-%         set(hMap,'XLim',[15 75],'YLim',[5 45],'XTick',[5:5:45],'YTick',[5:5:45],'visible','off');
-% 
-        % Pearson's correlation
+        set(hField,'linestyle','none');
+        set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
+        text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
+        text(17,0,'Pre-stm','color','k','FontSize',fontM);
+        text(65,0,'Stm','color','k','FontSize',fontM)
+        text(107,0,'Post-stm','color','k','FontSize',fontM)
+
+    % Pearson's correlation
         hCorr = axes('Position',axpt(6,1,4,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),wideInterval));
         xptPcomp = 1:4;
         yptStim = [r_Corrhfxhf;r_Corrbfxdr;r_Corrbfxaft;r_Corrdrxaft];
@@ -368,7 +286,7 @@ for iFile = 1:nFile
             'FaceColor',colorGray,'EdgeColor','k');
         set(hCorr,'XLim',[0,5],'YLim',[-1.2 1.2],'XTick',1:4, 'XTickLabel',{'hxh','bxd','bxa','dxa'},'YTick',[-1:0.5:1],'FontSize',fontS,'LineWidth',lineM,'TickDir','out');
 
-        % Light modulation direction 
+    % Light modulation direction 
         if exist('lightSpk','var') && exist('psdPreSpk','var')
             hLight(1) = axes('Position',axpt(6,1,5,1,axpt(nCol,nRowMain,1:nCol,2,[],wideInterval),wideInterval)); %(between session)
             hold on;
@@ -392,7 +310,7 @@ for iFile = 1:nFile
             set(hLight(2),'YLim',[0,1.2*max(yptLight_intra)+0.01],'XTick',1:3,'XTickLabel',{'-15~0','0~15','15~30'},'FontSize',fontS,'LineWidth',lineS,'TickDir','out');
         end
 
-       %% Sensor aligned
+    %% Sensor aligned
         for iSensor = 1:nSensor
             if rem(iSensor,4) == 0;
                 xPositionIdx = 4;
@@ -408,13 +326,6 @@ for iFile = 1:nFile
                 case 3
                     yPositionIdx = 5;
             end
-%             if ceil(iSensor/4) == 1;
-%                 yPositionIdx = 3;
-%             elseif ceil(iSensor/4) == 2;
-%                 yPositionIdx = 4;
-%             else ceil(iSensor/4) == 3;
-%                 yPositionIdx = 5;
-%             end
             
             hRaster(iSensor) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRowMain,xPositionIdx,yPositionIdx,[],wideInterval),wideInterval));
             hold on;
@@ -445,10 +356,7 @@ for iFile = 1:nFile
             set(hPsth(iSensor),'YLim',[0 ylimpsth(iSensor)]);
         end
         
-        cd(figPath{iPath,1});
         print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
         close;
 end
-cd(rtdir);
 end
-

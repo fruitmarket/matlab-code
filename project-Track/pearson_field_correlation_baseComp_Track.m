@@ -16,16 +16,17 @@ fieldsize_cutoff = 10;
 field_ratio = [72 48];
 
 %% Loading data
-[ttfile, nCell] = tfilecollector;
-load ('VT1.mat');
-ttdata = LoadSpikes(ttfile,'tsflag','ts','verbose',0);
 
-for icell = 1:nCell
-    [cellpath,cellname,~] = fileparts(ttfile{icell});
-    disp(['### Analyzing ',ttfile{icell},'...']);
-    cd(cellpath);
+[tData, tList] = tLoad;
+[vtTime, vtPosition,~] = vtLoad;
+nCell = length(tList);
+
+for iCell = 1:nCell
+    [cellPath,cellName,~] = fileparts(tList{iCell});
+    disp(['### Analyzing ',tList{iCell},'...']);
+    cd(cellPath);
     
-    spkData = Data(ttdata{icell})/10; % unit: msec 
+    spkData = tData{iCell}; % unit: msec 
     load('Events.mat','sensor','fields','nSensor','nTrial');
     
     pearson_r = zeros(nTrial/10,nTrial/10);
@@ -37,8 +38,8 @@ for icell = 1:nCell
     % Distinguishing blocks
     pFields = {'p1','p2','p3','p4','p5','p6','p7','p8','p9'};
     for iBlock = 1:numel(pFields)
-        blockTime.(pFields{iBlock}) = timestamp(window(iBlock,1)<= timestamp & timestamp<=window(iBlock,2));
-        blockPosition.(pFields{iBlock}) = position(window(iBlock,1)<= timestamp & timestamp<=window(iBlock,2),:);
+        blockTime.(pFields{iBlock}) = vtTime{1}(window(iBlock,1)<= vtTime{1} & vtTime{1}<=window(iBlock,2));
+        blockPosition.(pFields{iBlock}) = vtPosition{1}(window(iBlock,1)<= vtTime{1} & vtTime{1}<=window(iBlock,2),:);
     end
     
     % Field map & Visit map
@@ -72,8 +73,8 @@ compFields = {'stm1','stm2','stm3','post1','post2','post3'};
 baseWindow(1,:) = [sensor.(fields{1})(1), sensor.(fields{end})(30)];
 
 % Time and Position of base (first 30 laps)
-baseblockTime = timestamp(baseWindow(1,1)<=timestamp & timestamp<=baseWindow(1,2));
-baseblockPosition = position(baseWindow(1,1) <= timestamp & timestamp<baseWindow(1,2),:);
+baseblockTime = vtTime{1}(baseWindow(1,1)<=vtTime{1} & vtTime{1}<=baseWindow(1,2));
+baseblockPosition = vtPosition{1}(baseWindow(1,1) <= vtTime{1} & vtTime{1}<baseWindow(1,2),:);
 
 [base_fr_map, base_visit_map, ~, ~] = findmaps_trim(baseblockTime,baseblockPosition,spkData,field_ratio);
 if isempty(find(base_visit_map))
@@ -103,7 +104,7 @@ for iComp = 1:numel(compFields)
     compPearson_r(iComp) = corr(base_ratemap(base_visit_map(:)&visitmapComp.(compFields{iComp})), ratemapComp.(compFields{iComp})(base_visit_map(:)&visitmapComp.(compFields{iComp})),'type','Pearson');
 end
 
-    save ([cellname, '.mat'],...
+    save ([cellName, '.mat'],...
         'pearson_r','compPearson_r','-append');
 end
 disp('### Pearson correlation analysis done! ###');

@@ -129,7 +129,7 @@ for iFile = 1:nFile
         stairs(timeLR_tag, H2_tag, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_tag, H1_tag,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
         if ~isempty(H1_tag)
-        text(winHTag(2)*0.1,ylimH*0.9,['p = ',num2str(p_tag,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
+        text(winHTag(2)*0.1,ylimH*0.9,['p = ',num2str(pLR_tag,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
         set(hTagBlue(3),'XLim',winHTag,'XTick',winHTag,...
             'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
 %         xlabel('Time (ms)','FontSize',fontS);
@@ -203,7 +203,7 @@ for iFile = 1:nFile
         stairs(timeLR_modu, H2_modu, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_modu, H1_modu,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
         if ~isempty(H1_modu)
-        text(winHModu(2)*0.1,ylimH*0.9,['p = ',num2str(p_modu,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
+        text(winHModu(2)*0.1,ylimH*0.9,['p = ',num2str(pLR_modu,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
         set(hModuBlue(3),'XLim',winHModu,'XTick',winHModu,'XTickLabel',{winHModu(1);[num2str(winHModu(2)),'(ms)']},...
             'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
         else

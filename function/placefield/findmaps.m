@@ -10,12 +10,12 @@ function [fr_map, visit_map, visit_dur, flags] = findmaps(time, position, spkdat
 %%
 % time: msec unit.
 
-spk = histc(spkdata*10, time*10); % spk: usec unit
+spk = histc(spkdata, time); % spkdata, time: msec unit
 
 pos_prod = prod(position,2);
 position(pos_prod==0,:) = 0;
 
-[dt, newVTflag] = VTRecBreakProcess(time*10);
+[dt, newVTflag] = VTRecBreakProcess(time);
 if newVTflag 
     original_resol = [720 480];
 else
@@ -52,12 +52,9 @@ map_ratio = [720 480]./field_ratio;
 
 for xpt = 1:field_ratio(1) % Generating 72x48 map
     for ypt = 1:field_ratio(2)
-        re_firing_map(xpt,ypt) = sum(sum(firing_map(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
-        re_num_visit(xpt,ypt) = sum(sum(num_visit(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
-        re_visit_time(xpt,ypt) = sum(sum(visit_time(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_firing_map(xpt,ypt) = sum(sum(firing_map(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_num_visit(xpt,ypt) = sum(sum(num_visit(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1), map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_visit_time(xpt,ypt) = sum(sum(visit_time(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1), map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
     end
 end
 

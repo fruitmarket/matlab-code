@@ -12,10 +12,11 @@ function latencyLight()
 
 winTagChETA = [-25, 100]; % unit: msec
 winTagiC = [-500, 2000];
-testRangeTag = 10;
+testRangeTag = 30;
 baseRangeTag = 450;
-testRangeModu = 10;
-baseRangeModu = 100;
+testRangeModu = 30;
+baseRangeModu = 90;
+latency = 0;
 
 [tData, tList] = tLoad;
 nCell = length(tList);
@@ -30,32 +31,27 @@ for iCell = 1:nCell
     
     % Spike latency of test
     if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu)
-       spkModuChETA = spikeWin(spikeData,lightTime.Modu,winTagChETA);
+       spkModuChETA = spikeWin(spikeData,lightTime.Modu+latency,winTagChETA);
        testLatModu = cellfun(@min, spkModuChETA,'UniformOutput',false);
-       
-%        for iLtrial = 1:size(lightTime.Modu,1)
-%            testLatModu{iLtrial,1} = spkModuChETA{iLtrial,1}(find(spkModuChETA{iLtrial,1}>0,1,'first'));
-%            if isempty(testLatModu{iLtrial,1});continue;end;
-%        end
        testLatModu = cell2mat(testLatModu);
-       testLatModu(find(testLatModu>0));
+       testLatModu = testLatModu(testLatModu>0);
        testLatencyModu = median(testLatModu);
-       if testLatencyModu > 30 % in case of no light response, latency is 30ms
-           testLatencyModu = 30;
+       if testLatencyModu > 60 % in case of no light response, latency is 30ms
+           testLatencyModu = 60;
        end
     end
     
     if isfield(lightTime,'Tag') && ~isempty(lightTime.Tag); % Activation (ChETA)
-       spkTagChETA = spikeWin(spikeData,lightTime.Tag,winTagChETA);
+       spkTagChETA = spikeWin(spikeData,lightTime.Tag+latency,winTagChETA);
        testLatTag = cellfun(@min, spkTagChETA,'UniformOutput',false);
        testLatTag = cell2mat(testLatTag);
-       testLatTag(find(testLatTag>0));
+       testLatTag = testLatTag(testLatTag>0);
        testLatencyTag = median(testLatTag);
-       if testLatencyTag > 30; % in case of no light response, latency is 30ms
-           testLatencyTag = 30;
+       if testLatencyTag > 60; % in case of no light response, latency is 30ms
+           testLatencyTag = 60;
        end
     end
-    
+        
     % Spike latency of base
     [timeTag, ~] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag, baseRangeTag);
     baseLatTag = min(timeTag);
@@ -66,19 +62,19 @@ for iCell = 1:nCell
     baseLatModu(find(baseLatModu==10)) = [];
     
     % Rank sum test
-    if testLatencyModu < 30
+    if 0 < testLatencyModu && testLatencyModu < 60
         pLatencyModu = ranksum(testLatModu,baseLatModu);
     else
         pLatencyModu = 1;
     end
-    if testLatencyTag < 30
+    if 0 < testLatencyTag && testLatencyTag < 60
         pLatencyTag = ranksum(testLatTag,baseLatTag);
     else
         pLatencyTag = 1;
     end    
     save([cellName,'.mat'],'testLatencyModu','testLatencyTag','pLatencyModu','pLatencyTag','-append');        
 end
-dis('### Light latency test done!');
+disp('### Light latency test done!');
 
 function spikeTime = spikeWin(spikeData, eventTime, win)
 % spikeWin makes raw spikeData to eventTime aligned data

@@ -25,18 +25,19 @@ filePath = unique(filePath);
 nPath = length(filePath);
 
 %% Swiping contents
-for iPath = 53:nPath
+for iPath = 1:nPath
     cd(filePath{iPath});
     
-    event2mat_track;
-    pethSensor;
-    pethLight(0,5);
-    waveform;
-    heatMap;
-    pearson_field_correlation_baseComp_Track;
+%     event2mat_track;
+%     pethSensor;
+%     pethLight(0,5);
+%     waveform;
+%     heatMap;
+%     pearson_field_correlation_baseComp_Track;
     tagstatTrack;
-    mapCorr;
-    mapCorrEvOd;
+%     mapCorr;
+%     mapCorrEvOd;
+    trackPlot_v3
     close all;
 end
 

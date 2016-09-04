@@ -3,17 +3,17 @@ function tagstatTrack(sessionFolder)
 
 % Variables for log-rank test & salt test
 dt = 0.1;
-testRangeTag = 10; % unit: ms 
+testRangeTag = 20; % unit: ms 
 baseRangeTag = 450; % baseline 
-testRangeModu = 10; % 8Hz: 10 // 20Hz: 20
+testRangeModu = 20; % 8Hz: 10 // 20Hz: 20
 baseRangeModu = 100; % 8Hz: 110 // 20Hz: 15
 
 % variables for latency calculation
-winTagChETA = [-25, 100]; % unit: msec
-winTagiC = [-500, 2000];
-testRangeTag_lat = 30; % unit: ms 
+winTagChETA = [0, 30]; % unit: msec
+% winTagiC = [-500, 2000];
+testRangeTag_lat = winTagChETA(2); % unit: ms
 baseRangeTag_lat = 450; % baseline 
-testRangeModu_lat = 30; % 8Hz: 10 // 20Hz: 20
+testRangeModu_lat = winTagChETA(2); % 8Hz: 10 // 20Hz: 20
 baseRangeModu_lat = 90; % 8Hz: 110 // 20Hz: 15
 
 % Find files
@@ -31,47 +31,97 @@ for iCell = 1:nCell
     spikeData = tData{iCell};
     
 % Spike latency of test
+% Baseline spontaneous latency
+    [timeTag_lat, ~] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag_lat, baseRangeTag_lat);
+    baseLatTag = min(timeTag_lat);
+    baseLatTag(baseLatTag==testRangeTag_lat) = [];
+    [timeModu_lat, ~] = tagDataLoad(spikeData, lightTime.Modu, testRangeModu_lat, baseRangeModu_lat);
+    baseLatModu = min(timeModu_lat);
+    baseLatModu(baseLatModu==testRangeModu_lat) = [];
+    
+% Light induced spike latency
     if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu)
        spkModuChETA = spikeWin(spikeData,lightTime.Modu,winTagChETA);
        testLatModu = cellfun(@min, spkModuChETA,'UniformOutput',false);
        testLatModu = cell2mat(testLatModu);
-       testLatModu = testLatModu(0<testLatModu & testLatModu<40); % calculate spikes which are between 0 ~ 40 ms
-       testLatencyModu = median(testLatModu);
+       latBinModu = histcounts(testLatModu,[0,4,8,20]);
+       idxModu = find(latBinModu>sum(latBinModu)*3/10);
+       if isempty(idxModu)
+           testLatModu_first = NaN;
+           testLatModu_second = NaN;
+           pLatencyModu_first = NaN;
+           pLatencyModu_second = NaN;
+       end
+       if length(double(idxModu)) == 1;
+           testLatModu_first = testLatModu;
+           testLatModu_second = NaN;           
+           if ~isnan(timeModu_lat) % Rank-sum test
+               pLatencyModu_first = ranksum(baseLatModu,testLatModu_first);
+           else
+               pLatencyModu_first = NaN;
+           end
+               pLatencyModu_second = NaN;
+       elseif length(double(idxModu)) == 2;
+           testLatModu_first = testLatModu(testLatModu<6);
+           testLatModu_second = testLatModu(6<testLatModu & testLatModu<20);       
+           if ~isnan(timeModu_lat) % Rank-sum test
+               pLatencyModu_first = ranksum(baseLatModu,testLatModu_first);
+               pLatencyModu_second = ranksum(baseLatModu,testLatModu_second);
+           else
+               pLatencyModu_first = NaN;
+               pLatencyModu_second = NaN;
+           end
+       else
+       end
+       testLatencyModu_first = nanmedian(testLatModu_first);
+       testLatencyModu_second = nanmedian(testLatModu_second);
+       
     end
     if isfield(lightTime,'Tag') && ~isempty(lightTime.Tag); % Activation (ChETA)
        spkTagChETA = spikeWin(spikeData,lightTime.Tag,winTagChETA);
        testLatTag = cellfun(@min, spkTagChETA,'UniformOutput',false);
        testLatTag = cell2mat(testLatTag);
-       testLatTag = testLatTag(0<testLatTag & testLatTag<40);
-       testLatencyTag = median(testLatTag);
+       latBinTag = histcounts(testLatTag,[0,4,8,20]);
+       idxTag = find(latBinTag>sum(latBinTag)*3/10);
+       if isempty(idxTag)
+           testLatTag_first = NaN;
+           testLatTag_second = NaN;
+           pLatencyTag_first = NaN;
+           pLatencyTag_second = NaN;
+       end
+       if length(double(idxTag)) == 1;
+           testLatTag_first = testLatTag;
+           testLatTag_second = NaN;       
+           if ~isnan(timeTag_lat);
+               pLatencyTag_first = ranksum(baseLatTag,testLatTag_first); % Rank-sum test
+           else
+               pLatencyTag_first = NaN;
+           end
+               pLatencyTag_second = NaN;
+       elseif length(double(idxTag)) == 2;
+           testLatTag_first = testLatTag(testLatTag<6);
+           testLatTag_second = testLatTag(6<testLatTag & testLatTag<20);       
+           if ~isnan(timeTag_lat);
+               pLatencyTag_first = ranksum(baseLatTag,testLatTag_first); % Rank-sum test
+               pLatencyTag_second = ranksum(baseLatTag,testLatTag_second);
+           else
+               pLatencyTag_first = NaN;
+               pLatencyTag_second = NaN;
+           end
+       else
+       end
+       testLatencyTag_first = nanmedian(testLatTag_first);
+       testLatencyTag_second = nanmedian(testLatTag_second);
     end
-    [timeTag_lat, ~] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag_lat, baseRangeTag_lat);
-    baseLatTag = min(timeTag_lat);
-    baseLatTag(find(baseLatTag==testRangeTag_lat)) = [];
-    [timeModu_lat, ~] = tagDataLoad(spikeData, lightTime.Modu, testRangeModu_lat, baseRangeModu_lat);
-    baseLatModu = min(timeModu_lat);
-    baseLatModu(baseLatModu==testRangeModu_lat) = [];
+    save([cellName,'.mat'],'testLatencyModu_first','testLatencyModu_second',...
+        'pLatencyModu_first','pLatencyModu_second',...
+        'pLatencyTag_first','pLatencyTag_second','-append');
     
-% Rank sum test for latency (light response spike vs. spontaneous spike)
-    if ~isempty(testLatModu) && ~isempty(baseLatModu)
-            pLatencyModu = ranksum(testLatModu,baseLatModu);
-    else
-            pLatencyModu = 1;
-    end
-    if ~isempty(testLatTag) && ~isempty(baseLatTag)
-            pLatencyTag = ranksum(testLatTag,baseLatTag);
-    else
-            pLatencyTag = 1;
-    end
-    
-    save([cellName,'.mat'],'testLatencyModu','testLatencyTag','pLatencyModu','pLatencyTag','-append');
-    
-    if (testLatencyModu < 10) && (testLatencyTag < 10) % if the latency is shorter than 10ms, calib = 0ms. otherwize, apply 4ms calib for stat.
+    if (idxModu==1) & (idxTag==1);
         calibStat = 0;
     else
         calibStat = 4;
-    end
-    
+    end   
 % Log-rank test    
     [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag+calibStat, testRangeTag, baseRangeTag);
     [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu+calibStat, testRangeModu, baseRangeModu);
@@ -89,8 +139,8 @@ for iCell = 1:nCell
     if isempty(pSaltModu)
         pSaltModu = 1;
     end
-    save([cellName,'.mat'],'pSaltTag','lSaltTag','pSaltModu','lSaltModu','-append');
-    
+    save([cellName,'.mat'],'pSaltTag','lSaltTag','pSaltModu','lSaltModu','-append');    
+
 % Modulation direction (activation/inactivation) & light latency
     if ~isempty(nonzeros(H1_tag)) && ~isempty(nonzeros(H2_tag))
         if H1_tag(end) > H2_tag(end)

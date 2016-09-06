@@ -25,7 +25,7 @@ filePath = unique(filePath);
 nPath = length(filePath);
 
 %% Swiping contents
-for iPath = 1:nPath
+for iPath = 22:nPath
     cd(filePath{iPath});
     
 %     event2mat_track;

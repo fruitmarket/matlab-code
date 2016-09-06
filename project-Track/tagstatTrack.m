@@ -35,17 +35,18 @@ for iCell = 1:nCell
     [timeTag_lat, ~] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag_lat, baseRangeTag_lat);
     baseLatTag = min(timeTag_lat);
     baseLatTag(baseLatTag==testRangeTag_lat) = [];
+    baseLatencyTag = median(baseLatTag);
     [timeModu_lat, ~] = tagDataLoad(spikeData, lightTime.Modu, testRangeModu_lat, baseRangeModu_lat);
     baseLatModu = min(timeModu_lat);
     baseLatModu(baseLatModu==testRangeModu_lat) = [];
-    
+    baseLatencyModu = median(baseLatModu);
 % Light induced spike latency
     if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu)
        spkModuChETA = spikeWin(spikeData,lightTime.Modu,winTagChETA);
        testLatModu = cellfun(@min, spkModuChETA,'UniformOutput',false);
        testLatModu = cell2mat(testLatModu);
-       latBinModu = histcounts(testLatModu,[0,4,8,20]);
-       idxModu = find(latBinModu>sum(latBinModu)*3/10);
+       latBinModu = histc(testLatModu,[0,4,8,20]); % 0~4ms / 4~8ms / 8~20ms
+       idxModu = find(latBinModu>sum(latBinModu)*30/100);
        if isempty(idxModu)
            testLatModu_first = NaN;
            testLatModu_second = NaN;
@@ -60,13 +61,21 @@ for iCell = 1:nCell
            else
                pLatencyModu_first = NaN;
            end
-               pLatencyModu_second = NaN;
-       elseif length(double(idxModu)) == 2;
+           pLatencyModu_second = NaN;
+       elseif length(double(idxModu)) == 2 || length(double(idxModu)) == 3;
            testLatModu_first = testLatModu(testLatModu<6);
            testLatModu_second = testLatModu(6<testLatModu & testLatModu<20);       
            if ~isnan(timeModu_lat) % Rank-sum test
-               pLatencyModu_first = ranksum(baseLatModu,testLatModu_first);
-               pLatencyModu_second = ranksum(baseLatModu,testLatModu_second);
+               if ~isnan(testLatModu_first)
+                   pLatencyModu_first = ranksum(baseLatModu,testLatModu_first);
+               else
+                   pLatencyModu_first = NaN;
+               end
+               if ~isnan(testLatModu_second)
+                   pLatencyModu_second = ranksum(baseLatModu,testLatModu_second);
+               else
+                   pLatencyModu_second = NaN;
+               end
            else
                pLatencyModu_first = NaN;
                pLatencyModu_second = NaN;
@@ -74,15 +83,14 @@ for iCell = 1:nCell
        else
        end
        testLatencyModu_first = nanmedian(testLatModu_first);
-       testLatencyModu_second = nanmedian(testLatModu_second);
-       
+       testLatencyModu_second = nanmedian(testLatModu_second);       
     end
     if isfield(lightTime,'Tag') && ~isempty(lightTime.Tag); % Activation (ChETA)
        spkTagChETA = spikeWin(spikeData,lightTime.Tag,winTagChETA);
        testLatTag = cellfun(@min, spkTagChETA,'UniformOutput',false);
        testLatTag = cell2mat(testLatTag);
-       latBinTag = histcounts(testLatTag,[0,4,8,20]);
-       idxTag = find(latBinTag>sum(latBinTag)*3/10);
+       latBinTag = histc(testLatTag,[0,4,8,20]);  % 0~4ms / 4~8ms / 8~20ms
+       idxTag = find(latBinTag>sum(latBinTag)*30/100);
        if isempty(idxTag)
            testLatTag_first = NaN;
            testLatTag_second = NaN;
@@ -93,17 +101,25 @@ for iCell = 1:nCell
            testLatTag_first = testLatTag;
            testLatTag_second = NaN;       
            if ~isnan(timeTag_lat);
-               pLatencyTag_first = ranksum(baseLatTag,testLatTag_first); % Rank-sum test
+               pLatencyTag_first = ranksum(baseLatTag,testLatTag_first); % Rank-sum test               
            else
-               pLatencyTag_first = NaN;
+               pLatencyTag_first = NaN;               
            end
-               pLatencyTag_second = NaN;
-       elseif length(double(idxTag)) == 2;
+           pLatencyTag_second = NaN;
+       elseif length(double(idxTag)) == 2 || length(double(idxTag)) == 3;
            testLatTag_first = testLatTag(testLatTag<6);
            testLatTag_second = testLatTag(6<testLatTag & testLatTag<20);       
-           if ~isnan(timeTag_lat);
-               pLatencyTag_first = ranksum(baseLatTag,testLatTag_first); % Rank-sum test
-               pLatencyTag_second = ranksum(baseLatTag,testLatTag_second);
+           if ~isnan(timeTag_lat)
+               if ~isnan(testLatTag_first)
+                   pLatencyTag_first = ranksum(baseLatTag,testLatTag_first); % Rank-sum test
+               else
+                   pLatencyTag_first = NaN;
+               end
+               if ~isnan(testLatTag_second)
+                   pLatencyTag_second = ranksum(baseLatTag,testLatTag_second);
+               else
+                   pLatencyTag_second = NaN;
+               end
            else
                pLatencyTag_first = NaN;
                pLatencyTag_second = NaN;
@@ -113,15 +129,16 @@ for iCell = 1:nCell
        testLatencyTag_first = nanmedian(testLatTag_first);
        testLatencyTag_second = nanmedian(testLatTag_second);
     end
-    save([cellName,'.mat'],'testLatencyModu_first','testLatencyModu_second',...
-        'pLatencyModu_first','pLatencyModu_second',...
+    save([cellName,'.mat'],'testLatencyModu_first','testLatencyModu_second','testLatencyTag_first','testLatencyTag_second',...
+        'baseLatencyModu','baseLatencyTag','pLatencyModu_first','pLatencyModu_second',...
         'pLatencyTag_first','pLatencyTag_second','-append');
     
     if (idxModu==1) & (idxTag==1);
         calibStat = 0;
     else
         calibStat = 4;
-    end   
+    end
+    
 % Log-rank test    
     [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag+calibStat, testRangeTag, baseRangeTag);
     [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu+calibStat, testRangeModu, baseRangeModu);
@@ -190,7 +207,6 @@ nLight = length(onsetTime);
 % Rearrange data
 bin = [-floor(baseRange/testRange)*testRange:testRange:0];
 nBin = length(bin);
-
 binMat = ones(nLight,nBin)*diag(bin);
 lightBin = (repmat(onsetTime',nBin,1)+binMat');
 time = zeros(nBin,nLight);

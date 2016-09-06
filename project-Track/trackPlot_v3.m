@@ -117,8 +117,8 @@ for iFile = 1:nFile
         bar(5, 1000, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLightBlue);
         rectangle('Position', [0 yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
         hBarBlue = bar(pethtimeTagBlue, pethTagBlue, 'histc');
-        text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyTag,3)],'FontSize',fontS,'interpreter','none');
-        text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyTag,3)],'FontSize',fontS,'interpreter','none');
+        text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyTag_first,3)],'FontSize',fontS,'interpreter','none');
+        text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyTag_first,3)],'FontSize',fontS,'interpreter','none');
         set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
         set(hTagBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1) 0 winBlue(2)], ...
             'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
@@ -188,8 +188,8 @@ for iFile = 1:nFile
         bar(5, 1000, 'BarWidth', 10,'LineStyle', 'none', 'FaceColor', colorLightBlue);
         rectangle('Position', [0, yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
         hBarBlue = bar(pethtimeModuBlue, pethModuBlue, 'histc');
-        text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyModu,3)],'FontSize',fontS,'interpreter','none');
-        text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyModu,3)],'FontSize',fontS,'interpreter','none');
+        text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyModu_first,3)],'FontSize',fontS,'interpreter','none');
+        text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyModu_first,3)],'FontSize',fontS,'interpreter','none');
         set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
         set(hModuBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1), 0, winBlue(2)],'XTickLabel',{winBlue(1);0;[num2str(winBlue(2)),'(ms)']},...
             'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});

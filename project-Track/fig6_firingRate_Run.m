@@ -35,7 +35,6 @@ tightInterval = [0.02 0.02];
 midInterval = [0.09, 0.09];
 wideInterval = [0.14 0.14];
 
-
 markerS = 2.2;
 markerM = 4.4;
 markerL = 6.6;

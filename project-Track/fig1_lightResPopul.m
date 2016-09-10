@@ -40,11 +40,15 @@ totalIN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>10;
 nTotalPN = sum(double(totalPN));
 nTotalIN = sum(double(totalIN));
 
-nototalPN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>0 & T.meanFR_task<10;
-nototalIN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>10;
-nonTotalPN = sum(double(nototalPN));
-nonTotalIN = sum(double(nototalIN));
+totalPN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>0 & T.meanFR_task<10;
+totalIN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>10;
+nTotalPN = sum(double(totalPN));
+nTotalIN = sum(double(totalIN));
 
+% nototalPN = T.taskProb == '100' & T.taskType == 'noRun' & T.meanFR_task>0 & T.meanFR_task<10;
+% nototalIN = T.taskProb == '100' & T.taskType == 'noRun' & T.meanFR_task>10;
+% nonTotalPN = sum(double(nototalPN));
+% nonTotalIN = sum(double(nototalIN));
 
 lightPN = (totalPN & T.pLR_tag<0.05) | (totalPN & T.pLR_modu<0.05);
 lightIN = (totalIN & T.pLR_tag<0.05) | (totalIN & T.pLR_modu<0.05);
@@ -75,12 +79,11 @@ ylimTrack = max([laserTrackPN_pre; laserTrackPN_stm; laserTrackPN_post]);
 
 %% Single cell figure separation
 % figList_DRunlightPN_sig = T.Path(lightPN);
-% trackPlot_v3_multifig(figList_DRunlightPN_sig,rtDir_sig);
+trackPlot_v3_multifig(figList_DRunlightPN_sig,rtDir_sig);
 
 % figList_DRunlightPN_nosig = T.Path((totalPN & (T.pLR_tag >= 0.05) & (T.pLR_modu >= 0.05)) | (totalPN & (isnan(T.pLR_tag) & isnan(T.pLR_modu))) | ((totalPN & T.pLR_tag>=0.05) & isnan(T.pLR_modu)) | (totalPN & isnan(T.pLR_tag) & T.pLR_modu>=0.05));
 % trackPlot_v3_multifig(figList_DRunlightPN_nosig,rtDir_nosig);
 % cd('D:\Dropbox\SNL\P2_Track');
-
 
 
 %% Light response_Total cell
@@ -185,7 +188,7 @@ set(hTotalTrack(3),'XLim',[0,ylimTotalBase*1.1],'YLim',[0,ylimTotalBase*1.1]);
 set(hTotalTrack(4),'XLim',[0,ylimTotalBase*1.1],'YLim',[0,ylimTotalBase*1.1]);
 set(hTotalTrack(1),'TickDir','out','XLim',[0,4],'YLim',[-1,max([totalTrackPN_pre; totalTrackPN_stm; totalTrackPN_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
 
-print(gcf,'-dtiff','-r300','Light response_total')
+print(gcf,'-dtiff','-r300','DRw_Light response_total')
 %% Light Response_pLR cell
 figure(2)
 hBase(1) = axes('Position',axpt(4,2,1,1,[0.1 0.1 0.85 0.85],midInterval));
@@ -276,4 +279,4 @@ set(hTrack(2),'XLim',[0,ylimBase*1.1],'YLim',[0,ylimBase*1.1]);
 set(hTrack(3),'XLim',[0,ylimBase*1.1],'YLim',[0,ylimBase*1.1]);
 set(hTrack(4),'XLim',[0,ylimBase*1.1],'YLim',[0,ylimBase*1.1]);
 set(hTrack(1),'TickDir','out','XLim',[0,4],'YLim',[-1,max([laserTrackPN_pre; laserTrackPN_stm; laserTrackPN_post])+10],'XTick',[1,2,3],'XTickLabel',{'Pre-stm','Stm','Post-stm'});
-print(gcf,'-dtiff','-r300','Light response_light cell')
+print(gcf,'-dtiff','-r300','DRw_Light response_light cell')

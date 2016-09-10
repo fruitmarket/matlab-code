@@ -146,10 +146,7 @@ for iCell = 1:nCell
     [pLR_modu,timeLR_modu,H1_modu,H2_modu] = logRankTest(timeModu, censorModu);
     if isempty(pLR_modu)
         pLR_modu = 1;
-    end
-    save([cellName,'.mat'],...
-        'pLR_tag','timeLR_tag','H1_tag','H2_tag','-append',...
-        'pLR_modu','timeLR_modu','H1_modu','H2_modu','-append');
+    end    
 % Salt test
     [pSaltTag, lSaltTag] = saltTest(timeTag, testRangeTag, dt);
     [pSaltModu, lSaltModu] = saltTest(timeModu, testRangeModu, dt);
@@ -161,27 +158,62 @@ for iCell = 1:nCell
 % Modulation direction (activation/inactivation) & light latency
     if ~isempty(nonzeros(H1_tag)) && ~isempty(nonzeros(H2_tag))
         if H1_tag(end) > H2_tag(end)
-            tagStatDir_tag = 1; % Activation
+            statDir_tag = 1; % Activation
+            ina_lastSpk_tag = NaN;
+            ina_firstSpk_tag = NaN;
         else
-            tagStatDir_tag = -1; % Inactivation
+            statDir_tag = -1; % Inactivation
+            inaSpk_1sthalf = spikeWin(spikeData,lightTime.Modu,[0, 15]);
+            ina_lastSpk_tag = cellfun(@min,inaSpk_1sthalf,'UniformOutput',false);
+            ina_lastSpk_tag = median(cell2mat(ina_lastSpk_tag));
+            
+            inaSpk_2ndhalf = spikeWin(spikeData,lightTime.Modu,[15,30]);
+            ina_firstSpk_tag = cellfun(@min, inaSpk_2ndhalf,'UniformOutput',false);
+            ina_firstSpk_tag = median(cell2mat(ina_firstSpk_tag));
+            
+            if ina_lastSpk_tag > 4
+            calibStat = 4;
+            [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag+calibStat, testRangeTag, baseRangeTag);
+            [pLR_tag,timeLR_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag);
+            end
         end
     else
-        tagStatDir_tag = 0; % No modulation
+        statDir_tag = 0; % No modulation
+        ina_lastSpk_tag = NaN;
+        ina_firstSpk_tag = NaN;
     end
     if isempty(lightTime.Modu);
-        tagStatDir_modu = 2; % No modulation (No light stimulation on a track)
+        statDir_modu = 2; % No modulation (No light stimulation on a track)
     else
         if ~isempty(nonzeros(H1_modu)) && ~isempty(nonzeros(H2_modu))
             if H1_modu(end) > H2_modu(end)
-                tagStatDir_modu = 1;
+                statDir_modu = 1;
+                ina_lastSpk_modu = NaN;
+                ina_firstSpk_modu = NaN;
             else
-                tagStatDir_modu = -1;
+                statDir_modu = -1;
+                inaSpk_1sthalf = spikeWin(spikeData,lightTime.Modu,[0, 15]);
+                ina_lastSpk_modu = cellfun(@min,inaSpk_1sthalf,'UniformOutput',false);
+                ina_lastSpk_modu = median(cell2mat(ina_lastSpk_modu));
+                
+                inaSpk_2ndhalf = spikeWin(spikeData,lightTime.Modu,[15,30]);
+                ina_firstSpk_modu = cellfun(@min, inaSpk_2ndhalf,'UniformOutput',false);
+                ina_firstSpk_modu = median(cell2mat(ina_firstSpk_modu));
+                
+                if ina_lastSpk_modu > 4;
+                calibStat = 4;
+                [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu+calibStat, testRangeModu, baseRangeModu);
+                [pLR_modu,timeLR_modu,H1_modu,H2_modu] = logRankTest(timeModu, censorModu);
+                end
             end
         else
-            tagStatDir_modu = 0; % No light response
+            statDir_modu = 0; % No light response
+            ina_lastSpk_modu = NaN;
+            ina_firstSpk_modu = NaN;
         end
     end
-    save([cellName, '.mat'],'tagStatDir_tag','tagStatDir_modu','-append')
+    save([cellName, '.mat'],'statDir_tag','statDir_modu','ina_lastSpk_tag','ina_firstSpk_tag','ina_lastSpk_modu','ina_firstSpk_modu',...
+        'pLR_tag','timeLR_tag','H1_tag','H2_tag','pLR_modu','timeLR_modu','H1_modu','H2_modu','-append')
 end
 disp('### TagStatTest & Latency calculation are done!');
 

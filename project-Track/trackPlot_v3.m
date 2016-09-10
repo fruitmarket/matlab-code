@@ -258,8 +258,10 @@ for iFile = 1:nFile
             arc_r = 20;
             x = arc_r*cos(arc)+70;
             y = arc_r*sin(arc)+25;
-            if exist('xptModuBlue','var');
+            if exist('xptModuBlue','var') & (~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'DRun')));
                 plot(x,y,'LineWidth',4,'color',colorBlue);
+            elseif exist('xptModuBlue','var') & (~isempty(strfind(cellDir,'noRw')) | ~isempty(strfind(cellDir,'noRun')));
+                plot(x,y,'LineWidth',4,'color',colorGray);                
             else exist('xptModuYel','var');
                 plot(x,y,'LineWidth',4,'color',colorYellow);
             end

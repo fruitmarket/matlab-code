@@ -25,7 +25,7 @@ filePath = unique(filePath);
 nPath = length(filePath);
 
 %% Swiping contents
-for iPath = 22:nPath
+for iPath = 1:21
     cd(filePath{iPath});
     
 %     event2mat_track;
@@ -37,7 +37,7 @@ for iPath = 22:nPath
     tagstatTrack;
 %     mapCorr;
 %     mapCorrEvOd;
-    trackPlot_v3
+%     trackPlot_v3
     close all;
 end
 

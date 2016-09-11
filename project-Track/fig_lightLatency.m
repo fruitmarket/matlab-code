@@ -32,18 +32,18 @@ rtDir_sig = 'D:\Dropbox\SNL\P2_Track\cellFig_lightSig';
 rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\cellFig_lightNoSig';
 
 % Condition
-totalPN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>0 & T.meanFR_task<10;
-totalIN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>10;
-% totalPN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>0 & T.meanFR_task<10;
-% totalIN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>10;
+% totalPN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>0 & T.meanFR_task<10;
+% totalIN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>10;
+totalPN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>0 & T.meanFR_task<10;
+totalIN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>10;
 
 nTotalPN = sum(double(totalPN));
 nTotalIN = sum(double(totalIN));
 
-nototalPN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>0 & T.meanFR_task<10;
-nototalIN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>10;
-% nototalPN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>0 & T.meanFR_task<10;
-% nototalIN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>10;
+% nototalPN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>0 & T.meanFR_task<10;
+% nototalIN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>10;
+nototalPN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>0 & T.meanFR_task<10;
+nototalIN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>10;
 
 nonTotalPN = sum(double(nototalPN));
 nonTotalIN = sum(double(nototalIN));
@@ -66,7 +66,7 @@ lightPopu = [sum(double(lightPN_tagAc)), sum(double(lightPN_tagNo)), sum(double(
             sum(double(lightPN_ModuAc)), sum(double(lightPN_ModuNo)), sum(double(lightPN_ModuIn))]'; % first column: base / second: track
 
 laserBasePN_pre = T.lighttagPreSpk(lightPN);
-laserBasePN_stm = T.lightSpk(lightPN);
+laserBasePN_stm = T.lighttagSpk(lightPN);
 laserBasePN_post = T.lighttagPostSpk(lightPN);
 
 laserTrackPN_pre = T.lightPreSpk(lightPN);
@@ -150,4 +150,4 @@ ylabel('Number of activated cells','FontSize',fontL);
 title('Track Response (No light session)','FontSize',fontL);
 
 set(hLatency(1:5),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30],'Box','off','TickDir','out','FontSize',fontL);
-print(gcf,'-dtiff','-r300','DRun_Latency');
+print(gcf,'-dtiff','-r300','DRw_Latency');

@@ -1,10 +1,7 @@
 
 %% Directory setup
 rtPath = 'D:\Dropbox\SNL\P2_Track';
-
 startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp8';'D:\Projects\Track_151213-2_Rbp14';'D:\Projects\Track_160221-1_Rbp16'};
-% startingDir = {'D:\Projects\Track_151029-5_Rbp8'};
-% startingDir = {'D:\Projects\Track_160221-1_Rbp16'};
 
 matFile = [];
 nDir = size(startingDir,1);
@@ -25,16 +22,16 @@ filePath = unique(filePath);
 nPath = length(filePath);
 
 %% Swiping contents
-for iPath = 1:21
+for iPath = 1:nPath
     cd(filePath{iPath});
     
 %     event2mat_track;
 %     pethSensor;
 %     pethLight(0,5);
 %     waveform;
-%     heatMap;
+    heatMap;
 %     pearson_field_correlation_baseComp_Track;
-    tagstatTrack;
+%     tagstatTrack;
 %     mapCorr;
 %     mapCorrEvOd;
 %     trackPlot_v3

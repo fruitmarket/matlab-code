@@ -10,12 +10,8 @@ lineColor = {[144, 164, 174]./255,... % Before stimulation
     [38, 50, 56]./255}; % After stimulation
 
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; % font size small
-fontM = 6; % font size middle
-fontL = 8; % font size large
-lineS = 0.2; % line width small
-lineM = 0.5; % line width middle
-lineL = 1; % line width large
+fontS = 4; fontM = 6; fontL = 8; % font size large
+lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
 
 colorBlue = [33 150 243] ./ 255;
 colorLightBlue = [223 239 252] ./ 255;
@@ -27,16 +23,13 @@ colorLightYellow = [255 249 196] ./ 255;
 colorBlack = [0, 0, 0];
 colorBar3 = [colorGray;colorBlue;colorGray];
 
-tightInterval = [0.02 0.02];
-wideInterval = [0.07 0.07];
+tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
 
 nCol = 4;
 nRowSub = 8; % for the left column
 nRowMain = 5; % for the main figure
 
-markerS = 2.2;
-markerM = 4.4;
-markerL = 6.6;
+markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
 
 matFile = mLoad;
 nFile = length(matFile);
@@ -242,13 +235,11 @@ for iFile = 1:nFile
        
     %% Heat map
     pre_ratemap(pre_ratemap==0) = NaN;
-    peak_pre = max(max(pre_ratemap))*sfreq(1);
     stm_ratemap(stm_ratemap==0) = NaN;
-    peak_stm = max(max(stm_ratemap))*sfreq(1);
     post_ratemap(post_ratemap==0) = NaN;
-    peak_post = max(max(post_ratemap))*sfreq(1);
     
     totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
+    peakMap = max(max(totalmap*sfreq(1)));
     hMap = axes('Position',axpt(nCol,nRowMain,1:2,2,[],wideInterval));
         hold on;
         hField = pcolor(totalmap);
@@ -269,7 +260,7 @@ for iFile = 1:nFile
         end;
         set(hField,'linestyle','none');
         set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
-        text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
+        text(125,40,[num2str(ceil(peakMap)), ' Hz'],'color','k','FontSize',fontM)
         text(17,0,'Pre-stm','color','k','FontSize',fontM);
         text(65,0,'Stm','color','k','FontSize',fontM)
         text(107,0,'Post-stm','color','k','FontSize',fontM)

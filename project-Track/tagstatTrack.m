@@ -164,7 +164,7 @@ for iCell = 1:nCell
         else
             statDir_tag = -1; % Inactivation
             inaSpk_1sthalf = spikeWin(spikeData,lightTime.Modu,[0, 15]);
-            ina_lastSpk_tag = cellfun(@min,inaSpk_1sthalf,'UniformOutput',false);
+            ina_lastSpk_tag = cellfun(@max,inaSpk_1sthalf,'UniformOutput',false);
             ina_lastSpk_tag = median(cell2mat(ina_lastSpk_tag));
             
             inaSpk_2ndhalf = spikeWin(spikeData,lightTime.Modu,[15,30]);

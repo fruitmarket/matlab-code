@@ -32,24 +32,24 @@ colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
 load(['cellList_add','.mat']);
-rtDir_sig = 'D:\Dropbox\SNL\P2_Track\cellFigNoRun_lightSig';
-rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\cellFigNoRun_lightNoSig';
+rtDir_sig = 'D:\Dropbox\SNL\P2_Track\cellFigDRun_lightSig';
+rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\cellFigDRun_lightNoSig';
 
 %% Conditio
-% totalPN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>0 & T.meanFR_task<10;
-% totalIN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>10;
-% nTotalPN = sum(double(totalPN));
-% nTotalIN = sum(double(totalIN));
+totalPN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>0 & T.meanFR_task<10;
+totalIN = T.taskProb == '100' & T.taskType == 'DRun' & T.meanFR_task>10;
+nTotalPN = sum(double(totalPN));
+nTotalIN = sum(double(totalIN));
 
 % nototalPN = T.taskProb == '100' & T.taskType == 'noRun' & T.meanFR_task>0 & T.meanFR_task<10;
 % nototalIN = T.taskProb == '100' & T.taskType == 'noRun' & T.meanFR_task>10;
 % nonTotalPN = sum(double(nototalPN));
 % nonTotalIN = sum(double(nototalIN));
 
-totalPN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>0 & T.meanFR_task<10;
-totalIN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>10;
-nTotalPN = sum(double(totalPN));
-nTotalIN = sum(double(totalIN));
+% totalPN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>0 & T.meanFR_task<10;
+% totalIN = T.taskProb == '100' & T.taskType == 'DRw' & T.meanFR_task>10;
+% nTotalPN = sum(double(totalPN));
+% nTotalIN = sum(double(totalIN));
 
 % nototalPN = T.taskProb == '100' & T.taskType == 'noRw' & T.meanFR_task>0 & T.meanFR_task<10;
 % nototalIN = T.taskProb == '100' & T.taskType == 'noRw' & T.meanFR_task>10;
@@ -84,12 +84,12 @@ ylimBase = max([laserBaseIN_pre; laserBaseIN_stm; laserBaseIN_post]);
 ylimTrack = max([laserTrackIN_pre; laserTrackIN_stm; laserTrackIN_post]);
 
 %% Single cell figure separation
-% figList_DRunlightIN_sig = T.Path(lightIN);
-% trackPlot_v3_multifig(figList_DRunlightIN_sig,rtDir_sig);
-% 
-% figList_DRunlightIN_nosig = T.Path((totalIN & ~(T.pLR_tag < 0.05)) & (totalIN & ~(T.pLR_modu < 0.05)));
-% trackPlot_v3_multifig(figList_DRunlightIN_nosig,rtDir_nosig);
-% cd('D:\Dropbox\SNL\P2_Track');
+figList_DRunlightIN_sig = T.Path(lightIN);
+trackPlot_v3_multifig(figList_DRunlightIN_sig,rtDir_sig);
+
+figList_DRunlightIN_nosig = T.Path((totalIN & ~(T.pLR_tag < 0.05)) & (totalIN & ~(T.pLR_modu < 0.05)));
+trackPlot_v3_multifig(figList_DRunlightIN_nosig,rtDir_nosig);
+cd('D:\Dropbox\SNL\P2_Track');
 
 
 %% Light response_Total cell

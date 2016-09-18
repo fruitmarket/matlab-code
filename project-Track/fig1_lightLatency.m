@@ -150,4 +150,4 @@ ylabel('Number of activated cells','FontSize',fontL);
 title('Track Response (No light session)','FontSize',fontL);
 
 set(hLatency(1:5),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30],'Box','off','TickDir','out','FontSize',fontL);
-print(gcf,'-dtiff','-r300','DRw_Latency');
+print(gcf,'-dtiff','-r300','DRw_Latency22');

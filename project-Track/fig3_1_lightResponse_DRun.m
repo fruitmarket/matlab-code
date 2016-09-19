@@ -32,13 +32,12 @@ colorOrange = [27, 94, 32]./255;
 % Stimulation during running
 load(['cellList_add','.mat']);
 
-%% Conditio
+%% Condition
 total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakMap>1;
 nTotal_DRun = sum(double(total_DRun));
 
 % total_DRw = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;
 % nTotal_DRw = sum(double(total_DRw));
-% 
 % total_No = T.taskProb == '100' & (T.taskType == 'noRun' | T.taskType == 'noRun') & T.peakMap>1;
 % nTotal_No = sum(double(total_No));
 
@@ -60,7 +59,7 @@ groupBaseD = total_DRun & ~(T.pLR_tag<0.05) & (T.statDir_tag == 1);
 groupBaseE = total_DRun & ~(T.pLR_tag<0.05) & (T.statDir_tag == -1);
 groupBaseF = total_DRun & ~(T.pLR_tag<0.05) & (T.statDir_tag == 0);
 basePie = [sum(double(groupBaseA)), sum(double(groupBaseB)), sum(double(total_DRun & ~(T.pLR_tag<0.05)))];
-labelsBase = {'Activated: ';'Inactivated: ';'UnUnmodulated: '};
+labelsBase = {'Activated: ';'Inactivated: ';'Unmodulated: '};
 
 lightBase_pre = T.lighttagPreSpk(total_DRun & T.pLR_tag<0.05);
 lightBase_stm = T.lighttagSpk(total_DRun & T.pLR_tag<0.05);
@@ -75,7 +74,7 @@ groupTrackC = total_DRun & T.pLR_modu<0.05 & (T.statDir_modu == 0);
 groupTrackD = total_DRun & ~(T.pLR_modu<0.05) & (T.statDir_modu == 1);
 groupTrackE = total_DRun & ~(T.pLR_modu<0.05) & (T.statDir_modu == -1);
 groupTrackF = total_DRun & ~(T.pLR_modu<0.05) & (T.statDir_modu == 0);
-trackPie = [sum(double(groupTrackA)), sum(double(groupBaseB)), sum(double(total_DRun & ~(T.pLR_modu<0.05)))];
+trackPie = [sum(double(groupTrackA)), sum(double(groupTrackB)), sum(double(total_DRun & ~(T.pLR_modu<0.05)))];
 labelsTrack = {'Activated: ';'Inactivated: ';'Unmodulated: '};
 
 lightTrack_pre = T.lightPreSpk(total_DRun & T.pLR_modu<0.05);
@@ -84,8 +83,17 @@ lightTrack_post = T.lightPostSpk(total_DRun & T.pLR_modu<0.05);
 
 yLimlightTrack = max([lightTrack_pre; lightTrack_stm; lightTrack_post])*1.1;
 
+%% Latency analysis
+latencyBase_Act = T.testLatencyTag_first(groupBaseA);
+latencyBase_Inalast = T.ina_lastSpk_tag(groupBaseB);
+latencyBase_Inafirst = T.ina_firstSpk_tag(groupBaseB);
+
+latencyTrack_Act = T.testLatencyModu_first(groupTrackA);
+latencyTrack_Inalast = T.ina_lastSpk_modu(groupTrackB);
+latencyTrack_Inafirst = T.ina_lastSpk_modu(groupTrackB);
+
 %% Figure (Base)
-hBase(1) = axes('Position',axpt(5,4,1,3,[0.1 0.1 0.85 0.85],midInterval));
+hBase(1) = axes('Position',axpt(5,4,1,1,[0.1 0.1 0.85 0.85],midInterval));
 fBasePie = pie(basePie);
 hBaseText = findobj(fBasePie,'Type','text');
 percentValueBase = get(hBaseText,'String');
@@ -95,7 +103,14 @@ set(hBaseColor(1),'FaceColor',colorBlue);
 set(hBaseColor(2),'FaceColor',colorDarkGray);
 set(hBaseColor(3),'FaceColor',colorLightGray);
 
-hBase(2) = axes('Position',axpt(5,4,2,3,[0.1 0.1 0.85 0.85],midInterval));
+hBase(2) = axes('Position',axpt(5,4,2,1,[0.1 0.1 0.85 0.85],midInterval));
+bar(1:2:31,histc(latencyBase_Act,0:2:30),1,'FaceColor',colorBlue);
+line([nanmedian(latencyBase_Act), nanmedian(latencyBas_Act)],[0,20],'Color',colorRed,'LineWidth',1.5);
+
+hBase(3) = axes('Position',axpt(5,4,3,1,[0.1 0.1 0.85 0.85],midInterval));
+
+
+hBase(4) = axes('Position',axpt(5,4,1,2,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7, -10, 0.6, yLimlightBase+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:sum(double(total_DRun & T.pLR_tag<0.05))
@@ -108,33 +123,33 @@ plot([1,2,3],[mean(lightBase_pre),mean(lightBase_stm),mean(lightBase_post)],'-o'
 text(3,yLimlightBase*0.8,['n = ',num2str(sum(double(total_DRun & T.pLR_tag<0.05)))],'FontSize',fontL);
 ylabel('Spike number','FontSize',fontM);
 
-hBase(3) = axes('Position',axpt(5,4,3,3,[0.1 0.1 0.85 0.85],midInterval));
+hBase(5) = axes('Position',axpt(5,4,2,2,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimlightBase],[0,yLimlightBase],'Color','k','LineWidth',1);
 hold on;
 scatter(lightBase_stm,lightBase_pre,markerXL,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number [Stm] ','fontSize',fontM);
 ylabel('Spike number [Pre] ','fontSize',fontM);
 
-hBase(4) = axes('Position',axpt(5,4,4,3,[0.1 0.1 0.85 0.85],midInterval));
+hBase(6) = axes('Position',axpt(5,4,3,2,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimlightBase],[0,yLimlightBase],'Color','k','LineWidth',1);
 hold on;
 scatter(lightBase_stm,lightBase_post,markerXL,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number [Stm] ','fontSize',fontM);
 ylabel('Spike number [Post] ','fontSize',fontM);
 
-hBase(5) = axes('Position',axpt(5,4,5,3,[0.1 0.1 0.85 0.85],midInterval));
+hBase(7) = axes('Position',axpt(5,4,4,2,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimlightBase],[0,yLimlightBase],'Color','k','LineWidth',1);
 hold on;
 scatter(lightBase_pre,lightBase_post,markerXL,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number [Pre] ','fontSize',fontM);
 ylabel('Spike number [Post] ','fontSize',fontM);
 
-set(hBase(2:5),'TickDir','out','FontSize',fontM);
-set(hBase(2),'XLim',[0,4],'YLim',[-10,yLimlightBase],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
-set(hBase(3:5),'XLim',[-10,yLimlightBase],'YLim',[-10,yLimlightBase]);
+set(hBase(2:7),'TickDir','out','FontSize',fontM);
+set(hBase(4),'XLim',[0,4],'YLim',[-10,yLimlightBase],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
+set(hBase(5:7),'XLim',[-10,yLimlightBase],'YLim',[-10,yLimlightBase]);
 
 %% Figure (Track)
-hTrack(1) = axes('Position',axpt(5,4,1,4,[0.1 0.1 0.85 0.85],midInterval));
+hTrack(1) = axes('Position',axpt(5,4,1,3,[0.1 0.1 0.85 0.85],midInterval));
 fTrackPie = pie(trackPie);
 hTrackText = findobj(fTrackPie,'Type','text');
 percentValueTrack = get(hTrackText,'String');
@@ -144,7 +159,7 @@ set(hTrackColor(1),'FaceColor',colorBlue);
 set(hTrackColor(2),'FaceColor',colorDarkGray);
 set(hTrackColor(3),'FaceColor',colorLightGray);
 
-hTrack(2) = axes('Position',axpt(5,4,2,4,[0.1 0.1 0.85 0.85],midInterval));
+hTrack(2) = axes('Position',axpt(5,4,1,4,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7, -10, 0.6, yLimlightTrack+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
 for iCell = 1:sum(double(total_DRun & T.pLR_modu<0.05))
@@ -157,21 +172,21 @@ plot([1,2,3],[mean(lightTrack_pre),mean(lightTrack_stm),mean(lightTrack_post)],'
 text(3,yLimlightTrack*0.8,['n = ',num2str(sum(double(total_DRun & T.pLR_modu<0.05)))],'FontSize',fontL);
 ylabel('Spike number','FontSize',fontM);
 
-hTrack(3) = axes('Position',axpt(5,4,3,4,[0.1 0.1 0.85 0.85],midInterval));
+hTrack(3) = axes('Position',axpt(5,4,2,4,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimlightTrack],[0,yLimlightTrack],'Color','k','LineWidth',1);
 hold on;
 scatter(lightTrack_stm,lightTrack_pre,markerXL,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number [Stm] ','fontSize',fontM);
 ylabel('Spike number [Pre] ','fontSize',fontM);
 
-hTrack(4) = axes('Position',axpt(5,4,4,4,[0.1 0.1 0.85 0.85],midInterval));
+hTrack(4) = axes('Position',axpt(5,4,3,4,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimlightTrack],[0,yLimlightTrack],'Color','k','LineWidth',1);
 hold on;
 scatter(lightTrack_stm,lightTrack_post,markerXL,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number [Stm] ','fontSize',fontM);
 ylabel('Spike number [Post] ','fontSize',fontM);
 
-hTrack(5) = axes('Position',axpt(5,4,5,4,[0.1 0.1 0.85 0.85],midInterval));
+hTrack(5) = axes('Position',axpt(5,4,4,4,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimlightTrack],[0,yLimlightTrack],'Color','k','LineWidth',1);
 hold on;
 scatter(lightTrack_pre,lightTrack_post,markerXL,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);

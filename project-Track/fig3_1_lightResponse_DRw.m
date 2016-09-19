@@ -32,7 +32,7 @@ colorOrange = [27, 94, 32]./255;
 % Stimulation during running
 load(['cellList_add','.mat']);
 
-%% Conditio
+%% Condition
 total_DRw = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;
 nTotal_DRw = sum(double(total_DRw));
 % 
@@ -57,7 +57,7 @@ groupBaseD = total_DRw & ~(T.pLR_tag<0.05) & (T.statDir_tag == 1);
 groupBaseE = total_DRw & ~(T.pLR_tag<0.05) & (T.statDir_tag == -1);
 groupBaseF = total_DRw & ~(T.pLR_tag<0.05) & (T.statDir_tag == 0);
 basePie = [sum(double(groupBaseA)), sum(double(groupBaseB)), sum(double(total_DRw & ~(T.pLR_tag<0.05)))];
-labelsBase = {'Activated: ';'Inactivated: ';'UnUnmodulated: '};
+labelsBase = {'Activated: ';'Inactivated: ';'Unmodulated: '};
 
 lightBase_pre = T.lighttagPreSpk(total_DRw & T.pLR_tag<0.05);
 lightBase_stm = T.lighttagSpk(total_DRw & T.pLR_tag<0.05);
@@ -72,7 +72,7 @@ groupTrackC = total_DRw & T.pLR_modu<0.05 & (T.statDir_modu == 0);
 groupTrackD = total_DRw & ~(T.pLR_modu<0.05) & (T.statDir_modu == 1);
 groupTrackE = total_DRw & ~(T.pLR_modu<0.05) & (T.statDir_modu == -1);
 groupTrackF = total_DRw & ~(T.pLR_modu<0.05) & (T.statDir_modu == 0);
-trackPie = [sum(double(groupTrackA)), sum(double(groupBaseB)), sum(double(total_DRw & ~(T.pLR_modu<0.05)))];
+trackPie = [sum(double(groupTrackA)), sum(double(groupTrackB)), sum(double(total_DRw & ~(T.pLR_modu<0.05)))];
 labelsTrack = {'Activated: ';'Inactivated: ';'Unmodulated: '};
 
 lightTrack_pre = T.lightPreSpk(total_DRw & T.pLR_modu<0.05);

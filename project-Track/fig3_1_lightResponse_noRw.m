@@ -75,7 +75,7 @@ groupTrackC = total_noRun & T.pLR_modu<0.05 & (T.statDir_modu == 0);
 groupTrackD = total_noRun & ~(T.pLR_modu<0.05) & (T.statDir_modu == 1);
 groupTrackE = total_noRun & ~(T.pLR_modu<0.05) & (T.statDir_modu == -1);
 groupTrackF = total_noRun & ~(T.pLR_modu<0.05) & (T.statDir_modu == 0);
-trackPie = [sum(double(groupTrackA)), sum(double(groupBaseB)), sum(double(total_noRun & ~(T.pLR_modu<0.05)))];
+trackPie = [sum(double(groupTrackA)), sum(double(groupTrackB)), sum(double(total_noRun & ~(T.pLR_modu<0.05)))];
 labelsTrack = {'Activated: ';'Inactivated: ';'Unmodulated: '};
 
 lightTrack_pre = T.lightPreSpk(total_noRun & T.pLR_modu<0.05);

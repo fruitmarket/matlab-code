@@ -163,12 +163,12 @@ for iCell = 1:nCell
             ina_firstSpk_tag = NaN;
         else
             statDir_tag = -1; % Inactivation
-            inaSpk_1sthalf = spikeWin(spikeData,lightTime.Modu,[0, 15]);
+            inaSpk_1sthalf = spikeWin(spikeData,lightTime.Tag,[0, 15]);
             ina_lastSpk_tag = cellfun(@max,inaSpk_1sthalf,'UniformOutput',false);
             ina_lastSpk_tag = median(cell2mat(ina_lastSpk_tag));
             
-            inaSpk_2ndhalf = spikeWin(spikeData,lightTime.Modu,[15,30]);
-            ina_firstSpk_tag = cellfun(@min, inaSpk_2ndhalf,'UniformOutput',false);
+            inaSpk_2ndhalf = spikeWin(spikeData,lightTime.Tag,[15,30]);
+            ina_firstSpk_tag = cellfun(@min,inaSpk_2ndhalf,'UniformOutput',false);
             ina_firstSpk_tag = median(cell2mat(ina_firstSpk_tag));
             
             if ina_lastSpk_tag > 4
@@ -193,11 +193,11 @@ for iCell = 1:nCell
             else
                 statDir_modu = -1;
                 inaSpk_1sthalf = spikeWin(spikeData,lightTime.Modu,[0, 15]);
-                ina_lastSpk_modu = cellfun(@min,inaSpk_1sthalf,'UniformOutput',false);
+                ina_lastSpk_modu = cellfun(@max,inaSpk_1sthalf,'UniformOutput',false);
                 ina_lastSpk_modu = median(cell2mat(ina_lastSpk_modu));
                 
                 inaSpk_2ndhalf = spikeWin(spikeData,lightTime.Modu,[15,30]);
-                ina_firstSpk_modu = cellfun(@min, inaSpk_2ndhalf,'UniformOutput',false);
+                ina_firstSpk_modu = cellfun(@min,inaSpk_2ndhalf,'UniformOutput',false);
                 ina_firstSpk_modu = median(cell2mat(ina_firstSpk_modu));
                 
                 if ina_lastSpk_modu > 4;

@@ -53,7 +53,7 @@ npopNeither = sum(double(popNeither));
 
 %% Base light response
 groupBaseA = total_DRw & T.pLR_tag<0.05 & (T.statDir_tag == 1);
-groupBaseB = total_DRw & T.pLR_tag<0.05 & (T.statDir_tag == -1);
+groupBaseB = total_DRw & T.pLR_tag<0.05 & (T.statDir_tag == -1) & ~isnan(T.ina_lastSpk_tag) & ~isnan(T.ina_firstSpk_tag);
 groupBaseC = total_DRw & T.pLR_tag<0.05 & (T.statDir_tag == 0);
 groupBaseD = total_DRw & ~(T.pLR_tag<0.05) & (T.statDir_tag == 1);
 groupBaseE = total_DRw & ~(T.pLR_tag<0.05) & (T.statDir_tag == -1);
@@ -69,7 +69,7 @@ yLimlightBase = max([lightBase_pre; lightBase_stm; lightBase_post])*1.1;
 
 %% Track light response
 groupTrackA = total_DRw & T.pLR_modu<0.05 & (T.statDir_modu == 1);
-groupTrackB = total_DRw & T.pLR_modu<0.05 & (T.statDir_modu == -1);
+groupTrackB = total_DRw & T.pLR_modu<0.05 & (T.statDir_modu == -1) & ~isnan(T.ina_lastSpk_modu) & ~isnan(T.ina_firstSpk_modu);
 groupTrackC = total_DRw & T.pLR_modu<0.05 & (T.statDir_modu == 0);
 groupTrackD = total_DRw & ~(T.pLR_modu<0.05) & (T.statDir_modu == 1);
 groupTrackE = total_DRw & ~(T.pLR_modu<0.05) & (T.statDir_modu == -1);

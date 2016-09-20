@@ -53,7 +53,7 @@ npopNeither = sum(double(popNeither));
 
 %% Base light response
 groupBaseA = total_DRun & T.pLR_tag<0.05 & (T.statDir_tag == 1);
-groupBaseB = total_DRun & T.pLR_tag<0.05 & (T.statDir_tag == -1);
+groupBaseB = total_DRun & T.pLR_tag<0.05 & (T.statDir_tag == -1) & ~isnan(T.ina_lastSpk_tag) & ~isnan(T.ina_firstSpk_tag);
 groupBaseC = total_DRun & T.pLR_tag<0.05 & (T.statDir_tag == 0);
 groupBaseD = total_DRun & ~(T.pLR_tag<0.05) & (T.statDir_tag == 1);
 groupBaseE = total_DRun & ~(T.pLR_tag<0.05) & (T.statDir_tag == -1);
@@ -69,7 +69,7 @@ yLimlightBase = max([lightBase_pre; lightBase_stm; lightBase_post])*1.1;
 
 %% Track light response
 groupTrackA = total_DRun & T.pLR_modu<0.05 & (T.statDir_modu == 1);
-groupTrackB = total_DRun & T.pLR_modu<0.05 & (T.statDir_modu == -1);
+groupTrackB = total_DRun & T.pLR_modu<0.05 & (T.statDir_modu == -1) & ~isnan(T.ina_lastSpk_modu) & ~isnan(T.ina_firstSpk_modu);
 groupTrackC = total_DRun & T.pLR_modu<0.05 & (T.statDir_modu == 0);
 groupTrackD = total_DRun & ~(T.pLR_modu<0.05) & (T.statDir_modu == 1);
 groupTrackE = total_DRun & ~(T.pLR_modu<0.05) & (T.statDir_modu == -1);
@@ -98,7 +98,7 @@ fBasePie = pie(basePie);
 hBaseText = findobj(fBasePie,'Type','text');
 percentValueBase = get(hBaseText,'String');
 hBaseColor = findobj(fBasePie,'Type','patch');
-set(hBaseText,{'String'},strcat(labelsBase,percentValueBase),'FontSize',fontL);
+set(hBaseText,{'String'},strcat(labelsBase,percentValueBase),'FontSize',fontM);
 set(hBaseColor(1),'FaceColor',colorBlue);
 set(hBaseColor(2),'FaceColor',colorDarkGray);
 set(hBaseColor(3),'FaceColor',colorLightGray);
@@ -106,10 +106,10 @@ set(hBaseColor(3),'FaceColor',colorLightGray);
 hBase(2) = axes('Position',axpt(5,4,2,1,[0.1 0.1 0.85 0.85],midInterval));
 bar(1:2:31,histc(latencyBase_Act,0:2:30),1,'FaceColor',colorBlue);
 line([nanmedian(latencyBase_Act), nanmedian(latencyBase_Act)],[0,20],'Color',colorRed,'LineWidth',1.5);
-text(18,16,['Activated neurons (n = ',num2str(sum(histc(latencyBase_Act,0:2:30))),')'],'FontSize',fontL);
-text(18,14,['Latency: ',num2str(nanmedian(latencyBase_Act),3),' ms'],'FontSize',fontL);
-xlabel('Latency (ms)','FontSize',fontL);
-ylabel('Number of cells','FontSize',fontL);
+text(18,16,['Activated neurons (n = ',num2str(sum(histc(latencyBase_Act,0:2:30))),')'],'FontSize',fontM);
+text(18,14,['Latency: ',num2str(nanmedian(latencyBase_Act),3),' ms'],'FontSize',fontM);
+xlabel('Latency (ms)','FontSize',fontM);
+ylabel('Number of cells','FontSize',fontM);
 
 hBase(3) = axes('Position',axpt(5,4,3,1,[0.1 0.1 0.85 0.85],midInterval));
 bar(1:2:31,histc(latencyBase_Inalast,0:2:30),1,'FaceColor',colorLightGray);
@@ -117,12 +117,12 @@ hold on;
 bar(1:2:31,histc(latencyBase_Inafirst,0:2:30),1,'FaceColor',colorGray);
 line([nanmedian(latencyBase_Inalast),nanmedian(latencyBase_Inalast)],[0,20],'Color',colorRed,'LineWidth',1.5);
 line([nanmedian(latencyBase_Inafirst),nanmedian(latencyBase_Inafirst)],[0,20],'Color',colorRed,'LineWidth',1.5);
-text(18,18,['n_1 = ',num2str(sum(histc(latencyBase_Inalast,0:2:30)))],'FontSize',fontL);
-text(18,16,['n_2 = ',num2str(sum(histc(latencyBase_Inafirst,0:2:30)))],'FontSize',fontL);
-text(18,14,['1st line: ',num2str(nanmedian(latencyBase_Inalast),3),' ms'],'FontSize',fontL);
-text(18,12,['2nd line: ',num2str(nanmedian(latencyBase_Inafirst),3),' ms'],'FontSize',fontL);
-xlabel('Latency (ms)','FontSize',fontL);
-ylabel('Number of cells','FontSize',fontL);
+text(18,18,['n_1 = ',num2str(sum(histc(latencyBase_Inalast,0:2:30)))],'FontSize',fontM);
+text(18,16,['n_2 = ',num2str(sum(histc(latencyBase_Inafirst,0:2:30)))],'FontSize',fontM);
+text(18,14,['1st line: ',num2str(nanmedian(latencyBase_Inalast),3),' ms'],'FontSize',fontM);
+text(18,12,['2nd line: ',num2str(nanmedian(latencyBase_Inafirst),3),' ms'],'FontSize',fontM);
+xlabel('Latency (ms)','FontSize',fontM);
+ylabel('Number of cells','FontSize',fontM);
 
 hBase(4) = axes('Position',axpt(5,4,1,2,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7, -10, 0.6, yLimlightBase+10],'FaceColor',colorLightBlue,'EdgeColor','none');
@@ -134,7 +134,7 @@ for iCell = 1:sum(double(total_DRun & T.pLR_tag<0.05))
     hold on;
 end
 plot([1,2,3],[mean(lightBase_pre),mean(lightBase_stm),mean(lightBase_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2,'MarkerSize',markerM);
-text(3,yLimlightBase*0.8,['n = ',num2str(sum(double(total_DRun & T.pLR_tag<0.05)))],'FontSize',fontL);
+text(3,yLimlightBase*0.8,['n = ',num2str(sum(double(total_DRun & T.pLR_tag<0.05)))],'FontSize',fontM);
 ylabel('Spike number','FontSize',fontM);
 
 hBase(5) = axes('Position',axpt(5,4,2,2,[0.1 0.1 0.85 0.85],midInterval));
@@ -169,7 +169,7 @@ fTrackPie = pie(trackPie);
 hTrackText = findobj(fTrackPie,'Type','text');
 percentValueTrack = get(hTrackText,'String');
 hTrackColor = findobj(fTrackPie,'Type','patch');
-set(hTrackText,{'String'},strcat(labelsTrack,percentValueTrack),'FontSize',fontL);
+set(hTrackText,{'String'},strcat(labelsTrack,percentValueTrack),'FontSize',fontM);
 set(hTrackColor(1),'FaceColor',colorBlue);
 set(hTrackColor(2),'FaceColor',colorDarkGray);
 set(hTrackColor(3),'FaceColor',colorLightGray);
@@ -177,10 +177,10 @@ set(hTrackColor(3),'FaceColor',colorLightGray);
 hTrack(2) = axes('Position',axpt(5,4,2,3,[0.1 0.1 0.85 0.85],midInterval));
 bar(1:2:31,histc(latencyTrack_Act,0:2:30),1,'FaceColor',colorBlue);
 line([nanmedian(latencyTrack_Act), nanmedian(latencyTrack_Act)],[0,20],'Color',colorRed,'LineWidth',1.5);
-text(18,16,['Activated neurons (n = ',num2str(sum(histc(latencyTrack_Act,0:2:30))),')'],'FontSize',fontL);
-text(18,14,['Latency: ',num2str(nanmedian(latencyTrack_Act),3),' ms'],'FontSize',fontL);
-xlabel('Latency (ms)','FontSize',fontL);
-ylabel('Number of cells','FontSize',fontL);
+text(18,16,['Activated neurons (n = ',num2str(sum(histc(latencyTrack_Act,0:2:30))),')'],'FontSize',fontM);
+text(18,14,['Latency: ',num2str(nanmedian(latencyTrack_Act),3),' ms'],'FontSize',fontM);
+xlabel('Latency (ms)','FontSize',fontM);
+ylabel('Number of cells','FontSize',fontM);
 
 hTrack(3) = axes('Position',axpt(5,4,3,3,[0.1 0.1 0.85 0.85],midInterval));
 bar(1:2:31,histc(latencyTrack_Inalast,0:2:30),1,'FaceColor',colorLightGray);
@@ -188,12 +188,12 @@ hold on;
 bar(1:2:31,histc(latencyTrack_Inafirst,0:2:30),1,'FaceColor',colorGray);
 line([nanmedian(latencyTrack_Inalast),nanmedian(latencyTrack_Inalast)],[0,20],'Color',colorRed,'LineWidth',1.5);
 line([nanmedian(latencyTrack_Inafirst),nanmedian(latencyTrack_Inafirst)],[0,20],'Color',colorRed,'LineWidth',1.5);
-text(18,18,['n_1 = ',num2str(sum(histc(latencyTrack_Inalast,0:2:30)))],'FontSize',fontL);
-text(18,16,['n_2 = ',num2str(sum(histc(latencyTrack_Inafirst,0:2:30)))],'FontSize',fontL);
-text(18,14,['1st line: ',num2str(nanmedian(latencyTrack_Inalast),3),' ms'],'FontSize',fontL);
-text(18,12,['2nd line: ',num2str(nanmedian(latencyTrack_Inafirst),3),' ms'],'FontSize',fontL);
-xlabel('Latency (ms)','FontSize',fontL);
-ylabel('Number of cells','FontSize',fontL);
+text(18,18,['n_1 = ',num2str(sum(histc(latencyTrack_Inalast,0:2:30)))],'FontSize',fontM);
+text(18,16,['n_2 = ',num2str(sum(histc(latencyTrack_Inafirst,0:2:30)))],'FontSize',fontM);
+text(18,14,['1st line: ',num2str(nanmedian(latencyTrack_Inalast),3),' ms'],'FontSize',fontM);
+text(18,12,['2nd line: ',num2str(nanmedian(latencyTrack_Inafirst),3),' ms'],'FontSize',fontM);
+xlabel('Latency (ms)','FontSize',fontM);
+ylabel('Number of cells','FontSize',fontM);
 
 hTrack(4) = axes('Position',axpt(5,4,1,4,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7, -10, 0.6, yLimlightTrack+10],'FaceColor',colorLightBlue,'EdgeColor','none');
@@ -205,7 +205,7 @@ for iCell = 1:sum(double(total_DRun & T.pLR_modu<0.05))
     hold on;
 end
 plot([1,2,3],[mean(lightTrack_pre),mean(lightTrack_stm),mean(lightTrack_post)],'-o','MarkerFaceColor','k','Color','k','LineWidth',2,'MarkerSize',markerM);
-text(3,yLimlightTrack*0.8,['n = ',num2str(sum(double(total_DRun & T.pLR_modu<0.05)))],'FontSize',fontL);
+text(3,yLimlightTrack*0.8,['n = ',num2str(sum(double(total_DRun & T.pLR_modu<0.05)))],'FontSize',fontM);
 ylabel('Spike number','FontSize',fontM);
 
 hTrack(5) = axes('Position',axpt(5,4,2,4,[0.1 0.1 0.85 0.85],midInterval));
@@ -234,4 +234,4 @@ set(hTrack(4),'XLim',[0,4],'YLim',[-10,yLimlightTrack],'XTick',[1,2,3],'XTickLab
 set(hTrack(2:3),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
 set(hTrack(5:7),'XLim',[-10,yLimlightTrack],'YLim',[-10,yLimlightTrack]);
 
-print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRun.ai','-depsc');
+% print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRun.ai','-depsc');

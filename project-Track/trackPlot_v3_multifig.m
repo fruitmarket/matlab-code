@@ -338,8 +338,8 @@ for iFile = 1:nFile
             set(hPsth(iSensor),'YLim',[0 ylimpeth(iSensor)]);
         end
         cd(rtDir)
-        print(gcf,'-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
-%         print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
+%         print(gcf,'-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
+        print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
         close;
 end
 end

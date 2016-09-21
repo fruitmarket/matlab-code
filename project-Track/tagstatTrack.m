@@ -142,9 +142,17 @@ for iCell = 1:nCell
 % Log-rank test    
     [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag+calibStat, testRangeTag, baseRangeTag);
     [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu+calibStat, testRangeModu, baseRangeModu);
+    
     [pLR_tag,timeLR_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag); % H1: light induced firing H2: baseline     
     [pLR_modu,timeLR_modu,H1_modu,H2_modu] = logRankTest(timeModu, censorModu);
-    if isempty(pLR_modu)
+    
+    spkCriteria_tag = spikeWin(spikeData,lightTime.Tag,[-20,100]);
+    spkCriteria_modu = spikeWin(spikeData,lightTime.Modu,[-20,100]);
+    
+    if sum(cell2mat(cellfun(@length,spkCriteria_tag,'UniformOutput',false))) < 10 % if the # of spikes are less than 10, do not calculate pLR
+        pLR_tag = 1;
+    end
+    if sum(cell2mat(cellfun(@length,spkCriteria_modu,'UniformOutput',false))) < 10 | isempty(pLR_modu)
         pLR_modu = 1;
     end    
 % Salt test
@@ -175,6 +183,9 @@ for iCell = 1:nCell
             calibStat = 4;
             [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag+calibStat, testRangeTag, baseRangeTag);
             [pLR_tag,timeLR_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag);
+            if sum(cell2mat(cellfun(@length,spkCriteria_tag,'UniformOutput',false))) < 10 % if the # of spikes are less than 10, do not calculate pLR
+                pLR_tag = 1;
+            end
             end
         end
     else
@@ -204,6 +215,10 @@ for iCell = 1:nCell
                 calibStat = 4;
                 [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu+calibStat, testRangeModu, baseRangeModu);
                 [pLR_modu,timeLR_modu,H1_modu,H2_modu] = logRankTest(timeModu, censorModu);
+                spkCriteria_modu = spikeWin(spikeData,lightTime.Modu,[-20,100]);
+                if sum(cell2mat(cellfun(@length,spkCriteria_modu,'UniformOutput',false))) < 10 % if the # of spikes are less than 10 do not calculate pLR
+                    pLR_modu = 1;
+                end
                 end
             end
         else
@@ -225,7 +240,7 @@ function [time, censor] = tagDataLoad(spikeData, onsetTime, testRange, baseRange
 %   baseRange: binning time range for baseline (in msec)
 %
 %   time: nBin (nBin-1 number of baselines and 1 test) x nLightTrial
-%
+
 narginchk(4,4);
 if isempty(onsetTime); time = []; censor = []; return; end;
 

@@ -11,11 +11,11 @@ function event2mat_track %(filename)
 %     timeStamp = timeStamp'/1000; % unit: ms
     [eData, eList] = eLoad; % Unit: msec
     timeStamp = eData.t;
-    eventStrings = eData.s;
+    eventString = eData.s;
     
     % Time bins
-    recStart = find(strcmp(eventStrings,'Starting Recording'));
-    recEnd = find(strcmp(eventStrings,'Stopping Recording'));
+    recStart = find(strcmp(eventString,'Starting Recording'));
+    recEnd = find(strcmp(eventString,'Stopping Recording'));
     
     baseTime = timeStamp([recStart(1), recEnd(1)]);
     taskTime = timeStamp([recStart(2), recEnd(2)]);
@@ -25,62 +25,62 @@ function event2mat_track %(filename)
 
 %% Sensor time
 sensorITIThreshold = 30; % sensor intevals shorter than 50ms are usually artifacts.
-sensor1 = timeStamp((~cellfun('isempty',regexp(eventStrings,'S1'))) & cellfun('length',eventStrings)==2);
+sensor1 = timeStamp((~cellfun('isempty',regexp(eventString,'S1'))) & cellfun('length',eventString)==2);
 sensorOut = [false; (diff(sensor1(:,1)) < sensorITIThreshold)] | (sensor1(:,1) < timeStamp(recStart(1)));
 sensor1(sensorOut,:) = [];
 sensor.S1 = sensor1;
 
-sensor2 = timeStamp((~cellfun('isempty',regexp(eventStrings,'S2'))));
+sensor2 = timeStamp((~cellfun('isempty',regexp(eventString,'S2'))));
 sensorOut = [false; (diff(sensor2(:,1)) < sensorITIThreshold)] | (sensor2(:,1) < timeStamp(recStart(2))); 
 sensor2(sensorOut,:) = [];
 sensor.S2 = sensor2;
 
-sensor3 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S3')));
+sensor3 = timeStamp(~cellfun('isempty',regexp(eventString,'S3')));
 sensorOut = [false; (diff(sensor3(:,1)) < sensorITIThreshold)] | (sensor3(:,1) < timeStamp(recStart(2))); 
 sensor3(sensorOut,:) = [];
 sensor.S3 = sensor3;
 
-sensor4 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S4')));
+sensor4 = timeStamp(~cellfun('isempty',regexp(eventString,'S4')));
 sensorOut = [false; (diff(sensor4(:,1)) < sensorITIThreshold)] | (sensor4(:,1) < timeStamp(recStart(2))); 
 sensor4(sensorOut,:) = [];
 sensor.S4 = sensor4;
 
-sensor5 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S5')));
+sensor5 = timeStamp(~cellfun('isempty',regexp(eventString,'S5')));
 sensorOut = [false; (diff(sensor5(:,1)) < sensorITIThreshold)] | (sensor5(:,1) < timeStamp(recStart(2))); 
 sensor5(sensorOut,:) = [];
 sensor.S5 = sensor5;
 
-sensor6 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S6')));
+sensor6 = timeStamp(~cellfun('isempty',regexp(eventString,'S6')));
 sensorOut = [false; (diff(sensor6(:,1)) < sensorITIThreshold)] | (sensor6(:,1) < timeStamp(recStart(2))); 
 sensor6(sensorOut,:) = [];
 sensor.S6 = sensor6;
 
-sensor7 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S7')));
+sensor7 = timeStamp(~cellfun('isempty',regexp(eventString,'S7')));
 sensorOut = [false; (diff(sensor7(:,1)) < sensorITIThreshold)] | (sensor7(:,1) < timeStamp(recStart(2))); 
 sensor7(sensorOut,:) = [];
 sensor.S7 = sensor7;
     
-sensor8 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S8')));
+sensor8 = timeStamp(~cellfun('isempty',regexp(eventString,'S8')));
 sensorOut = [false; (diff(sensor8(:,1)) < sensorITIThreshold)] | (sensor8(:,1) < timeStamp(recStart(2))); 
 sensor8(sensorOut,:) = [];
 sensor.S8 = sensor8;
 
-sensor9 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S9')));
+sensor9 = timeStamp(~cellfun('isempty',regexp(eventString,'S9')));
 sensorOut = [false; (diff(sensor9(:,1)) < sensorITIThreshold)] | (sensor9(:,1) < timeStamp(recStart(2))); 
 sensor9(sensorOut,:) = [];
 sensor.S9 = sensor9;
 
-sensor10 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S10')));
+sensor10 = timeStamp(~cellfun('isempty',regexp(eventString,'S10')));
 sensorOut = [false; (diff(sensor10(:,1)) < sensorITIThreshold)] | (sensor10(:,1) < timeStamp(recStart(2))); 
 sensor10(sensorOut,:) = [];
 sensor.S10 = sensor10;
 
-sensor11 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S11')));
+sensor11 = timeStamp(~cellfun('isempty',regexp(eventString,'S11')));
 sensorOut = [false; (diff(sensor11(:,1)) < sensorITIThreshold)] | (sensor11(:,1) < timeStamp(recStart(2))); 
 sensor11(sensorOut,:) = [];
 sensor.S11 = sensor11;
 
-sensor12 = timeStamp(~cellfun('isempty',regexp(eventStrings,'S12')));
+sensor12 = timeStamp(~cellfun('isempty',regexp(eventString,'S12')));
 sensorOut = [false; (diff(sensor12(:,1)) < sensorITIThreshold)] | (sensor12(:,1) < timeStamp(recStart(2))); 
 sensor12(sensorOut,:) = [];
 sensor.S12 = sensor12;
@@ -107,17 +107,17 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
 %%
     switch numel(recStart)
         case 1      % Baseline recording only
-            lightTime.Total = timeStamp(strcmp(eventStrings,'Light'))';           
+            lightTime.Total = timeStamp(strcmp(eventString,'Light'))';           
             
         case 2      % Baseline - Task recording
-            lightTime.Total = timeStamp(strcmp(eventStrings,'Light'));
+            lightTime.Total = timeStamp(strcmp(eventString,'Light'));
             lightTime.Modu = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2)));
             preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
             stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
             postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
             
         case 3      % Baseline - Task - Tagging recording
-            lightTime.Total = timeStamp(strcmp(eventStrings,'Light')); % unit: msec
+            lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
             lightTime.Modu = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
             lightTime.Tag = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
             preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec

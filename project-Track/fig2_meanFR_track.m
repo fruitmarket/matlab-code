@@ -64,7 +64,7 @@ yLimNo = max([meanFR_NoPre; meanFR_NoStm; meanFR_NoPost])*1.1;
 
 %% Light response_Total cell
 
-hMeanFR(1) = axes('Position',axpt(3,2,1,1,[0.1 0.1 0.85 0.85],midInterval));
+hMeanFR(1) = axes('Position',axpt(4,3,1,1,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimDRun],[0,yLimDRun],'Color','k','LineWidth',lineM);
 line([0,10],[10,10],'LineStyle',':','Color','k','LineWidth',lineM);
 line([10,10],[0,10],'LineStyle',':','Color','k','LineWidth',lineM);
@@ -75,7 +75,7 @@ xlabel('Mean firing rate (Hz) [Stm] ','fontSize',fontM);
 ylabel('Mean firing rate (Hz) [Pre] ','fontSize',fontM);
 title('Stimulation during running zone','fontSize',fontL);
 
-hMeanFR(2) = axes('Position',axpt(3,2,1,2,[0.1 0.1 0.85 0.85],midInterval));
+hMeanFR(2) = axes('Position',axpt(4,3,1,2,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimDRun],[0,yLimDRun],'Color','k','LineWidth',lineM);
 line([0,10],[10,10],'LineStyle',':','Color','k','LineWidth',lineM);
 line([10,10],[0,10],'LineStyle',':','Color','k','LineWidth',lineM);
@@ -84,7 +84,7 @@ scatter(meanFR_DRunStm,meanFR_DRunPost,markerXL,'MarkerEdgeColor','k','MarkerFac
 xlabel('Mean firing rate (Hz) [Stm] ','fontSize',fontM);
 ylabel('Mean firing rate (Hz) [Post] ','fontSize',fontM);
 
-hMeanFR(3) = axes('Position',axpt(3,2,2,1,[0.1 0.1 0.85 0.85],midInterval));
+hMeanFR(3) = axes('Position',axpt(4,3,2,1,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimDRw],[0,yLimDRw],'Color','k','LineWidth',lineM);
 line([0,10],[10,10],'LineStyle',':','Color','k','LineWidth',lineM);
 line([10,10],[0,10],'LineStyle',':','Color','k','LineWidth',lineM);
@@ -95,7 +95,7 @@ xlabel('Mean firing rate (Hz) [Stm] ','fontSize',fontM);
 ylabel('Mean firing rate (Hz) [Pre] ','fontSize',fontM);
 title('Stimulation during reward zone','fontSize',fontL);
 
-hMeanFR(4) = axes('Position',axpt(3,2,2,2,[0.1 0.1 0.85 0.85],midInterval));
+hMeanFR(4) = axes('Position',axpt(4,3,2,2,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimDRun],[0,yLimDRun],'Color','k','LineWidth',lineM);
 line([0,10],[10,10],'LineStyle',':','Color','k','LineWidth',lineM);
 line([10,10],[0,10],'LineStyle',':','Color','k','LineWidth',lineM);
@@ -104,7 +104,7 @@ scatter(meanFR_DRwStm,meanFR_DRwPost,markerXL,'MarkerEdgeColor','k','MarkerFaceC
 xlabel('Mean firing rate (Hz) [Stm] ','fontSize',fontM);
 ylabel('Mean firing rate (Hz) [Post] ','fontSize',fontM);
 
-hMeanFR(5) = axes('Position',axpt(3,2,3,1,[0.1 0.1 0.85 0.85],midInterval));
+hMeanFR(5) = axes('Position',axpt(4,3,3,1,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimNo],[0,yLimNo],'Color','k','LineWidth',lineM);
 line([0,10],[10,10],'LineStyle',':','Color','k','LineWidth',lineM);
 line([10,10],[0,10],'LineStyle',':','Color','k','LineWidth',lineM);
@@ -115,7 +115,7 @@ xlabel('Mean firing rate (Hz) [Stm] ','fontSize',fontM);
 ylabel('Mean firing rate (Hz) [Pre] ','fontSize',fontM);
 title('No stimulation (Control)','fontSize',fontL);
 
-hMeanFR(6) = axes('Position',axpt(3,2,3,2,[0.1 0.1 0.85 0.85],midInterval));
+hMeanFR(6) = axes('Position',axpt(4,3,3,2,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimNo],[0,yLimNo],'Color','k','LineWidth',lineM);
 line([0,10],[10,10],'LineStyle',':','Color','k','LineWidth',lineM);
 line([10,10],[0,10],'LineStyle',':','Color','k','LineWidth',lineM);
@@ -129,4 +129,4 @@ set(hMeanFR(1:2),'XLim',[-1,yLimDRun],'YLim',[-1,yLimDRun]);
 set(hMeanFR(3:4),'XLim',[-1,yLimDRw],'YLim',[-1,yLimDRw]);
 set(hMeanFR(5:6),'XLim',[-1,yLimNo],'YLim',[-1,yLimNo]);
 
-print(gcf,'-painters','-r300','Fig2_meanFR_.ai','-depsc');
+% print(gcf,'-painters','-r300','Fig2_meanFR_2.ai','-depsc');

@@ -1,7 +1,7 @@
-function trackPlot_v3_multifig(fileList,rtDir)
+function trackPlot_v3_multifig(fileList,saveDir)
 % ##### Modified Dohyoung Kim's code. Thanks to Dohyoung! ##### %
 % This v3.0 draws figures which are based on mat-files in the folder
-%
+% saveDir: location of a folder which you want to save images
 % 
 
 % Plot properties
@@ -337,9 +337,9 @@ for iFile = 1:nFile
         for iSensor = 1:nSensor
             set(hPsth(iSensor),'YLim',[0 ylimpeth(iSensor)]);
         end
-        cd(rtDir)
-%         print(gcf,'-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
-        print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
+        cd(saveDir)
+        print(gcf,'-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
+%         print(gcf,'-dtiff','-r300',[cellFigName{1},'.tif']);
         close;
 end
 end

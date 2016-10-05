@@ -209,6 +209,7 @@ ylabel('Spike number','FontSize',fontM);
 hTrack(5) = axes('Position',axpt(5,4,2,4,[0.1 0.1 0.85 0.85],midInterval));
 line([0,yLimlightTrack],[0,yLimlightTrack],'Color','k','LineWidth',1);
 hold on;
+% loglog(lightTrack_stm,lightTrack_pre,'o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 scatter(lightTrack_stm,lightTrack_pre,markerXL,'filled','o','MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 xlabel('Spike number [Stm] ','fontSize',fontM);
 ylabel('Spike number [Pre] ','fontSize',fontM);
@@ -227,9 +228,9 @@ scatter(lightTrack_pre,lightTrack_post,markerXL,'filled','o','MarkerEdgeColor','
 xlabel('Spike number [Pre] ','fontSize',fontM);
 ylabel('Spike number [Post] ','fontSize',fontM);
 
-set(hTrack(2:7),'TickDir','out','FontSize',fontM,'Box','off')
-set(hTrack(4),'XLim',[0,4],'YLim',[-10,yLimlightTrack],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
-set(hTrack(2:3),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
-set(hTrack(5:7),'XLim',[-10,yLimlightTrack],'YLim',[-10,yLimlightTrack]);
+% set(hTrack(2:7),'TickDir','out','FontSize',fontM,'Box','off')
+% set(hTrack(4),'XLim',[0,4],'YLim',[-10,yLimlightTrack],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
+% set(hTrack(2:3),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
+% set(hTrack(6:7),'XLim',[-10,yLimlightTrack],'YLim',[-10,yLimlightTrack]);
 
-print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRun.ai','-depsc');
+% print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRun.ai','-depsc');

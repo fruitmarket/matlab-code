@@ -128,9 +128,9 @@ for iCell = 1:nCell
             'spikeTimeTagYel','xptTagYel','yptTagYel','pethtimeTagYel','pethTagYel',...
             'lighttagSpk','lighttagPreSpk','lighttagPostSpk','-append');
     end
-    if lighttagPreSpk*(criteria_multi/10+10)/10 + criteria_add < lighttagSpk % If spikes at light duration more than 10% of spikes during pre = activation
+    if lighttagPreSpk*(criteria_multi/10+10)/10 + criteria_add < lighttagSpk % If spikes at light duration are more than 10% of spikes during pre = activation
         tagLightDir = 1;
-    elseif lighttagPreSpk*(10-criteria_multi/10)/10 - criteria_add > lighttagSpk % If spikes at light duration less than 10% of spikes during pre = activation
+    elseif lighttagPreSpk*(10-criteria_multi/10)/10 - criteria_add > lighttagSpk % If spikes at light duration are less than 10% of spikes during pre = activation
         tagLightDir = -1;
     else
         tagLightDir = 0;

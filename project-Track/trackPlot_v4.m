@@ -71,7 +71,7 @@ for iFile = 1:nFile
     if yLimlightBase < 10
         yLimlightBase = 20;
     end
-    hIntensity = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,8:9,2:3,[],tightInterval),wideInterval));
+    hIntensity = axes('Position',axpt(4,1,2:4,1,axpt(nCol,nRow,8:9,2:3,[],tightInterval),wideInterval));
     hold on;
     plot([1,2,3],[lighttagSpk5mw,lighttagSpk8mw,lighttagSpk10mw],'-o','Color',colorGray,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','MarkerSize',markerM);
     hold on;
@@ -89,13 +89,13 @@ for iFile = 1:nFile
         nBlue = length(lightTime.Tag);
         winBlue = [min(pethtimeTagBlue) max(pethtimeTagBlue)];
     % Raster
-        hTagBlue(1) = axes('Position',axpt(1,3,1,1,axpt(nCol,nRow,1,2:4,[],tightInterval),wideInterval));
+        hTagBlue(1) = axes('Position',axpt(1,3,1,1,axpt(nCol,nRow,1:4,5:7,[],tightInterval),wideInterval));
         plot(xptTagBlue{1},yptTagBlue{1},'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
         set(hTagBlue(1),'XLim',winBlue,'XTick',[],'YLim',[0 nBlue], 'YTick', [0 nBlue], 'YTickLabel', {[], nBlue});
         ylabel('Trials','FontSize',fontS);
     title('Platform light response (2Hz)','FontSize',fontM);
     % Psth
-        hTagBlue(2) = axes('Position',axpt(1,3,1,2,axpt(nCol,nRow,1,2:4,[],tightInterval),wideInterval));
+        hTagBlue(2) = axes('Position',axpt(1,3,1,2,axpt(nCol,nRow,1:4,5:7,[],tightInterval),wideInterval));
         hold on;
         yLimBarBlue = ceil(max(pethTagBlue(:))*1.05+0.0001);
         bar(5, 1000, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLightBlue);
@@ -109,7 +109,7 @@ for iFile = 1:nFile
         xlabel('Time (ms)', 'FontSize', fontS);
         ylabel('Rate (Hz)', 'FontSize', fontS);
     % Hazard function
-        hTagBlue(3) = axes('Position',axpt(1,3,1,3,axpt(nCol,nRow,1,2:4,[],tightInterval),wideInterval));
+        hTagBlue(3) = axes('Position',axpt(1,3,1,3,axpt(nCol,nRow,1:4,5:7,[],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_tag;H2_tag])*1100+0.0001)/1000 1]);
         winHTag = [0 testRangeChETA];
@@ -129,7 +129,7 @@ for iFile = 1:nFile
         nBlue = length(lightTime.Modu);
         winBlue = [min(pethtimeModuBlue) max(pethtimeModuBlue)];
     % Raster
-        hModuBlue(1) = axes('Position',axpt(1,3,1,1,axpt(nCol,nRow,2,2:4,[],tightInterval),wideInterval));
+        hModuBlue(1) = axes('Position',axpt(1,3,1,1,axpt(nCol,nRow,6:9,5:7,[],tightInterval),wideInterval));
         plot(xptModuBlue{1},yptModuBlue{1},...
             'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
         set(hModuBlue(1),'XLim',winBlue,'XTick',[],...
@@ -137,7 +137,7 @@ for iFile = 1:nFile
         ylabel('Trials','FontSize',fontS);
         title('On track','FontSize',fontM);    
     % Psth
-        hModuBlue(2) = axes('Position',axpt(1,3,1,2,axpt(nCol,nRow,2,2:4,[],tightInterval),wideInterval));
+        hModuBlue(2) = axes('Position',axpt(1,3,1,2,axpt(nCol,nRow,6:9,5:7,[],tightInterval),wideInterval));
         hold on;
         yLimBarBlue = ceil(max(pethModuBlue(:))*1.05+0.0001);
         bar(5, 1000, 'BarWidth', 10,'LineStyle', 'none', 'FaceColor', colorLightBlue);
@@ -150,7 +150,7 @@ for iFile = 1:nFile
             'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
         ylabel('Rate (Hz)', 'FontSize', fontS);
     % Hazard function    
-        hModuBlue(3) = axes('Position',axpt(1,3,1,3,axpt(nCol,nRow,2,2:4,[],tightInterval),wideInterval));
+        hModuBlue(3) = axes('Position',axpt(1,3,1,3,axpt(nCol,nRow,6:9,5:7,[],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_modu;H2_modu])*1100+0.0001)/1000 1]);
         winHModu = [0 testRangeChETA];
@@ -169,7 +169,7 @@ for iFile = 1:nFile
     % Track raster plot
     if ~isempty(strcmp(cellName,'DRun')) % DRun session
         iSensor = 6;
-        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2,5:6,[],tightInterval),wideInterval));
+        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
@@ -177,7 +177,7 @@ for iFile = 1:nFile
         ylabel('Trial','FontSize',fontS);
         title(fields{iSensor},'FontSize',fontM);
             
-        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2,5:6,[],tightInterval),wideInterval));
+        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
         ylimpeth = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
@@ -188,7 +188,7 @@ for iFile = 1:nFile
     end
     if ~isempty(strcmp(cellName,'DRw')) % Rw session
         iSensor = 10;
-        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2,5:6,[],tightInterval),wideInterval));
+        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
@@ -196,7 +196,7 @@ for iFile = 1:nFile
         ylabel('Trial','FontSize',fontS);
         title(fields{iSensor},'FontSize',fontM);
             
-        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2,5:6,[],tightInterval),wideInterval));
+        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
         ylimpeth = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
@@ -207,7 +207,7 @@ for iFile = 1:nFile
     end
     if ~isempty(strcmp(cellName,'noRun')) % noRun session
         iSensor = 6;
-        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2,5:6,[],tightInterval),wideInterval));
+        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
@@ -215,7 +215,7 @@ for iFile = 1:nFile
         ylabel('Trial','FontSize',fontS);
         title(fields{iSensor},'FontSize',fontM);
             
-        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2,5:6,[],tightInterval),wideInterval));
+        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
         ylimpeth = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
@@ -226,7 +226,7 @@ for iFile = 1:nFile
     end
     if ~isempty(strcmp(cellName,'noRw')) % noRw session
         iSensor = 10;
-        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2,5:6,[],tightInterval),wideInterval));
+        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
@@ -234,7 +234,7 @@ for iFile = 1:nFile
         ylabel('Trial','FontSize',fontS);
         title(fields{iSensor},'FontSize',fontM);
             
-        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2,5:6,[],tightInterval),wideInterval));
+        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
         ylimpeth = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
@@ -255,7 +255,7 @@ for iFile = 1:nFile
     peak_post = max(max(post_ratemap))*sfreq(1);
     
     totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
-    hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:2,7:8,[]),wideInterval));
+    hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:5,9:10,[]),wideInterval));
     hold on;
     hField = pcolor(totalmap);
 

@@ -91,7 +91,6 @@ figList_DRunlightIN_nosig = T.Path((totalIN & ~(T.pLR_tag < 0.05)) & (totalIN & 
 trackPlot_v3_multifig(figList_DRunlightIN_nosig,rtDir_nosig);
 cd('D:\Dropbox\SNL\P2_Track');
 
-
 %% Light response_Total cell
 totalBaseIN_pre = T.lighttagPreSpk(totalIN);
 totalBaseIN_stm = T.lighttagSpk(totalIN);

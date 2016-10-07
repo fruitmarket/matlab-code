@@ -36,7 +36,6 @@ for iCell = 1:nCell
     lighttagSpk8mw = sum(0<xptTagBlue_8mw{1} & xptTagBlue_8mw{1}<15);
     lighttagSpk10mw = sum(0<xptTagBlue_10mw{1} & xptTagBlue_10mw{1}<15);
     
-    
     save([cellName,'.mat'],...
          'lighttagSpk5mw','lighttagSpk8mw','lighttagSpk10mw','-append');
 end

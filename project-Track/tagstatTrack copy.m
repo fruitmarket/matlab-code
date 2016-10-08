@@ -136,7 +136,8 @@ for iCell = 1:nCell
     if (idxModu==1) & (idxTag==1);
         calibStat = 0;
     else
-        calibStat = 4;
+%         calibStat = 4;
+        calibStat = 0;
     end
     
 % Log-rank test    
@@ -180,7 +181,8 @@ for iCell = 1:nCell
             ina_firstSpk_tag = median(cell2mat(ina_firstSpk_tag));
             
             if ina_lastSpk_tag > 4
-            calibStat = 4;
+%             calibStat = 4;
+            calibStat = 0;
             [timeTag, censorTag] = tagDataLoad(spikeData, lightTime.Tag+calibStat, testRangeTag, baseRangeTag);
             [pLR_tag,timeLR_tag,H1_tag,H2_tag] = logRankTest(timeTag, censorTag);
             if sum(cell2mat(cellfun(@length,spkCriteria_tag,'UniformOutput',false))) < 10 % if the # of spikes are less than 10, do not calculate pLR
@@ -212,7 +214,8 @@ for iCell = 1:nCell
                 ina_firstSpk_modu = median(cell2mat(ina_firstSpk_modu));
                 
                 if ina_lastSpk_modu > 4;
-                calibStat = 4;
+%                 calibStat = 4;
+                calibStat = 0;
                 [timeModu, censorModu] = tagDataLoad(spikeData, lightTime.Modu+calibStat, testRangeModu, baseRangeModu);
                 [pLR_modu,timeLR_modu,H1_modu,H2_modu] = logRankTest(timeModu, censorModu);
                 spkCriteria_modu = spikeWin(spikeData,lightTime.Modu,[-20,100]);

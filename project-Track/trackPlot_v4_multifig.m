@@ -90,7 +90,7 @@ for iFile = 1:nFile
     if isfield(lightTime,'Tag') && exist('xptTagBlue','var');
         lightDuration = 10;
         lightDurationColor = colorLightBlue;
-        testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
+        testRangeChETA = 20; % ChETA light response test range (ex. 20ms)       
     end
     if isfield(lightTime,'Tag') && exist('xptTagBlue','var') && ~isempty(xptTagBlue)
         nBlue = length(lightTime.Tag);
@@ -129,8 +129,7 @@ for iFile = 1:nFile
         stairs(timeLR_tag, H2_tag, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_tag, H1_tag,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
         text(winHTag(2)*0.1,ylimH*0.9,['p = ',num2str(pLR_tag,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
-        set(hTagBlue(3),'XLim',winHTag,'XTick',winHTag,...
-            'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
+        set(hTagBlue(3),'XLim',winHTag,'XTick',winHTag,'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
         xlabel('Time (ms)','FontSize',fontS);
         ylabel('H(t)','FontSize',fontS);
         title('Log-rank test','FontSize',fontM,'FontWeight','bold');

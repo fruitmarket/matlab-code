@@ -89,7 +89,7 @@ for iFile = 1:nFile
       % Activation or Inactivation?
     if isfield(lightTime,'Tag') && exist('xptTagBlue','var');
         lightDuration = 10;
-        lightDurationColor = colorLightBlue;
+        lightDurationColor = {colorLightLightBlue, colorLightGray};
         testRangeChETA = 20; % ChETA light response test range (ex. 20ms)       
     end
     if isfield(lightTime,'Tag') && exist('xptTagBlue','var') && ~isempty(xptTagBlue)
@@ -97,12 +97,10 @@ for iFile = 1:nFile
         winBlue = [min(pethtimeTagBlue) max(pethtimeTagBlue)];
     % Raster
         hTagBlue(1) = axes('Position',axpt(1,8,1,1:2,axpt(nCol,nRow,1:4,5:7,[],tightInterval),wideInterval));
-        rectangle('Position', [0 0, 10, nBlue/3], 'LineStyle', 'none', 'FaceColor', colorLightLightBlue);
-        hold on;
-        rectangle('Position', [0 nBlue/3+1, 10, nBlue*2/3], 'LineStyle', 'none', 'FaceColor', colorLightBlue);
-        hold on;
-        rectangle('Position', [0 nBlue*2/3, 10, nBlue], 'LineStyle', 'none', 'FaceColor', colorBlue);
-        hold on;
+%         line(winBlue, [nBlue/3, nBlue/3],'LineStyle',':','Color',colorDarkGray);
+%         hold on;
+%         line(winBlue, [nBlue*2/3, nBlue*2/3],'LineStyle',':','Color',colorDarkGray);
+%         hold on;
         plot(xptTagBlue{1},yptTagBlue{1},'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
         set(hTagBlue(1),'XLim',winBlue,'XTick',[],'YLim',[0 nBlue], 'YTick', [0 nBlue], 'YTickLabel', {[], nBlue});
         ylabel('Trials','FontSize',fontS);
@@ -114,8 +112,11 @@ for iFile = 1:nFile
         bar(5, 1000, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLightLightBlue);
         rectangle('Position', [0 yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
         hBarBlue = bar(pethtimeTagBlue, pethTagBlue, 'histc');
-        text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyTag_first,3)],'FontSize',fontS,'interpreter','none');
-%         text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyTag_first,3)],'FontSize',fontS,'interpreter','none');
+        if statDir_tag == 1
+            text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyTag_first,3)],'FontSize',fontS,'interpreter','none');
+        else
+        end
+        %         text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyTag_first,3)],'FontSize',fontS,'interpreter','none');
         set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
         set(hTagBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1) 0 winBlue(2)],'XTickLabel',{winBlue(1);0;num2str(winBlue(2))},...
             'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
@@ -159,8 +160,11 @@ for iFile = 1:nFile
             rectangle('Position', [0, yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorGray);
         end
         hBarBlue = bar(pethtimeModuBlue, pethModuBlue, 'histc');
-        text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyModu_first,3)],'FontSize',fontS,'interpreter','none');
+        if statDir_modu == 1;
+            text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyModu_first,3)],'FontSize',fontS,'interpreter','none');
 %         text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyModu_first,3)],'FontSize',fontS,'interpreter','none');
+        else
+        end
         set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
         set(hModuBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1), 0, winBlue(2)],'XTickLabel',{winBlue(1);0;num2str(winBlue(2))},...
             'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
@@ -190,7 +194,7 @@ for iFile = 1:nFile
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
+        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
         ylabel('Trial','FontSize',fontS);
         title(['Raster & PETH at ',fields{iSensor}],'FontSize',fontM,'FontWeight','bold');
             
@@ -207,7 +211,7 @@ for iFile = 1:nFile
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
+        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
         ylabel('Trial','FontSize',fontS);
         title(['Raster & PETH at ',fields{iSensor}],'FontSize',fontM,'FontWeight','bold');
             
@@ -224,7 +228,7 @@ for iFile = 1:nFile
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
+        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         ylabel('Trial','FontSize',fontS);
         title(['Raster & PETH at ',fields{iSensor}],'FontSize',fontM,'FontWeight','bold');
             
@@ -241,7 +245,7 @@ for iFile = 1:nFile
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor);
+        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         ylabel('Trial','FontSize',fontS);
         title(['Raster & PETH at ',fields{iSensor}],'FontSize',fontM,'FontWeight','bold');
             

@@ -63,8 +63,8 @@ for iCell = 1:nCell
            end
            pLatencyModu_second = NaN;
        elseif length(double(idxModu)) == 2 || length(double(idxModu)) == 3;
-           testLatModu_first = testLatModu(testLatModu<6);
-           testLatModu_second = testLatModu(6<testLatModu & testLatModu<20);       
+           testLatModu_first = testLatModu(testLatModu<4);
+           testLatModu_second = testLatModu(4<testLatModu & testLatModu<20);       
            if ~isnan(timeModu_lat) % Rank-sum test
                if ~isnan(testLatModu_first)
                    pLatencyModu_first = ranksum(baseLatModu,testLatModu_first);
@@ -107,8 +107,8 @@ for iCell = 1:nCell
            end
            pLatencyTag_second = NaN;
        elseif length(double(idxTag)) == 2 || length(double(idxTag)) == 3;
-           testLatTag_first = testLatTag(testLatTag<6);
-           testLatTag_second = testLatTag(6<testLatTag & testLatTag<20);       
+           testLatTag_first = testLatTag(testLatTag<4);
+           testLatTag_second = testLatTag(4<testLatTag & testLatTag<20);       
            if ~isnan(timeTag_lat)
                if ~isnan(testLatTag_first)
                    pLatencyTag_first = ranksum(baseLatTag,testLatTag_first); % Rank-sum test

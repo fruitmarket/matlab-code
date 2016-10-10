@@ -1,4 +1,4 @@
-function trackPlot_v4_multifig(fileList,saveDir)
+function trackPlot_v4_multifig_v3(fileList,saveDir)
 % Plot properties
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [33 150 243]./ 255,... % During stimulation
@@ -24,8 +24,9 @@ colorBar3 = [colorGray;colorBlue;colorGray];
 markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
 tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
 
-nCol = 20;
-nRow = 10;
+paperSizeX = [18.3, 8.00];
+
+
 
 matFile = fileList;
 nFile = length(matFile);
@@ -48,7 +49,16 @@ for iFile = 1:nFile
     load('Events.mat');
     
 % Cell information
-    fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 18.3 13.725]);
+%     fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 18.3 13.725]);
+    fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 paperSizeX(2) 13.725]);
+    if paperSizeX == 8.00
+        nCol = 20;
+        nRow = 11;
+    else
+        nCol = 10;
+        nRow = 11;
+    end
+    
     hText = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,0:5,1:2,[],tightInterval),wideInterval));
     hold on;
     text(0,0.9,matFile{iFile}, 'FontSize',fontM, 'Interpreter','none','FontWeight','bold');
@@ -186,6 +196,48 @@ for iFile = 1:nFile
         set(hModuBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
         align_ylabel(hModuBlue)     
     end
+        
+    % Heat map
+    pre_ratemap(pre_ratemap==0) = NaN;
+    peak_pre = max(max(pre_ratemap))*sfreq(1);
+    stm_ratemap(stm_ratemap==0) = NaN;
+    peak_stm = max(max(stm_ratemap))*sfreq(1);
+    post_ratemap(post_ratemap==0) = NaN;
+    peak_post = max(max(post_ratemap))*sfreq(1);
+    
+    totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
+    hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,0:5,9:10,[]),wideInterval));
+    hold on;
+    hField = pcolor(totalmap);
+    
+% Arc property
+    if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'));
+        arc = linspace(pi,pi/2*3,170); % s6-s9
+    else ~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'noRw'));
+        arc = linspace(pi/6*5, pi/6*4,170);
+    end
+
+    if ~isempty(lightTime.Modu)
+        hold on;
+        arc_r = 20;
+        x = arc_r*cos(arc)+67;
+        y = arc_r*sin(arc)+27;
+        if exist('xptModuBlue','var') & (~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'DRun')));
+            plot(x,y,'LineWidth',4,'color',colorBlue);
+        elseif exist('xptModuBlue','var') & (~isempty(strfind(cellDir,'noRw')) | ~isempty(strfind(cellDir,'noRun')));
+            plot(x,y,'LineWidth',4,'color',colorGray);                
+        else exist('xptModuYel','var');
+            plot(x,y,'LineWidth',4,'color',colorYellow);
+        end
+    else
+    end;
+    set(hField,'linestyle','none');
+    set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
+    text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
+    text(14,0,'Pre-stm','color','k','FontSize',fontM);
+    text(62,0,'Stm','color','k','FontSize',fontM)
+    text(104,0,'Post-stm','color','k','FontSize',fontM)
+    text(44,56.5,'Track heat map','FontSize',fontM,'FontWeight','bold');
     
 % Track raster plot
     if ~isempty(strfind(cellDir,'DRun')) % DRun session
@@ -259,51 +311,15 @@ for iFile = 1:nFile
     ylabel('Rate (Hz)','FontSize',fontS);
     uistack(rec,'bottom');
     set(hRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-1 1],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
-    set(hPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-1, 1],'XTick',[-1:0.2:1],'YLim',[0 ylimpeth]);
+    set(hPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-1, 1],'XTick',[-1:0.5:1],'YLim',[0 ylimpeth]);
     
-    % Heat map
-    pre_ratemap(pre_ratemap==0) = NaN;
-    peak_pre = max(max(pre_ratemap))*sfreq(1);
-    stm_ratemap(stm_ratemap==0) = NaN;
-    peak_stm = max(max(stm_ratemap))*sfreq(1);
-    post_ratemap(post_ratemap==0) = NaN;
-    peak_post = max(max(post_ratemap))*sfreq(1);
-    
-    totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
-    hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,0:5,9:10,[]),wideInterval));
-    hold on;
-    hField = pcolor(totalmap);
-    
-% Arc property
-    if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'));
-        arc = linspace(pi,pi/2*3,170); % s6-s9
-    else ~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'noRw'));
-        arc = linspace(pi/6*5, pi/6*4,170);
-    end
+    % Cell ID
+    hID = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,8,11,[],tightInterval),wideInterval));
+    text(0.8, 0.5, ['Cell ID: ',num2str(iFile)],'FontSize',fontM);
+    set(hID,'visible','off');
 
-    if ~isempty(lightTime.Modu)
-        hold on;
-        arc_r = 20;
-        x = arc_r*cos(arc)+67;
-        y = arc_r*sin(arc)+27;
-        if exist('xptModuBlue','var') & (~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'DRun')));
-            plot(x,y,'LineWidth',4,'color',colorBlue);
-        elseif exist('xptModuBlue','var') & (~isempty(strfind(cellDir,'noRw')) | ~isempty(strfind(cellDir,'noRun')));
-            plot(x,y,'LineWidth',4,'color',colorGray);                
-        else exist('xptModuYel','var');
-            plot(x,y,'LineWidth',4,'color',colorYellow);
-        end
-    else
-    end;
-    set(hField,'linestyle','none');
-    set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
-    text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
-    text(14,0,'Pre-stm','color','k','FontSize',fontM);
-    text(62,0,'Stm','color','k','FontSize',fontM)
-    text(104,0,'Post-stm','color','k','FontSize',fontM)
-    text(44,56.5,'Track heat map','FontSize',fontM,'FontWeight','bold');
-    
     cd(saveDir)
+    
     print(gcf,'-dtiff','-r300',[cellFigName{1},'.tiff']);
     close;
 end

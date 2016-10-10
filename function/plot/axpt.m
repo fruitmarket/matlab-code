@@ -17,11 +17,14 @@ narginchk(4,6);
 if nargin <= 5
     interval = [0.05 0.05];
     if nargin <= 4
-        positionVector = [0.1 0.1 0.85 0.85];
+%         positionVector = [0.1 0.1 0.85 0.85]; %default
+        positionVector = [0.1 0.1 0.95 0.85];
     end  
 end
 if isempty(positionVector)
-    positionVector = [0.1 0.1 0.85 0.85];
+%     positionVector = [0.1 0.1 0.85 0.85]; %default
+    positionVector = [0.1 0.1 0.95 0.85];
+
 end
 
 xInterval = interval(1)*positionVector(3);

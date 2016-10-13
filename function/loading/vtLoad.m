@@ -22,7 +22,7 @@ else
         vtList = cell(0,1);
         for iFolder = 1:nFolder
             if exist(vtFile{iFolder},'dir')
-                vtList = [tList; FindFiles('VT*.nvt','StartingDirectory',fileparts(vtFile{iFolder}),'CheckSubdirs',1)];
+                vtList = [vtList; FindFiles('VT*.nvt','StartingDirectory',fileparts(vtFile{iFolder}),'CheckSubdirs',1)];
             elseif exist(vtFile{iFolder},'file') == 2
                 [filePath, fileName, ext] = fileparts(vtFile{iFolder});
                 if strcmp(ext,'.nvt')

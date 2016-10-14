@@ -1,13 +1,13 @@
 function [cscTime, cscSample, cscList] = cscLoad(cscFile)
-% vtLoad searches vt files and load time and position data
+% cscLoad searches csc files and load time sample, and list of csc data
+% [cscTime, cscSample, cscList] = cscLoad(cscFile)
 %
-%   vtTime: cell array of timestamp
-%   vtPosition: cell array of position
-%   Units in milisecond
-%   vtList: shows list of VT1.nvt files
+%   cscTime: matrix array of time (unit: msec)
+%   cscSample: matrix array of sample (unit: mVolt)
+%   cscList: shows list of csc.ncs files
 %
 % Author: Junyeop Lee (cited Dohoung Kim's code)
-% 
+% Version 1.0 (Oct, 13, 2016)
 
 if nargin == 0;
     cscList = FindFiles('CSC*.ncs','CheckSubdirs',1);

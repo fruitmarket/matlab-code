@@ -1,34 +1,42 @@
 function spectroTrack()
-movingWin = [0.05 0.01];
-params.Fs = 2000;
-params.fpass = [0, 200];
+sensorWin = [1000 1000]*2; % unit: msec
+
+movingWin = [0.05 0.01]; % unit: sec
+params.Fs = 2000; % unit: Hz
+params.fpass = [0, 100];
 params.pad = 0;
 params.tapers = [3, 5];
+params.trialave = 1; % 0: no average, 1: average trials
 p = 0.05;
 params.err = [1, p];
-
-winSpect = [-2000 2000];
 
 load('Events.mat');
 
 [timestamp, sample, cscList] = cscLoad;
 
 channelSample = sample{1};
-% [spectrum, time, frequencies, sError] = mtspecgramc(sample{1},movingWin,params);
+
 idxS6 = zeros(nTrial,1);
 idxS10 = zeros(nTrial,1);
 
+sampleS6 = zeros((sum(sensorWin)+1),nTrial);
+sampleS10 = zeros((sum(sensorWin)+1),nTrial);
+
+
 for iTrial = 1:nTrial
     idxS6(iTrial,1) = find(sensor.S6(iTrial)<timestamp,1,'first');
-    idxS10(iTrial,1) = find(sensor.S10(iTrial)<timestamp,1,'first');
     sampleS6(:,iTrial) = channelSample((idxS6(iTrial,1)-sensorWin(1)):(idxS6(iTrial,1)+sensorWin(2)));
+    idxS10(iTrial,1) = find(sensor.S10(iTrial)<timestamp,1,'first');
     sampleS10(:,iTrial) = channelSample((idxS10(iTrial,1)-sensorWin(1)):(idxS10(iTrial,1)+sensorWin(2)));
 end
 
+[spectrum, time, frequencies, sError] = mtspecgramc(sampleS6/1000,movingWin,params);
+
+plot_matrix(spectrum,time,frequencies)
 % sampleTrackLight
 % samplePlfmLight
-cscData = cscWin(timestamp,sensor.S6,winSpect);
-a= cscData;
+
+
 
 function cscTime = cscWin(cscData, eventTime, win)
 % spikeWin makes raw spikeData to eventTime aligned data

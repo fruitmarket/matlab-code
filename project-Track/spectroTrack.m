@@ -35,38 +35,19 @@ end
 
 [spectrumS6, timeS6, frequenciesS6, sErrorS6] = mtspecgramc(sampleS6,movingWin,params);
 [spectrumS10, timeS10, frequenciesS10, sErrorS10] = mtspecgramc(sampleS10,movingWin,params);
-hSpectro = axes('Position',axpt(2,2,1,1,[],wideInterval));
+
+orient portrait
+hSpectro = axes('Position',axpt(6,9,1,4:5,[],wideInterval));
 hold on;
 hSpecField = pcolor(timeS6,frequenciesS6, spectrumS6');
 xLim = [mean(abs(sensorWin))-1, mean(abs(sensorWin))+1];
-yLim = [0, 120];
+yLim = [0, 90];
 line(xLim,[yLim(1),yLim(1)],'Color','k');
 hLine = line([xLim(1),xLim(1)],yLim,'Color','k');
 set(hSpecField,'EdgeColor','none','lineStyle','default');
-set(hSpectro,'Box','off','XLim',xLim,'TickDir','out','XTick',[xLim(1),mean(xLim),xLim(2)],'XTickLabel',{-1;0;1},'YLim',yLim);
+set(hSpectro,'Box','off','XLim',xLim,'TickDir','out','XTick',[xLim(1),mean(xLim),xLim(2)],'XTickLabel',{-1;0;1},'YLim',yLim,'YTick',[0:20:yLim(2)],'YTickLabel',{0:20:yLim(2)});
 ylabel('Frequency (Hz)');
 xlabel('Time (sec)');
 print(gcf,'-dtiff','-r300','exercise.tiff');
 % sampleTrackLight
 % samplePlfmLight
-
-
-
-function cscTime = cscWin(cscData, eventTime, win)
-% spikeWin makes raw spikeData to eventTime aligned data
-%   spikeData: raw data from MClust. Unit must be ms.
-%   eventTime: each output cell will be eventTime aligned spike data. unit must be ms
-%   win: spike within windows will be included. unit must be ms.
-narginchk(3,3);
-if isempty(eventTime); cscTime =[]; return; end;
-nEvent = size(eventTime);
-cscTime = cell(nEvent);
-for iEvent = 1:nEvent(1)
-    for jEvent = 1:nEvent(2)
-        timeIndex = [];
-        if isnan(eventTime(iEvent,jEvent)); continue; end;
-        [~,timeIndex] = histc(cscData,eventTime(iEvent,jEvent)+win);
-        if isempty(timeIndex); continue; end;
-        cscTime{iEvent,jEvent} = cscData(logical(timeIndex))-eventTime(iEvent,jEvent);
-    end
-end

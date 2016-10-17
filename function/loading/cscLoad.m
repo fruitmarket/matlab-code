@@ -6,7 +6,7 @@ function [cscTime, cscSample, cscList] = cscLoad(cscFile)
 %   cscSample: matrix array of samples (unit: mVolt)
 %   cscList: shows list of csc.ncs files
 %
-% Author: Junyeop Lee (cited Dohoung Kim's code)
+% Author: Joonyeup Lee (cited Dohoung Kim's code)
 % Version 1.0 (Oct, 13, 2016)
 
 if nargin == 0;

@@ -1,4 +1,3 @@
-
 %% Directory setup
 rtPath = 'D:\Dropbox\SNL\P2_Track';
 startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp8';'D:\Projects\Track_151213-2_Rbp14';'D:\Projects\Track_160221-1_Rbp16'};

@@ -37,7 +37,6 @@ for iCell = 1:nCell
     meanFR_pre = sum(histc(spikeData,time_pre))/(diff(time_pre)/1000);
     meanFR_stm = sum(histc(spikeData,time_stm))/(diff(time_stm)/1000);
     meanFR_post = sum(histc(spikeData,time_post))/(diff(time_post)/1000);
-        
     % Busrst index (Ref: Hyunjung's paper)
     spikeIdx = [taskTime(1)<spikeData & spikeData<taskTime(2)];
     spikeISI = diff(spikeData(spikeIdx));

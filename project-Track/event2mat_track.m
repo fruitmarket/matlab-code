@@ -126,7 +126,6 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
     end
  
 %% Pseudo light generation
-
 eventFile = FindFiles('Events.nev');
 [filePath, ~, ~] = fileparts(eventFile{1});
 psdlightPre = [];

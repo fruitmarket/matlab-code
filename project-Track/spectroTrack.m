@@ -1,36 +1,34 @@
 function spectroTrack()
 % spectroTrack calculates spectrogram aligned on sensor, laser on track,
-% and laser on platform. The function reads csc.mat files and saves
+% and laser on platform. The function reads csc.ncs files and saves
 % spectrogram, time, frequency.
 %
+% The function will generate csc.mat files
 %
 % Author: Joonyeup Lee
 % Version 1.0 (Oct, 17, 2016)
 
-sensorWin = [-1.2 1.2]; % the number in the bracket should be in sec unit
+sensorWin = [-1, 1]; % the number in the bracket should be in sec unit
+lightWin = [-1, 1];
 sensorInput = sensorWin*2*10^3; % unit of sensorInput: usec
-lightWin = [-1.2  1.2];
 lightInput = lightWin*2*10^3;
-mvWinSensor = [0.1 0.01]; % unit: sec
-mvWinLightPlfm = [0.1 0.01];
-params.Fs = 2000; % unit: Hz
-params.fpass = [0, 150];
-params.pad = 0;
-params.tapers = [3, 5];
-params.trialave = 0; % 0: no average, 1: average trials
-p = 0.05;
-params.err = [1, p];
 
-load('Events.mat');
+winSize = 500;
+fs = 2000;
+window = hanning(winSize);
+nfft = 5000;
+noverlap = winSize*0.98;
+
+load('Events.mat','sensor','lightTime','nTrial','fields');
 [timestamp, sample, cscList] = cscLoad;
 nFile = length(cscList);
 
 for iFile = 1:nFile
-    disp(['### CSC analysis: ',cscList{iFile}]);
+    disp(['### Analysing spectrogram of ',cscList{iFile}]);
     [filePath, fileName,~] = fileparts(cscList{iFile});
     channelSample = sample{iFile};
 
-    if ~isempty(strfind(filePath,'DRun')|strfind(filePath,'noRun'))
+    if ~isempty(strfind(filePath,'DRun')) | ~isempty(strfind(filePath,'noRun'))
         iSensor = 6;
     else
         iSensor = 10;
@@ -42,13 +40,13 @@ for iFile = 1:nFile
     for iTrial = 1:nTrial
         idxSensor(iTrial,1) = find(sensor.(fields{iSensor})(iTrial)<timestamp,1,'first');
         sampleSensor(:,iTrial) = channelSample((idxSensor(iTrial,1)+sensorInput(1)):(idxSensor(iTrial,1)+sensorInput(2)));
+        [~, freqSensor, timeSensor,psdSensor(:,:,iTrial)] = spectrogram(sampleSensor(:,iTrial),window,noverlap,nfft,fs);     
     end
-    [specSensor, timeSensor, freqSensor, ~] = mtspecgramc(sampleSensor,mvWinSensor,params);
-    specSensor_pre = specSensor(:,:,1:30);
-    specSensor_stm = specSensor(:,:,31:60);
-    specSensor_post = specSensor(:,:,61:90);
-    save([fileName,'.mat'],'specSensor_pre','specSensor_stm','specSensor_post','timeSensor','freqSensor');
-
+    psdSensor_pre = mean(psdSensor(:,:,1:30),3);
+    psdSensor_stm = mean(psdSensor(:,:,31:60),3);
+    psdSensor_post = mean(psdSensor(:,:,61:90),3);
+    save([fileName,'.mat'],'psdSensor_pre','psdSensor_stm','psdSensor_post','freqSensor','timeSensor');
+    
 % Spectrum aligned on Platform light
     nLightPlfm = length(lightTime.Tag);
     idxLightPlfm = zeros(nLightPlfm,1);
@@ -56,39 +54,22 @@ for iFile = 1:nFile
     for iLight = 1:nLightPlfm
         idxLightPlfm(iLight,1) = find(lightTime.Tag(iLight)<timestamp,1,'first');
         sampleLightPlfm(:,iLight) = channelSample((idxLightPlfm(iLight,1)+lightInput(1)):(idxLightPlfm(iLight,1)+lightInput(2)));
+        [~, freqLightPlfm, timeLightPlfm,psdLightPlfm(:,:,iLight)] = spectrogram(sampleLightPlfm(:,iLight),window,noverlap,nfft,fs);
     end
-    [specLightPlfm, timeLightPlfm, freqLightPlfm,~] = mtspecgramc(sampleLightPlfm,mvWinLightPlfm,params);
-    specLightPlfm = mean(specLightPlfm,3);
-    save([fileName,'.mat'],'specLightPlfm','timeLightPlfm','freqLightPlfm','-append');
+    psdLightPlfm = mean(psdLightPlfm,3);
+    save([fileName,'.mat'],'psdLightPlfm','timeLightPlfm','freqLightPlfm','-append');
     
 % Spectrum aligned on Track light (aligned by the first light of each trial)
-    mvWinLightTrack = [0.1 0.01];
-    params.Fs = 2000; % unit: Hz
-    params.fpass = [0, 150];
-    params.pad = 0;
-    params.tapers = [3, 5];
-    params.trialave = 0; % 0: no average, 1: average trials
-    p = 0.05;
-    params.err = [1, p];
-    nLightTrack = length(nTrial);
-    lightTimeTrack = lightTime.Modu([true;(find(diff(lightTime.Modu)>125)+1)]);
+    nLightTrack = nTrial/3;
+    lightTimeTrack = lightTime.Modu([true;(find(diff(lightTime.Modu)>250)+1)]); % 250ms: sometimes the light ITI is not exactly 125ms.
     idxLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
     sampleLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
     for iLight = 1:nLightTrack
         idxLightTrack(iLight,1) = find(lightTimeTrack(iLight)<timestamp,1,'first');
         sampleLightTrack(:,iLight) = channelSample((idxLightTrack(iLight,1)+lightInput(1)):(idxLightTrack(iLight,1)+lightInput(2)));
+        [~, freqLightTrack, timeLightTrack,psdLightTrack(:,:,iLight)] = spectrogram(sampleLightTrack(:,iLight),window,noverlap,nfft,fs);
     end
-    [specLightTrack,timeLightTrack,freqLightTrack,~] = mtspecgramc(sampleLightTrack,mvWinLightTrack,params);
-    save([fileName,'.mat'],'specLightTrack','timeLightTrack','freqLightTrack','-append');
-
-% Spectrum aligned on Platform light (aligned by each light)
-%     nLightTrack = length(lightTime.Modu);
-%     idxLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
-%     sampleLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
-%     for iLight = 1:nLightTrack
-%         idxLightTrack(iLight,1) = find(lightTime.Modu(iLight)<timestamp,1,'first');
-%         sampleLightTrack(:,iLight) = channelSample((idxLightTrack(iLight,1)+lightInput(1)):(idxLightTrack(iLight,1)+lightInput(2)));
-%     end
-%     [specLightTrack,timeLightTrack,freqLightTrack,~] = mtspecgramc(sampleLightTrack,mvWinLightTrack,params);
+    psdLightTrack = mean(psdLightTrack,3);
+    save([fileName,'.mat'],'psdLightTrack','timeLightTrack','freqLightTrack','-append');
 end
 disp('### Spectrogram analysis is completed ###');

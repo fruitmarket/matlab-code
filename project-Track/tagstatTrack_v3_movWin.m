@@ -31,7 +31,7 @@ for iCell = 1:nCell
     [cellPath,cellName,~] = fileparts(tList{iCell});
     cd(cellPath);
     
-    load('Events.mat','lightTime');
+    load('Events.mat','lightTime','psdlightPre','psdlightPost');
     spikeData = tData{iCell};
     
 % Light modulation direction (Actiavtion / inactivation / no change)
@@ -109,28 +109,43 @@ for iCell = 1:nCell
     end
     save([cellName,'.mat'],'statDir_Plfm','testLatencyPlfm','baseLatencyPlfm','pLatencyPlfm',...
         'statDir_Track','testLatencyTrack','baseLatencyTrack','pLatencyTrack','-append');
-    
-% Log-rank test
-%%%%%%%%%%%%%%%%%%%%%%% On Modification %%%%%%%%%%%%%%%%%%%%%%%%
-movingWin = (0:2:20)';
-[pSaltPlfm,pSaltTrack,lSaltPlfm,lSaltTrack,pLR_Plfm,pLR_Track] = deal(zeros(20,1));
-[timeLR_Plfm,H1_Plfm,H2_Plfm,timeLR_Track,H1_Track,H2_Track] = deal(cell(20,1));
 
-for iWin = 1:11
+% Log-rank test (4ms moving window)
+movingWin = (0:4:20)';
+[pSaltPlfmT,pSaltTrackT,lSaltPlfmT,lSaltTrackT,pLR_PlfmT,pLR_TrackT] = deal(zeros(6,1));
+[timeLR_PlfmT,H1_PlfmT,H2_PlfmT,timeLR_TrackT,H1_TrackT,H2_TrackT] = deal(cell(6,1));
+
+for iWin = 1:6
     [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag+movingWin(iWin), testRangePlfm, baseRangePlfm);
     [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Modu+movingWin(iWin), testRangeTrack, baseRangeTrack);
     
-    [pSaltPlfm(iWin,1), lSaltPlfm(iWin,1)] = saltTest(timePlfm, testRangePlfm, dt);
-    [pSaltTrack(iWin,1), lSaltTrack(iWin,1)] = saltTest(timeTrack, testRangeTrack, dt);
-    if isempty(pSaltTrack)
-        pSaltTrack(iWin,1) = 1;
+    [pSaltPlfmT(iWin,1), lSaltPlfmT(iWin,1)] = saltTest(timePlfm, testRangePlfm, dt);
+    [pSaltTrackT(iWin,1), lSaltTrackT(iWin,1)] = saltTest(timeTrack, testRangeTrack, dt);
+    if isempty(pSaltTrackT)
+        pSaltTrackT(iWin,1) = 1;
     end
-    
-    [pLR_Plfm(iWin,1),timeLR_Plfm{iWin,1},H1_Plfm{iWin,1},H2_Plfm{iWin,1}] = logRankTest(timePlfm, censorPlfm); % H1: light induced firing H2: baseline     
-    [pLR_Track(iWin,1),timeLR_Track{iWin,1},H1_Track{iWin,1},H2_Track{iWin,1}] = logRankTest(timeTrack, censorTrack);
+    [pLR_PlfmT(iWin,1),timeLR_PlfmT{iWin,1},H1_PlfmT{iWin,1},H2_PlfmT{iWin,1}] = logRankTest(timePlfm, censorPlfm); % H1: light induced firing H2: baseline     
+    [pLR_TrackT(iWin,1),timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
 end
-% pLR_Plfm = min(pLR_Plfm);
-% pLR_Track = min(pLR_Track);
+idxPlfm = find(pLR_PlfmT<0.05,1,'first');
+idxTrack = find(pLR_TrackT<0.05,1,'first');
+if isempty(idxPlfm)
+    idxPlfm = 1;
+end
+if isempty(idxTrack)
+    idxTrack = 1;
+end
+
+pLR_Plfm = pLR_PlfmT(idxPlfm);
+timeLR_Plfm= timeLR_PlfmT{idxPlfm,1}; H1_Plfm = H1_PlfmT{idxPlfm,1}; H2_Plfm = H2_PlfmT{idxPlfm,1};
+pLR_Track = pLR_TrackT(idxTrack); timeLR_Track = timeLR_TrackT(idxTrack); H1_Track = H1_TrackT{idxTrack,1}; H2_Track = H2_TrackT{idxTrack,1};
+
+% % Log-rank test    
+%     [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag, testRangePlfm, baseRangePlfm);
+%     [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Modu, testRangeTrack, baseRangeTrack);
+%     
+%     [pLR_Plfm,timeLR_Plfm,H1_Plfm,H2_Plfm] = logRankTest(timePlfm, censorPlfm); % H1: light induced firing H2: baseline     
+%     [pLR_Track,timeLR_Track,H1_Track,H2_Track] = logRankTest(timeTrack, censorTrack);
 
 % Too less spike will be not calculater for log-rank test (criteria: more than 10 spikes)
     spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-20,100]);
@@ -141,11 +156,34 @@ end
     if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < 10 | isempty(pLR_Track)
         pLR_Track = 1;
     end
-%     save([cellName, '.mat'],'pLR_Plfm','timeLR_Plfm','H1_Plfm','H2_Plfm','pLR_Track','timeLR_Track','H1_Track','H2_Track','-append')
+    save([cellName, '.mat'],'pLR_Plfm','timeLR_Plfm','H1_Plfm','H2_Plfm','pLR_Track','timeLR_Track','H1_Track','H2_Track','-append')
+    
+% Pre & Post light stimulation p-value check
+    calib = movingWin(idxTrack);
+    [timeTrack_pre, censorTrack_pre] = tagDataLoad(spikeData, psdlightPre+calib, testRangeTrack, baseRangeTrack);
+    [timeTrack_post, censorTrack_post] = tagDataLoad(spikeData, psdlightPost+calib, testRangeTrack, baseRangeTrack);
+    
+    [pLR_Track_pre,timeLR_Track_pre,H1_Track_pre,H2_Track_pre] = logRankTest(timeTrack_pre, censorTrack_pre);
+    [pLR_Track_post,timeLR_Track_post,H1_Track_post,H2_Track_post] = logRankTest(timeTrack_post, censorTrack_post);
+    
+    spkCriteria_pre = spikeWin(spikeData,psdlightPre+calib,[-20,100]);
+    spkCriteria_post = spikeWin(spikeData,psdlightPost+calib,[-20,100]);
+    if sum(cell2mat(cellfun(@length,spkCriteria_pre,'UniformOutput',false))) < 10 | isempty(pLR_Track_pre) % if the # of spikes are less than 10, do not calculate pLR
+        pLR_Track_pre = 1;
+    end
+    if sum(cell2mat(cellfun(@length,spkCriteria_post,'UniformOutput',false))) < 10 | isempty(pLR_Track_post)
+        pLR_Track_post = 1;
+    end
+    save([cellName, '.mat'],'pLR_Track_pre','timeLR_Track_pre','H1_Track_pre','H2_Track_pre','pLR_Track_post','timeLR_Track_post','H1_Track_post','H2_Track_post','-append')
     
 % Salt test
-
-%     save([cellName,'.mat'],'pSaltPlfm','lSaltPlfm','pSaltTrack','lSaltTrack','-append');    
+    [pSaltPlfmT, lSaltPlfmT] = saltTest(timePlfm, testRangePlfm, dt);
+    [pSaltTrackT, lSaltTrackT] = saltTest(timeTrack, testRangeTrack, dt);
+    if isempty(pSaltTrackT)
+        pSaltTrackT = 1;
+    end
+    save([cellName,'.mat'],'pSaltPlfm','lSaltPlfm','pSaltTrack','lSaltTrack','-append');   
+    
 end
 disp('### TagStatTest & Latency calculation are done!');
 

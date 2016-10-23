@@ -21,9 +21,10 @@ filePath = unique(filePath);
 nPath = length(filePath);
 
 %% Swiping contents
-for iPath = 1:nPath
+for iPath = 2:nPath
     cd(filePath{iPath});
     
     spectroTrack;
+    powerTrack;
     
 end

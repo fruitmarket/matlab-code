@@ -68,7 +68,7 @@ p.Camk2a.CNO.anova = anova1(Camk2a.probeQuadCNO.raw',[],'off');
 
 
 
-hBar(1) = axes('Position',axpt(nCol,nRow,1,1,[],wideInterval));
+hBar(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval));
     hold on
     for iStrata = 1:4
         h.barRbp4_DMSO(iStrata) = bar(barXpt.DMSO(iStrata),barYvalue.Rbp4(1,iStrata),width,'FaceColor',colorDMSO,'LineWidth',1,'EdgeColor',colorCNO);
@@ -90,7 +90,7 @@ hBar(1) = axes('Position',axpt(nCol,nRow,1,1,[],wideInterval));
     ylabel('Time (%)');
     set(gca,'FontSize',5);
     
-hBar(2) = axes('Position',axpt(nCol,nRow,2,1,[],wideInterval));
+hBar(2) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.85 0.85],wideInterval));
     hold on
     for iStrata = 1:4
         h.barGrik4_DMSO(iStrata) = bar(barXpt.DMSO(iStrata),barYvalue.Grik4(1,iStrata),width,'FaceColor',colorDMSO,'LineWidth',1,'EdgeColor',colorCNO);
@@ -111,7 +111,7 @@ hBar(2) = axes('Position',axpt(nCol,nRow,2,1,[],wideInterval));
     text(9.75,5,'G','FontSize',6.5,'FontWeight','bold','Color',colorDMSO);
     title('CA3');
     set(gca,'FontSize',5);
-hBar(3) = axes('Position',axpt(nCol,nRow,3,1,[],wideInterval));
+hBar(3) = axes('Position',axpt(nCol,nRow,3,1,[0.1 0.1 0.85 0.85],wideInterval));
     hold on
     for iStrata = 1:4
         h.barCamk2a_DMSO(iStrata) = bar(barXpt.DMSO(iStrata),barYvalue.Camk2a(1,iStrata),width,'FaceColor',colorDMSO,'LineWidth',1,'EdgeColor',colorCNO);
@@ -137,15 +137,15 @@ set(hBar,'XLim',[0,12],'YLim',[0,60],'XTick',[1:4,7:10],'XTickLabel',tickLabel,'
 
 hText(1) = axes('Position',axpt(nCol,nRow,1,2,[],wideInterval));
 hold on;
-text(0.4,1,['p = ',num2str(pRbp4ttest), '(t-test)'],'FontSize',fontM);
+text(0.4,1,['p = ',num2str(pRbp4ttest,3), ' (t-test)'],'FontSize',fontM);
 
 hText(2) = axes('Position',axpt(nCol,nRow,2,2,[],wideInterval));
 hold on;
-text(0.4,1,['p = ',num2str(pGrik4ttest), '(t-test)'],'FontSize',fontM);
+text(0.4,1,['p = ',num2str(pGrik4ttest,3), ' (t-test)'],'FontSize',fontM);
 
 hText(3) = axes('Position',axpt(nCol,nRow,3,2,[],wideInterval));
 hold on;
-text(0.4,1,['p = ',num2str(pCamk2attest), '(t-test)'],'FontSize',fontM);
+text(0.4,1,['p = ',num2str(pCamk2attest,3), ' (t-test)'],'FontSize',fontM);
 
 set(hText,'Visible','off');
 print(gcf,'-dtiff','-r300','Retrieval test')

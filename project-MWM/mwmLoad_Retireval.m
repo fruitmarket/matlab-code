@@ -1,3 +1,5 @@
+clearvars;
+
 xlsfile = FindFiles('*.xls');
 nFile = length(xlsfile);
 
@@ -70,18 +72,18 @@ fields = fieldnames(probeQuad);
 % 26: No expression         22: Unilateral expression
 
 if regexp(fileName,'Rbp4');
-    idxCNO = [10:12,14,16:18];
-    idxDMSO = [1:9];
+    idxCNO = [1,2,4,5,6,7];
+    idxDMSO = [8:12];
     nCNO = length(idxCNO);
     nDMSO = length(idxDMSO);
 elseif regexp(fileName,'Grik4');
-    idxCNO = [5:8,10:12,17];
+    idxCNO = [5:12];
     idxDMSO = [1:4,13:16];
     nCNO = length(idxCNO);
     nDMSO = length(idxDMSO);
 else regexp(fileName,'Camk2a');
-    idxCNO = [10:18,25];
-    idxDMSO = [1:9,19,20,21,22];
+    idxCNO = [3,4,12,13];
+    idxDMSO = [5,6,7,8];
     nCNO = length(idxCNO);
     nDMSO = length(idxDMSO);
 end
@@ -96,12 +98,9 @@ for iField = 1:numel(fields)
 end
 
 if regexp(fileName,'Rbp4');
-    save(['Retrieval_Rbp4','.mat'],...
-        'probeQuadCNO','probeQuadDMSO','nCNO','nDMSO');
+    save(['Retrieval_Rbp4','.mat'],'probeQuadCNO','probeQuadDMSO','nCNO','nDMSO');
 elseif regexp(fileName,'Grik4');
-    save(['Retrieval_Grik4','.mat'],...
-        'probeQuadCNO','probeQuadDMSO','nCNO','nDMSO');
+    save(['Retrieval_Grik4','.mat'],'probeQuadCNO','probeQuadDMSO','nCNO','nDMSO');
 else regexp(fileName,'Camk2a');
-    save(['Retrieval_Camk2a','.mat'],...
-        'probeQuadCNO','probeQuadDMSO','nCNO','nDMSO');
+    save(['Retrieval_Camk2a','.mat'],'probeQuadCNO','probeQuadDMSO','nCNO','nDMSO');
 end

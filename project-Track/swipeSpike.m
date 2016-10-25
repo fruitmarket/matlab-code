@@ -26,12 +26,12 @@ for iPath = 1:nPath
     
 %     event2mat_track;
 %     pethSensor;
-%     pethLight(0,5);
+    pethLight;
 %     waveform;
 %     heatMap;
 %     pearson_field_correlation_baseComp_Track;
 %     tagstatTrack;
-      tagstatTrack_v3;
+%     tagstatTrack_v3_movWin;
 %     mapCorr;
 %     mapCorrEvOd;
 %     trackPlot_v3

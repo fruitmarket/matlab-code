@@ -56,7 +56,6 @@ for icell = 1:nCell
     end
     
 %% Save file    
-    save([cellname,'.mat'],...
-        'spkwv','spkwth','spkpvr','hfvwth',...
-        '-append');
+    save([cellname,'.mat'],'spkwv','spkwth','spkpvr','hfvwth','-append');
 end
+disp('Waveform calculation is done!');

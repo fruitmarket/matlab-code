@@ -38,14 +38,12 @@ for iCell = 1:nCell
     % Light - ontrack
     if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu); % ChETA
         spikeTimeModuBlue = spikeWin(tData{iCell},lightTime.Modu,winTagBlue);
-        [xptModuBlue, yptModuBlue, pethtimeModuBlue, pethModuBlue,~,~] = rasterPETH(spikeTimeModuBlue,true(size(lightTime.Modu)),winTagBlue,binSizeTagBlue,resolution,1);     
+        [xptModuBlue, yptModuBlue, pethtimeModuBlue, pethModuBlue,pethModuConv,pethModuConvZ] = rasterPETH(spikeTimeModuBlue,true(size(lightTime.Modu)),winTagBlue,binSizeTagBlue,resolution,1);     
         lightSpk = sum(0<xptModuBlue{1} & xptModuBlue{1}<15);
         lightPreSpk = sum(-15<xptModuBlue{1} & xptModuBlue{1}<0);
         lightPostSpk = sum(15<xptModuBlue{1} & xptModuBlue{1}<30);
         
-        save([cellName,'.mat'],...
-            'spikeTimeModuBlue','xptModuBlue','yptModuBlue','pethtimeModuBlue','pethModuBlue',...
-            'lightSpk','lightPreSpk','lightPostSpk','-append');
+        save([cellName,'.mat'],'spikeTimeModuBlue','xptModuBlue','yptModuBlue','pethtimeModuBlue','pethModuBlue','pethModuConv','pethModuConvZ','lightSpk','lightPreSpk','lightPostSpk','-append');
     
     else isfield(lightTime,'Modu') && ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60; % iC++ (inhibition)
         spikeTimeModuYel = spikeWin(tData{iCell},lightTime.Modu,winTagYel);
@@ -55,9 +53,7 @@ for iCell = 1:nCell
         lightPreSpk = sum(-500<xptModuYel{1} & xptModuYel{1}<0);
         lightPostSpk = sum(1000<xptModuYel{1} & xptModuYel{1}<1500);
         
-        save([cellName,'.mat'],...
-            'spikeTimeModuYel','xptModuYel','yptModuYel','pethtimeModuYel','pethModuYel',...
-            'lightSpk','lightPreSpk','lightPostSpk','-append');
+        save([cellName,'.mat'],'spikeTimeModuYel','xptModuYel','yptModuYel','pethtimeModuYel','pethModuYel','lightSpk','lightPreSpk','lightPostSpk','-append');
     end
     
     if lightPreSpk*(criteria_multi/10+10)/10 + criteria_add < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
@@ -73,25 +69,23 @@ for iCell = 1:nCell
     if exist('psdlightPre','var') && exist('psdlightPost','var')
         if ~isempty(lightTime.Modu) && size(lightTime.Modu,1)>60 % ChETA
             spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTagBlue); % Pseudo light Pre
-            [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,~,~] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+            [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
             spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
-            [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,~,~] = rasterPETH(spikeTime_psdPost,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+            [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTagBlue,binSizeTagBlue,resolution,1);
             
             psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<15);
             psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<15);
-            save([cellName,'.mat'],...
-                'psdPreSpk','psdPostSpk','-append');
+            save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','pethPsdPreConv','pethPsdPreConvZ','xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
                         
         else ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60; % iC++ (inhibition)
             spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTagBlue); % Pseudo light Pre
             [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,~,~] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
             spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
-            [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,~,~] = rasterPETH(spikeTime_psdPost,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+            [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,~,~] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTagBlue,binSizeTagBlue,resolution,1);
             
             psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<15);
             psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<15);
-            save([cellName,'.mat'],...
-                'psdPreSpk','psdPostSpk','-append');
+            save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','pethPsdPreConv','pethPsdPreConvZ','xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
         end
         if psdPreSpk*(criteria_multi/10+10)/10 + criteria_add < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
             interLightDir = 1;
@@ -112,9 +106,7 @@ for iCell = 1:nCell
        lighttagPreSpk = sum(-15<xptTagBlue{1} & xptTagBlue{1}<0);
        lighttagPostSpk = sum(15<xptTagBlue{1} & xptTagBlue{1}<30);
        
-       save([cellName,'.mat'],...
-            'spikeTimeTagBlue','xptTagBlue','yptTagBlue','pethtimeTagBlue','pethTagBlue',...
-            'lighttagSpk','lighttagPreSpk','lighttagPostSpk','-append');
+       save([cellName,'.mat'],'spikeTimeTagBlue','xptTagBlue','yptTagBlue','pethtimeTagBlue','pethTagBlue','lighttagSpk','lighttagPreSpk','lighttagPostSpk','-append');
        
     else isfield(lightTime,'Tag') && ~isempty(lightTime.Tag) && size(lightTime.Modu,1) < 60; % inhibition (iC++)
         spikeTimeTagYel = spikeWin(tData{iCell},lightTime.Tag,winTagYel);
@@ -124,9 +116,7 @@ for iCell = 1:nCell
        lighttagPreSpk = sum(-500<xptModuYel{1} & xptModuYel{1}<0);
        lighttagPostSpk = sum(1000<xptModuYel{1} & xptModuYel{1}<1500);
         
-       save([cellName,'.mat'],...
-            'spikeTimeTagYel','xptTagYel','yptTagYel','pethtimeTagYel','pethTagYel',...
-            'lighttagSpk','lighttagPreSpk','lighttagPostSpk','-append');
+       save([cellName,'.mat'],'spikeTimeTagYel','xptTagYel','yptTagYel','pethtimeTagYel','pethTagYel','lighttagSpk','lighttagPreSpk','lighttagPostSpk','-append');
     end
     if lighttagPreSpk*(criteria_multi/10+10)/10 + criteria_add < lighttagSpk % If spikes at light duration are more than 10% of spikes during pre = activation
         tagLightDir = 1;

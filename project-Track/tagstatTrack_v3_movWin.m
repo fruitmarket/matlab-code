@@ -119,13 +119,34 @@ for iCell = 1:nCell
         [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag+movingWin(iWin), testRangePlfm, baseRangePlfm);
         [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Modu+movingWin(iWin), testRangeTrack, baseRangeTrack);
 
-        [pSaltPlfmT(iWin,1), lSaltPlfmT(iWin,1)] = saltTest(timePlfm, testRangePlfm, dt);
-        [pSaltTrackT(iWin,1), lSaltTrackT(iWin,1)] = saltTest(timeTrack, testRangeTrack, dt);
-        if isempty(pSaltTrackT)
-            pSaltTrackT(iWin,1) = 1;
+        [pSaltPlfmT, lSaltPlfmT] = saltTest(timePlfm, testRangePlfm, dt);
+        [pSaltTrackT, lSaltTrackT] = saltTest(timeTrack, testRangeTrack, dt);
+        if isempty(pSaltPlfmT)
+            pSaltPlfmT = 1;
         end
-        [pLR_PlfmT(iWin,1),timeLR_PlfmT{iWin,1},H1_PlfmT{iWin,1},H2_PlfmT{iWin,1}] = logRankTest(timePlfm, censorPlfm); % H1: light induced firing H2: baseline     
-        [pLR_TrackT(iWin,1),timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
+        if isempty(lSaltPlfmT)
+            lSaltPlfmT = NaN;
+        end
+        if isempty(pSaltTrackT)
+            pSaltTrackT = 1;
+        end
+        if isempty(lSaltTrackT)
+            lSaltTrackT = NaN;
+        end
+        pSaltPlfmT(iWin,1) = pSaltPlfmT;
+        lSaltPlfmT(iWin,1) = lSaltPlfmT;
+        pSaltTrackT(iWin,1) = pSaltTrackT;
+        lSaltTrackT(iWin,1) = lSaltTrackT;
+        [pLR_PlfmT,timeLR_PlfmT{iWin,1},H1_PlfmT{iWin,1},H2_PlfmT{iWin,1}] = logRankTest(timePlfm, censorPlfm); % H1: light induced firing H2: baseline     
+        [pLR_TrackT,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
+        if isempty(pLR_PlfmT)
+            pLR_PlfmT = 1;
+        end
+        if isempty(pLR_TrackT)
+            pLR_TrackT = 1;
+        end
+        pLR_PlfmT(iWin,1) = pLR_PlfmT;
+        pLR_TrackT(iWin,1) = pLR_TrackT;
     end
     idxPlfm = find(pLR_PlfmT<0.05,1,'first');
     idxTrack = find(pLR_TrackT<0.05,1,'first');

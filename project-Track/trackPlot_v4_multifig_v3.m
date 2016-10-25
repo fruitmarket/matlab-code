@@ -24,12 +24,14 @@ colorBar3 = [colorGray;colorBlue;colorGray];
 markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
 tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
 
+width = 0.7;
+
 paperSizeX = [18.3, 8.00];
-matFile = mLoad;
-% matFile = fileList;
+% matFile = mLoad;
+matFile = fileList;
 nFile = length(matFile);
 
-for iFile = 1:1
+for iFile = 1:nFile
     [cellDir, cellName, ~] = fileparts(matFile{iFile});
     cellDirSplit = regexp(cellDir,'\','split');
     cellFigName = strcat(cellDirSplit(end-1),'_',cellDirSplit(end),'_',cellName);
@@ -134,10 +136,10 @@ for iFile = 1:1
         hTagBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,1:2,4:6,[0.1 0.13 0.9 0.92],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_Plfm;H2_Plfm])*1100+0.0001)/1000 1]);
-        winHTag = [0 testRangeChETA];
+        winHTag = [0 testRangeChETA]+calibPlfm;
         stairs(timeLR_Plfm, H2_Plfm, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_Plfm, H1_Plfm,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
-        text(winHTag(2)*0.1,ylimH*0.9,['p = ',num2str(pLR_Plfm,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
+        text(diff(winHTag)*0.1+calibPlfm,ylimH*0.9,['p = ',num2str(pLR_Plfm,3)],'FontSize',fontS,'Interpreter','none');
         set(hTagBlue(3),'XLim',winHTag,'XTick',winHTag,'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
         xlabel('Time (ms)','FontSize',fontS);
         ylabel('H(t)','FontSize',fontS);
@@ -182,15 +184,14 @@ for iFile = 1:1
         hModuBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,4:5,4:6,[0.07 0.13 0.9 0.92],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_Track;H2_Track])*1100+0.0001)/1000 1]);
-        winHModu = [0 testRangeChETA];
+        winHModu = [0 testRangeChETA]+calibTrack;
         stairs(timeLR_Track, H2_Track, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_Track, H1_Track,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
-        text(winHModu(2)*0.1,ylimH*0.9,['p = ',num2str(pLR_Track,3),' (log-rank)'],'FontSize',fontS,'Interpreter','none');
-        set(hModuBlue(3),'XLim',winHModu,'XTick',winHModu,'XTickLabel',{winHModu(1);num2str(winHModu(2))},...
-            'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
+        text(diff(winHModu)*0.1+calibTrack,ylimH*0.9,['p = ',num2str(pLR_Track,3)],'FontSize',fontS,'Interpreter','none');
         xlabel('Time (ms)','FontSize',fontS);
 %         ylabel('H(t)','FontSize',fontS);
         title('Log-rank test (Track)','FontSize',fontM,'FontWeight','bold');
+        set(hModuBlue(3),'XLim',winHModu,'XTick',winHModu,'XTickLabel',{winHModu(1);num2str(winHModu(2))},'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
         set(hModuBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
         align_ylabel(hModuBlue)     
     end
@@ -204,7 +205,7 @@ for iFile = 1:1
     peak_post = max(max(post_ratemap))*sfreq(1);
     
     totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
-    hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,0:5,7:8,[0.12 0.15 0.80 0.80]),wideInterval));
+    hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,0:5,7:8,[0.12 0.17 0.80 0.75]),wideInterval));
     hold on;
     hField = pcolor(totalmap);
     
@@ -219,7 +220,7 @@ for iFile = 1:1
         hold on;
         arc_r = 20;
         x = arc_r*cos(arc)+67;
-        y = arc_r*sin(arc)+27;
+        y = arc_r*sin(arc)+23;
         if exist('xptModuBlue','var') & (~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'DRun')));
             plot(x,y,'LineWidth',4,'color',colorBlue);
         elseif exist('xptModuBlue','var') & (~isempty(strfind(cellDir,'noRw')) | ~isempty(strfind(cellDir,'noRun')));
@@ -240,7 +241,12 @@ for iFile = 1:1
 % Track light response raster plot (aligned on pseudo light - light - pseudo light)
     hTrackLightRaster = axes('Position',axpt(1,8,1,5:6,axpt(nCol,nRow,7:9,4:7,[0.1 0.175 0.9 0.80],tightInterval),wideInterval));
         plot([xptPsdPre{1}, xptModuBlue{1}, xptPsdPost{1}],[yptPsdPre{1}, (length(psdlightPre)+yptModuBlue{1}), (sum([length(psdlightPre),length(lightTime.Modu)])+yptPsdPost{1})],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[0.5 length(psdlightPre)+1, 10, length(lightTime.Modu)], 'LineStyle','none','FaceColor',lightDurationColor{1});
+        if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw'))
+            rec = rectangle('Position',[0.5 length(psdlightPre)+1, 10, length(lightTime.Modu)], 'LineStyle','none','FaceColor',lightDurationColor{1});
+        end
+        if ~isempty(strfind(cellDir,'noRun')) | ~isempty(strfind(cellDir,'noRw'))
+            rec = rectangle('Position',[0.5 length(psdlightPre)+1, 10, length(lightTime.Modu)], 'LineStyle','none','FaceColor',lightDurationColor{2});
+        end
         uistack(rec,'bottom');
         ylabel('Trial','FontSize',fontS);
         title('Track light response (Psd-L-Psd)','FontSize',fontM,'FontWeight','bold');
@@ -251,39 +257,57 @@ for iFile = 1:1
         plot(pethtimePsdPre,pethPsdPreConv,'LineStyle','-','LineWidth',lineM,'Color',colorGray);
         plot(pethtimeModuBlue,pethModuConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlue);
         plot(pethtimePsdPost,pethPsdPostConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
-
-    ylabel('Rate (Hz)','FontSize',fontS);
+        ylabel('Rate (Hz)','FontSize',fontS);
     set(hTrackLightRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-25 100],'XTick',[],'YLim',[0, sum([length(psdlightPre),length(lightTime.Modu),length(psdlightPost)])],'YTick',[length(psdlightPre),sum([length(psdlightPre),length(lightTime.Modu)]),sum([length(psdlightPre),length(lightTime.Modu),length(psdlightPost)])]);
     set(hTrackLightPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-25, 100],'XTick',[-25,0,10,30,50,100],'YLim',[0, max(ylimpeth)]);
 
-% Spectrogram
+% Spectrogram (aligned on sensor onset)
     load(['CSC',cellName(3),'.mat']);
-    if ~isempty(strfind(cellDir,'DRun'))
+    if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'))
         iSensor = 6;
     end
-    if ~isempty(strfind(cellDir,'DRw'))
+    if ~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'noRw'))
         iSensor = 10;
     end
-    hSpectro(1) = axes('Position',axpt(9,4,1:2,1:2,axpt(nCol,nRow,1:5,8:9,[0.08 0.05 0.90 0.83],tightInterval),wideInterval));
+    hSpectro(1) = axes('Position',axpt(9,6,1:2,1:3,axpt(nCol,nRow,1:5,8:10,[0.08 0.05 0.90 0.83],tightInterval),wideInterval));
         hSpec(1) = pcolor(timeSensor,freqSensor,psdSensor_pre);
-        xlabel('Pre-stm','FontSize',fontM);
-    hSpectro(2) = axes('Position',axpt(9,4,3:4,1:2,axpt(nCol,nRow,1:5,8:9,[0.08 0.05 0.90 0.83],tightInterval),wideInterval));
+        text(0.6, 55,'Pre-','fontSize',fontM,'Color',[1,1,1,])
+        ylabel('Frequency (Hz)','fontSize',fontS);
+    hSpectro(2) = axes('Position',axpt(9,6,3:4,1:3,axpt(nCol,nRow,1:5,8:10,[0.08 0.05 0.90 0.83],tightInterval),wideInterval));
         hSpec(2) = pcolor(timeSensor,freqSensor,psdSensor_stm);
-        xlabel('Stm','FontSize',fontM);
+        text(0.7, 55,'Stm','fontSize',fontM,'Color',[1,1,1,])
         title(['Spectrogram aligned on sensor: ',num2str(iSensor)],'fontSize',fontM,'FontWeight','bold');
-    hSpectro(3) = axes('Position',axpt(9,4,5:6,1:2,axpt(nCol,nRow,1:5,8:9,[0.08 0.05 0.90 0.83],tightInterval),wideInterval));
+    hSpectro(3) = axes('Position',axpt(9,6,5:6,1:3,axpt(nCol,nRow,1:5,8:10,[0.08 0.05 0.90 0.83],tightInterval),wideInterval));
         hSpec(3) = pcolor(timeSensor,freqSensor,psdSensor_post);
+        text(0.5, 55,'Post-','fontSize',fontM,'Color',[1,1,1,])
         cBar = colorbar;
-        xlabel('Post-stm','FontSize',fontM);
-        
     set(hSpec,'EdgeColor','none');
     set(hSpectro(1:3),'Box','off','TickDir','out','YLim',[0,60],'YTick',[],'XLim',[0.25,1.75],'XTick',1,'XTickLabel',{'0'},'FontSize',fontS);
     set(hSpectro(1),'Box','off','TickDir','out','YLim',[0,60],'YTick',[0:30:90],'XTick',[0.25,1,1.75],'XTickLabel',{'-0.75','0','0.75'},'FontSize',fontS);
-    set(cBar,'Position',axpt(9,4,7,1:2,axpt(nCol,nRow,1:5,8:9,[0.08 0.05 0.90 0.83],tightInterval)));
+    set(cBar,'Position',axpt(9,6,7,1:3,axpt(nCol,nRow,1:5,8:10,[0.08 0.05 0.90 0.83],tightInterval)));
+
+% Spectrogram (aligned on light onset)
+    hSpectroLight(1) = axes('Position',axpt(9,6,1:3,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval),wideInterval));
+        hLight(1) = pcolor(timeLightPlfm,freqLightPlfm,psdLightPlfm);
+        text(0.45,55,'Pre','fontSize',fontM,'Color',[1,1,1]);
+        text(1.1,55,'Post','fontSize',fontM,'Color',[1,1,1]);
+        ylabel('Frequency (Hz)','fontSize',fontS);
+        title('Platform','fontSize',fontS)
+        line([1,1],[0,60],'LineStyle',':','Color',[1,1,1],'LineWIdth',0.5);
+    hSpectroLight(2) = axes('Position',axpt(9,6,4:6,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval),wideInterval));
+        hLight(2) = pcolor(timeLightTrack,freqLightTrack,psdLightTrack);
+        cBar = colorbar;
+        text(0.45,55,'Pre','fontSize',fontM,'Color',[1,1,1]);
+        text(1.1,55,'Post','fontSize',fontM,'Color',[1,1,1]);
+        line([1,1],[0,60],'LineStyle',':','Color',[1,1,1],'LineWIdth',0.5);
+        title('Track','fontSize',fontS)
+    set(hLight,'EdgeColor','none');
+    set(hSpectroLight(1:2),'Box','off','TickDir','out','YLim',[0,60],'YTick',[],'XLim',[0.25,1.75],'XTick',1,'XTickLabel',{'0'},'FontSize',fontS);
+    set(hSpectroLight(1),'YTick',[0:30:90],'XTick',[0.25,1,1.75],'XTickLabel',{'-0.75 s','0','0.75 s'},'FontSize',fontS);
+    set(cBar,'Position',axpt(9,6,7,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval)));
 
 % Track raster plot
-%     if ~isempty(strfind(cellDir,'DRun')) % DRun session
-%         iSensor = 6;
+    if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw')) % DRun session
         hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,7:8,[0.1 0.07 0.9 0.80],tightInterval),wideInterval));
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
@@ -298,27 +322,10 @@ for iFile = 1:1
         for iType = 1:3
             plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
-%     end
-%     if ~isempty(strfind(cellDir,'DRw')) % Rw session
-%         iSensor = 10;
-%         hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,8:9,[],tightInterval),wideInterval));
-%         hold on;
-%         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
-%             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-%         rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
-%         ylabel('Trial','FontSize',fontS);
-%         title(['Raster & PETH at ',fields{iSensor}],'FontSize',fontM,'FontWeight','bold');
-%             
-%         hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
-%         ylimpeth = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
-%         hold on;
-%         for iType = 1:3
-%             plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
-%         end
-%     end
-    if ~isempty(strfind(cellDir,'noRun')) % noRun session
-        iSensor = 6;
-        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
+    end
+
+    if ~isempty(strfind(cellDir,'noRun')) | ~isempty(strfind(cellDir,'noRw')) % noRun session
+        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,7:8,[0.1 0.07 0.9 0.80],tightInterval),wideInterval));
         hold on;
         plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
             'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
@@ -326,41 +333,55 @@ for iFile = 1:1
         ylabel('Trial','FontSize',fontS);
         title(['Raster & PETH at ',fields{iSensor}],'FontSize',fontM,'FontWeight','bold');
             
-        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
+        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:9,7:8,[0.1 0.07 0.9 0.80],tightInterval),wideInterval));
         ylimpeth = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
             plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
     end
-    if ~isempty(strfind(cellDir,'noRw')) % noRw session
-        iSensor = 10;
-        hRaster = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
-        hold on;
-        plot([xpt.(fields{iSensor}){1} xpt.(fields{iSensor}){2}, xpt.(fields{iSensor}){3}],[ypt.(fields{iSensor}){1}, ypt.(fields{iSensor}){2}, ypt.(fields{iSensor}){3}],...
-            'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[-0.99 31 2 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
-        ylabel('Trial','FontSize',fontS);
-        title(['Raster & PETH at ',fields{iSensor}],'FontSize',fontM,'FontWeight','bold');
-            
-        hPsth = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:9,9:10,[],tightInterval),wideInterval));
-        ylimpeth = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
-        hold on;
-        for iType = 1:3
-            plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle','-','LineWidth',lineL,'Color',lineColor{iType})
-        end
-    end
+
     ylabel('Rate (Hz)','FontSize',fontS);
     uistack(rec,'bottom');
     set(hRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-1 1],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
     set(hPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-1, 1],'XTick',[-1:0.5:1],'YLim',[0 ylimpeth]);
     
+    yLim = [0, max([rPwSensorTheta_pre,rPwSensorTheta_stm,rPwSensorTheta_post,rPwSensorLGamma_pre,rPwSensorLGamma_stm,rPwSensorLGamma_post,rPwSensorHGamma_pre,rPwSensorHGamma_stm,rPwSensorHGamma_post])*1.5];
+    hSpectrum(1) = axes('Position',axpt(9,6,3:4,4:6,axpt(nCol,nRow,5:10,8:10,[0.13 0.05 0.90 0.83],tightInterval),wideInterval));
+        hSpecTheta(1) = bar(1,rPwSensorTheta_pre,width,'FaceColor',colorDarkGray,'EdgeColor','none');
+        hold on;
+        hSpecTheta(2) = bar(2,rPwSensorTheta_stm,width,'FaceColor',colorLightBlue,'EdgeColor','none');
+        hold on;
+        hSpecTheta(3) = bar(3,rPwSensorTheta_post,width,'FaceColor',colorBlack,'EdgeColor','none');
+        text(1,yLim(2)*0.9,'Theta','fontSize',fontS);
+        ylabel('Relative Power','fontSize',fontS);
+    
+    hSpectrum(2) = axes('Position',axpt(9,6,5:6,4:6,axpt(nCol,nRow,5:10,8:10,[0.1 0.05 0.90 0.83],tightInterval),wideInterval));
+        hSpecTheta(1) = bar(1,rPwSensorLGamma_pre,width,'FaceColor',colorDarkGray,'EdgeColor','none');
+        hold on;
+        hSpecTheta(2) = bar(2,rPwSensorLGamma_stm,width,'FaceColor',colorLightBlue,'EdgeColor','none');
+        hold on;
+        hSpecTheta(3) = bar(3,rPwSensorLGamma_post,width,'FaceColor',colorBlack,'EdgeColor','none');
+        text(0.5,yLim(2)*0.9,'LGamma','fontSize',fontS);
+        title('Relative power on the track','fontSize',fontM,'fontWeight','Bold')
+    
+    hSpectrum(3) = axes('Position',axpt(9,6,7:8,4:6,axpt(nCol,nRow,5:10,8:10,[0.07 0.05 0.90 0.83],tightInterval),wideInterval));
+        hSpecTheta(1) = bar(1,rPwSensorHGamma_pre,width,'FaceColor',colorDarkGray,'EdgeColor','none');
+        hold on;
+        hSpecTheta(2) = bar(2,rPwSensorHGamma_stm,width,'FaceColor',colorLightBlue,'EdgeColor','none');
+        hold on;
+        hSpecTheta(3) = bar(3,rPwSensorHGamma_post,width,'FaceColor',colorBlack,'EdgeColor','none');
+        text(0.5,yLim(2)*0.9,'HGamma','fontSize',fontS);
+        
+    set(hSpectrum,'Box','off','TickDir','out','YLim',yLim,'YTick',[],'XLim',[0,4],'XTick',[1,2,3],'XTickLabel',{'Pr','St','  Po'},'fontSize',fontS,'LineWidth',lineM)
+    set(hSpectrum(1),'Box','off','TickDir','out','YLim',yLim,'YTick',yLim(1):0.05:yLim(2),'XLim',[0,4],'XTick',[1,2,3],'XTickLabel',{'Pr','St','  Po'},'fontSize',fontS)
+
     % Cell ID
-    hID = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,8,11,[],tightInterval),wideInterval));
-    text(0.8, 0.5, ['Cell ID: ',num2str(iFile)],'FontSize',fontM);
+    hID = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,8,11,[0.15 0.05 0.85 0.85],tightInterval),wideInterval));
+    text(0.9, 0.1, ['Cell ID: ',num2str(iFile)],'FontSize',fontM);
     set(hID,'visible','off');
 
-%     cd(saveDir)
+    cd(saveDir)
     
     print(gcf,'-dtiff','-r300',[cellFigName{1},'.tiff']);
     close;

@@ -137,7 +137,7 @@ for iCell = 1:nCell
         lSaltPlfmT(iWin,1) = lSaltPlfmT;
         pSaltTrackT(iWin,1) = pSaltTrackT;
         lSaltTrackT(iWin,1) = lSaltTrackT;
-        [pLR_PlfmT,timeLR_PlfmT{iWin,1},H1_PlfmT{iWin,1},H2_PlfmT{iWin,1}] = logRankTest(timePlfm, censorPlfm); % H1: light induced firing H2: baseline     
+        [pLR_PlfmT,timeLR_PlfmT{iWin,1},H1_PlfmT{iWin,1},H2_PlfmT{iWin,1}] = logRankTest(timePlfm, censorPlfm); % H1: light induced firing H2: baseline
         [pLR_TrackT,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
         if isempty(pLR_PlfmT)
             pLR_PlfmT = 1;
@@ -166,27 +166,34 @@ for iCell = 1:nCell
     H1_Track = H1_TrackT{idxTrack};
     H2_Track = H2_TrackT{idxTrack};
     
+    calibPlfm = movingWin(idxPlfm);
+    calibTrack = movingWin(idxTrack);
 % Too less spike will be not calculater for log-rank test (criteria: more than 10 spikes)
-    spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-20,100]);
-    spkCriteria_Track = spikeWin(spikeData,lightTime.Modu,[-20,100]);
-    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < 10 | isempty(pLR_Plfm) % if the # of spikes are less than 10, do not calculate pLR
+    spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-20,30]);
+    spkCriteria_Track = spikeWin(spikeData,lightTime.Modu,[-20,30]);
+    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < 10  | isempty(pLR_Plfm) % if the # of spikes are less than 10, do not calculate pLR
         pLR_Plfm = 1;
     end
     if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < 10 | isempty(pLR_Track)
         pLR_Track = 1;
     end
-    save([cellName, '.mat'],'pLR_Plfm','timeLR_Plfm','H1_Plfm','H2_Plfm','pLR_Track','timeLR_Track','H1_Track','H2_Track','-append')
+    if pLR_Plfm == 1;
+        calibPlfm = 0;
+    end
+    if pLR_Track == 1;
+        calibTrack = 0;
+    end
+    save([cellName, '.mat'],'pLR_Plfm','timeLR_Plfm','H1_Plfm','H2_Plfm','pLR_Track','timeLR_Track','H1_Track','H2_Track','calibPlfm','calibTrack','-append')
     
 % Pre & Post light stimulation p-value check
-    calib = movingWin(idxTrack);
-    [timeTrack_pre, censorTrack_pre] = tagDataLoad(spikeData, psdlightPre+calib, testRangeTrack, baseRangeTrack);
-    [timeTrack_post, censorTrack_post] = tagDataLoad(spikeData, psdlightPost+calib, testRangeTrack, baseRangeTrack);
+    [timeTrack_pre, censorTrack_pre] = tagDataLoad(spikeData, psdlightPre+calibTrack, testRangeTrack, baseRangeTrack);
+    [timeTrack_post, censorTrack_post] = tagDataLoad(spikeData, psdlightPost+calibTrack, testRangeTrack, baseRangeTrack);
     
     [pLR_Track_pre,timeLR_Track_pre,H1_Track_pre,H2_Track_pre] = logRankTest(timeTrack_pre, censorTrack_pre);
     [pLR_Track_post,timeLR_Track_post,H1_Track_post,H2_Track_post] = logRankTest(timeTrack_post, censorTrack_post);
     
-    spkCriteria_pre = spikeWin(spikeData,psdlightPre+calib,[-20,100]);
-    spkCriteria_post = spikeWin(spikeData,psdlightPost+calib,[-20,100]);
+    spkCriteria_pre = spikeWin(spikeData,psdlightPre+calibTrack,[-20,100]);
+    spkCriteria_post = spikeWin(spikeData,psdlightPost+calibTrack,[-20,100]);
     if sum(cell2mat(cellfun(@length,spkCriteria_pre,'UniformOutput',false))) < 10 | isempty(pLR_Track_pre) % if the # of spikes are less than 10, do not calculate pLR
         pLR_Track_pre = 1;
     end

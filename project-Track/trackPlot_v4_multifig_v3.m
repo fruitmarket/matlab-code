@@ -1,4 +1,5 @@
-function trackPlot_v4_multifig_v3()
+function trackPlot_v4_multifig_v3(fileList,saveDir)
+% function trackPlot_v4_multifig_v3()
 % Plot properties
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [33 150 243]./ 255,... % During stimulation
@@ -10,8 +11,7 @@ lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
 
 colorBlue = [33 150 243] ./ 255;
 colorLightBlue = [100 181 246] ./ 255;
-% colorLightBlue = [223 239 252] ./ 255;
-colorLightLightBlue = [187, 222, 251]./255;
+colorLLightBlue = [187, 222, 251]./255;
 colorRed = [237 50 52] ./ 255;
 colorLightRed = [242 138 130] ./ 255;
 colorGray = [189 189 189] ./ 255;
@@ -20,10 +20,9 @@ colorDarkGray = [117, 117, 117] ./255;
 colorYellow = [255 243 3] ./ 255;
 colorLightYellow = [255 249 196] ./ 255;
 colorBlack = [0, 0, 0];
-colorBar3 = [colorGray;colorBlue;colorGray];
+
 markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
 tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
-
 width = 0.7;
 
 paperSizeX = [18.3, 8.00];
@@ -99,7 +98,7 @@ for iFile = 1:nFile
       % Activation or Inactivation?
     if isfield(lightTime,'Tag') && exist('xptTagBlue','var');
         lightDuration = 10;
-        lightDurationColor = {colorLightLightBlue, colorLightGray};
+        lightDurationColor = {colorLLightBlue, colorLightGray};
         testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
     end
     if isfield(lightTime,'Tag') && exist('xptTagBlue','var') && ~isempty(xptTagBlue)
@@ -119,7 +118,7 @@ for iFile = 1:nFile
         hTagBlue(2) = axes('Position',axpt(1,8,1,3:4,axpt(nCol,nRow,1:4,4:6,[0.1 0.12 0.9 0.92],tightInterval),wideInterval));
         hold on;
         yLimBarBlue = ceil(max(pethTagBlue(:))*1.05+0.0001);
-        bar(5, 1000, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLightLightBlue);
+        bar(5, 1000, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLLightBlue);
         rectangle('Position', [0 yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
         hBarBlue = bar(pethtimeTagBlue, pethTagBlue, 'histc');
         if statDir_Plfm == 1
@@ -163,7 +162,7 @@ for iFile = 1:nFile
         hold on;
         yLimBarBlue = ceil(max(pethModuBlue(:))*1.05+0.0001);
         if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw'))
-            bar(5, 1000, 'BarWidth', 10,'LineStyle', 'none', 'FaceColor', colorLightLightBlue);
+            bar(5, 1000, 'BarWidth', 10,'LineStyle', 'none', 'FaceColor', colorLLightBlue);
             rectangle('Position', [0, yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
         else
             bar(5, 1000, 'BarWidth', 10,'LineStyle', 'none', 'FaceColor', colorLightGray);
@@ -246,6 +245,15 @@ for iFile = 1:nFile
         end
         if ~isempty(strfind(cellDir,'noRun')) | ~isempty(strfind(cellDir,'noRw'))
             rec = rectangle('Position',[0.5 length(psdlightPre)+1, 10, length(lightTime.Modu)], 'LineStyle','none','FaceColor',lightDurationColor{2});
+        end
+        if pLR_Track_pre < 0.05
+            text(105, sum([length(psdlightPre),length(lightTime.Modu),length(psdlightPost)])/8, '*','Color',colorRed,'fontSize',fontL);
+        end
+        if pLR_Track < 0.05
+            text(105, sum([length(psdlightPre),length(lightTime.Modu),length(psdlightPost)])*3/8, '*','Color',colorRed,'fontSize',fontL);
+        end
+        if pLR_Track_post < 0.05
+            text(105, sum([length(psdlightPre),length(lightTime.Modu),length(psdlightPost)])*6/8, '*','Color',colorRed,'fontSize',fontL);
         end
         uistack(rec,'bottom');
         ylabel('Trial','FontSize',fontS);

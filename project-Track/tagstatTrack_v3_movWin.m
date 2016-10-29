@@ -9,7 +9,7 @@ testRangeTrack = 10; % 8Hz: 10 // 20Hz: 20
 baseRangeTrack = 100; % 8Hz: 110 // 20Hz: 15
 
 % variables for latency calculation
-winTagChETA = [0, 20]; % unit: msec
+winTagChETA = [0, 30]; % unit: msec
 % winTagiC = [-500, 2000];
 testRangeTag_lat = winTagChETA(2); % unit: ms
 baseRangeTag_lat = 450; % baseline 
@@ -34,88 +34,12 @@ for iCell = 1:nCell
     load('Events.mat','lightTime','psdlightPre','psdlightPost');
     spikeData = tData{iCell};
     
-% Light modulation direction (Actiavtion / inactivation / no change)
-    spkPlfmChETA = spikeWin(spikeData,lightTime.Tag,winDirChETA);
-    [xptPlfm,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Tag)),winDirChETA,binSizePlfmBlue,resolution,1);
-    if ~iscell(xptPlfm)
-         xptPlfm = {xptPlfm};
-    end
-    if sum(-20<xptPlfm{1} & xptPlfm{1}<0) < sum(0 <= xptPlfm{1} & xptPlfm{1}<20) % activation
-        statDir_Plfm = 1;
-    elseif sum(-20<xptPlfm{1} & xptPlfm{1}<0) > sum(0 <= xptPlfm{1} & xptPlfm{1}<20) % inactivation
-        statDir_Plfm = -1;
-    else
-        statDir_Plfm = 0;
-    end
-
-    spkTrackChETA = spikeWin(spikeData,lightTime.Modu,winDirChETA);
-    [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Modu)),winDirChETA,binSizePlfmBlue,resolution,1);
-    if ~iscell(xptTrack)
-        xptTrack = {xptTrack};
-    end
-    if sum(-20<xptTrack{1} & xptTrack{1}<0) < sum(0 <= xptTrack{1} & xptTrack{1}<20) % activation
-        statDir_Track = 1;
-    elseif sum(-20<xptTrack{1} & xptTrack{1}<0) > sum(0 <= xptTrack{1} & xptTrack{1}<20) % inactivation
-        statDir_Track = -1;
-    else
-        statDir_Track = 0;
-    end
-
-% Baseline spontaneous latency
-    [timePlfm_lat, ~] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag_lat, baseRangeTag_lat);
-    baseLatPlfm = min(timePlfm_lat);
-    baseLatPlfm(baseLatPlfm==testRangeTag_lat) = [];
-    baseLatencyPlfm = median(baseLatPlfm);
-    [timeTrack_lat, ~] = tagDataLoad(spikeData, lightTime.Modu, testRangeModu_lat, baseRangeModu_lat);
-    baseLatTrack = min(timeTrack_lat);
-    baseLatTrack(baseLatTrack==testRangeModu_lat) = [];
-    baseLatencyTrack = median(baseLatTrack);
-
-% Light induced spike latency
-    if isfield(lightTime,'Tag') && ~isempty(lightTime.Tag); % Activation (ChETA)
-       spkPlfmChETA = spikeWin(spikeData,lightTime.Tag,winTagChETA);
-       if statDir_Plfm >= 0
-           testLatPlfm = cellfun(@min, spkPlfmChETA,'UniformOutput',false);
-           testLatPlfm = cell2mat(testLatPlfm);
-       else
-           testLatPlfm = cellfun(@max, spkPlfmChETA, 'UniformOutput',false);
-           testLatPlfm = cell2mat(testLatPlfm);
-       end
-       if ~isempty(baseLatPlfm) & ~isempty(testLatPlfm)
-           pLatencyPlfm = ranksum(baseLatPlfm,testLatPlfm);
-           testLatencyPlfm = nanmedian(testLatPlfm);
-       else
-           pLatencyPlfm = nan;
-           testLatencyPlfm = nan;
-       end
-    end
-    
-    if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu)
-       spkTrackChETA = spikeWin(spikeData,lightTime.Modu,winTagChETA);
-       if statDir_Track >= 0
-           testLatTrack = cellfun(@min, spkTrackChETA,'UniformOutput',false);
-           testLatTrack = cell2mat(testLatTrack);
-       else
-           testLatTrack = cellfun(@max, spkTrackChETA, 'UniformOutput',false);
-           testLatTrack = cell2mat(testLatTrack);
-       end
-       if ~isempty(baseLatTrack) & ~isempty(testLatTrack)
-           pLatencyTrack = ranksum(baseLatTrack,testLatTrack);
-           testLatencyTrack = nanmedian(testLatTrack);
-       else
-           pLatencyTrack = nan;
-           testLatencyTrack = nan;
-       end
-    end
-    save([cellName,'.mat'],'statDir_Plfm','testLatencyPlfm','baseLatencyPlfm','pLatencyPlfm',...
-        'statDir_Track','testLatencyTrack','baseLatencyTrack','pLatencyTrack','-append');
-
 % Log-rank test (4ms moving window)
-    movingWin = (0:4:20)';
+    movingWin = (0:2:20)';
     [pSaltPlfmT,pSaltTrackT,lSaltPlfmT,lSaltTrackT,pLR_PlfmT,pLR_TrackT] = deal(zeros(6,1));
     [timeLR_PlfmT,H1_PlfmT,H2_PlfmT,timeLR_TrackT,H1_TrackT,H2_TrackT] = deal(cell(6,1));
 
-    for iWin = 1:6
+    for iWin = 1:11
         [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag+movingWin(iWin), testRangePlfm, baseRangePlfm);
         [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Modu+movingWin(iWin), testRangeTrack, baseRangeTrack);
 
@@ -148,8 +72,8 @@ for iCell = 1:nCell
         pLR_PlfmT(iWin,1) = pLR_PlfmT;
         pLR_TrackT(iWin,1) = pLR_TrackT;
     end
-    idxPlfm = find(pLR_PlfmT<0.05,1,'first');
-    idxTrack = find(pLR_TrackT<0.05,1,'first');
+    idxPlfm = find(pLR_PlfmT<0.01,1,'first');
+    idxTrack = find(pLR_TrackT<0.01,1,'first');
     if isempty(idxPlfm)
         idxPlfm = 1;
     end
@@ -171,10 +95,11 @@ for iCell = 1:nCell
 % Too less spike will be not calculater for log-rank test (criteria: more than 10 spikes)
     spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-20,30]);
     spkCriteria_Track = spikeWin(spikeData,lightTime.Modu,[-20,30]);
-    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < 10  | isempty(pLR_Plfm) % if the # of spikes are less than 10, do not calculate pLR
+%     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < length(lightTime.Tag)*50/1000  | isempty(pLR_Plfm) % if the # of spikes are less than 1Hz, do not calculate pLR
+    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < 10  | isempty(pLR_Plfm)
         pLR_Plfm = 1;
     end
-    if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < 10 | isempty(pLR_Track)
+    if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < length(lightTime.Modu)*50/1000 | isempty(pLR_Track)
         pLR_Track = 1;
     end
     if pLR_Plfm == 1;
@@ -185,7 +110,7 @@ for iCell = 1:nCell
     end
     save([cellName, '.mat'],'pLR_Plfm','timeLR_Plfm','H1_Plfm','H2_Plfm','pLR_Track','timeLR_Track','H1_Track','H2_Track','calibPlfm','calibTrack','-append')
     
-% Pre & Post light stimulation p-value check
+%% Pre & Post light stimulation p-value check
     [timeTrack_pre, censorTrack_pre] = tagDataLoad(spikeData, psdlightPre+calibTrack, testRangeTrack, baseRangeTrack);
     [timeTrack_post, censorTrack_post] = tagDataLoad(spikeData, psdlightPost+calibTrack, testRangeTrack, baseRangeTrack);
     
@@ -208,6 +133,83 @@ for iCell = 1:nCell
     pSaltTrack = pSaltTrackT(idxTrack);
     lSaltTrack = lSaltTrackT(idxTrack);
     save([cellName,'.mat'],'pSaltPlfm','lSaltPlfm','pSaltTrack','lSaltTrack','-append');    
+
+%% Light modulation direction (Actiavtion / inactivation / no change)
+    spkPlfmChETA = spikeWin(spikeData,lightTime.Tag+calibPlfm,winDirChETA);
+    [xptPlfm,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Tag)),winDirChETA,binSizePlfmBlue,resolution,1);
+    if ~iscell(xptPlfm)
+         xptPlfm = {xptPlfm};
+    end
+    if sum(-30<xptPlfm{1} & xptPlfm{1}<0) < sum(0 <= xptPlfm{1} & xptPlfm{1}<30) % activation
+        statDir_Plfm = 1;
+    elseif sum(-30<xptPlfm{1} & xptPlfm{1}<0) > sum(0 <= xptPlfm{1} & xptPlfm{1}<30) % inactivation
+        statDir_Plfm = -1;
+    else % no change
+        statDir_Plfm = 0;
+    end
+
+    spkTrackChETA = spikeWin(spikeData,lightTime.Modu+calibTrack,winDirChETA);
+    [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Modu)),winDirChETA,binSizePlfmBlue,resolution,1);
+    if ~iscell(xptTrack)
+        xptTrack = {xptTrack};
+    end
+    if sum(-30<xptTrack{1} & xptTrack{1}<0) < sum(0 <= xptTrack{1} & xptTrack{1}<30) % activation
+        statDir_Track = 1;
+    elseif sum(-30<xptTrack{1} & xptTrack{1}<0) > sum(0 <= xptTrack{1} & xptTrack{1}<30) % inactivation
+        statDir_Track = -1;
+    else
+        statDir_Track = 0;
+    end
+
+%% Latency (add calib after all calculation)
+% Baseline spontaneous latency
+    [timePlfm_lat, ~] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag_lat, baseRangeTag_lat);
+    baseLatPlfm = min(timePlfm_lat);
+    baseLatPlfm(baseLatPlfm==testRangeTag_lat) = [];
+    baseLatencyPlfm = median(baseLatPlfm);
+    [timeTrack_lat, ~] = tagDataLoad(spikeData, lightTime.Modu, testRangeModu_lat, baseRangeModu_lat);
+    baseLatTrack = min(timeTrack_lat);
+    baseLatTrack(baseLatTrack==testRangeModu_lat) = [];
+    baseLatencyTrack = median(baseLatTrack);
+
+% Light induced spike latency
+    if isfield(lightTime,'Tag') && ~isempty(lightTime.Tag); % Activation (ChETA)
+       spkPlfmChETA = spikeWin(spikeData,lightTime.Tag,winTagChETA);
+       if statDir_Plfm >= 0
+           testLatPlfm = cellfun(@min, spkPlfmChETA,'UniformOutput',false);
+           testLatPlfm = cell2mat(testLatPlfm);
+       else
+           testLatPlfm = cellfun(@max, spkPlfmChETA, 'UniformOutput',false);
+           testLatPlfm = cell2mat(testLatPlfm);
+       end
+       if ~isempty(baseLatPlfm) & ~isempty(testLatPlfm)
+           pLatencyPlfm = ranksum(baseLatPlfm,testLatPlfm);
+           testLatencyPlfm = nanmedian(testLatPlfm);
+       else
+           pLatencyPlfm = nan;
+           testLatencyPlfm = nan;
+       end
+    end
+    if isfield(lightTime,'Modu') && ~isempty(lightTime.Modu)
+       spkTrackChETA = spikeWin(spikeData,lightTime.Modu,winTagChETA);
+       if statDir_Track >= 0
+           testLatTrack = cellfun(@min, spkTrackChETA,'UniformOutput',false);
+           testLatTrack = cell2mat(testLatTrack);
+       else
+           testLatTrack = cellfun(@max, spkTrackChETA, 'UniformOutput',false);
+           testLatTrack = cell2mat(testLatTrack);
+       end
+       if ~isempty(baseLatTrack) & ~isempty(testLatTrack)
+           pLatencyTrack = ranksum(baseLatTrack,testLatTrack);
+           testLatencyTrack = nanmedian(testLatTrack);
+       else
+           pLatencyTrack = nan;
+           testLatencyTrack = nan;
+       end
+    end
+    testLatencyPlfm = testLatencyPlfm + calibPlfm;
+    testLatencyTrack = testLatencyTrack + calibTrack;
+    save([cellName,'.mat'],'statDir_Plfm','testLatencyPlfm','baseLatencyPlfm','pLatencyPlfm','statDir_Track','testLatencyTrack','baseLatencyTrack','pLatencyTrack','-append');
 end
 disp('### TagStatTest & Latency calculation are done!');
 

@@ -30,7 +30,7 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
-load(['cellList_add','.mat']);
+load(['cellList_v3','.mat']);
 
 %% Condition
 total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakMap>1;
@@ -42,28 +42,28 @@ nTotal_DRun = sum(double(total_DRun));
 % nTotal_No = sum(double(total_No));
 
 %% Venn diagram
-popBaseOnly = total_DRun & (T.pLR_tag<0.05 & ~(T.pLR_modu<0.05));
+popBaseOnly = total_DRun & (T.pLR_Plfm<0.05 & ~(T.pLR_Track<0.05));
 npopBaseOnly = sum(double(popBaseOnly));
-popTrackOnly = total_DRun & (~(T.pLR_tag<0.05) & T.pLR_modu<0.05);
+popTrackOnly = total_DRun & (~(T.pLR_Plfm<0.05) & T.pLR_Track<0.05);
 npopTrackOnly = sum(double(popTrackOnly));
-popBoth = total_DRun & (T.pLR_tag<0.05 & T.pLR_modu<0.05);
+popBoth = total_DRun & (T.pLR_Plfm<0.05 & T.pLR_Track<0.05);
 npopBoth = sum(double(popBoth)); 
-popNeither = total_DRun & (~(T.pLR_tag<0.05) & ~(T.pLR_modu<0.05));
+popNeither = total_DRun & (~(T.pLR_Plfm<0.05) & ~(T.pLR_Track<0.05));
 npopNeither = sum(double(popNeither));
 
 %% Base light response
-groupBaseA = total_DRun & T.pLR_tag<0.05 & (T.statDir_tag == 1);
-groupBaseB = total_DRun & T.pLR_tag<0.05 & (T.statDir_tag == -1) & ~isnan(T.ina_lastSpk_tag) & ~isnan(T.ina_firstSpk_tag);
-groupBaseC = total_DRun & T.pLR_tag<0.05 & (T.statDir_tag == 0);
-groupBaseD = total_DRun & ~(T.pLR_tag<0.05) & (T.statDir_tag == 1);
-groupBaseE = total_DRun & ~(T.pLR_tag<0.05) & (T.statDir_tag == -1);
-groupBaseF = total_DRun & ~(T.pLR_tag<0.05) & (T.statDir_tag == 0);
-basePie = [sum(double(groupBaseA)), sum(double(groupBaseB)), sum(double(total_DRun & ~(T.pLR_tag<0.05)))];
-labelsBase = {'Activated: ';'Inactivated: ';'Unmodulated: '};
-
-lightBase5mw = T.lighttagSpk5mw(total_DRun & T.pLR_tag<0.05);
-lightBase8mw = T.lighttagSpk8mw(total_DRun & T.pLR_tag<0.05);
-lightBase10mw = T.lighttagSpk10mw(total_DRun & T.pLR_tag<0.05);
+% groupBaseA = total_DRun & T.pLR_Plfm<0.05 & (T.statDir_Plfm == 1);
+% groupBaseB = total_DRun & T.pLR_Plfm<0.05 & (T.statDir_Plfm == -1) & ~isnan(T.ina_lastSpk_tag) & ~isnan(T.ina_firstSpk_tag);
+% groupBaseC = total_DRun & T.pLR_Plfm<0.05 & (T.statDir_Plfm == 0);
+% groupBaseD = total_DRun & ~(T.pLR_Plfm<0.05) & (T.statDir_Plfm == 1);
+% groupBaseE = total_DRun & ~(T.pLR_Plfm<0.05) & (T.statDir_Plfm == -1);
+% groupBaseF = total_DRun & ~(T.pLR_Plfm<0.05) & (T.statDir_Plfm == 0);
+% basePie = [sum(double(groupBaseA)), sum(double(groupBaseB)), sum(double(total_DRun & ~(T.pLR_Plfm<0.05)))];
+% labelsBase = {'Activated: ';'Inactivated: ';'Unmodulated: '};
+% 
+lightBase5mw = T.lighttagSpk5mw(total_DRun & T.pLR_Plfm<0.05);
+lightBase8mw = T.lighttagSpk8mw(total_DRun & T.pLR_Plfm<0.05);
+lightBase10mw = T.lighttagSpk10mw(total_DRun & T.pLR_Plfm<0.05);
 
 yLimlightBase = max([lightBase5mw; lightBase8mw; lightBase10mw])*1.1;
 
@@ -75,6 +75,6 @@ plot([1,2,3],[mean(lightBase5mw), mean(lightBase8mw), mean(lightBase10mw)],'-o',
 
 text(3.5, yLimlightBase*0.9,['n = ',num2str(length(lightBase5mw))]);
 ylabel('Spike counts');
-set(hBase,'XLim',[0,4],'YLim',[-20,yLimlightBase],'Box','off','TickDir','out','XTick',[1:3],'XTickLabel',{'5mW','8mW','10mW'});
+set(hBase,'XLim',[0,4],'Box','off','TickDir','out','XTick',[1:3],'XTickLabel',{'5mW','8mW','10mW'});
 
 print(gcf,'-dtiff','-r300','Fig4_lightIntensity_DRun');

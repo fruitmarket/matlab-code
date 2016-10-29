@@ -32,18 +32,18 @@ colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
 load(['cellList_v3','.mat']);
-rtDir_sig = 'D:\Dropbox\SNL\P2_Track\v4_\v4_noRun_Sig';
-rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\v4_\v4_noRun_noSig';
-
+rtDir_sig = 'D:\Dropbox\SNL\P2_Track\v5\v5_DRw_Sig';
+rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\v5\v5_DRw_noSig';
+alpha = 0.01;
 %%
-total_DRun = T.taskProb == '100' & T.taskType == 'noRun' & T.peakMap>1;
+total_DRun = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;
 nTotal_DRun = sum(double(total_DRun));
 
 %% Single cell figure separation
-figList_DRunlightPN_sig = T.Path((total_DRun & T.pLR_Plfm < 0.05) | (total_DRun & T.pLR_Track < 0.05));
+figList_DRunlightPN_sig = T.Path((total_DRun & T.pLR_Plfm < alpha) | (total_DRun & T.pLR_Track < alpha));
 trackPlot_v4_multifig_v3(figList_DRunlightPN_sig,rtDir_sig);
 
-figList_DRunlightPN_nosig = T.Path((total_DRun & ~(T.pLR_Plfm < 0.05)) & (total_DRun & ~(T.pLR_Track < 0.05)));
+figList_DRunlightPN_nosig = T.Path((total_DRun & ~(T.pLR_Plfm < alpha)) & (total_DRun & ~(T.pLR_Track < alpha)));
 trackPlot_v4_multifig_v3(figList_DRunlightPN_nosig,rtDir_nosig);
 cd('D:\Dropbox\SNL\P2_Track');
 

@@ -31,12 +31,14 @@ for iCell = 1:nCell
     meanFR_task = sum(histc(spikeData,taskTime))/(diff(taskTime)/1000);
     
     % Mean firing rate (block)
-    time_pre = [sensor.S1(1), sensor.S1(30)];
-    time_stm = [sensor.S1(31), sensor.S1(60)];
-    time_post = [sensor.S1(61), sensor.S1(90)];
-    meanFR_pre = sum(histc(spikeData,time_pre))/(diff(time_pre)/1000);
-    meanFR_stm = sum(histc(spikeData,time_stm))/(diff(time_stm)/1000);
-    meanFR_post = sum(histc(spikeData,time_post))/(diff(time_post)/1000);
+    time_post = [sensor.S1(61), sensor.S1(90)]; % for the case when light stimulation existed after sensor12(90)
+    meanFR_pre = sum(histc(spikeData,preTime))/(diff(preTime)/1000);
+    meanFR_stm = sum(histc(spikeData,stmTime))/(diff(stmTime)/1000);
+    if isempty(postTime)
+        meanFR_post = sum(histc(spikeData,time_post))/(diff(time_post)/1000);
+    else
+        meanFR_post = sum(histc(spikeData,postTime))/(diff(postTime)/1000);
+    end
     % Busrst index (Ref: Hyunjung's paper)
     spikeIdx = [taskTime(1)<spikeData & spikeData<taskTime(2)];
     spikeISI = diff(spikeData(spikeIdx));

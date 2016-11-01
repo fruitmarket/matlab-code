@@ -18,26 +18,59 @@ for iCell = 1:nCell
     cd(cellPath);
     
     % Load Events variables
-    load('Events.mat');
-    nLight = length(lightTime.Tag);
+    load('Events.mat','lightTime');
+ % Platform
+    nPlfmLight = length(lightTime.Plfm2hz);
     
-    spikeTimeTag = spikeWin(tData{iCell},lightTime.Tag,winTagBlue);
-    spikeTime5mw = spikeTimeTag(1:nLight/3,1);
-    spikeTime8mw = spikeTimeTag(nLight/3+1:nLight*2/3,1);
-    spikeTime10mw = spikeTimeTag(nLight*2/3+1:nLight,1);
+    spikeTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winTagBlue);
+    spikeTime5mw = spikeTimePlfm(1:nPlfmLight/3,1);
+    spikeTime8mw = spikeTimePlfm(nPlfmLight/3+1:nPlfmLight*2/3,1);
+    spikeTime10mw = spikeTimePlfm(nPlfmLight*2/3+1:nPlfmLight,1);
     
-    [xptTagBlue, ~,~,~,~,~] = rasterPETH(spikeTimeTag,true(size(lightTime.Tag)),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptTagBlue_5mw, ~,~,~,~,~] = rasterPETH(spikeTime5mw,true(nLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptTagBlue_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptTagBlue_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptPlfmBlue, ~,~,~,~,~] = rasterPETH(spikeTimePlfm,true(size(lightTime.Plfm2hz)),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptPlfmBlue_5mw, ~,~,~,~,~] = rasterPETH(spikeTime5mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptPlfmBlue_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptPlfmBlue_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
     
-    lighttagSpk = sum(0<xptTagBlue{1} & xptTagBlue{1}<15);
-    lighttagSpk5mw = sum(0<xptTagBlue_5mw{1} & xptTagBlue_5mw{1}<15);
-    lighttagSpk8mw = sum(0<xptTagBlue_8mw{1} & xptTagBlue_8mw{1}<15);
-    lighttagSpk10mw = sum(0<xptTagBlue_10mw{1} & xptTagBlue_10mw{1}<15);
+    lightPlfmSpk = sum(0<xptPlfmBlue{1} & xptPlfmBlue{1}<15);
+    lightPlfmSpk5mw = sum(0<xptPlfmBlue_5mw{1} & xptPlfmBlue_5mw{1}<15);
+    lightPlfmSpk8mw = sum(0<xptPlfmBlue_8mw{1} & xptPlfmBlue_8mw{1}<15);
+    lightPlfmSpk10mw = sum(0<xptPlfmBlue_10mw{1} & xptPlfmBlue_10mw{1}<15);
+ 
+% Track   
+    nTrackLight = length(lightTime.Track2hz);
     
-    save([cellName,'.mat'],...
-         'lighttagSpk5mw','lighttagSpk8mw','lighttagSpk10mw','-append');
+    spikeTimeTrack = spikeWin(tData{iCell},lightTime.Track2hz,winTagBlue);
+    spikeTime5mw = spikeTimeTrack(1:nTrackLight/3,1);
+    spikeTime8mw = spikeTimeTrack(nTrackLight/3+1:nTrackLight*2/3,1);
+    spikeTime10mw = spikeTimeTrack(nTrackLight*2/3+1:nTrackLight,1);
+    
+    [xptTrackBlue, ~,~,~,~,~] = rasterPETH(spikeTimePlfm,true(size(lightTime.Track2hz)),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptTrackBlue_5mw, ~,~,~,~,~] = rasterPETH(spikeTime5mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptTrackBlue_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptTrackBlue_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    if isempty(xptTrackBlue)
+        lightTrackSpk = 0;
+    else
+        lightTrackSpk = sum(0<xptTrackBlue{1} & xptTrackBlue{1}<15);
+    end
+    if isempty(xptTrackBlue_5mw)
+        lightTrackSpk5mw = 0;
+    else
+        lightTrackSpk5mw = sum(0<xptTrackBlue_5mw{1} & xptTrackBlue_5mw{1}<15);
+    end
+    if isempty(xptTrackBlue_8mw)
+        lightTrackSpk8mw = 0;
+    else
+        lightTrackSpk8mw = sum(0<xptTrackBlue_8mw{1} & xptTrackBlue_8mw{1}<15);
+    end
+    if isempty(xptTrackBlue_10mw)
+        lightTrackSpk10mw = 0;
+    else
+        lightTrackSpk10mw = sum(0<xptTrackBlue_10mw{1} & xptTrackBlue_10mw{1}<15);
+    end
+    
+    save([cellName,'.mat'],'lightPlfmSpk5mw','lightPlfmSpk8mw','lightPlfmSpk10mw','lightTrackSpk5mw','lightTrackSpk8mw','lightTrackSpk10mw','-append');
 end
 disp('### Laser Intensity Check is done!!!');
 

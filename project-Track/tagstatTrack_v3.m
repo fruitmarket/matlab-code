@@ -107,8 +107,8 @@ for iCell = 1:nCell
            testLatencyTrack = nan;
        end
     end
-    save([cellName,'.mat'],'statDir_Plfm','testLatencyPlfm','baseLatencyPlfm','pLatencyPlfm',...
-        'statDir_Track','testLatencyTrack','baseLatencyTrack','pLatencyTrack','-append');
+%     save([cellName,'.mat'],'statDir_Plfm','testLatencyPlfm','baseLatencyPlfm','pLatencyPlfm',...
+%         'statDir_Track','testLatencyTrack','baseLatencyTrack','pLatencyTrack','-append');
     
 % Log-rank test    
     [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag, testRangePlfm, baseRangePlfm);

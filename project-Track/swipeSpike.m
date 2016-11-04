@@ -31,7 +31,8 @@ for iPath = 1:nPath
 %     heatMap;
 %     pearson_field_correlation_baseComp_Track;
 %     tagstatTrack;
-    tagstatTrack_v3_movWin;
+%     tagstatTrack_v3_movWin;
+      tagstatTrack_Poster;
 %     mapCorr;
 %     mapCorrEvOd;
 %     trackPlot_v3

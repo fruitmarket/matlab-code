@@ -30,7 +30,7 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
-load(['cellList_v3','.mat']);
+load(['cellList_v3st','.mat']);
 alpha = 0.01;
 
 %% Condition
@@ -93,5 +93,5 @@ ylabel('# of neurons');
 xlabel('Conditions');
 title('Light responsive neurons on Track');
 
-print(gcf,'-dtiff','-r300','lightResponseNeuron2');
+print(gcf,'-dtiff','-r300','lightResponseNeuron2st');
 % print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRunPoster.ai','-depsc');

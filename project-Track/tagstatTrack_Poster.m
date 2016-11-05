@@ -18,8 +18,7 @@ baseRangeTrack = [100*ones(1,11),95*ones(1,9),90*ones(1,6)]';
 winDir = [-30, 30];
 resolution = 10;
 binSize = 2;
-winTest = [-20, 20];
-spikeCri = 15;
+winTest = [-30, 30];
 
 if nargin == 0; sessionFolder = {}; end;
 [tData, tList] = tLoad(sessionFolder);
@@ -33,21 +32,21 @@ for iCell = 1:nCell
 
     load('Events.mat','lightTime','psdlightPre','psdlightPost');
     spikeData = tData{iCell};
-
-    spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-20,100]);
-    spkCriteria_Track = spikeWin(spikeData,lightTime.Modu,[-20,100]);
     
-    pLR_Plfm2 = [];
-    pLR_Track2 = [];
-    statDir_Plfm2 = [];
-    statDir_Track2 = [];
+    spkCriPlfm = 20;
+    spkCriTrack = 20; % during 100ms, firing rate should be higher than 1Hz
+
+    spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-50,50]);
+    spkCriteria_Track = spikeWin(spikeData,lightTime.Modu,[-50,50]);
+    
+    [pLR_Plfm2, pLR_Track2, statDir_Plfm2, statDir_Track2] = deal(zeros(1,27));
 
 % Log-rank test    
     for iRepeat = 1:nRepeat
         [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag+calibOnset(iRepeat),calibDuration(iRepeat),baseRangePlfm(iRepeat));
         [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Modu+calibOnset(iRepeat),calibDuration(iRepeat),baseRangeTrack(iRepeat));
 
-        if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < spikeCri; % if the # of spikes are less than 1Hz, do not calculate pLR
+        if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < spkCriPlfm; % if the # of spikes are less than 1Hz, do not calculate pLR
                 temp_pLR_Plfm = 1;
         else
             [temp_pLR_Plfm,~,~,~] = logRankTest(timePlfm,censorPlfm);
@@ -56,7 +55,7 @@ for iCell = 1:nCell
             end
         end
         
-        if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < spikeCri; % if the # of spikes are less than 1Hz, do not calculate
+        if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < spkCriTrack; % if the # of spikes are less than 1Hz, do not calculate
              temp_pLR_Track = 1;
         else
             [temp_pLR_Track,~,~,~] = logRankTest(timeTrack,censorTrack);
@@ -89,18 +88,20 @@ for iCell = 1:nCell
             temp_statDir_Track = -1;
         else
             temp_statDir_Track = 0;
-        end
-        
-        statDir_Plfm2 = [statDir_Plfm2,temp_statDir_Plfm];
-        statDir_Track2 = [statDir_Track2, temp_statDir_Track];
-        
-        pLR_Plfm2 = [pLR_Plfm2,temp_pLR_Plfm];
-        pLR_Track2 = [pLR_Track2,temp_pLR_Track];
+        end        
+        pLR_Plfm2(1,iRepeat) = temp_pLR_Plfm;
+        pLR_Track2(1,iRepeat) = temp_pLR_Track;
+        statDir_Plfm2(1,iRepeat) = temp_statDir_Plfm;
+        statDir_Plfm2(1,iRepeat) = temp_statDir_Track;
+%         pLR_Plfm2 = [pLR_Plfm2,temp_pLR_Plfm];
+%         pLR_Track2 = [pLR_Track2,temp_pLR_Track];
+%         statDir_Plfm2 = [statDir_Plfm2,temp_statDir_Plfm];
+%         statDir_Track2 = [statDir_Track2, temp_statDir_Track];
     end        
 %%% Moving win %%%
     movingWin = (0:2:18)';
     [pLR_PlfmT,pLR_TrackT] = deal(zeros(6,1));
-    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < spikeCri % if the # of spikes are less than 10, do not calculate pLR
+    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than 10, do not calculate pLR
         pLR_Plfm2(1,27) = 1;
         statDir_Plfm2(1,27) = 0;
     else
@@ -132,7 +133,7 @@ for iCell = 1:nCell
         end
     end
 
-    if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < spikeCri
+    if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < spkCriTrack
         pLR_Track2(1,27) = 1;
         statDir_Track2(1,27) = 0;
     else

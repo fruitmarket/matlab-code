@@ -23,8 +23,9 @@ for iCell = 1:nCell
     [cellPath,cellName,~] = fileparts(tList{iCell});
     
     spkdata = tData{iCell}; %unit: msec
-    load('Events.mat','baseTime','preTime','stmTime','postTime','plfm2z');
-    
+%     load('Events.mat','baseTime','preTime','stmTime','postTime','plfm2z');
+    load('Events.mat','baseTime','preTime','stmTime','postTime');
+
     win.base = find(baseTime(1,1)<=vtTime{1} & vtTime{1}<=baseTime(2,1));
     win.pre = find(preTime(1,1)<=vtTime{1} & vtTime{1}<=preTime(2,1));
     win.stm = find(stmTime(1,1)<=vtTime{1} & vtTime{1}<=stmTime(2,1));

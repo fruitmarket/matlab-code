@@ -30,7 +30,7 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
-load(['cellList_v3st','.mat']);
+load(['cellList_v3','.mat']);
 alpha = 0.01;
 
 %% Condition
@@ -45,6 +45,15 @@ PN = T.meanFR_task < 10;
 %%
 total_DRunPN = total_DRun & PN;
 total_DRunIN = total_DRun & (~PN);
+pn_pLR_Plfm = T.pLR_Plfm2(total_DRunPN,:);
+pn_Dir_Plfm = T.statDir_Plfm2(total_DRunPN,:);
+pn_pLR_Track = T.pLR_Track2(total_DRunPN,:);
+pn_Dir_Track = T.statDir_Track2(total_DRunPN,:);
+
+in_pLR_Plfm = T.pLR_Plfm2(total_DRunIN,:);
+in_Dir_Plfm = T.statDir_Plfm2(total_DRunIN,:);
+in_pLR_Track = T.pLR_Track2(total_DRunIN,:);
+in_Dir_Track = T.statDir_Track2(total_DRunIN,:);
 
 for iCondi = 1:27
     pn_pLR_PlfmAc(iCondi) = sum(double(T.pLR_Plfm2(total_DRunPN,iCondi)<0.05 & T.statDir_Plfm2(total_DRunPN,iCondi)==1));
@@ -57,7 +66,17 @@ for iCondi = 1:27
     in_pLR_TrackAc(iCondi) = sum(double(T.pLR_Track2(total_DRunIN,iCondi)<0.05 & T.statDir_Track2(total_DRunIN,iCondi)==1));
     in_pLR_TrackIn(iCondi) = sum(double(T.pLR_Track2(total_DRunIN,iCondi)<0.05 & T.statDir_Track2(total_DRunIN,iCondi)==-1));
 end
-%%
+% for iCondi = 1:27
+%     pn_pLR_PlfmAc(iCondi) = sum(double(pn_pLR_Plfm(:,iCondi)<0.05 & pn_Dir_Plfm(:,iCondi)==1));
+%     pn_pLR_PlfmIn(iCondi) = sum(double(pn_pLR_Plfm(:,iCondi)<0.05 & pn_Dir_Plfm(:,iCondi)==-1));
+%     pn_pLR_TrackAc(iCondi) = sum(double(pn_pLR_Track(:,iCondi)<0.05 & pn_Dir_Track(:,iCondi)==1));
+%     pn_pLR_TrackIn(iCondi) = sum(double(pn_pLR_Track(:,iCondi)<0.05 & pn_Dir_Track(:,iCondi)==-1));
+%     
+%     in_pLR_PlfmAc(iCondi) = sum(double(in_pLR_Plfm(:,iCondi)<0.05 & in_Dir_Plfm(:,iCondi)==1));
+%     in_pLR_PlfmIn(iCondi) = sum(double(in_pLR_Plfm(:,iCondi)<0.05 & in_Dir_Plfm(:,iCondi)==-1));
+%     in_pLR_TrackAc(iCondi) = sum(double(in_pLR_Track(:,iCondi)<0.05 & in_Dir_Track(:,iCondi)==1));
+%     in_pLR_TrackIn(iCondi) = sum(double(in_pLR_Track(:,iCondi)<0.05 & in_Dir_Track(:,iCondi)==-1));
+% end
 
 %% Figure (Base)
 hPlfm = axes('Position',axpt(4,3,1:2,1:3,[0.1 0.1 0.85 0.85],midInterval));

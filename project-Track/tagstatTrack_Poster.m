@@ -39,6 +39,9 @@ for iCell = 1:nCell
     spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-50,50]);
     spkCriteria_Track = spikeWin(spikeData,lightTime.Modu,[-50,50]);
     
+    spkLatency_Plfm = spikeWin(spikeData,lightTime.Tag,[0,25]);
+    spkLatency_Track = spikeWin(spikeData,lightTime.Modu,[0,25]);
+    
     [pLR_Plfm2, pLR_Track2, statDir_Plfm2, statDir_Track2] = deal(zeros(1,27));
 
 % Log-rank test    
@@ -62,8 +65,7 @@ for iCell = 1:nCell
             if isempty(temp_pLR_Track)
                 temp_pLR_Track = NaN;
             end
-        end
-        
+        end       
 % Modulation direction
         spkPlfmChETA = spikeWin(spikeData,lightTime.Tag+calibOnset(iRepeat),winDir);
         [xptPlfm,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Tag)),winDir,binSize,resolution,1);
@@ -88,11 +90,35 @@ for iCell = 1:nCell
             temp_statDir_Track = -1;
         else
             temp_statDir_Track = 0;
-        end        
+        end
+% Light Latency Calculation
+        switch (temp_statDir_Plfm)
+            case 1 % activation
+                temp_latencyPlfm = cellfun(@min,spkLatency_Plfm,'UniformOutput',false);
+                temp_latencyPlfm = nanmedian(cell2mat(temp_latencyPlfm));
+            case -1 % inactivation
+                temp_latencyPlfm = cellfun(@max,spkLatency_Plfm,'UniformOutput',false);
+                temp_latencyPlfm = nanmedian(cell2mat(temp_latencyPlfm));
+            case 0
+                temp_latencyPlfm = 0;
+        end
+        switch (temp_statDir_Track)
+            case 1
+                temp_latencyTrack = cellfun(@min,spkLatency_Track,'UniformOut',false);
+                temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
+            case -1
+                temp_latencyTrack = cellfun(@max,spkLatency_Track,'UniformOut',false);
+                temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
+            case 0
+                temp_latencyTrack = 0;
+        end
         pLR_Plfm2(1,iRepeat) = temp_pLR_Plfm;
         pLR_Track2(1,iRepeat) = temp_pLR_Track;
         statDir_Plfm2(1,iRepeat) = temp_statDir_Plfm;
         statDir_Plfm2(1,iRepeat) = temp_statDir_Track;
+        latencyPlfm2(1,iRepeat) = temp_latencyPlfm - calibOnset(iRepeat);
+        latencyTrack2(1,iRepeat) = temp_latencyTrack - calibOnset(iRepeat);
+
 %         pLR_Plfm2 = [pLR_Plfm2,temp_pLR_Plfm];
 %         pLR_Track2 = [pLR_Track2,temp_pLR_Track];
 %         statDir_Plfm2 = [statDir_Plfm2,temp_statDir_Plfm];
@@ -104,6 +130,7 @@ for iCell = 1:nCell
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than 10, do not calculate pLR
         pLR_Plfm2(1,27) = 1;
         statDir_Plfm2(1,27) = 0;
+        latencyPlfm2(1,27) = 0;
     else
         for iWin = 1:10
             [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag+movingWin(iWin), 10, 480);
@@ -131,11 +158,24 @@ for iCell = 1:nCell
         else % no change
             statDir_Plfm2(1,27) = 0;
         end
+% Latency (Moving win)
+        switch (statDir_Plfm2(1,27))
+            case 1 % activation
+                temp_latencyPlfm = cellfun(@min,spkLatency_Plfm,'UniformOutput',false);
+                temp_latencyPlfm = nanmedian(cell2mat(temp_latencyPlfm));
+            case -1 % inactivation
+                temp_latencyPlfm = cellfun(@max,spkLatency_Plfm,'UniformOutput',false);
+                temp_latencyPlfm = nanmedian(cell2mat(temp_latencyPlfm));
+            case 0
+                temp_latencyPlfm = 0;
+        end
+        latencyPlfm2(1,27) = temp_latencyPlfm-movingWin(idxPlfm);
     end
 
     if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < spkCriTrack
         pLR_Track2(1,27) = 1;
         statDir_Track2(1,27) = 0;
+        latencyTrack2(1,27) = 0;
     else
         for iWin = 1:10
             [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Modu+movingWin(iWin), 10, 100);
@@ -163,9 +203,21 @@ for iCell = 1:nCell
         else
             statDir_Track2(1,27) = 0;
         end
+% Latency (Moving win)
+        switch (statDir_Track2(1,27))
+            case 1 % activation
+                temp_latencyTrack = cellfun(@min,spkLatency_Track,'UniformOutput',false);
+                temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
+            case -1 % inactivation
+                temp_latencyTrack = cellfun(@max,spkLatency_Track,'UniformOutput',false);
+                temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
+            case 0
+                temp_latencyTrack = 0;
+        end
+        latencyTrack2(1,27) = temp_latencyTrack-movingWin(idxTrack);
     end
 
-    save([cellName,'.mat'],'pLR_Plfm2','pLR_Track2','statDir_Plfm2','statDir_Track2','-append')
+%     save([cellName,'.mat'],'pLR_Plfm2','pLR_Track2','statDir_Plfm2','statDir_Track2','latencyPlfm2','latencyTrack2','-append')
 end
 disp('### TagStatTest & Latency calculation are done!');
 

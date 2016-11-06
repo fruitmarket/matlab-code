@@ -34,7 +34,7 @@ for iCell = 1:nCell
     spikeData = tData{iCell};
     
     spkCriPlfm = 20;
-    spkCriTrack = 20; % during 100ms, firing rate should be higher than 1Hz
+    spkCriTrack = 20; % spikes should be more than 20
 
     spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-50,50]);
     spkCriteria_Track = spikeWin(spikeData,lightTime.Modu,[-50,50]);
@@ -46,8 +46,8 @@ for iCell = 1:nCell
 
 % Log-rank test    
     for iRepeat = 1:nRepeat
-        [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag+calibOnset(iRepeat),calibDuration(iRepeat),baseRangePlfm(iRepeat));
-        [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Modu+calibOnset(iRepeat),calibDuration(iRepeat),baseRangeTrack(iRepeat));
+        [timePlfm, censorPlfm] = tagDataLoad(spikeData,lightTime.Tag+calibOnset(iRepeat),calibDuration(iRepeat),baseRangePlfm(iRepeat));
+        [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Modu+calibOnset(iRepeat),calibDuration(iRepeat),baseRangeTrack(iRepeat));
 
         if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < spkCriPlfm; % if the # of spikes are less than 1Hz, do not calculate pLR
                 temp_pLR_Plfm = 1;
@@ -178,7 +178,7 @@ for iCell = 1:nCell
         latencyTrack2(1,27) = 0;
     else
         for iWin = 1:10
-            [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Modu+movingWin(iWin), 10, 100);
+            [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Modu+movingWin(iWin),10,100);
             [pLR_TrackT,~,~,~] = logRankTest(timeTrack, censorTrack);
             if isempty(pLR_TrackT)
                 pLR_TrackT = 1;
@@ -217,7 +217,7 @@ for iCell = 1:nCell
         latencyTrack2(1,27) = temp_latencyTrack-movingWin(idxTrack);
     end
 
-%     save([cellName,'.mat'],'pLR_Plfm2','pLR_Track2','statDir_Plfm2','statDir_Track2','latencyPlfm2','latencyTrack2','-append')
+    save([cellName,'.mat'],'pLR_Plfm2','pLR_Track2','statDir_Plfm2','statDir_Track2','latencyPlfm2','latencyTrack2','-append')
 end
 disp('### TagStatTest & Latency calculation are done!');
 

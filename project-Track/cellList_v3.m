@@ -16,7 +16,7 @@ for iFile = 1:nFile
         'statDir_Plfm','testLatencyPlfm','baseLatencyPlfm','pLatencyPlfm','statDir_Track','testLatencyTrack','baseLatencyTrack','pLatencyTrack',...                   % From tagstatTrack
         'pLR_Plfm','pLR_Track','pLR_Plfm2','pLR_Track2','statDir_Plfm2','statDir_Track2',...           % From tagstatTrack
         'lightSpk','lightPreSpk','lightPostSpk','xptPsdPre','yptPsdPre','xptPsdPost','yptPsdPost','psdPreSpk','psdPostSpk','lighttagSpk','lighttagPreSpk','lighttagPostSpk','intraLightDir','interLightDir','tagLightDir','lighttagSpk5mw','lighttagSpk8mw','lighttagSpk10mw',...         % From pethLight
-        'peakMap');
+        'peakMap','peakBase');
 %     'r_Corrbfxaft','r_Corrbfxdr','r_Corrdrxaft','r_Corrhfxhf','r_CorrEvOd','p_Corrbfxaft','p_Corrbfxdr','p_Corrdrxaft','p_Corrhfxhf','p_CorrEvOd');                             % mapCorr & EvOd
     fileSeg = strsplit(matFile{iFile},{'\','_'});
     mouseLine = categorical(cellstr(fileSeg{5}));
@@ -27,12 +27,12 @@ for iFile = 1:nFile
         statDir_Plfm,testLatencyPlfm,baseLatencyPlfm,pLatencyPlfm,statDir_Track,testLatencyTrack,baseLatencyTrack,pLatencyTrack,...                    % From tagstatTrack
         pLR_Plfm,pLR_Track,pLR_Plfm2,pLR_Track2,statDir_Plfm2,statDir_Track2,...                     % From tagstatTrack
         lightSpk,lightPreSpk,lightPostSpk,xptPsdPre,yptPsdPre,xptPsdPost,yptPsdPost,psdPreSpk,psdPostSpk,lighttagSpk,lighttagPreSpk,lighttagPostSpk,intraLightDir,interLightDir,tagLightDir,lighttagSpk5mw,lighttagSpk8mw,lighttagSpk10mw,...
-        peakMap,...
+        peakMap,peakBase,...
         'VariableNames',{'mouseLine','taskType','Path','taskProb','meanFR_base','meanFR_task','meanFR_pre','meanFR_stm','meanFR_post','burstIdx','spkwv','spkwth','hfwth',...
         'statDir_Plfm','testLatencyPlfm','baseLatencyPlfm','pLatencyPlfm','statDir_Track','testLatencyTrack','baseLatencyTrack','pLatencyTrack',...                   % From tagstatTrack
         'pLR_Plfm','pLR_Track','pLR_Plfm2','pLR_Track2','statDir_Plfm2','statDir_Track2',...           % From tagstatTrack
         'lightSpk','lightPreSpk','lightPostSpk','xptPsdPre','yptPsdPre','xptPsdPost','yptPsdPost','psdPreSpk','psdPostSpk','lighttagSpk','lighttagPreSpk','lighttagPostSpk','intraLightDir','interLightDir','tagLightDir','lighttagSpk5mw','lighttagSpk8mw','lighttagSpk10mw',...
-        'peakMap'});
+        'peakMap','peakBase'});
     %,'r_Corrbfxaft','r_Corrbfxdr','r_Corrdrxaft','r_Corrhfxhf','r_CorrEvOd','p_Corrbfxaft','p_Corrbfxdr','p_Corrdrxaft','p_Corrhfxhf','p_CorrEvOd'});
     
     T = [T; temT];

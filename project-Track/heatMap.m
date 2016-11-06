@@ -33,7 +33,7 @@ for iCell = 1:nCell
 %     win.plfm2hz = find(plfm2hz(1,1)<vtTime{1} & vtTime{1}<=plfm2z(2,1));
     
     t_base = vtTime{1}(win.base);
-    p_base = vtTime{1}(win.base);
+    p_base = vtPosition{1}(win.base,:);
     t_pre = vtTime{1}(win.pre);
     p_pre = vtPosition{1}(win.pre,:);
     t_stm = vtTime{1}(win.stm);

@@ -122,7 +122,7 @@ for iFile = 1:nFile
         rectangle('Position', [0 yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
         hBarBlue = bar(pethtimeTagBlue, pethTagBlue, 'histc');
         if statDir_Plfm == 1
-            text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyPlfm,3)],'FontSize',fontS,'interpreter','none');
+            text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(latencyPlfm,3)],'FontSize',fontS,'interpreter','none');
         else
         end
         %         text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyPlfm,3)],'FontSize',fontS,'interpreter','none');
@@ -135,7 +135,7 @@ for iFile = 1:nFile
         hTagBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,1:2,4:6,[0.1 0.13 0.9 0.92],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_Plfm;H2_Plfm])*1100+0.0001)/1000 1]);
-        winHTag = [0 testRangeChETA]+calibPlfm;
+        winHTag = [0 testRangeChETA];
         stairs(timeLR_Plfm, H2_Plfm, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_Plfm, H1_Plfm,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
         text(diff(winHTag)*0.1+calibPlfm,ylimH*0.9,['p = ',num2str(pLR_Plfm,3)],'FontSize',fontS,'Interpreter','none');
@@ -170,7 +170,7 @@ for iFile = 1:nFile
         end
         hBarBlue = bar(pethtimeModuBlue, pethModuBlue, 'histc');
         if statDir_Track == 1;
-            text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(testLatencyTrack,3)],'FontSize',fontS,'interpreter','none');
+            text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(latencyTrack2,3)],'FontSize',fontS,'interpreter','none');
 %         text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyModu_first,3)],'FontSize',fontS,'interpreter','none');
         else
         end
@@ -183,7 +183,7 @@ for iFile = 1:nFile
         hModuBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,4:5,4:6,[0.07 0.13 0.9 0.92],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_Track;H2_Track])*1100+0.0001)/1000 1]);
-        winHModu = [0 testRangeChETA]+calibTrack;
+        winHModu = [0 testRangeChETA];
         stairs(timeLR_Track, H2_Track, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_Track, H1_Track,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
         text(diff(winHModu)*0.1+calibTrack,ylimH*0.9,['p = ',num2str(pLR_Track,3)],'FontSize',fontS,'Interpreter','none');
@@ -246,13 +246,13 @@ for iFile = 1:nFile
         if ~isempty(strfind(cellDir,'noRun')) | ~isempty(strfind(cellDir,'noRw'))
             rec = rectangle('Position',[0.5 length(psdlightPre)+1, 10, length(lightTime.Modu)], 'LineStyle','none','FaceColor',lightDurationColor{2});
         end
-        if pLR_Track_pre < 0.05
+        if pLR_Track_pre < 0.005
             text(105, sum([length(psdlightPre),length(lightTime.Modu),length(psdlightPost)])/8, '*','Color',colorRed,'fontSize',fontL);
         end
-        if pLR_Track < 0.05
+        if pLR_Track < 0.005
             text(105, sum([length(psdlightPre),length(lightTime.Modu),length(psdlightPost)])*3/8, '*','Color',colorRed,'fontSize',fontL);
         end
-        if pLR_Track_post < 0.05
+        if pLR_Track_post < 0.005
             text(105, sum([length(psdlightPre),length(lightTime.Modu),length(psdlightPost)])*6/8, '*','Color',colorRed,'fontSize',fontL);
         end
         uistack(rec,'bottom');
@@ -348,7 +348,6 @@ for iFile = 1:nFile
             plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
     end
-
     ylabel('Rate (Hz)','FontSize',fontS);
     uistack(rec,'bottom');
     set(hRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-1 1],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);

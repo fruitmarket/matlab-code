@@ -30,8 +30,8 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
-load(['cellList_v3','.mat']);
-alpha = 0.01;
+load(['cellList_v3st','.mat']);
+alpha = 0.005;
 
 %% Condition
 total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakMap>1;
@@ -41,16 +41,6 @@ PN = T.meanFR_task < 10;
 % nTotal_DRw = sum(double(total_DRw));
 % total_No = T.taskProb == '100' & (T.taskType == 'noRun' | T.taskType == 'noRun') & T.peakMap>1;
 % nTotal_No = sum(double(total_No));
-
-%% Venn diagram
-popBaseOnly = total_DRun & (T.pLR_Plfm<0.05 & ~(T.pLR_Track<0.05));
-npopBaseOnly = sum(double(popBaseOnly));
-popTrackOnly = total_DRun & (~(T.pLR_Plfm<0.05) & T.pLR_Track<0.05);
-npopTrackOnly = sum(double(popTrackOnly));
-popBoth = total_DRun & (T.pLR_Plfm<0.05 & T.pLR_Track<0.05);
-npopBoth = sum(double(popBoth)); 
-popNeither = total_DRun & (~(T.pLR_Plfm<0.05) & ~(T.pLR_Track<0.05));
-npopNeither = sum(double(popNeither));
 
 %% Base light response
 groupBaseA = total_DRun & T.pLR_Plfm<alpha & (T.statDir_Plfm == 1);
@@ -90,10 +80,14 @@ lightTrack_post = T.lightPostSpk(total_DRun & T.pLR_Track<alpha);
 yLimlightTrack = max([lightTrack_pre; lightTrack_stm; lightTrack_post])*1.1;
 
 %% Latency analysis
-latencyBase_Act = T.testLatencyPlfm(groupBaseA);
-latencyBase_ActIN = T.testLatencyPlfm(groupBaseA_in);
-latencyTrack_Act = T.testLatencyTrack(groupTrackA);
-latencyTrack_ActIN = T.testLatencyTrack(groupTrackA_in);
+% latencyBase_Act = T.testLatencyPlfm2(groupBaseA);
+% latencyBase_ActIN = T.testLatencyPlfm2(groupBaseA_in);
+% latencyTrack_Act = T.testLatencyTrack2(groupTrackA);
+% latencyTrack_ActIN = T.testLatencyTrack2(groupTrackA_in);
+latencyBase_Act = T.latencyPlfm(groupBaseA);
+latencyBase_ActIN = T.latencyPlfm(groupBaseA_in);
+latencyTrack_Act = T.latencyTrack(groupTrackA);
+latencyTrack_ActIN = T.latencyTrack(groupTrackA_in);
 %% Figure (Base)
 hBase(1) = axes('Position',axpt(10,4,1:2,1,[0.1 0.1 0.85 0.85],midInterval));
 fBasePie = pie(basePie);
@@ -239,4 +233,4 @@ set(hTrack(3),'XLim',[0,4],'YLim',[-10,yLimlightTrack],'XTick',[1,2,3],'XTickLab
 set(hTrack(2),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
 set(hTrack(4:6),'XLim',[1,yLimlightTrack],'YLim',[1,yLimlightTrack],'XScale','log','YScale','log');
 
-print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRunPoster.ai','-depsc');
+% print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRunPoster.ai','-depsc');

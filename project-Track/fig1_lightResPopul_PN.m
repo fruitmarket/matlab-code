@@ -31,10 +31,10 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
-load(['cellList_v3','.mat']);
-rtDir_sig = 'D:\Dropbox\SNL\P2_Track\v5\v5_DRw_Sig';
-rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\v5\v5_DRw_noSig';
-alpha = 0.01;
+load(['cellList_v3st','.mat']);
+rtDir_sig = 'D:\Dropbox\SNL\P2_Track\v6\v6_DRw_Sig';
+rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\v6\v6_DRw_noSig';
+alpha = 0.005;
 %%
 total_DRun = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;
 nTotal_DRun = sum(double(total_DRun));

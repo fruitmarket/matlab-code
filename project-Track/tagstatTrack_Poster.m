@@ -132,7 +132,7 @@ for iCell = 1:nCell
         timeLR_Plfm = 0;
         H1_Plfm = 0;
         H2_Plfm = 0;
-        pseudoIdx_Plfm = 1;
+        calibPlfm = movingWin(1);
     else
         for iWin = 1:10
             [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag+movingWin(iWin), 10, 480);
@@ -168,13 +168,13 @@ for iCell = 1:nCell
             timeLR_Plfm = timeLR_PlfmT{idxPlfm};        
             H1_Plfm = H1_PlfmT{idxPlfm};
             H2_Plfm = H2_PlfmT{idxPlfm};
-            pseudoIdx_Plfm = idxPlfm;
+            calibPlfm = movingWin(idxPlfm);
         else
             pLR_Plfm = pLR_PlfmT(idxH_Plfm);
             timeLR_Plfm = timeLR_PlfmT{idxH_Plfm};        
             H1_Plfm = H1_PlfmT{idxH_Plfm};
             H2_Plfm = H2_PlfmT{idxH_Plfm};
-            pseudoIdx_Plfm = idxH_Plfm;
+            calibPlfm = movingWin(idxH_Plfm);
         end
 % Modulation direction (for moving window)_Platform
         spkPlfmChETA = spikeWin(spikeData,lightTime.Tag+movingWin(idxPlfm),winDir);
@@ -210,7 +210,7 @@ for iCell = 1:nCell
         timeLR_Track = 0;
         H1_Track = 0;
         H2_Track = 0;
-        pseudoIdx_Track = 1;
+        calibTrack = movingWin(1);
     else
         for iWin = 1:10
             [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Modu+movingWin(iWin),10,100);
@@ -246,13 +246,13 @@ for iCell = 1:nCell
             timeLR_Track = timeLR_TrackT{idxTrack};
             H1_Track = H1_TrackT{idxTrack};
             H2_Track = H2_TrackT{idxTrack};
-            pseudoIdx_Track = idxTrack;
+            calibTrack = movingWin(idxTrack);
         else
             pLR_Track = pLR_TrackT(idxH_Track);
             timeLR_Track = timeLR_TrackT{idxH_Track};
             H1_Track = H1_TrackT{idxH_Track};
             H2_Track = H2_TrackT{idxH_Track};
-            pseudoIdx_Track = idxH_Track;
+            calibTrack = movingWin(idxH_Track);
         end
             
 % Modulation direction (for moving window)_Track
@@ -282,17 +282,17 @@ for iCell = 1:nCell
         latencyTrack = temp_latencyTrack;
     end
 
-    save([cellName,'.mat'],'pLR_Plfm','timeLR_Plfm','H1_Plfm','H2_Plfm','pLR_Track','timeLR_Track','H1_Track','H2_Track',...
+    save([cellName,'.mat'],'pLR_Plfm','timeLR_Plfm','H1_Plfm','H2_Plfm','pLR_Track','timeLR_Track','H1_Track','H2_Track','calibPlfm','calibTrack',...
         'statDir_Plfm','statDir_Track','latencyPlfm','latencyTrack','-append')
 %% Pre & Post light stimulation p-value check
-    [timeTrack_pre, censorTrack_pre] = tagDataLoad(spikeData, psdlightPre+movingWin(pseudoIdx_Track), 10, 100);
-    [timeTrack_post, censorTrack_post] = tagDataLoad(spikeData, psdlightPost+movingWin(pseudoIdx_Track), 10, 100);
+    [timeTrack_pre, censorTrack_pre] = tagDataLoad(spikeData, psdlightPre+calibTrack, 10, 100);
+    [timeTrack_post, censorTrack_post] = tagDataLoad(spikeData, psdlightPost+calibTrack, 10, 100);
     
     [pLR_Track_pre,timeLR_Track_pre,H1_Track_pre,H2_Track_pre] = logRankTest(timeTrack_pre, censorTrack_pre);
     [pLR_Track_post,timeLR_Track_post,H1_Track_post,H2_Track_post] = logRankTest(timeTrack_post, censorTrack_post);
     
-    spkCriteria_pre = spikeWin(spikeData,psdlightPre+movingWin(pseudoIdx_Track),[-50,50]);
-    spkCriteria_post = spikeWin(spikeData,psdlightPost+movingWin(pseudoIdx_Track),[-50,50]);
+    spkCriteria_pre = spikeWin(spikeData,psdlightPre+calibTrack,[-50,50]);
+    spkCriteria_post = spikeWin(spikeData,psdlightPost+calibTrack,[-50,50]);
     if sum(cell2mat(cellfun(@length,spkCriteria_pre,'UniformOutput',false))) < spkCriTrack  % if the # of spikes are less than 10, do not calculate pLR
         pLR_Track_pre = 1;
     end

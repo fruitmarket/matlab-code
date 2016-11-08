@@ -15,7 +15,7 @@ baseRangePlfm = [485*ones(1,11),480*ones(1,9),475*ones(1,6)]';
 baseRangeTrack = [100*ones(1,11),95*ones(1,9),90*ones(1,6)]';
 
 % Modulation direction
-winDir = [-30, 30];
+winDir = [-10, 10];
 resolution = 10;
 binSize = 2;
 winTest = [-30, 30];

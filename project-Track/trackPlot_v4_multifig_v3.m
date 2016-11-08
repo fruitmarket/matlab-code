@@ -138,7 +138,8 @@ for iFile = 1:nFile
         winHTag = [0 testRangeChETA];
         stairs(timeLR_Plfm, H2_Plfm, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_Plfm, H1_Plfm,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
-        text(diff(winHTag)*0.1+calibPlfm,ylimH*0.9,['p = ',num2str(pLR_Plfm,3)],'FontSize',fontS,'Interpreter','none');
+        text(diff(winHTag)*0.1,ylimH*0.9,['p = ',num2str(pLR_Plfm,3)],'FontSize',fontS,'Interpreter','none');
+        text(diff(winHTag)*0.1,ylimH*0.7,['calib: ',num2str(calibPlfm,3),' ms'],'FontSize',fontS,'Interpreter','none');
         set(hTagBlue(3),'XLim',winHTag,'XTick',winHTag,'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
         xlabel('Time (ms)','FontSize',fontS);
         ylabel('H(t)','FontSize',fontS);
@@ -186,7 +187,8 @@ for iFile = 1:nFile
         winHModu = [0 testRangeChETA];
         stairs(timeLR_Track, H2_Track, 'LineStyle',':','LineWidth',lineL,'Color','k');
         stairs(timeLR_Track, H1_Track,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
-        text(diff(winHModu)*0.1+calibTrack,ylimH*0.9,['p = ',num2str(pLR_Track,3)],'FontSize',fontS,'Interpreter','none');
+        text(diff(winHModu)*0.1,ylimH*0.9,['p = ',num2str(pLR_Track,3)],'FontSize',fontS,'Interpreter','none');
+        text(diff(winHModu)*0.1,ylimH*0.7,['calib: ',num2str(calibTrack,3),' ,ms'],'FontSize',fontS,'Interpreter','none');
         xlabel('Time (ms)','FontSize',fontS);
 %         ylabel('H(t)','FontSize',fontS);
         title('Log-rank test (Track)','FontSize',fontM,'FontWeight','bold');

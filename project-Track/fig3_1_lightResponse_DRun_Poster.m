@@ -26,12 +26,11 @@ colorDarkBlue4 = [13, 71, 161]./255;
 colorLightBlue4 = [25, 118, 210]./255;
 colorDarkGreen4 = [27, 94, 32]./255;
 colorLightGreen4 = [56, 142, 60]./255;
-
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
 load(['cellList_v3st','.mat']);
-alpha = 0.005;
+alpha = 0.001;
 
 %% Condition
 total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakMap>1;
@@ -63,14 +62,14 @@ d_StmPre = (log10(lightBase_stm)-log10(lightBase_pre))/sqrt(2);
 d_StmPost = (log10(lightBase_stm)-log10(lightBase_post))/sqrt(2);
 d_PrePost = (log10(lightBase_pre)-log10(lightBase_post))/sqrt(2);
 %% Track light response
-groupTrackA = total_DRun & T.pLR_Track<alpha & (T.statDir_Track == 1);
+groupTrackA = total_DRun & T.pLR_Track<alpha & (T.statDir_Track == 1) & ~(T.pLR_Track_pre<alpha);
 groupTrackA_in = total_DRun & T.pLR_Track<alpha & (T.statDir_Track == 1) & ~PN;
-groupTrackB = total_DRun & T.pLR_Track<alpha & (T.statDir_Track == -1);
+groupTrackB = total_DRun & T.pLR_Track<alpha & (T.statDir_Track == -1) & ~(T.pLR_Track_pre<alpha);
 groupTrackC = total_DRun & T.pLR_Track<alpha & (T.statDir_Track == 0);
 groupTrackD = total_DRun & ~(T.pLR_Track<alpha) & (T.statDir_Track == 1);
 groupTrackE = total_DRun & ~(T.pLR_Track<alpha) & (T.statDir_Track == -1);
 groupTrackF = total_DRun & ~(T.pLR_Track<alpha) & (T.statDir_Track == 0);
-trackPie = [sum(double(groupTrackA)), sum(double(groupTrackB)), sum(double(total_DRun & ~(T.pLR_Track<alpha)))];
+trackPie = [sum(double(groupTrackA)), sum(double(groupTrackB)), (sum(double(total_DRun))-sum(double(groupTrackA))-sum(double(groupTrackB)))];
 labelsTrack = {'Activated: ';'Inactivated: ';'Unmodulated: '};
 
 lightTrack_pre = T.lightPreSpk(total_DRun & T.pLR_Track<alpha);
@@ -124,7 +123,7 @@ ylabel('Number of cells','FontSize',fontL);
 hBase(3) = axes('Position',axpt(10,4,7:8,1,[0.1 0.1 0.85 0.85],midInterval));
 rectangle('Position',[1.7, -10, 0.6, yLimlightBase+10],'FaceColor',colorLightBlue,'EdgeColor','none');
 hold on;
-for iCell = 1:sum(double(total_DRun & T.pLR_Plfm<0.05))
+for iCell = 1:sum(double(total_DRun & T.pLR_Plfm<alpha))
     plot([1,2,3],[lightBase_pre(iCell), lightBase_stm(iCell), lightBase_post(iCell)],'-o','Color',colorGray,'MarkerFaceColor',colorGray,'MarkerEdgeColor','k','MarkerSize',markerM);
     hold on;
     plot(2,lightBase_stm(iCell),'o','MarkerEdgeColor','k','MarkerFaceColor',colorBlue,'MarkerSize',markerM);
@@ -233,4 +232,4 @@ set(hTrack(3),'XLim',[0,4],'YLim',[-10,yLimlightTrack],'XTick',[1,2,3],'XTickLab
 set(hTrack(2),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
 set(hTrack(4:6),'XLim',[1,yLimlightTrack],'YLim',[1,yLimlightTrack],'XScale','log','YScale','log');
 
-% print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRunPoster.ai','-depsc');
+print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRunPoster.ai','-depsc');

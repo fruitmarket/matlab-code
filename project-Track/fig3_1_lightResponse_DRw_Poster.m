@@ -30,8 +30,8 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
-load(['cellList_v3','.mat']);
-alpha = 0.01;
+load(['cellList_v3st','.mat']);
+alpha = 0.001;
 %% Condition
 total_DRw = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;
 nTotal_DRw = sum(double(total_DRw));
@@ -69,14 +69,14 @@ lightBase_post = T.lighttagPostSpk(total_DRw & T.pLR_Plfm<alpha);
 yLimlightBase = max([lightBase_pre; lightBase_stm; lightBase_post])*1.1;
 
 %% Track light response
-groupTrackA = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == 1);
+groupTrackA = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == 1) & ~(T.pLR_Track_pre<alpha);
 groupTrackA_in = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == 1) & ~PN;
-groupTrackB = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == -1);
+groupTrackB = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == -1) & ~(T.pLR_Track_pre<alpha);
 groupTrackC = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == 0);
 groupTrackD = total_DRw & ~(T.pLR_Track<alpha) & (T.statDir_Track == 1);
 groupTrackE = total_DRw & ~(T.pLR_Track<alpha) & (T.statDir_Track == -1);
 groupTrackF = total_DRw & ~(T.pLR_Track<alpha) & (T.statDir_Track == 0);
-trackPie = [sum(double(groupTrackA)), sum(double(groupTrackB)), sum(double(total_DRw & ~(T.pLR_Track<alpha)))];
+trackPie = [sum(double(groupTrackA)), sum(double(groupTrackB)), (sum(double(total_DRw))-sum(double(groupTrackA))-sum(double(groupTrackB)))];
 labelsTrack = {'Activated: ';'Inactivated: ';'Unmodulated: '};
 
 lightTrack_pre = T.lightPreSpk(total_DRw & T.pLR_Track<alpha);
@@ -86,13 +86,13 @@ lightTrack_post = T.lightPostSpk(total_DRw & T.pLR_Track<alpha);
 yLimlightTrack = max([lightTrack_pre; lightTrack_stm; lightTrack_post])*1.1;
 
 %% Latency analysis
-latencyBase_Act = T.testLatencyPlfm(groupBaseA);
-latencyBase_ActIN = T.testLatencyPlfm(groupBaseA_in);
+latencyBase_Act = T.latencyPlfm(groupBaseA);
+latencyBase_ActIN = T.latencyPlfm(groupBaseA_in);
 % latencyBase_Inalast = T.ina_lastSpk_tag(groupBaseB);
 % latencyBase_Inafirst = T.ina_firstSpk_tag(groupBaseB);
 
-latencyTrack_Act = T.testLatencyTrack(groupTrackA);
-latencyTrack_ActIN = T.testLatencyPlfm(groupTrackA_in);
+latencyTrack_Act = T.latencyTrack(groupTrackA);
+latencyTrack_ActIN = T.latencyPlfm(groupTrackA_in);
 % latencyTrack_Inalast = T.ina_lastSpk_modu(groupTrackB);
 % latencyTrack_Inafirst = T.ina_firstSpk_modu(groupTrackB);
 

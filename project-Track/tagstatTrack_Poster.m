@@ -142,7 +142,7 @@ for iCell = 1:nCell
             end
             pLR_PlfmT(iWin,1) = pLR_PlfmT;
         end
-        idxPlfm = find(pLR_PlfmT<0.005,1,'first');
+        idxPlfm = find(pLR_PlfmT<0.001,1,'first');
         if isempty(idxPlfm)
             idxPlfm = 1;
         end
@@ -220,7 +220,7 @@ for iCell = 1:nCell
             end
             pLR_TrackT(iWin,1) = pLR_TrackT;
         end
-        idxTrack = find(pLR_TrackT<0.005,1,'first');
+        idxTrack = find(pLR_TrackT<0.001,1,'first');
         if isempty(idxTrack)
             idxTrack = 1;
         end

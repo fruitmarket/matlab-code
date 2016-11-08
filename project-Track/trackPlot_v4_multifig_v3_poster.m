@@ -170,8 +170,7 @@ for iFile = 1:nFile
         for iType = 1:3
             plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
-    end
-    
+    end  
     ylabel('Rate (Hz)','FontSize',fontS);
     uistack(rec,'bottom');
  

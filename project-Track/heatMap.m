@@ -84,7 +84,7 @@ for iCell = 1:nCell
     post_ratemap = flipud(post_ratemap');
     
     peakMap = max(max([pre_ratemap,stm_ratemap,post_ratemap]))*30; % Sampleing frequency: 30Hz
-    peakBase = max(base_ratemap)*30;
+    peakBase = max(max(base_ratemap))*30;
     
     save ([cellName, '.mat'],...
         'pre_ratemap','pre_infos','pre_field_info','pre_flags',...

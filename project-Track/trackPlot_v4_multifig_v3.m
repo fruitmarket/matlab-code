@@ -392,7 +392,8 @@ for iFile = 1:nFile
 
     cd(saveDir)
     
-    print(gcf,'-dtiff','-r300',[cellFigName{1},'.tiff']);
+%     print(gcf,'-dtiff','-r300',[cellFigName{1},'.tiff']);
+    print(gcf,'-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
     close;
 end
 end

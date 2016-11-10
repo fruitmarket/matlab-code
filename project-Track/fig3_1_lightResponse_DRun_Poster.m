@@ -86,8 +86,11 @@ stdLatBaseD = std(T.latencyPlfm(groupBaseD));
 stdLatBaseE = std(T.latencyPlfm(groupBaseE));
 
 % groupBaseF = total_DRun & ~(T.pLR_Plfm<alpha) & (T.statDir_Plfm == 0);
-basePie = [sum(double(groupBaseA)),sum(double(groupBaseA_in)), sum(double(groupBaseB)), sum(double(groupBaseB_in)), sum(double(groupBaseD))];
-labelsBase = {'PN activated: ';'IN activated: ';'PN inactivated: ';'IN inactivated: ';'PN unmodulated: '};
+basePie = [sum(double(groupBaseA)), sum(double(groupBaseB)), sum(double(groupBaseD))];
+labelsBase = {'PN activated: ';'PN inactivated: ';'PN unmodulated: '};
+
+basePie2 = [sum(double(groupBaseA_in)), sum(double(groupBaseB_in))];
+labelsBase2 = {'IN activated: ';'IN inactivated: '};
 
 lightBase_pre = T.lighttagPreSpk(total_DRun & T.pLR_Plfm<alpha);
 lightBase_stm = T.lighttagSpk(total_DRun & T.pLR_Plfm<alpha);
@@ -143,8 +146,11 @@ stdLatTrackB_in = std(T.latencyTrack(groupTrackB));
 stdLatTrackD = std(T.latencyTrack(groupTrackD));
 stdLatTrackE = std(T.latencyTrack(groupTrackE));
 
-trackPie = [sum(double(groupTrackA)),sum(double(groupTrackA_in)), sum(double(groupTrackB)), sum(double(groupTrackB_in)), sum(double(groupTrackD))];
-labelsTrack = {'PN activated: ';'IN activated: ';'PN inactivated: ';'IN inactivated: ';'PN unmodulated: '};
+trackPie = [sum(double(groupTrackA)), sum(double(groupTrackB)), sum(double(groupTrackD))];
+labelsTrack = {'PN activated: ';'PN inactivated: ';'PN unmodulated: '};
+
+trackPie2 = [sum(double(groupTrackA_in)), sum(double(groupTrackB_in))];
+labelsTrack2 = {'IN activated: ';'IN inactivated: '};
 
 lightTrack_pre = T.lightPreSpk(total_DRun & T.pLR_Track<alpha);
 lightTrack_stm = T.lightSpk(total_DRun & T.pLR_Track<alpha);
@@ -165,24 +171,32 @@ latencyTrack_ActIN = T.latencyTrack(groupTrackA_in);
 hBase(1) = axes('Position',axpt(10,4,1:2,1,[0.1 0.1 0.85 0.85],midInterval));
 fBasePie = pie(basePie);
 hBaseText = findobj(fBasePie,'Type','text');
-valueBase = {num2str(basePie(1)); num2str(basePie(2)); num2str(basePie(3)); num2str(basePie(4)); num2str(basePie(5))};
+valueBase = {num2str(basePie(1)); num2str(basePie(2)); num2str(basePie(3))};
 hBaseColor = findobj(fBasePie,'Type','patch');
 set(hBaseText,{'String'},strcat(labelsBase,valueBase ),'FontSize',fontL);
 set(hBaseColor(1),'FaceColor',colorBlue);
-set(hBaseColor(2),'FaceColor',colorRed);
-set(hBaseColor(3),'FaceColor',colorLightBlue);
-set(hBaseColor(4),'FaceColor',colorLightRed);
-set(hBaseColor(5),'FaceColor',colorDarkGray);
+set(hBaseColor(2),'FaceColor',colorLightBlue);
+set(hBaseColor(3),'FaceColor',colorDarkGray);
 
 hBase(2) = axes('Position',axpt(10,4,4:5,1,[0.1 0.1 0.85 0.85],midInterval));
-bar(1:2:31,histc(latencyBase_Act,0:2:30),1,'FaceColor',colorBlue);
-hold on;
-bar(1:2:31,histc(latencyBase_ActIN,0:2:30),1,'FaceColor',colorRed);
-% line([nanmedian(latencyBase_Act), nanmedian(latencyBase_Act)],[0,20],'Color',colorRed,'LineWidth',1.5);
-text(18,18,['Activated neurons (n = ',num2str(sum(histc([latencyBase_Act;latencyBase_ActIN],0:2:30))),')'],'FontSize',fontL);
-% text(18,16,['Latency: ',num2str(nanmedian(latencyBase_Act),3),' ms'],'FontSize',fontL);
-xlabel('Latency (ms)','FontSize',fontL);
-ylabel('Number of cells','FontSize',fontL);
+fBasePie2 = pie(basePie2);
+hBaseText2 = findobj(fBasePie2,'Type','text');
+valueBase2 = {num2str(basePie2(1)); num2str(basePie2(2))};
+hBaseColor2 = findobj(fBasePie2,'Type','patch');
+set(hBaseText2,{'String'},strcat(labelsBase2,valueBase2),'FontSize',fontL);
+set(hBaseColor2(1),'FaceColor',colorRed);
+set(hBaseColor2(2),'FaceColor',colorLightRed);
+
+
+% hBase(2) = axes('Position',axpt(10,4,4:5,1,[0.1 0.1 0.85 0.85],midInterval));
+% bar(1:2:31,histc(latencyBase_Act,0:2:30),1,'FaceColor',colorBlue);
+% hold on;
+% bar(1:2:31,histc(latencyBase_ActIN,0:2:30),1,'FaceColor',colorRed);
+% % line([nanmedian(latencyBase_Act), nanmedian(latencyBase_Act)],[0,20],'Color',colorRed,'LineWidth',1.5);
+% text(18,18,['Activated neurons (n = ',num2str(sum(histc([latencyBase_Act;latencyBase_ActIN],0:2:30))),')'],'FontSize',fontL);
+% % text(18,16,['Latency: ',num2str(nanmedian(latencyBase_Act),3),' ms'],'FontSize',fontL);
+% xlabel('Latency (ms)','FontSize',fontL);
+% ylabel('Number of cells','FontSize',fontL);
 
 % hBase(3) = axes('Position',axpt(5,4,3,1,[0.1 0.1 0.85 0.85],midInterval));
 % bar(1:2:31,histc(latencyBase_Inalast,0:2:30),1,'FaceColor',colorLightGray);
@@ -230,34 +244,42 @@ scatter(lightBase_pre,lightBase_post,markerXL,'filled','o','MarkerEdgeColor','k'
 xlabel('Spike number [Pre] ','fontSize',fontL);
 ylabel('Spike number [Post] ','fontSize',fontL);
 
-set(hBase(2:6),'TickDir','out','FontSize',fontL,'Box','off')
-set(hBase(3),'XLim',[0,4],'YLim',[-10,yLimlightBase],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
-set(hBase(2),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
-set(hBase(4:6),'XLim',[1,yLimlightBase],'YLim',[1,yLimlightBase],'XScale','log','YScale','log');
+% set(hBase(2:6),'TickDir','out','FontSize',fontL,'Box','off')
+% set(hBase(3),'XLim',[0,4],'YLim',[-10,yLimlightBase],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
+% set(hBase(2),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
+% set(hBase(4:6),'XLim',[1,yLimlightBase],'YLim',[1,yLimlightBase],'XScale','log','YScale','log');
 
 %% Figure (Track)
 hTrack(1) = axes('Position',axpt(10,4,1:2,3,[0.1 0.1 0.85 0.85],midInterval));
 fTrackPie = pie(trackPie);
 hTrackText = findobj(fTrackPie,'Type','text');
 % percentValueTrack = get(hTrackText,'String');
-valueTrack = {num2str(trackPie(1)); num2str(trackPie(2)); num2str(trackPie(3)); num2str(trackPie(4)); num2str(trackPie(5))};
+valueTrack = {num2str(trackPie(1)); num2str(trackPie(2)); num2str(trackPie(3))};
 hTrackColor = findobj(fTrackPie,'Type','patch');
 set(hTrackText,{'String'},strcat(labelsTrack,valueTrack ),'FontSize',fontL);
 set(hTrackColor(1),'FaceColor',colorBlue);
-set(hTrackColor(2),'FaceColor',colorRed);
-set(hTrackColor(3),'FaceColor',colorLightBlue);
-set(hTrackColor(4),'FaceColor',colorLightRed);
-set(hTrackColor(5),'FaceColor',colorDarkGray);
+set(hTrackColor(2),'FaceColor',colorLightBlue);
+set(hTrackColor(3),'FaceColor',colorDarkGray);
 
 hTrack(2) = axes('Position',axpt(10,4,4:5,3,[0.1 0.1 0.85 0.85],midInterval));
-bar(1:2:31,histc(latencyTrack_Act,0:2:30),1,'FaceColor',colorBlue);
-hold on;
-bar(1:2:31,histc(latencyTrack_ActIN,0:2:30),1,'FaceColor',colorRed);
-% line([nanmedian(latencyTrack_Act), nanmedian(latencyTrack_Act)],[0,20],'Color',colorRed,'LineWidth',1.5);
-text(18,18,['Activated neurons (n = ',num2str(sum(histc([latencyTrack_Act;latencyTrack_ActIN],0:2:30))),')'],'FontSize',fontL);
-% text(18,16,['Latency: ',num2str(nanmedian(latencyTrack_Act),3),' ms'],'FontSize',fontL);
-xlabel('Latency (ms)','FontSize',fontL);
-ylabel('Number of cells','FontSize',fontL);
+fTrackPie2 = pie(trackPie2);
+hTrackText2 = findobj(fTrackPie2,'Type','text');
+% percentValueTrack = get(hTrackText,'String');
+valueTrack2 = {num2str(trackPie2(1)); num2str(trackPie2(2))};
+hTrackColor2 = findobj(fTrackPie2,'Type','patch');
+set(hTrackText2,{'String'},strcat(labelsTrack2,valueTrack2),'FontSize',fontL);
+set(hTrackColor2(1),'FaceColor',colorRed);
+set(hTrackColor2(2),'FaceColor',colorLightRed);
+
+
+% bar(1:2:31,histc(latencyTrack_Act,0:2:30),1,'FaceColor',colorBlue);
+% hold on;
+% bar(1:2:31,histc(latencyTrack_ActIN,0:2:30),1,'FaceColor',colorRed);
+% % line([nanmedian(latencyTrack_Act), nanmedian(latencyTrack_Act)],[0,20],'Color',colorRed,'LineWidth',1.5);
+% text(18,18,['Activated neurons (n = ',num2str(sum(histc([latencyTrack_Act;latencyTrack_ActIN],0:2:30))),')'],'FontSize',fontL);
+% % text(18,16,['Latency: ',num2str(nanmedian(latencyTrack_Act),3),' ms'],'FontSize',fontL);
+% xlabel('Latency (ms)','FontSize',fontL);
+% ylabel('Number of cells','FontSize',fontL);
 
 % hTrack(3) = axes('Position',axpt(5,4,3,3,[0.1 0.1 0.85 0.85],midInterval));
 % bar(1:2:31,histc(latencyTrack_Inalast,0:2:30),1,'FaceColor',colorLightGray);
@@ -305,9 +327,9 @@ scatter(lightTrack_pre,lightTrack_post,markerXL,'filled','o','MarkerEdgeColor','
 xlabel('Spike number [Pre] ','fontSize',fontL);
 ylabel('Spike number [Post] ','fontSize',fontL);
 
-set(hTrack(2:6),'TickDir','out','FontSize',fontL,'Box','off')
-set(hTrack(3),'XLim',[0,4],'YLim',[-10,yLimlightTrack],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
-set(hTrack(2),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
-set(hTrack(4:6),'XLim',[1,yLimlightTrack],'YLim',[1,yLimlightTrack],'XScale','log','YScale','log');
+% set(hTrack(2:6),'TickDir','out','FontSize',fontL,'Box','off')
+% set(hTrack(3),'XLim',[0,4],'YLim',[-10,yLimlightTrack],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
+% set(hTrack(2),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
+% set(hTrack(4:6),'XLim',[1,yLimlightTrack],'YLim',[1,yLimlightTrack],'XScale','log','YScale','log');
 
 print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRunPoster.ai','-depsc');

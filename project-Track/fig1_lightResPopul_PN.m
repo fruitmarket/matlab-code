@@ -1,5 +1,6 @@
 % clearvars;
-clf; close all;
+clf; 
+% close all;
 
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
 fontS = 4; fontM = 6; fontL = 8; % font size
@@ -32,11 +33,11 @@ colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
 load(['cellList_v3st','.mat']);
-rtDir_sig = 'D:\Dropbox\SNL\P2_Track\v7\v7_DRun_Sig';
-rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\v7\v7_DRun_noSig';
+rtDir_sig = 'D:\Dropbox\SNL\P2_Track\v7\v7_DRw_Sig';
+rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\v7\v7_DRw_noSig';
 alpha = 0.001;
 %%
-total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakMap>1;
+total_DRun = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;
 nTotal_DRun = sum(double(total_DRun));
 
 %% Single cell figure separation

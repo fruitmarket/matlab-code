@@ -8,7 +8,7 @@ winTagBlue = [-25 100]; % unit: msec
 binSizeTagBlue = 2;
 % winTagYel = [-500 2000]; % unit: msec
 % binSizeTagYel = 20;
-
+winCri = 20;
 [tData, tList] = tLoad;
 nCell = length(tList);
 
@@ -32,10 +32,10 @@ for iCell = 1:nCell
     [xptPlfmBlue_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
     [xptPlfmBlue_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
     
-    lightPlfmSpk = sum(0<xptPlfmBlue{1} & xptPlfmBlue{1}<15);
-    lightPlfmSpk5mw = sum(0<xptPlfmBlue_5mw{1} & xptPlfmBlue_5mw{1}<15);
-    lightPlfmSpk8mw = sum(0<xptPlfmBlue_8mw{1} & xptPlfmBlue_8mw{1}<15);
-    lightPlfmSpk10mw = sum(0<xptPlfmBlue_10mw{1} & xptPlfmBlue_10mw{1}<15);
+    lightPlfmSpk = sum(0<xptPlfmBlue{1} & xptPlfmBlue{1}<winCri);
+    lightPlfmSpk5mw = sum(0<xptPlfmBlue_5mw{1} & xptPlfmBlue_5mw{1}<winCri);
+    lightPlfmSpk8mw = sum(0<xptPlfmBlue_8mw{1} & xptPlfmBlue_8mw{1}<winCri);
+    lightPlfmSpk10mw = sum(0<xptPlfmBlue_10mw{1} & xptPlfmBlue_10mw{1}<winCri);
  
 % Track   
     nTrackLight = length(lightTime.Track2hz);
@@ -52,22 +52,22 @@ for iCell = 1:nCell
     if isempty(xptTrackBlue)
         lightTrackSpk = 0;
     else
-        lightTrackSpk = sum(0<xptTrackBlue{1} & xptTrackBlue{1}<15);
+        lightTrackSpk = sum(0<xptTrackBlue{1} & xptTrackBlue{1}<winCri);
     end
     if isempty(xptTrackBlue_5mw)
         lightTrackSpk5mw = 0;
     else
-        lightTrackSpk5mw = sum(0<xptTrackBlue_5mw{1} & xptTrackBlue_5mw{1}<15);
+        lightTrackSpk5mw = sum(0<xptTrackBlue_5mw{1} & xptTrackBlue_5mw{1}<winCri);
     end
     if isempty(xptTrackBlue_8mw)
         lightTrackSpk8mw = 0;
     else
-        lightTrackSpk8mw = sum(0<xptTrackBlue_8mw{1} & xptTrackBlue_8mw{1}<15);
+        lightTrackSpk8mw = sum(0<xptTrackBlue_8mw{1} & xptTrackBlue_8mw{1}<winCri);
     end
     if isempty(xptTrackBlue_10mw)
         lightTrackSpk10mw = 0;
     else
-        lightTrackSpk10mw = sum(0<xptTrackBlue_10mw{1} & xptTrackBlue_10mw{1}<15);
+        lightTrackSpk10mw = sum(0<xptTrackBlue_10mw{1} & xptTrackBlue_10mw{1}<winCri);
     end
     
     save([cellName,'.mat'],'lightPlfmSpk5mw','lightPlfmSpk8mw','lightPlfmSpk10mw','lightTrackSpk5mw','lightTrackSpk8mw','lightTrackSpk10mw','-append');

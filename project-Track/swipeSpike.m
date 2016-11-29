@@ -25,17 +25,17 @@ for iPath = 1:nPath
     cd(filePath{iPath});
     
 %     event2mat_track;
-%     pethSensor;
+    pethSensor;
 %     pethLight;
 %     waveform;
     heatMap;
 %     pearson_field_correlation_baseComp_Track;
 %     tagstatTrack;
 %     tagstatTrack_v3_movWin;
-%       tagstatTrack_Poster;
+      tagstatTrack_Poster; % newest version
 %     mapCorr;
 %     mapCorrEvOd;
-%     trackPlot_v3
+    trackPlot_v3
 %     laserIntCheck;
     close all;
 end

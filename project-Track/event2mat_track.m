@@ -111,15 +111,17 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
             
         case 2      % Baseline - Task recording
             lightTime.Total = timeStamp(strcmp(eventString,'Light'));
-            lightTime.Modu = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2)));
+            lightTime.Track8hz = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2)));
             preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
             stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
             postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
             
         case 3      % Baseline - Task - Tagging recording
             lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
-            lightTime.Modu = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
-            lightTime.Tag = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
+            lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
+            lightTime.Track8hz = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
+            lightTime.PlfmTotal = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
+            lightTime.Plfm2hz = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
             preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
             stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
             postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
@@ -133,7 +135,7 @@ psdlightPost = [];
 
 if(regexp(filePath,'DRw')) % DRw session
     for iLap = 31:60
-        lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);              
+        lightLap = lightTime.Track8hz((sensor10(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor11(iLap))) - sensor10(iLap);              
         temp_psdlightPre = sensor10(iLap-30)+lightLap;
         temp_psdlightPost = sensor10(iLap+30)+lightLap;        
         psdlightPre = [psdlightPre; temp_psdlightPre];
@@ -142,7 +144,7 @@ if(regexp(filePath,'DRw')) % DRw session
     
 elseif(regexp(filePath,'DRun')); % DRun session
     for iLap = 31:60
-        lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap))) - sensor6(iLap);                
+        lightLap = lightTime.Track8hz((sensor6(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor9(iLap))) - sensor6(iLap);                
         temp_psdlightPre = sensor6(iLap-30)+lightLap;
         temp_psdlightPost = sensor6(iLap+30)+lightLap;        
         psdlightPre = [psdlightPre; temp_psdlightPre];
@@ -150,13 +152,13 @@ elseif(regexp(filePath,'DRun')); % DRun session
     end
     
 elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
-    switch ~isempty(lightTime.Modu)
+    switch ~isempty(lightTime.Track8hz)
         case 0
             laserDelay = randn(30,1);
             for iLap = 31:60
                 tempLighttime = sensor10(iLap)+laserDelay(iLap-30)+125*(1:((sensor11(iLap)-sensor10(iLap))/125))';
-                lightTime.Modu = [lightTime.Modu;tempLighttime];
-                lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);                
+                lightTime.Track8hz = [lightTime.Track8hz;tempLighttime];
+                lightLap = lightTime.Track8hz((sensor10(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor11(iLap))) - sensor10(iLap);                
                 temp_psdlightPre = sensor10(iLap-30)+lightLap;
                 temp_psdlightPost = sensor10(iLap+30)+lightLap;        
                 psdlightPre = [psdlightPre; temp_psdlightPre];
@@ -164,7 +166,7 @@ elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
             end
         case 1
             for iLap = 31:60
-                lightLap = lightTime.Modu((sensor10(iLap)<lightTime.Modu & lightTime.Modu<sensor11(iLap))) - sensor10(iLap);                
+                lightLap = lightTime.Track8hz((sensor10(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor11(iLap))) - sensor10(iLap);                
                 temp_psdlightPre = sensor10(iLap-30)+lightLap;
                 temp_psdlightPost = sensor10(iLap+30)+lightLap;        
                 psdlightPre = [psdlightPre; temp_psdlightPre];
@@ -173,13 +175,13 @@ elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
     end
     
 else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
-    switch ~isempty(lightTime.Modu)
+    switch ~isempty(lightTime.Track8hz)
         case 0
             laserDelay = randn(30,1);
             for iLap = 31:60
                 tempLighttime = sensor6(iLap)+laserDelay(iLap-30)+125*(1:((sensor9(iLap)-sensor6(iLap))/125))';
-                lightTime.Modu = [lightTime.Modu; tempLighttime];
-                lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap)))-sensor6(iLap);
+                lightTime.Track8hz = [lightTime.Track8hz; tempLighttime];
+                lightLap = lightTime.Track8hz((sensor6(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor9(iLap)))-sensor6(iLap);
                 temp_psdlightPre = sensor6(iLap-30)+lightLap;
                 temp_psdlightPost = sensor6(iLap+30)+lightLap;
                 psdlightPre = [psdlightPre; temp_psdlightPre];
@@ -187,7 +189,7 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
             end           
         case 1
             for iLap = 31:60
-                lightLap = lightTime.Modu((sensor6(iLap)<lightTime.Modu & lightTime.Modu<sensor9(iLap)))-sensor6(iLap);
+                lightLap = lightTime.Track8hz((sensor6(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor9(iLap)))-sensor6(iLap);
                 temp_psdlightPre = sensor6(iLap-30)+lightLap;
                 temp_psdlightPost = sensor6(iLap+30)+lightLap;
                 psdlightPre = [psdlightPre; temp_psdlightPre];

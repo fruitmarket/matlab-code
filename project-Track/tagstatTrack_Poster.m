@@ -36,95 +36,18 @@ for iCell = 1:nCell
     spkCriPlfm = 15;
     spkCriTrack = 15; % spikes should be more than 15
 
-    spkCriteria_Plfm = spikeWin(spikeData,lightTime.Tag,[-50,50]);
-    spkCriteria_Track = spikeWin(spikeData,lightTime.Modu,[-50,50]);
-    
-    spkLatency_Plfm = spikeWin(spikeData,lightTime.Tag,[0,25]);
-    spkLatency_Track = spikeWin(spikeData,lightTime.Modu,[0,25]);
+    spkCriteria_Plfm = spikeWin(spikeData,lightTime.Plfm2hz,[-50,50]);
+    spkCriteria_Track = spikeWin(spikeData,lightTime.Track8hz,[-50,50]);
+    spkLatency_Plfm = spikeWin(spikeData,lightTime.Plfm2hz,[0,25]);
+    spkLatency_Track = spikeWin(spikeData,lightTime.Track8hz,[0,25]);
     
     [pLR_Plfm2, pLR_Track2, statDir_Plfm, statDir_Track, latencyPlfm2, latencyTrack] = deal(zeros(1,27));
 
-%% For 26 different conditions
-% Log-rank test    
-%     for iRepeat = 1:nRepeat
-%         [timePlfm, censorPlfm] = tagDataLoad(spikeData,lightTime.Tag+calibOnset(iRepeat),calibDuration(iRepeat),baseRangePlfm(iRepeat));
-%         [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Modu+calibOnset(iRepeat),calibDuration(iRepeat),baseRangeTrack(iRepeat));
-% 
-%         if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < spkCriPlfm; % if the # of spikes are less than 1Hz, do not calculate pLR
-%                 temp_pLR_Plfm = 1;
-%         else
-%             [temp_pLR_Plfm,~,~,~] = logRankTest(timePlfm,censorPlfm);
-%             if isempty(temp_pLR_Plfm)
-%                 temp_pLR_Plfm = NaN;
-%             end
-%         end
-%         
-%         if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < spkCriTrack; % if the # of spikes are less than 1Hz, do not calculate
-%              temp_pLR_Track = 1;
-%         else
-%             [temp_pLR_Track,~,~,~] = logRankTest(timeTrack,censorTrack);
-%             if isempty(temp_pLR_Track)
-%                 temp_pLR_Track = NaN;
-%             end
-%         end       
-% % Modulation direction
-%         spkPlfmChETA = spikeWin(spikeData,lightTime.Tag+calibOnset(iRepeat),winDir);
-%         [xptPlfm,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Tag)),winDir,binSize,resolution,1);
-%         if ~iscell(xptPlfm)
-%              xptPlfm = {xptPlfm};
-%         end
-%         if sum(winTest(1)<xptPlfm{1} & xptPlfm{1}<0)*1.1 < sum(0 <= xptPlfm{1} & xptPlfm{1}<winTest(2)) % activation (10%)
-%             temp_statDir_Plfm = 1;
-%         elseif sum(winTest(1)<xptPlfm{1} & xptPlfm{1}<0) > sum(0 <= xptPlfm{1} & xptPlfm{1}<winTest(2))*0.9 % inactivation (10%)
-%             temp_statDir_Plfm = -1;
-%         else % no change
-%             temp_statDir_Plfm = 0;
-%         end
-%         spkTrackChETA = spikeWin(spikeData,lightTime.Modu+calibOnset(iRepeat),winDir);
-%         [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Modu)),winDir,binSize,resolution,1);
-%         if ~iscell(xptTrack)
-%             xptTrack = {xptTrack};
-%         end
-%         if sum(winTest(1)<xptTrack{1} & xptTrack{1}<0)*1.1 < sum(0 <= xptTrack{1} & xptTrack{1}<winTest(2)) % activation
-%             temp_statDir_Track = 1;
-%         elseif sum(winTest(1)<xptTrack{1} & xptTrack{1}<0) > sum(0 <= xptTrack{1} & xptTrack{1}<winTest(2))*0.9 % inactivation
-%             temp_statDir_Track = -1;
-%         else
-%             temp_statDir_Track = 0;
-%         end
-% % Light Latency Calculation
-%         switch (temp_statDir_Plfm)
-%             case 1 % activation
-%                 temp_latencyPlfm = cellfun(@min,spkLatency_Plfm,'UniformOutput',false);
-%                 temp_latencyPlfm = nanmedian(cell2mat(temp_latencyPlfm));
-%             case -1 % inactivation
-%                 temp_latencyPlfm = cellfun(@max,spkLatency_Plfm,'UniformOutput',false);
-%                 temp_latencyPlfm = nanmedian(cell2mat(temp_latencyPlfm));
-%             case 0
-%                 temp_latencyPlfm = 0;
-%         end
-%         switch (temp_statDir_Track)
-%             case 1
-%                 temp_latencyTrack = cellfun(@min,spkLatency_Track,'UniformOut',false);
-%                 temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
-%             case -1
-%                 temp_latencyTrack = cellfun(@max,spkLatency_Track,'UniformOut',false);
-%                 temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
-%             case 0
-%                 temp_latencyTrack = 0;
-%         end
-%         pLR_Plfm2(1,iRepeat) = temp_pLR_Plfm;
-%         pLR_Track2(1,iRepeat) = temp_pLR_Track;
-%         statDir_Plfm2(1,iRepeat) = temp_statDir_Plfm;
-%         statDir_Track2(1,iRepeat) = temp_statDir_Track;
-%         latencyPlfm2(1,iRepeat) = temp_latencyPlfm;
-%         latencyTrack2(1,iRepeat) = temp_latencyTrack;
-%     end
 %% Log-rank test
-%%% Moving win %%%
     movingWin = (0:2:18)';
     [pLR_PlfmT,pLR_TrackT] = deal(zeros(6,1));
     [timeLR_PlfmT,H1_PlfmT,H2_PlfmT,timeLR_TrackT,H1_TrackT,H2_TrackT] = deal(cell(6,1));
+%% pLR_Plfm
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than 10, do not calculate pLR
         pLR_Plfm = 1;
         statDir_Plfm = 0;
@@ -135,7 +58,7 @@ for iCell = 1:nCell
         calibPlfm = movingWin(1);
     else
         for iWin = 1:10
-            [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Tag+movingWin(iWin), 10, 480);
+            [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Plfm2hz+movingWin(iWin), 10, 480);
             [pLR_PlfmT,timeLR_PlfmT{iWin,1},H1_PlfmT{iWin,1},H2_PlfmT{iWin,1}] = logRankTest(timePlfm, censorPlfm); % H1: light induced firing H2: baseline
             if isempty(pLR_PlfmT)
                 pLR_PlfmT = 1;
@@ -153,7 +76,6 @@ for iCell = 1:nCell
             testPlfm(iTest) = all((H1_PlfmT{iTest,:}-H2_PlfmT{iTest,:})>0) | all((H1_PlfmT{iTest,:}-H2_PlfmT{iTest,:})<0);
         end
         idxH_Plfm = idxcom_Plfm(find(testPlfm==1,1,'first'));
-        
 %         H1Start = cellfun(@(x) x(1), H1_PlfmT(idxH1_Plfm,1));
 %         H1End = cellfun(@(x) x(end), H1_PlfmT(idxH1_Plfm,1));
 %         H2Start = cellfun(@(x) x(1), H2_PlfmT(idxH2_Plfm,1));
@@ -176,9 +98,10 @@ for iCell = 1:nCell
             H2_Plfm = H2_PlfmT{idxH_Plfm};
             calibPlfm = movingWin(idxH_Plfm);
         end
-% Modulation direction (for moving window)_Platform
-        spkPlfmChETA = spikeWin(spikeData,lightTime.Tag+movingWin(idxPlfm),winDir);
-        [xptPlfm,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Tag)),winDir,binSize,resolution,1);
+        
+% Modulation direction (Platform)
+        spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm2hz+movingWin(idxPlfm),winDir);
+        [xptPlfm,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm2hz)),winDir,binSize,resolution,1);
         if ~iscell(xptPlfm)
              xptPlfm = {xptPlfm};
         end
@@ -189,7 +112,8 @@ for iCell = 1:nCell
         else % no change
             statDir_Plfm = 0;
         end
-% Latency (Moving win)
+        
+% Latency (Platform) 
         switch (statDir_Plfm)
             case 1 % activation
                 temp_latencyPlfm = cellfun(@min,spkLatency_Plfm,'UniformOutput',false);
@@ -202,7 +126,8 @@ for iCell = 1:nCell
         end
         latencyPlfm = temp_latencyPlfm;
     end
-% pLR_Track (Moving win)
+    
+%% pLR_Track
     if sum(cell2mat(cellfun(@length,spkCriteria_Track,'UniformOutput',false))) < spkCriTrack
         pLR_Track = 1;
         statDir_Track = 0;
@@ -213,7 +138,7 @@ for iCell = 1:nCell
         calibTrack = movingWin(1);
     else
         for iWin = 1:10
-            [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Modu+movingWin(iWin),10,100);
+            [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Track8hz+movingWin(iWin),10,100);
             [pLR_TrackT,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
             if isempty(pLR_TrackT)
                 pLR_TrackT = 1;
@@ -231,7 +156,6 @@ for iCell = 1:nCell
             testTrack(iTest) = all((H1_TrackT{iTest,:}-H2_TrackT{iTest,:})>0) | all((H1_TrackT{iTest,:}-H2_TrackT{iTest,:})<0);
         end
         idxH_Track = idxcom_Track(find(testTrack==1,1,'first'));
-        
 %         H1Start = cellfun(@(x) x(1), H1_TrackT(idxH1_Track,1));
 %         H1End = cellfun(@(x) x(end), H1_TrackT(idxH1_Track,1));
 %         H2Start = cellfun(@(x) x(1), H2_TrackT(idxH2_Track,1));
@@ -254,10 +178,10 @@ for iCell = 1:nCell
             H2_Track = H2_TrackT{idxH_Track};
             calibTrack = movingWin(idxH_Track);
         end
-            
+
 % Modulation direction (for moving window)_Track
-        spkTrackChETA = spikeWin(spikeData,lightTime.Modu+movingWin(idxTrack),winDir);
-        [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Modu)),winDir,binSize,resolution,1);
+        spkTrackChETA = spikeWin(spikeData,lightTime.Track8hz+movingWin(idxTrack),winDir);
+        [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Track8hz)),winDir,binSize,resolution,1);
         if ~iscell(xptTrack)
             xptTrack = {xptTrack};
         end

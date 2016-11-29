@@ -108,15 +108,13 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
 %%
     switch numel(recStart)
         case 1      % Baseline recording only
-            lightTime.Total = timeStamp(strcmp(eventString,'Light'))';           
-            
+            lightTime.Total = timeStamp(strcmp(eventString,'Light'))';                      
         case 2      % Baseline - Task recording
             lightTime.Total = timeStamp(strcmp(eventString,'Light'));
             lightTime.Modu = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2)));
             preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
             stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
-            postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
-            
+            postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec          
         case 3      % Baseline - Task - Tagging recording
             lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
             lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
@@ -130,7 +128,7 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
             lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
             lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
             lightTime.Track2hz = lightTime.TrackTotal((end-599):end); % unit: msec
-            lightTime.Track8hz = lightTime.TrackTotal(1:(end-599)); % unit: msec
+            lightTime.Track8hz = lightTime.TrackTotal(1:(end-600)); % unit: msec
             lightTime.Plfm2hz = lightTime.Total(timeStamp(recStart(3))<lightTime.Total & lightTime.Total<timeStamp(recEnd(3))); % unit: msec
             lightTime.Plfm8hz = lightTime.Total(timeStamp(recStart(4))<lightTime.Total & lightTime.Total<timeStamp(recEnd(4)));
             lightTime.PlfmTotal = [lightTime.Plfm2hz;lightTime.Plfm8hz];
@@ -140,7 +138,7 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
                 stmTime = [sensor.(fields{1})(nTrial/3+1); sensor12(nLightLap)]; % unit: msec
                 postTime = [sensor1(nLightLap+1);sensor12(nTrial)];
             else
-                stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
+                stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
                 postTime = [];
             end
     end
@@ -180,7 +178,7 @@ elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
                 temp_psdlightPre = sensor10(iLap-30)+lightLap;
                 temp_psdlightPost = sensor10(iLap+30)+lightLap;        
                 psdlightPre = [psdlightPre; temp_psdlightPre];
-                psdlightPost = [psdlightPost; temp_psdlightPost];        
+                psdlightPost = [psdlightPost; temp_psdlightPost];
             end
         case 1
             for iLap = 31:60

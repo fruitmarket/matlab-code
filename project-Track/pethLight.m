@@ -17,6 +17,7 @@ binSizeTagBlue = 2;
 winTagYel = [-500 2000]; % unit: msec
 binSizeTagYel = 20;
 
+winCri = 30; % light effect criteria: 30ms
 criteria_multi = 0;
 criteria_add = 0;
 
@@ -37,95 +38,37 @@ for iCell = 1:nCell
     
     % Light - ontrack
     if ~isempty(lightTime.TrackTotal); % ChETA
-        spikeTimeModuBlue = spikeWin(tData{iCell},lightTime.TrackTotal,winTagBlue);
-        [xptModuBlue, yptModuBlue, pethtimeModuBlue, pethModuBlue,pethModuConv,pethModuConvZ] = rasterPETH(spikeTimeModuBlue,true(size(lightTime.TrackTotal)),winTagBlue,binSizeTagBlue,resolution,1);     
-        lightSpk = sum(0<xptModuBlue{1} & xptModuBlue{1}<15);
-        lightPreSpk = sum(-15<xptModuBlue{1} & xptModuBlue{1}<0);
-        lightPostSpk = sum(15<xptModuBlue{1} & xptModuBlue{1}<30);
+        spikeTimeTrack = spikeWin(tData{iCell},lightTime.TrackTotal,winTagBlue);
+        [xptTrackLight, yptTrackLight, pethtimeTrackLight, pethTrackLight,pethTrackLightConv,pethTrackLightConvZ] = rasterPETH(spikeTimeTrack,true(size(lightTime.TrackTotal)),winTagBlue,binSizeTagBlue,resolution,1);     
+        lightSpk = sum(0<xptTrackLight{1} & xptTrackLight{1}<winCri);
+        lightPreSpk = sum(-winCri<xptTrackLight{1} & xptTrackLight{1}<0);
+        lightPostSpk = sum(winCri<xptTrackLight{1} & xptTrackLight{1}<2*winCri);      
         
-        save([cellName,'.mat'],'spikeTimeModuBlue','xptModuBlue','yptModuBlue','pethtimeModuBlue','pethModuBlue','pethModuConv','pethModuConvZ','lightSpk','lightPreSpk','lightPostSpk','-append');
-    
-    else ~isempty(lightTime.Modu) && size(lightTime.Modu,1)<60; % iC++ (inhibition)
-        spikeTimeModuYel = spikeWin(tData{iCell},lightTime.Modu,winTagYel);
-        [xptModuYel, yptModuYel, pethtimeModuYel, pethModuYel,~,~] = rasterPETH(spikeTimeModuYel,true(size(lightTime.TrackTotal)),winTagYel,binSizeTagYel,resolution,1);
-        
-        lightSpk = sum(0<xptModuYel{1} & xptModuYel{1}<1000);
-        lightPreSpk = sum(-500<xptModuYel{1} & xptModuYel{1}<0);
-        lightPostSpk = sum(1000<xptModuYel{1} & xptModuYel{1}<1500);
-        
-        save([cellName,'.mat'],'spikeTimeModuYel','xptModuYel','yptModuYel','pethtimeModuYel','pethModuYel','lightSpk','lightPreSpk','lightPostSpk','-append');
+        save([cellName,'.mat'],'spikeTimeTrackLight','xptTrackLight','yptTrackLight','pethtimeTrackLight','pethTrackLight','pethTrackLightConv','pethTrackLightConvZ','lightSpk','lightPreSpk','lightPostSpk','-append');
     end
     
-%     if lightPreSpk*(criteria_multi/10+10)/10 + criteria_add < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
-%         intraLightDir = 1;
-%     elseif lightPreSpk*(10-criteria_multi/10)/10 - criteria_add > lightSpk % If spikes at light duration less than 10% of spikes during pre = activation
-%         intraLightDir = -1;
-%     else
-%         intraLightDir = 0;
-%     end
-%     save([cellName,'.mat'],'intraLightDir','-append');
-        
-    % Pseudo light 
+    % Pseudo light (On track)
     if exist('psdlightPre','var') && exist('psdlightPost','var')
-        if ~isempty(lightTime.Track8hz) && size(lightTime.Track8hz,1)>60 % ChETA
-            spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTagBlue); % Pseudo light Pre
-            [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
-            spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
-            [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTagBlue,binSizeTagBlue,resolution,1);
-            
-            psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<15);
-            psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<15);
-            save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','psdPreSpk','pethPsdPreConv','pethPsdPreConvZ','xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
-                        
-        else ~isempty(lightTime.Track8hz) && size(lightTime.Track8hz,1)<60; % iC++ (inhibition)
-            spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTagBlue); % Pseudo light Pre
-            [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,~,~] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
-            spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
-            [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,~,~] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTagBlue,binSizeTagBlue,resolution,1);
-            
-            psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<15);
-            psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<15);
-            save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','rsdPreSpk','pethPsdPreConv','pethPsdPreConvZ','xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
-        end
-        if psdPreSpk*(criteria_multi/10+10)/10 + criteria_add < lightSpk % If spikes at light duration more than 10% of spikes during pre = activation
-            interLightDir = 1;
-        elseif psdPreSpk*(10-criteria_multi/10)/10 - criteria_add > lightSpk % If spikes at light duration less than 10% of spikes during pre = inactivation
-            interLightDir = -1;
-        else
-            interLightDir = 0;
-        end
-        save([cellName,'.mat'],'interLightDir','-append');
+        spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTagBlue); % Pseudo light Pre
+        [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTagBlue,binSizeTagBlue,resolution,1);
+        spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTagBlue); % Pseudo light Post
+        [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTagBlue,binSizeTagBlue,resolution,1);
+        psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<15);
+        psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<15);
+        
+        save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','psdPreSpk','pethPsdPreConv','pethPsdPreConvZ','xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
     end
     
-    % Light - tagging
+    % Light (Plfm)
     if ~isempty(lightTime.PlfmTotal); % Activation (ChETA)
-       spikeTimeTagBlue = spikeWin(tData{iCell},lightTime.PlfmTotal,winTagBlue);
-       [xptTagBlue, yptTagBlue, pethtimeTagBlue, pethTagBlue,~,~] = rasterPETH(spikeTimeTagBlue,true(size(lightTime.PlfmTotal)),winTagBlue,binSizeTagBlue,resolution,1);
-              
-       lighttagSpk = sum(0<xptTagBlue{1} & xptTagBlue{1}<15);
-       lighttagPreSpk = sum(-15<xptTagBlue{1} & xptTagBlue{1}<0);
-       lighttagPostSpk = sum(15<xptTagBlue{1} & xptTagBlue{1}<30);
+       spikeTimePlfmLight = spikeWin(tData{iCell},lightTime.PlfmTotal,winTagBlue);
+       [xptPlfmLight, yptPlfmLight, pethtimePlfmLight, pethPlfmLight,~,~] = rasterPETH(spikeTimePlfmLight,true(size(lightTime.PlfmTotal)),winTagBlue,binSizeTagBlue,resolution,1);
+       lightPlfmSpk = sum(0<xptPlfmLight{1} & xptPlfmLight{1}<winCri);
+       lightPlfmPreSpk = sum(-winCri<xptPlfmLight{1} & xptPlfmLight{1}<0);
+       lightPlfmPostSpk = sum(winCri<xptPlfmLight{1} & xptPlfmLight{1}<2*winCri);
        
-       save([cellName,'.mat'],'spikeTimeTagBlue','xptTagBlue','yptTagBlue','pethtimeTagBlue','pethTagBlue','lighttagSpk','lighttagPreSpk','lighttagPostSpk','-append');
-       
-    else ~isempty(lightTime.PlfmTotal) && size(lightTime.TrackTotal,1) < 60; % inhibition (iC++)
-        spikeTimePlfmYel = spikeWin(tData{iCell},lightTime.Tag,winTagYel);
-        [xptTagYel, yptTagYel, pethtimeTagYel, pethTagYel,~,~] = rasterPETH(spikeTimePlfmYel,true(size(lightTime.Tag)),winTagYel,binSizeTagYel,resolution,1);
-        
-       lighttagSpk = sum(0<xptModuYel{1} & xptModuYel{1}<1000);
-       lighttagPreSpk = sum(-500<xptModuYel{1} & xptModuYel{1}<0);
-       lighttagPostSpk = sum(1000<xptModuYel{1} & xptModuYel{1}<1500);
-        
-       save([cellName,'.mat'],'spikeTimeTagYel','xptTagYel','yptTagYel','pethtimeTagYel','pethTagYel','lighttagSpk','lighttagPreSpk','lighttagPostSpk','-append');
+       save([cellName,'.mat'],'spikeTimePlfmLight','xptPlfmLight','yptPlfmLight','pethtimePlfmLight','pethPlfmLight','lightPlfmLight','lightPlfmPreSpk','lightPlfmPostSpk','-append');
     end
-%     if lighttagPreSpk*(criteria_multi/10+10)/10 + criteria_add < lighttagSpk % If spikes at light duration are more than 10% of spikes during pre = activation
-%         tagLightDir = 1;
-%     elseif lighttagPreSpk*(10-criteria_multi/10)/10 - criteria_add > lighttagSpk % If spikes at light duration are less than 10% of spikes during pre = activation
-%         tagLightDir = -1;
-%     else
-%         tagLightDir = 0;
-%     end
-%     save([cellName,'.mat'],'tagLightDir','-append');
 end
 disp('### pethLight is done! ###');
 

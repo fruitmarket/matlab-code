@@ -332,4 +332,4 @@ ylabel('Spike number [Post] ','fontSize',fontL);
 % set(hTrack(2),'XLim',[0,30],'YLim',[0,20],'XTick',[0:4:30]);
 % set(hTrack(4:6),'XLim',[1,yLimlightTrack],'YLim',[1,yLimlightTrack],'XScale','log','YScale','log');
 
-print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRunPoster.ai','-depsc');
+% print(gcf,'-painters','-r300','Fig3_1_lightResponse_DRunPoster.ai','-depsc');

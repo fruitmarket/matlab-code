@@ -107,7 +107,7 @@ groupTrackA_in = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == 1) & ~(T.pL
 groupTrackB = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == -1) & ~(T.pLR_Track_pre<alpha) & PN;
 groupTrackB_in = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == -1) & ~(T.pLR_Track_pre<alpha) & ~PN;
 groupTrackC = total_DRw & T.pLR_Track<alpha & (T.statDir_Track == 0);
-groupTrackD = total_DRw & ~(T.pLR_Track<alpha) | (total_DRw & T.pLR_Track<alpha & T.pLR_Track_pre<alpha);
+groupTrackD = (total_DRw & ~(T.pLR_Track<alpha))&PN | (total_DRw & T.pLR_Track<alpha & T.pLR_Track_pre<alpha)&PN;
 groupTrackE = total_DRw & ~(T.pLR_Track<alpha) & ~PN;
 groupTrackF = total_DRw & ~(T.pLR_Track<alpha) & (T.statDir_Track == 0);
 

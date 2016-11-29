@@ -30,11 +30,11 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
-load(['cellList_v3','.mat']);
+load(['cellList_v3st','.mat']);
 alpha = 0.01;
 
 %% Condition
-total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakMap>1;
+total_DRun = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;
 nTotal_DRun = sum(double(total_DRun));
 PN = T.meanFR_task < 10;
 % total_DRw = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;

@@ -324,16 +324,13 @@ for iFile = 1:nFile
             ylimpeth(iSensor) = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
             hold on;
             for iType = 1:3
-                plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),...
-                'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType})
+                plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle',':','LineWidth',lineM,'Color',lineColor{iType})
             end
             ylabel('Rate (Hz)', 'FontSize', fontS);
             uistack(rec(iSensor),'bottom');
         end      
-        set(hRaster,'Box', 'off', 'TickDir', 'out', 'LineWidth', lineS, 'FontSize', fontS,...
-                'XLim',[-1 1], 'XTick', [], 'YLim', [0, 90], 'YTick', [0:30:90]);
-        set(hPsth, 'Box', 'off', 'TickDir', 'out', 'LineWidth', lineS, 'FontSize', fontS,...
-                'XLim', [-1, 1], 'XTick', [-1:0.2:1]);         
+        set(hRaster,'Box', 'off', 'TickDir', 'out', 'LineWidth', lineS, 'FontSize', fontS,'XLim',[-1 1], 'XTick', [], 'YLim', [0, 90], 'YTick', [0:30:90]);
+        set(hPsth, 'Box', 'off', 'TickDir', 'out', 'LineWidth', lineS, 'FontSize', fontS,'XLim', [-1, 1], 'XTick', [-1:0.2:1]);         
         for iSensor = 1:nSensor
             set(hPsth(iSensor),'YLim',[0 ylimpeth(iSensor)]);
         end

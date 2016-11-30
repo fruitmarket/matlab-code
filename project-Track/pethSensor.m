@@ -39,6 +39,7 @@ for iCell = 1:nCell
     else
         meanFR_post = sum(histc(spikeData,postTime))/(diff(postTime)/1000);
     end
+    
     % Busrst index (Ref: Hyunjung's paper)
     spikeIdx = [taskTime(1)<spikeData & spikeData<taskTime(2)];
     spikeISI = diff(spikeData(spikeIdx));

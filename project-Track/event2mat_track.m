@@ -3,7 +3,7 @@ function event2mat_track %(filename)
 % Purpose: Creating event file
 % Writer: Jun (Modified DK's eventmat.m)
 % First written: 03/31/2015
-% Last modified: 7. 25. 2016
+% Last modified: 12. 3. 2016
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -20,7 +20,10 @@ function event2mat_track %(filename)
     baseTime = timeStamp([recStart(1), recEnd(1)]);
     taskTime = timeStamp([recStart(2), recEnd(2)]);
     if length(recStart) == 3
-        tagTime = timeStamp([recStart(3), recEnd(3)]);
+        plfmTime.twohz = timeStamp([recStart(3), recEnd(3)]);
+    end
+    if length(recStart) == 4
+       plfmTime.eighthz = timeStamp([recStart(4), recEnd(4)]); 
     end
 
 %% Sensor time
@@ -106,22 +109,23 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
 
 %%
     switch numel(recStart)
-        case 1      % Baseline recording only
-            lightTime.Total = timeStamp(strcmp(eventString,'Light'))';           
-            
-        case 2      % Baseline - Task recording
-            lightTime.Total = timeStamp(strcmp(eventString,'Light'));
-            lightTime.Track8hz = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2)));
-            preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
-            stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
-            postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
-            
         case 3      % Baseline - Task - Tagging recording
             lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
             lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
             lightTime.Track8hz = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
             lightTime.PlfmTotal = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
             lightTime.Plfm2hz = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
+            preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
+            stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
+            postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
+        case 4
+            lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
+            lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
+            lightTime.Track2hz = lightTime.TrackTotal((end-599):end); % unit: msec
+            lightTime.Track8hz = lightTime.Total(1:(end-600)); % unit: msec
+            lightTime.Plfm2hz = lightTime.Total(timeStamp(recStart(3))<lightTime.Total & lightTime.Total<timeStamp(recEnd(3))); % unit: msec
+            lightTime.Plfm8hz = lightTime.Total(timeStamp(recStart(4))<lightTime.Total & lightTime.Total<timeStamp(recEnd(4)));
+            lightTime.PlfmTotal = [lightTime.Plfm2hz;lightTime.Plfm8hz]; % unit: msec
             preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
             stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
             postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
@@ -137,7 +141,9 @@ if(regexp(filePath,'DRw')) % DRw session
     for iLap = 31:60
         lightLap = lightTime.Track8hz((sensor10(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor11(iLap))) - sensor10(iLap);              
         temp_psdlightPre = sensor10(iLap-30)+lightLap;
-        temp_psdlightPost = sensor10(iLap+30)+lightLap;        
+        temp_psdlightPre = temp_psdlightPre(temp_psdlightPre<sensor11(iLap-30));
+        temp_psdlightPost = sensor10(iLap+30)+lightLap;
+        temp_psdlightPost = temp_psdlightPost(temp_psdlightPost<sensor11(iLap+30));
         psdlightPre = [psdlightPre; temp_psdlightPre];
         psdlightPost = [psdlightPost; temp_psdlightPost];        
     end
@@ -146,7 +152,9 @@ elseif(regexp(filePath,'DRun')); % DRun session
     for iLap = 31:60
         lightLap = lightTime.Track8hz((sensor6(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor9(iLap))) - sensor6(iLap);                
         temp_psdlightPre = sensor6(iLap-30)+lightLap;
-        temp_psdlightPost = sensor6(iLap+30)+lightLap;        
+        temp_psdlightPre = temp_psdlightPre(temp_psdlightPre<sensor9(iLap-30));
+        temp_psdlightPost = sensor6(iLap+30)+lightLap;
+        temp_psdlightPost = temp_psdlightPost(temp_psdlightPost<sensor9(iLap+30));
         psdlightPre = [psdlightPre; temp_psdlightPre];
         psdlightPost = [psdlightPost; temp_psdlightPost];        
     end
@@ -160,7 +168,9 @@ elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
                 lightTime.Track8hz = [lightTime.Track8hz;tempLighttime];
                 lightLap = lightTime.Track8hz((sensor10(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor11(iLap))) - sensor10(iLap);                
                 temp_psdlightPre = sensor10(iLap-30)+lightLap;
-                temp_psdlightPost = sensor10(iLap+30)+lightLap;        
+                temp_psdlightPre = temp_psdlightPre(temp_psdlightPre<sensor11(iLap-30));
+                temp_psdlightPost = sensor10(iLap+30)+lightLap;
+                temp_psdlightPost = temp_psdlightPost(temp_psdlightPost<sensor11(iLap+30));
                 psdlightPre = [psdlightPre; temp_psdlightPre];
                 psdlightPost = [psdlightPost; temp_psdlightPost];        
             end
@@ -168,7 +178,9 @@ elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
             for iLap = 31:60
                 lightLap = lightTime.Track8hz((sensor10(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor11(iLap))) - sensor10(iLap);                
                 temp_psdlightPre = sensor10(iLap-30)+lightLap;
-                temp_psdlightPost = sensor10(iLap+30)+lightLap;        
+                temp_psdlightPre = temp_psdlightPre(temp_psdlightPre<sensor11(iLap-30));
+                temp_psdlightPost = sensor10(iLap+30)+lightLap; 
+                temp_psdlightPost = temp_psdlightPost(temp_psdlightPost<sensor11(iLap+30));
                 psdlightPre = [psdlightPre; temp_psdlightPre];
                 psdlightPost = [psdlightPost; temp_psdlightPost];        
             end
@@ -183,7 +195,9 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
                 lightTime.Track8hz = [lightTime.Track8hz; tempLighttime];
                 lightLap = lightTime.Track8hz((sensor6(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor9(iLap)))-sensor6(iLap);
                 temp_psdlightPre = sensor6(iLap-30)+lightLap;
+                temp_psdlightPre = temp_psdlightPre(temp_psdlightPre<sensor9(iLap-30));
                 temp_psdlightPost = sensor6(iLap+30)+lightLap;
+                temp_psdlightPost = temp_psdlightPost(temp_psdlightPost<sensor9(iLap+30));
                 psdlightPre = [psdlightPre; temp_psdlightPre];
                 psdlightPost = [psdlightPost; temp_psdlightPost];
             end           
@@ -191,7 +205,9 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
             for iLap = 31:60
                 lightLap = lightTime.Track8hz((sensor6(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor9(iLap)))-sensor6(iLap);
                 temp_psdlightPre = sensor6(iLap-30)+lightLap;
+                temp_psdlightPre = temp_psdlightPre(temp_psdlightPre<sensor9(iLap-30));
                 temp_psdlightPost = sensor6(iLap+30)+lightLap;
+                temp_psdlightPost = temp_psdlightPost(temp_psdlightPost<sensor9(iLap+30));
                 psdlightPre = [psdlightPre; temp_psdlightPre];
                 psdlightPost = [psdlightPost; temp_psdlightPost];
             end
@@ -199,19 +215,7 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
 end
 
 %% Save variables
-    if exist('tagTime','var');
         save('Events.mat',...
-        'baseTime','preTime','stmTime','postTime','taskTime','tagTime',...
-        'sensor','fields',...
-        'nTrial','nSensor','trialIndex',...
-        'psdlightPre','psdlightPost',...
-        'lightTime');
-    else
-        save('Events.mat',...
-        'baseTime','preTime','stmTime','postTime','taskTime',...
-        'sensor','fields',...
-        'nTrial','nSensor','trialIndex',...
-        'psdlightPre','psdlightPost',...
-        'lightTime');
-    end
+        'baseTime','preTime','stmTime','postTime','taskTime','plfmTime',...
+        'sensor','fields','nTrial','nSensor','trialIndex','psdlightPre','psdlightPost','lightTime');
 end

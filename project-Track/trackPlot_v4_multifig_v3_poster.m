@@ -99,8 +99,7 @@ for iFile = 1:nFile
         else
         end
         set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
-        set(hModuBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1), 0, winBlue(2)],'XTickLabel',{winBlue(1);0;num2str(winBlue(2))},...
-            'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
+        set(hModuBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1), 0, winBlue(2)],'XTickLabel',{winBlue(1);0;num2str(winBlue(2))},'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
         ylabel('Rate (Hz)','FontSize',fontL);
         xlabel('Time (ms)','FontSize',fontL);
     % Hazard function    

@@ -10,9 +10,10 @@ function pethLight()
 % Task variables
 binSize = 10; % Unit: msec 
 resolution = 10; % sigma = resoution * binSize = 100 msec
+winTrack = [-25 100];
 
 % Tag variables
-winBlue = [-25 200]; % unit: msec
+winPlfm = [-25 200]; % unit: msec
 binSizeBlue = 2;
 
 winCri = 30; % light effect criteria: 30ms
@@ -36,8 +37,8 @@ for iCell = 1:nCell
     
     % Light - ontrack
     if ~isempty(lightTime.TrackTotal); % ChETA
-        spikeTimeTrackLight = spikeWin(tData{iCell},lightTime.TrackTotal,winBlue);
-        [xptTrackLight, yptTrackLight, pethtimeTrackLight, pethTrackLight,pethTrackLightConv,pethTrackLightConvZ] = rasterPETH(spikeTimeTrackLight,true(size(lightTime.TrackTotal)),winBlue,binSizeBlue,resolution,1);     
+        spikeTimeTrackLight = spikeWin(tData{iCell},lightTime.TrackTotal,winTrack);
+        [xptTrackLight, yptTrackLight, pethtimeTrackLight, pethTrackLight,pethTrackLightConv,pethTrackLightConvZ] = rasterPETH(spikeTimeTrackLight,true(size(lightTime.TrackTotal)),winTrack,binSizeBlue,resolution,1);     
         lightSpk = sum(0<xptTrackLight{1} & xptTrackLight{1}<winCri);
         lightPreSpk = sum(-winCri<xptTrackLight{1} & xptTrackLight{1}<0);
         lightPostSpk = sum(winCri<xptTrackLight{1} & xptTrackLight{1}<2*winCri);      
@@ -47,10 +48,10 @@ for iCell = 1:nCell
     
     % Pseudo light (On track)
     if exist('psdlightPre','var') && exist('psdlightPost','var')
-        spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winBlue); % Pseudo light Pre
-        [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winBlue,binSizeBlue,resolution,1);
-        spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winBlue); % Pseudo light Post
-        [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winBlue,binSizeBlue,resolution,1);
+        spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTrack); % Pseudo light Pre
+        [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTrack,binSizeBlue,resolution,1);
+        spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTrack); % Pseudo light Post
+        [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTrack,binSizeBlue,resolution,1);
         psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<winCri);
         psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<winCri);
         
@@ -59,8 +60,8 @@ for iCell = 1:nCell
     
     % Light (Plfm)
     if isfield(lightTime,'Plfm2hz') % Activation (ChETA)
-       spikeTimePlfm2hz = spikeWin(tData{iCell},lightTime.Plfm2hz,winBlue);
-       [xptPlfm2hz, yptPlfm2hz, pethtimePlfm2hz, pethPlfm2hz,~,~] = rasterPETH(spikeTimePlfm2hz,true(size(lightTime.Plfm2hz)),winBlue,binSizeBlue,resolution,1);
+       spikeTimePlfm2hz = spikeWin(tData{iCell},lightTime.Plfm2hz,winPlfm);
+       [xptPlfm2hz, yptPlfm2hz, pethtimePlfm2hz, pethPlfm2hz,~,~] = rasterPETH(spikeTimePlfm2hz,true(size(lightTime.Plfm2hz)),winPlfm,binSizeBlue,resolution,1);
        lightSpkPlfm2hz = sum(0<xptPlfm2hz{1} & xptPlfm2hz{1}<winCri);
        lightSpkPlfm2hz_pre = sum(-winCri<xptPlfm2hz{1} & xptPlfm2hz{1}<0);
        lightSpkPlfm2hz_post = sum(winCri<xptPlfm2hz{1} & xptPlfm2hz{1}<2*winCri);
@@ -69,8 +70,8 @@ for iCell = 1:nCell
     end
     
     if isfield(lightTime,'Plfm8hz')
-        spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winBlue);
-        [xptPlfm8hz, yptPlfm8hz, pethtimePlfm8hz, pethPlfm8hz,~,~] = rasterPETH(spikeTimePlfm8hz,true(size(lightTime.Plfm8hz)),winBlue,binSizeBlue,resolution,1);
+        spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winPlfm);
+        [xptPlfm8hz, yptPlfm8hz, pethtimePlfm8hz, pethPlfm8hz,~,~] = rasterPETH(spikeTimePlfm8hz,true(size(lightTime.Plfm8hz)),winPlfm,binSizeBlue,resolution,1);
         lightSpkPlfm8hz = sum(0<xptPlfm8hz{1} & xptPlfm8hz{1}<winCri);
         lightSpkPlfm8hz_pre = sum(-winCri<xptPlfm8hz{1} & xptPlfm8hz{1}<0);
         lightSpkPlfm8hz_post = sum(winCri<xptPlfm8hz{1} & xptPlfm8hz{1}<2*winCri);

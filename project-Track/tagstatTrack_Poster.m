@@ -14,8 +14,13 @@ nRepeat = length(calibOnset);
 baseRangePlfm = [485*ones(1,11),480*ones(1,9),475*ones(1,6)]';
 baseRangeTrack = [100*ones(1,11),95*ones(1,9),90*ones(1,6)]';
 
+testRange8hz = 10;
+testRange2hz = 10;
+
+baseRange8hz = 100;
+baseRange2hz = 480;
+
 % Modulation direction
-winDir = [-20, 20];
 resolution = 10;
 binSize = 2;
 winTest = [-30, 30];
@@ -58,7 +63,7 @@ for iCell = 1:nCell
         [statDir_Plfm2hz, latencyPlfm2hz, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(0);
     else
         for iWin = 1:10
-            [timePlfm2hz, censorPlfm2hz] = tagDataLoad(spikeData, lightTime.Plfm2hz+movingWin(iWin), 10, 480);
+            [timePlfm2hz, censorPlfm2hz] = tagDataLoad(spikeData, lightTime.Plfm2hz+movingWin(iWin), testRange2hz, baseRange2hz);
             [pLR_Plfm2hzT,timeLR_Plfm2hzT{iWin,1},H1_Plfm2hzT{iWin,1},H2_Plfm2hzT{iWin,1}] = logRankTest(timePlfm2hz, censorPlfm2hz); % H1: light induced firing H2: baseline
             if isempty(pLR_Plfm2hzT)
                 pLR_Plfm2hzT = 1;
@@ -100,8 +105,8 @@ for iCell = 1:nCell
         end
         
 % Modulation direction (Platform)
-        spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm2hz+movingWin(idxPlfm2hz),winDir);
-        [xptPlfm2hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm2hz)),winDir,binSize,resolution,1);
+        spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm2hz+movingWin(idxPlfm2hz),winTest);
+        [xptPlfm2hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm2hz)),winTest,binSize,resolution,1);
         if ~iscell(xptPlfm2hz)
              xptPlfm2hz = {xptPlfm2hz};
         end
@@ -134,7 +139,7 @@ for iCell = 1:nCell
             [statDir_Plfm8hz, latencyPlfm8hz, timeLR_Plfm8hz, H1_Plfm8hz, H2_Plfm8hz, calibPlfm8hz] = deal(0);
         else
             for iWin = 1:10
-                [timePlfm8hz, censorPlfm8hz] = tagDataLoad(spikeData, lightTime.Plfm8hz+movingWin(iWin), 10, 480);
+                [timePlfm8hz, censorPlfm8hz] = tagDataLoad(spikeData, lightTime.Plfm8hz+movingWin(iWin), testRange8hz, baseRange8hz);
                 [pLR_Plfm8hzT,timeLR_Plfm8hzT{iWin,1},H1_Plfm8hzT{iWin,1},H2_Plfm8hzT{iWin,1}] = logRankTest(timePlfm8hz, censorPlfm8hz); % H1: light induced firing H2: baseline
                 if isempty(pLR_Plfm8hzT)
                     pLR_Plfm8hzT = 1;
@@ -171,8 +176,8 @@ for iCell = 1:nCell
             end
 
     % Modulation direction (Platform)
-            spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm8hz+movingWin(idxPlfm8hz),winDir);
-            [xptPlfm8hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm8hz)),winDir,binSize,resolution,1);
+            spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm8hz+movingWin(idxPlfm8hz),winTest);
+            [xptPlfm8hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm8hz)),winTest,binSize,resolution,1);
             if ~iscell(xptPlfm8hz)
                  xptPlfm8hz = {xptPlfm8hz};
             end
@@ -207,7 +212,7 @@ for iCell = 1:nCell
 
     else
         for iWin = 1:10
-            [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Track8hz+movingWin(iWin),10,100);
+            [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Track8hz+movingWin(iWin),testRange8hz,baseRange8hz);
             [pLR_TrackT,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
             if isempty(pLR_TrackT)
                 pLR_TrackT = 1;
@@ -249,8 +254,8 @@ for iCell = 1:nCell
         end
 
 % Modulation direction (for moving window)_Track
-        spkTrackChETA = spikeWin(spikeData,lightTime.Track8hz+movingWin(idxTrack),winDir);
-        [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Track8hz)),winDir,binSize,resolution,1);
+        spkTrackChETA = spikeWin(spikeData,lightTime.Track8hz+movingWin(idxTrack),winTest);
+        [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Track8hz)),winTest,binSize,resolution,1);
         if ~iscell(xptTrack)
             xptTrack = {xptTrack};
         end

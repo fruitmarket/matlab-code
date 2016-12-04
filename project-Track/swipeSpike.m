@@ -1,21 +1,33 @@
 %% Directory setup
 rtPath = 'D:\Dropbox\SNL\P2_Track';
-startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp8';'D:\Projects\Track_151213-2_Rbp14';'D:\Projects\Track_160221-1_Rbp16','D:\Projects\Track_160417-2_Rbp34_Modi','D:\Projects\Track_160422-14_Rbp36_Modi'};
+startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp8';'D:\Projects\Track_151213-2_Rbp14';'D:\Projects\Track_160221-1_Rbp16';'D:\Projects\Track_160417-2_Rbp34_Ori';'D:\Projects\Track_160422-14_Rbp36_Ori'};
 
 matFile = [];
+tFile = [];
 nDir = size(startingDir,1);
 for iDir = 1:nDir
+%% Mat file
     tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-    matFile = [matFile; tempmatFile];    
+    matFile = [matFile; tempmatFile];
+%% t-file
+%       temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+%       tFile = [tFile;temptFile];
+%% Event file
 %     tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
 %     matFile = [matFile;tempEventFile];
 end
-nFile = length(matFile);
 
+nFile = length(matFile);
 for ifile = 1:nFile
     [cellpath, ~, ~] = fileparts(matFile{ifile});
     filePath{ifile,1} = cellpath;
 end
+
+% nFile = length(tFile);
+% for ifile = 1:nFile
+%     [cellpath, ~, ~] = fileparts(tFile{ifile});
+%     filePath{ifile,1} = cellpath;
+% end
 
 filePath = unique(filePath);
 nPath = length(filePath);
@@ -24,19 +36,18 @@ nPath = length(filePath);
 for iPath = 1:nPath
     cd(filePath{iPath});
     
-    event2mat_track;
-    pethSensor;
+%     event2mat_track;
+%     pethSensor;
     pethLight;
-    waveform;
-    heatMap;
+%     waveform;
+%     heatMap;
 %     pearson_field_correlation_baseComp_Track;
-%     tagstatTrack;
-%     tagstatTrack_v3_movWin;
-      tagstatTrack_Poster; % newest version
+%       tagstatTrack_Poster; % newest version
 %     mapCorr;
 %     mapCorrEvOd;
 %     trackPlot_v3
-%     laserIntCheck;
+%     laserIntCheck_Ori;
+    fclose('all');
     close all;
 end
 

@@ -25,12 +25,15 @@ lightInput = lightWin*2*10^3;
 
 load('Events.mat');
 [timestamp, sample, cscList] = cscLoad;
-nFile = length(cscList);
+% nFile = length(cscList);
+nFile = 1;
 
 for iFile = 1:nFile
-    disp(['### Analysing Relative power of ',cscList{iFile}]);
-    [filePath, fileName,~] = fileparts(cscList{iFile});
-    channelSample = sample{iFile};
+    disp(['### Analysing Relative Power of ',cscList{iFile}]);
+    [filePath, ~, ~] = fileparts(cscList{iFile});
+    fileName = 'CSC';
+%     channelSample = sample{iFile}; % calculate EEG from each tetrode
+    channelSample = sample;
 
     if ~isempty(strfind(filePath,'DRun')) | ~isempty(strfind(filePath,'noRun'))
         iSensor = 6;
@@ -38,7 +41,7 @@ for iFile = 1:nFile
         iSensor = 10;
     end
 
-% Spectrum aligned on sensor
+%% Spectrum aligned on sensor
     idxSensor = zeros(nTrial,1);
     sampleSensor = zeros((sum(abs(sensorInput))+1),nTrial);
     for iTrial = 1:nTrial
@@ -76,83 +79,125 @@ for iFile = 1:nFile
         'rPwSensorLGamma_pre','rPwSensorLGamma_stm','rPwSensorLGamma_post',...
         'rPwSensorHGamma_pre','rPwSensorHGamma_stm','rPwSensorHGamma_post','-append')
     
-% Spectrum aligned on Platform light
-    nLightPlfm = length(lightTime.Plfm2hz);
-    idxLightPlfm = zeros(nLightPlfm,1);
-    sampleLightPlfm = zeros((sum(abs(lightInput))+1),nLightPlfm);
-    for iLight = 1:nLightPlfm
-        idxLightPlfm(iLight,1) = find(lightTime.Plfm2hz(iLight)<timestamp,1,'first');
-        sampleLightPlfm(:,iLight) = channelSample((idxLightPlfm(iLight,1)+lightInput(1)):(idxLightPlfm(iLight,1)+lightInput(2)));
+%% Spectrum aligned on Platform light (2hz)
+    nLightPlfm2hz = length(lightTime.Plfm2hz);
+    idxLightPlfm2hz = zeros(nLightPlfm2hz,1);
+    sampleLightPlfm2hz = zeros((sum(abs(lightInput))+1),nLightPlfm2hz);
+    for iLight = 1:nLightPlfm2hz
+        idxLightPlfm2hz(iLight,1) = find(lightTime.Plfm2hz(iLight)<timestamp,1,'first');
+        sampleLightPlfm2hz(:,iLight) = channelSample((idxLightPlfm2hz(iLight,1)+lightInput(1)):(idxLightPlfm2hz(iLight,1)+lightInput(2)));
     end
-    [pwLightPlfm_pre,freqLightPlfm_pre,~] = mtspectrumc(sampleLightPlfm(1:round(size(sampleLightPlfm,1)/2),:),params);
-    [pwLightPlfm_post,freqLightPlfm_post,~] = mtspectrumc(sampleLightPlfm(round(size(sampleLightPlfm,1)/2):end,:),params);
+    [pwLightPlfm2hz_pre,freqLightPlfm2hz_pre,~] = mtspectrumc(sampleLightPlfm2hz(1:round(size(sampleLightPlfm2hz,1)/2),:),params);
+    [pwLightPlfm2hz_post,freqLightPlfm2hz_post,~] = mtspectrumc(sampleLightPlfm2hz(round(size(sampleLightPlfm2hz,1)/2):end,:),params);
     
-    freqLightPlfm_pre = freqLightPlfm_pre*1000;
-    freqLightPlfm_post = freqLightPlfm_post*1000;
+    freqLightPlfm2hz_pre = freqLightPlfm2hz_pre*1000;
+    freqLightPlfm2hz_post = freqLightPlfm2hz_post*1000;
     
-    rangeLightPlfmTheta_pre = [find(freqLightPlfm_pre>4,1,'first'):find(freqLightPlfm_pre>12,1,'first')-1];
-    rangeLightPlfmLGamma_pre = [find(freqLightPlfm_pre>30,1,'first'):find(freqLightPlfm_pre>50,1,'first')-1];
-    rangeLightPlfmHGamma_pre = [find(freqLightPlfm_pre>55,1,'first'):find(freqLightPlfm_pre>85,1,'first')-1];
+    rangeLightPlfmTheta2hz_pre = [find(freqLightPlfm2hz_pre>4,1,'first'):find(freqLightPlfm2hz_pre>12,1,'first')-1];
+    rangeLightPlfmLGamma2hz_pre = [find(freqLightPlfm2hz_pre>30,1,'first'):find(freqLightPlfm2hz_pre>50,1,'first')-1];
+    rangeLightPlfmHGamma2hz_pre = [find(freqLightPlfm2hz_pre>55,1,'first'):find(freqLightPlfm2hz_pre>85,1,'first')-1];
     
-    rangeLightPlfmTheta_post = [find(freqLightPlfm_post>4,1,'first'):find(freqLightPlfm_post>12,1,'first')-1];
-    rangeLightPlfmLGamma_post = [find(freqLightPlfm_post>30,1,'first'):find(freqLightPlfm_post>50,1,'first')-1];
-    rangeLightPlfmHGamma_post = [find(freqLightPlfm_post>55,1,'first'):find(freqLightPlfm_post>85,1,'first')-1];
+    rangeLightPlfmTheta2hz_post = [find(freqLightPlfm2hz_post>4,1,'first'):find(freqLightPlfm2hz_post>12,1,'first')-1];
+    rangeLightPlfmLGamma2hz_post = [find(freqLightPlfm2hz_post>30,1,'first'):find(freqLightPlfm2hz_post>50,1,'first')-1];
+    rangeLightPlfmHGamma2hz_post = [find(freqLightPlfm2hz_post>55,1,'first'):find(freqLightPlfm2hz_post>85,1,'first')-1];
     
-    totalAreaPlfm_pre = trapz(freqLightPlfm_pre(1:length(freqLightPlfm_pre)/2),pwLightPlfm_pre(1:length(freqLightPlfm_pre)/2));
-    totalAreaPlfm_post = trapz(freqLightPlfm_post(1:length(freqLightPlfm_post)/2),pwLightPlfm_post(1:length(freqLightPlfm_post)/2));
+    totalAreaPlfm2hz_pre = trapz(freqLightPlfm2hz_pre(1:length(freqLightPlfm2hz_pre)/2),pwLightPlfm2hz_pre(1:length(freqLightPlfm2hz_pre)/2));
+    totalAreaPlfm2hz_post = trapz(freqLightPlfm2hz_post(1:length(freqLightPlfm2hz_post)/2),pwLightPlfm2hz_post(1:length(freqLightPlfm2hz_post)/2));
     
-    rPwLightPlfmTheta_pre = trapz(freqLightPlfm_pre(rangeLightPlfmTheta_pre),pwLightPlfm_pre(rangeLightPlfmTheta_pre))/totalAreaPlfm_pre;
-    rPwLightPlfmLGamma_pre = trapz(freqLightPlfm_pre(rangeLightPlfmLGamma_pre),pwLightPlfm_pre(rangeLightPlfmLGamma_pre))/totalAreaPlfm_pre;
-    rPwLightPlfmHGamma_pre = trapz(freqLightPlfm_pre(rangeLightPlfmHGamma_pre),pwLightPlfm_pre(rangeLightPlfmHGamma_pre))/totalAreaPlfm_pre;
+    rPwLightPlfmTheta2hz_pre = trapz(freqLightPlfm2hz_pre(rangeLightPlfmTheta2hz_pre),pwLightPlfm2hz_pre(rangeLightPlfmTheta2hz_pre))/totalAreaPlfm2hz_pre;
+    rPwLightPlfmLGamma2hz_pre = trapz(freqLightPlfm2hz_pre(rangeLightPlfmLGamma2hz_pre),pwLightPlfm2hz_pre(rangeLightPlfmLGamma2hz_pre))/totalAreaPlfm2hz_pre;
+    rPwLightPlfmHGamma2hz_pre = trapz(freqLightPlfm2hz_pre(rangeLightPlfmHGamma2hz_pre),pwLightPlfm2hz_pre(rangeLightPlfmHGamma2hz_pre))/totalAreaPlfm2hz_pre;
     
-    rPwLightPlfmTheta_post = trapz(freqLightPlfm_post(rangeLightPlfmTheta_post),pwLightPlfm_post(rangeLightPlfmTheta_post))/totalAreaPlfm_post;
-    rPwLightPlfmLGamma_post = trapz(freqLightPlfm_post(rangeLightPlfmLGamma_post),pwLightPlfm_post(rangeLightPlfmLGamma_post))/totalAreaPlfm_post;
-    rPwLightPlfmHGamma_post = trapz(freqLightPlfm_post(rangeLightPlfmHGamma_post),pwLightPlfm_post(rangeLightPlfmHGamma_post))/totalAreaPlfm_post;
+    rPwLightPlfmTheta2hz_post = trapz(freqLightPlfm2hz_post(rangeLightPlfmTheta2hz_post),pwLightPlfm2hz_post(rangeLightPlfmTheta2hz_post))/totalAreaPlfm2hz_post;
+    rPwLightPlfmLGamma2hz_post = trapz(freqLightPlfm2hz_post(rangeLightPlfmLGamma2hz_post),pwLightPlfm2hz_post(rangeLightPlfmLGamma2hz_post))/totalAreaPlfm2hz_post;
+    rPwLightPlfmHGamma2hz_post = trapz(freqLightPlfm2hz_post(rangeLightPlfmHGamma2hz_post),pwLightPlfm2hz_post(rangeLightPlfmHGamma2hz_post))/totalAreaPlfm2hz_post;
 
     save([fileName,'.mat'],...
-        'rPwLightPlfmTheta_pre','rPwLightPlfmTheta_post',...
-        'rPwLightPlfmLGamma_pre','rPwLightPlfmLGamma_post',...
-        'rPwLightPlfmHGamma_pre','rPwLightPlfmHGamma_post','-append')
+        'rPwLightPlfmTheta2hz_pre','rPwLightPlfmTheta2hz_post',...
+        'rPwLightPlfmLGamma2hz_pre','rPwLightPlfmLGamma2hz_post',...
+        'rPwLightPlfmHGamma2hz_pre','rPwLightPlfmHGamma2hz_post','-append')
+    
+%% Spectrum aligned on Platform light (8hz)
+if ~isempty(lightTime.Plfm8hz)
+    nLightPlfm8hz = length(lightTime.Plfm8hz);
+    idxLightPlfm8hz = zeros(nLightPlfm8hz,1);
+    sampleLightPlfm8hz = zeros((sum(abs(lightInput))+1),nLightPlfm8hz);
+    for iLight = 1:nLightPlfm8hz
+        idxLightPlfm8hz(iLight,1) = find(lightTime.Plfm8hz(iLight)<timestamp,1,'first');
+        sampleLightPlfm8hz(:,iLight) = channelSample((idxLightPlfm8hz(iLight,1)+lightInput(1)):(idxLightPlfm8hz(iLight,1)+lightInput(2)));
+    end
+    [pwLightPlfm8hz_pre,freqLightPlfm8hz_pre,~] = mtspectrumc(sampleLightPlfm8hz(1:round(size(sampleLightPlfm8hz,1)/2),:),params);
+    [pwLightPlfm8hz_post,freqLightPlfm8hz_post,~] = mtspectrumc(sampleLightPlfm8hz(round(size(sampleLightPlfm8hz,1)/2):end,:),params);
+    
+    freqLightPlfm8hz_pre = freqLightPlfm8hz_pre*1000;
+    freqLightPlfm8hz_post = freqLightPlfm8hz_post*1000;
+    
+    rangeLightPlfmTheta8hz_pre = [find(freqLightPlfm8hz_pre>4,1,'first'):find(freqLightPlfm8hz_pre>12,1,'first')-1];
+    rangeLightPlfmLGamma8hz_pre = [find(freqLightPlfm8hz_pre>30,1,'first'):find(freqLightPlfm8hz_pre>50,1,'first')-1];
+    rangeLightPlfmHGamma8hz_pre = [find(freqLightPlfm8hz_pre>55,1,'first'):find(freqLightPlfm8hz_pre>85,1,'first')-1];
+    
+    rangeLightPlfmTheta8hz_post = [find(freqLightPlfm8hz_post>4,1,'first'):find(freqLightPlfm8hz_post>12,1,'first')-1];
+    rangeLightPlfmLGamma8hz_post = [find(freqLightPlfm8hz_post>30,1,'first'):find(freqLightPlfm8hz_post>50,1,'first')-1];
+    rangeLightPlfmHGamma8hz_post = [find(freqLightPlfm8hz_post>55,1,'first'):find(freqLightPlfm8hz_post>85,1,'first')-1];
+    
+    totalAreaPlfm8hz_pre = trapz(freqLightPlfm8hz_pre(1:length(freqLightPlfm8hz_pre)/2),pwLightPlfm8hz_pre(1:length(freqLightPlfm8hz_pre)/2));
+    totalAreaPlfm8hz_post = trapz(freqLightPlfm8hz_post(1:length(freqLightPlfm8hz_post)/2),pwLightPlfm8hz_post(1:length(freqLightPlfm8hz_post)/2));
+    
+    rPwLightPlfmTheta8hz_pre = trapz(freqLightPlfm8hz_pre(rangeLightPlfmTheta8hz_pre),pwLightPlfm8hz_pre(rangeLightPlfmTheta8hz_pre))/totalAreaPlfm8hz_pre;
+    rPwLightPlfmLGamma8hz_pre = trapz(freqLightPlfm8hz_pre(rangeLightPlfmLGamma8hz_pre),pwLightPlfm8hz_pre(rangeLightPlfmLGamma8hz_pre))/totalAreaPlfm8hz_pre;
+    rPwLightPlfmHGamma8hz_pre = trapz(freqLightPlfm8hz_pre(rangeLightPlfmHGamma8hz_pre),pwLightPlfm8hz_pre(rangeLightPlfmHGamma8hz_pre))/totalAreaPlfm8hz_pre;
+    
+    rPwLightPlfmTheta8hz_post = trapz(freqLightPlfm8hz_post(rangeLightPlfmTheta8hz_post),pwLightPlfm8hz_post(rangeLightPlfmTheta8hz_post))/totalAreaPlfm8hz_post;
+    rPwLightPlfmLGamma8hz_post = trapz(freqLightPlfm8hz_post(rangeLightPlfmLGamma8hz_post),pwLightPlfm8hz_post(rangeLightPlfmLGamma8hz_post))/totalAreaPlfm8hz_post;
+    rPwLightPlfmHGamma8hz_post = trapz(freqLightPlfm8hz_post(rangeLightPlfmHGamma8hz_post),pwLightPlfm8hz_post(rangeLightPlfmHGamma8hz_post))/totalAreaPlfm8hz_post;
 
-% Spectrum aligned on Track light (aligned by the first light of each trial)
+    save([fileName,'.mat'],...
+        'rPwLightPlfmTheta8hz_pre','rPwLightPlfmTheta8hz_post',...
+        'rPwLightPlfmLGamma8hz_pre','rPwLightPlfmLGamma8hz_post',...
+        'rPwLightPlfmHGamma8hz_pre','rPwLightPlfmHGamma8hz_post','-append')
+end
+%% Spectrum aligned on Track light (aligned by the first light of each trial)
 if isempty(lightTime.Track2hz) 
-    nLightTrack = nTrial/3;
-    lightTimeTrack = lightTime.Modu([true;(find(diff(lightTime.Modu)>250)+1)]); % 250ms: sometimes the light ITI is not exactly 125ms.
-    idxLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
-    sampleLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
-    for iLight = 1:nLightTrack
-        idxLightTrack(iLight,1) = find(lightTimeTrack(iLight)<timestamp,1,'first');
-        sampleLightTrack(:,iLight) = channelSample((idxLightTrack(iLight,1)+lightInput(1)):(idxLightTrack(iLight,1)+lightInput(2)));
+    nLightTrack8hz = nTrial/3; % laser stimulation: 30 trials
+else
+    nLightTrack8hz = 20; % laser stimulation: 20 trials
+end
+    lightTimeTrack8hz = lightTime.Track8hz([true;(find(diff(lightTime.Track8hz)>250)+1)]); % 250ms: sometimes the light ITI is not exactly 125ms.
+    idxLightTrack8hz = zeros((sum(abs(lightInput))+1),nLightTrack8hz);
+    sampleLightTrack8hz = zeros((sum(abs(lightInput))+1),nLightTrack8hz);
+    for iLight = 1:nLightTrack8hz
+        idxLightTrack8hz(iLight,1) = find(lightTimeTrack8hz(iLight)<timestamp,1,'first');
+        sampleLightTrack8hz(:,iLight) = channelSample((idxLightTrack8hz(iLight,1)+lightInput(1)):(idxLightTrack8hz(iLight,1)+lightInput(2)));
     end
-    [pwLightTrack_pre,freqLightTrack_pre,~] = mtspectrumc(sampleLightTrack(1:round(size(sampleLightTrack,1)/2),:),params);
-    [pwLightTrack_post,freqLightTrack_post,~] = mtspectrumc(sampleLightTrack(round(size(sampleLightTrack,1)/2):end,:),params);
+    [pwLightTrack8hz_pre,freqLightTrack8hz_pre,~] = mtspectrumc(sampleLightTrack8hz(1:round(size(sampleLightTrack8hz,1)/2),:),params);
+    [pwLightTrack8hz_post,freqLightTrack8hz_post,~] = mtspectrumc(sampleLightTrack8hz(round(size(sampleLightTrack8hz,1)/2):end,:),params);
     
-    freqLightTrack_pre = freqLightTrack_pre*1000;
-    freqLightTrack_post = freqLightTrack_post*1000;
+    freqLightTrack8hz_pre = freqLightTrack8hz_pre*1000;
+    freqLightTrack8hz_post = freqLightTrack8hz_post*1000;
     
-    rangeLightTrackTheta_pre = [find(freqLightTrack_pre>4,1,'first'):find(freqLightTrack_pre>12,1,'first')-1];
-    rangeLightTrackLGamma_pre = [find(freqLightTrack_pre>30,1,'first'):find(freqLightTrack_pre>50,1,'first')-1];
-    rangeLightTrackHGamma_pre = [find(freqLightTrack_pre>55,1,'first'):find(freqLightTrack_pre>85,1,'first')-1];
+    rangeLightTrackTheta8hz_pre = [find(freqLightTrack8hz_pre>4,1,'first'):find(freqLightTrack8hz_pre>12,1,'first')-1];
+    rangeLightTrackLGamma8hz_pre = [find(freqLightTrack8hz_pre>30,1,'first'):find(freqLightTrack8hz_pre>50,1,'first')-1];
+    rangeLightTrackHGamma8hz_pre = [find(freqLightTrack8hz_pre>55,1,'first'):find(freqLightTrack8hz_pre>85,1,'first')-1];
     
-    rangeLightTrackTheta_post = [find(freqLightTrack_post>4,1,'first'):find(freqLightTrack_post>12,1,'first')-1];
-    rangeLightTrackLGamma_post = [find(freqLightTrack_post>30,1,'first'):find(freqLightTrack_post>50,1,'first')-1];
-    rangeLightTrackHGamma_post = [find(freqLightTrack_post>55,1,'first'):find(freqLightTrack_post>85,1,'first')-1];
+    rangeLightTrackThet8hza_post = [find(freqLightTrack8hz_post>4,1,'first'):find(freqLightTrack8hz_post>12,1,'first')-1];
+    rangeLightTrackLGamma8hz_post = [find(freqLightTrack8hz_post>30,1,'first'):find(freqLightTrack8hz_post>50,1,'first')-1];
+    rangeLightTrackHGamma8hz_post = [find(freqLightTrack8hz_post>55,1,'first'):find(freqLightTrack8hz_post>85,1,'first')-1];
     
-    totalAreaTrack_pre = trapz(freqLightTrack_pre(1:length(freqLightTrack_pre)/2),pwLightTrack_pre(1:length(freqLightTrack_pre)/2));
-    totalAreaTrack_post = trapz(freqLightTrack_post(1:length(freqLightTrack_post)/2),pwLightTrack_post(1:length(freqLightTrack_post)/2));
+    totalAreaTrack8hz_pre = trapz(freqLightTrack8hz_pre(1:length(freqLightTrack8hz_pre)/2),pwLightTrack8hz_pre(1:length(freqLightTrack8hz_pre)/2));
+    totalAreaTrack8hz_post = trapz(freqLightTrack8hz_post(1:length(freqLightTrack8hz_post)/2),pwLightTrack8hz_post(1:length(freqLightTrack8hz_post)/2));
     
-    rPwLightTrackTheta_pre = trapz(freqLightTrack_pre(rangeLightTrackTheta_pre),pwLightTrack_pre(rangeLightTrackTheta_pre))/totalAreaTrack_pre;
-    rPwLightTrackLGamma_pre = trapz(freqLightTrack_pre(rangeLightTrackLGamma_pre),pwLightTrack_pre(rangeLightTrackLGamma_pre))/totalAreaTrack_pre;
-    rPwLightTrackHGamma_pre = trapz(freqLightTrack_pre(rangeLightTrackHGamma_pre),pwLightTrack_pre(rangeLightTrackHGamma_pre))/totalAreaTrack_pre;
+    rPwLightTrackTheta8hz_pre = trapz(freqLightTrack8hz_pre(rangeLightTrackTheta8hz_pre),pwLightTrack8hz_pre(rangeLightTrackTheta8hz_pre))/totalAreaTrack8hz_pre;
+    rPwLightTrackLGamma8hz_pre = trapz(freqLightTrack8hz_pre(rangeLightTrackLGamma8hz_pre),pwLightTrack8hz_pre(rangeLightTrackLGamma8hz_pre))/totalAreaTrack8hz_pre;
+    rPwLightTrackHGamma8hz_pre = trapz(freqLightTrack8hz_pre(rangeLightTrackHGamma8hz_pre),pwLightTrack8hz_pre(rangeLightTrackHGamma8hz_pre))/totalAreaTrack8hz_pre;
     
-    rPwLightTrackTheta_post = trapz(freqLightTrack_post(rangeLightTrackTheta_post),pwLightTrack_post(rangeLightTrackTheta_post))/totalAreaTrack_post;
-    rPwLightTrackLGamma_post = trapz(freqLightTrack_post(rangeLightTrackLGamma_post),pwLightTrack_post(rangeLightTrackLGamma_post))/totalAreaTrack_post;
-    rPwLightTrackHGamma_post = trapz(freqLightTrack_post(rangeLightTrackHGamma_post),pwLightTrack_post(rangeLightTrackHGamma_post))/totalAreaTrack_post;
+    rPwLightTrackTheta8hz_post = trapz(freqLightTrack8hz_post(rangeLightTrackThet8hza_post),pwLightTrack8hz_post(rangeLightTrackThet8hza_post))/totalAreaTrack8hz_post;
+    rPwLightTrackLGamma8hz_post = trapz(freqLightTrack8hz_post(rangeLightTrackLGamma8hz_post),pwLightTrack8hz_post(rangeLightTrackLGamma8hz_post))/totalAreaTrack8hz_post;
+    rPwLightTrackHGamma8hz_post = trapz(freqLightTrack8hz_post(rangeLightTrackHGamma8hz_post),pwLightTrack8hz_post(rangeLightTrackHGamma8hz_post))/totalAreaTrack8hz_post;
     
     save([fileName,'.mat'],...
-        'rPwLightTrackTheta_pre','rPwLightTrackTheta_post',...
-        'rPwLightTrackLGamma_pre','rPwLightTrackLGamma_post',...
-        'rPwLightTrackHGamma_pre','rPwLightTrackHGamma_post','-append')    
+        'rPwLightTrackTheta8hz_pre','rPwLightTrackTheta8hz_post',...
+        'rPwLightTrackLGamma8hz_pre','rPwLightTrackLGamma8hz_post',...
+        'rPwLightTrackHGamma8hz_pre','rPwLightTrackHGamma8hz_post','-append')    
+
 end
-end
-disp('### spectrum power calculation is done! ###');
+disp('### Spectrum power calculation is completed! ###');

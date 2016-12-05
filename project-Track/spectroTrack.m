@@ -24,15 +24,14 @@ noverlap = winSize*0.98;
 
 load('Events.mat','sensor','lightTime','nTrial','fields');
 [timestamp, sample, cscList] = cscLoad;
-
 % nFile = length(cscList);
 nFile = 1;
 
 for iFile = 1:nFile
-    disp(['### Analysing spectrogram of ',cscList{iFile}]);
+    disp(['### Analysing Spectrogram of ',cscList{iFile}]);
     [filePath, ~, ~] = fileparts(cscList{iFile});
     fileName = 'CSC';
-%     channelSample = sample{iFile}; % calculate EEG based on each tetrode
+%     channelSample = sample{iFile}; % calculate EEG from each tetrode
     channelSample = sample;
 
     if ~isempty(strfind(filePath,'DRun')) | ~isempty(strfind(filePath,'noRun'))
@@ -67,7 +66,7 @@ for iFile = 1:nFile
     save([fileName,'.mat'],'psdLightPlfm2hz','timeLightPlfm2hz','freqLightPlfm2hz','-append');
     
 %% Spectrum aligned on Platform light (8hz)
-if isfield(lightTime,'Plfm8hz')
+if ~isempty(lightTime.Plfm8hz)
     nLightPlfm8hz = length(lightTime.Plfm8hz);
     idxLightPlfm8hz = zeros(nLightPlfm8hz,1);
     sampleLightPlfm8hz = zeros((sum(abs(lightInput2hz))+1),nLightPlfm8hz);
@@ -95,4 +94,4 @@ end
     psdLightTrack = mean(psdLightTrack,3);
     save([fileName,'.mat'],'psdLightTrack','timeLightTrack','freqLightTrack','-append');
 end
-disp('### Spectrogram analysis is completed ###');
+disp('### Spectrogram analysis is completed! ###');

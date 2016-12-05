@@ -116,6 +116,7 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
             lightTime.Track2hz = [];
             lightTime.PlfmTotal = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
             lightTime.Plfm2hz = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
+            lightTime.Plfm8hz = [];
             preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
             stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
             postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec

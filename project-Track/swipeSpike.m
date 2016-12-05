@@ -1,20 +1,20 @@
 %% Directory setup
 rtPath = 'D:\Dropbox\SNL\P2_Track';
-startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp8';'D:\Projects\Track_151213-2_Rbp14';'D:\Projects\Track_160221-1_Rbp16';'D:\Projects\Track_160417-2_Rbp34_Ori';'D:\Projects\Track_160422-14_Rbp36_Ori'};
+startingDir = {'D:\Projects\Track_151029-4_Rbp6';'D:\Projects\Track_151029-5_Rbp8';'D:\Projects\Track_151213-2_Rbp14';'D:\Projects\Track_160221-1_Rbp16';'D:\Projects\Track_160417-2_Rbp34ori';'D:\Projects\Track_160422-14_Rbp36ori'};
 
 matFile = [];
 tFile = [];
 nDir = size(startingDir,1);
 for iDir = 1:nDir
 %% Mat file
-    tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-    matFile = [matFile; tempmatFile];
+%     tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+%     matFile = [matFile; tempmatFile];
 %% t-file
 %       temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
 %       tFile = [tFile;temptFile];
 %% Event file
-%     tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
-%     matFile = [matFile;tempEventFile];
+    tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
+    matFile = [matFile;tempEventFile];
 end
 
 nFile = length(matFile);
@@ -36,9 +36,9 @@ nPath = length(filePath);
 for iPath = 1:nPath
     cd(filePath{iPath});
     
-%     event2mat_track;
+    event2mat_track;
 %     pethSensor;
-    pethLight;
+%     pethLight;
 %     waveform;
 %     heatMap;
 %     pearson_field_correlation_baseComp_Track;

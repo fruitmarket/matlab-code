@@ -41,10 +41,11 @@ cscList = unique(cscList);
 nCSC = length(cscList);
 
 cscTime = cell(nCSC,1);
-cscSample = cell(nCSC,1);
+% cscSample = cell(nCSC,1);
 
 for iCSC = 1:nCSC
-    [timestamp, sample] = csc2mat(cscList{iCSC});
+    [timestamp, cscSample(:,iCSC)] = csc2mat(cscList{iCSC});
     cscTime = timestamp/1000; % cscTime unit: msec
-    cscSample{iCSC} = sample;
 end
+cscSample = mean(cscSample,2);
+% cscList = 

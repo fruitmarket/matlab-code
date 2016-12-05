@@ -9,9 +9,12 @@ function spectroTrack()
 % Version 1.0 (Oct, 17, 2016)
 
 sensorWin = [-1, 1]; % the number in the bracket should be in sec unit
-lightWin = [-1, 1];
+lightWin2hz = [-0.2, 0.2];
+lightWin8hz = [-0.05, 0.05];
+
 sensorInput = sensorWin*2*10^3; % unit of sensorInput: usec
-lightInput = lightWin*2*10^3;
+lightInput2hz = lightWin2hz*2*10^3;
+lightInput8hz = lightWin8hz*2*10^3;
 
 winSize = 500;
 fs = 2000;
@@ -21,12 +24,16 @@ noverlap = winSize*0.98;
 
 load('Events.mat','sensor','lightTime','nTrial','fields');
 [timestamp, sample, cscList] = cscLoad;
-nFile = length(cscList);
+
+% nFile = length(cscList);
+nFile = 1;
 
 for iFile = 1:nFile
     disp(['### Analysing spectrogram of ',cscList{iFile}]);
-    [filePath, fileName,~] = fileparts(cscList{iFile});
-    channelSample = sample{iFile};
+    [filePath, ~, ~] = fileparts(cscList{iFile});
+    fileName = 'CSC';
+%     channelSample = sample{iFile}; % calculate EEG based on each tetrode
+    channelSample = sample;
 
     if ~isempty(strfind(filePath,'DRun')) | ~isempty(strfind(filePath,'noRun'))
         iSensor = 6;
@@ -47,26 +54,42 @@ for iFile = 1:nFile
     psdSensor_post = mean(psdSensor(:,:,61:90),3);
     save([fileName,'.mat'],'psdSensor_pre','psdSensor_stm','psdSensor_post','freqSensor','timeSensor');
     
-% Spectrum aligned on Platform light
-    nLightPlfm = length(lightTime.Tag);
-    idxLightPlfm = zeros(nLightPlfm,1);
-    sampleLightPlfm = zeros((sum(abs(lightInput))+1),nLightPlfm);
-    for iLight = 1:nLightPlfm
-        idxLightPlfm(iLight,1) = find(lightTime.Tag(iLight)<timestamp,1,'first');
-        sampleLightPlfm(:,iLight) = channelSample((idxLightPlfm(iLight,1)+lightInput(1)):(idxLightPlfm(iLight,1)+lightInput(2)));
-        [~, freqLightPlfm, timeLightPlfm,psdLightPlfm(:,:,iLight)] = spectrogram(sampleLightPlfm(:,iLight),window,noverlap,nfft,fs);
+%% Spectrum aligned on Platform light (2hz)
+    nLightPlfm2hz = length(lightTime.Plfm2hz);
+    idxLightPlfm2hz = zeros(nLightPlfm2hz,1);
+    sampleLightPlfm2hz = zeros((sum(abs(lightInput2hz))+1),nLightPlfm2hz);
+    for iLight = 1:nLightPlfm2hz
+        idxLightPlfm2hz(iLight,1) = find(lightTime.Plfm2hz(iLight)<timestamp,1,'first');
+        sampleLightPlfm2hz(:,iLight) = channelSample((idxLightPlfm2hz(iLight,1)+lightInput2hz(1)):(idxLightPlfm2hz(iLight,1)+lightInput2hz(2)));
+        [~, freqLightPlfm2hz, timeLightPlfm2hz,psdLightPlfm2hz(:,:,iLight)] = spectrogram(sampleLightPlfm2hz(:,iLight),window,noverlap,nfft,fs);
     end
-    psdLightPlfm = mean(psdLightPlfm,3);
-    save([fileName,'.mat'],'psdLightPlfm','timeLightPlfm','freqLightPlfm','-append');
+    psdLightPlfm2hz = mean(psdLightPlfm2hz,3);
+    save([fileName,'.mat'],'psdLightPlfm2hz','timeLightPlfm2hz','freqLightPlfm2hz','-append');
     
-% Spectrum aligned on Track light (aligned by the first light of each trial)
+%% Spectrum aligned on Platform light (8hz)
+if isfield(lightTime,'Plfm8hz')
+    nLightPlfm8hz = length(lightTime.Plfm8hz);
+    idxLightPlfm8hz = zeros(nLightPlfm8hz,1);
+    sampleLightPlfm8hz = zeros((sum(abs(lightInput2hz))+1),nLightPlfm8hz);
+    for iLight = 1:nLightPlfm8hz
+        idxLightPlfm8hz(iLight,1) = find(lightTime.Plfm8hz(iLight)<timestamp,1,'first');
+        sampleLightPlfm8hz(:,iLight) = channelSample((idxLightPlfm8hz(iLight,1)+lightInput8hz(1)):(idxLightPlfm8hz(iLight,1)+lightInput8hz(2)));
+        [~, freqLightPlfm8hz, timeLightPlfm8hz,psdLightPlfm8hz(:,:,iLight)] = spectrogram(sampleLightPlfm8hz(:,iLight),window,noverlap,nfft,fs);
+    end
+    psdLightPlfm8hz = mean(psdLightPlfm8hz,3);
+    save([fileName,'.mat'],'psdLightPlfm8hz','timeLightPlfm8hz','freqLightPlfm8hz','-append');
+else
+    [psdLightPlfm8hz, timeLightPlfm8hz, freqLightPlfm8hz] = deal(NaN);
+    save([fileName,'.mat'],'psdLightPlfm8hz','timeLightPlfm8hz','freqLightPlfm8hz','-append');
+end
+%% Spectrum aligned on Track light (aligned by the first light of each trial)
     nLightTrack = nTrial/3;
-    lightTimeTrack = lightTime.Modu([true;(find(diff(lightTime.Modu)>250)+1)]); % 250ms: sometimes the light ITI is not exactly 125ms.
-    idxLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
-    sampleLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
+    lightTimeTrack = lightTime.Track8hz([true;(find(diff(lightTime.Track8hz)>250)+1)]); % 250ms: sometimes the light ITI is not exactly 125ms.
+    idxLightTrack = zeros((sum(abs(lightInput2hz))+1),nLightTrack);
+    sampleLightTrack = zeros((sum(abs(lightInput2hz))+1),nLightTrack);
     for iLight = 1:nLightTrack
         idxLightTrack(iLight,1) = find(lightTimeTrack(iLight)<timestamp,1,'first');
-        sampleLightTrack(:,iLight) = channelSample((idxLightTrack(iLight,1)+lightInput(1)):(idxLightTrack(iLight,1)+lightInput(2)));
+        sampleLightTrack(:,iLight) = channelSample((idxLightTrack(iLight,1)+lightInput2hz(1)):(idxLightTrack(iLight,1)+lightInput2hz(2)));
         [~, freqLightTrack, timeLightTrack,psdLightTrack(:,:,iLight)] = spectrogram(sampleLightTrack(:,iLight),window,noverlap,nfft,fs);
     end
     psdLightTrack = mean(psdLightTrack,3);

@@ -77,11 +77,11 @@ for iFile = 1:nFile
         'rPwSensorHGamma_pre','rPwSensorHGamma_stm','rPwSensorHGamma_post','-append')
     
 % Spectrum aligned on Platform light
-    nLightPlfm = length(lightTime.Tag);
+    nLightPlfm = length(lightTime.Plfm2hz);
     idxLightPlfm = zeros(nLightPlfm,1);
     sampleLightPlfm = zeros((sum(abs(lightInput))+1),nLightPlfm);
     for iLight = 1:nLightPlfm
-        idxLightPlfm(iLight,1) = find(lightTime.Tag(iLight)<timestamp,1,'first');
+        idxLightPlfm(iLight,1) = find(lightTime.Plfm2hz(iLight)<timestamp,1,'first');
         sampleLightPlfm(:,iLight) = channelSample((idxLightPlfm(iLight,1)+lightInput(1)):(idxLightPlfm(iLight,1)+lightInput(2)));
     end
     [pwLightPlfm_pre,freqLightPlfm_pre,~] = mtspectrumc(sampleLightPlfm(1:round(size(sampleLightPlfm,1)/2),:),params);
@@ -115,6 +115,7 @@ for iFile = 1:nFile
         'rPwLightPlfmHGamma_pre','rPwLightPlfmHGamma_post','-append')
 
 % Spectrum aligned on Track light (aligned by the first light of each trial)
+if isempty(lightTime.Track2hz) 
     nLightTrack = nTrial/3;
     lightTimeTrack = lightTime.Modu([true;(find(diff(lightTime.Modu)>250)+1)]); % 250ms: sometimes the light ITI is not exactly 125ms.
     idxLightTrack = zeros((sum(abs(lightInput))+1),nLightTrack);
@@ -152,5 +153,6 @@ for iFile = 1:nFile
         'rPwLightTrackTheta_pre','rPwLightTrackTheta_post',...
         'rPwLightTrackLGamma_pre','rPwLightTrackLGamma_post',...
         'rPwLightTrackHGamma_pre','rPwLightTrackHGamma_post','-append')    
+end
 end
 disp('### spectrum power calculation is done! ###');

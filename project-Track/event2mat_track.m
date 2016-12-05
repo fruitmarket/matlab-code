@@ -113,6 +113,7 @@ trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTria
             lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
             lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
             lightTime.Track8hz = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
+            lightTime.Track2hz = [];
             lightTime.PlfmTotal = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
             lightTime.Plfm2hz = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
             preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec

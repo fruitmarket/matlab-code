@@ -27,12 +27,12 @@ idx = find(dT ~= 256000);
 switch length(idx)+1
     case 2
         disp('Check the recording note!');
-    case 3
+    case 3 % three sessions
         subtime1 = timestamps_ori(1)+(0:(512*idx(1)-1))*500;
         subtime2 = timestamps_ori(idx(1)+1)+(0:(512*(idx(2)-idx(1))-1))*500;
         subtime3 = timestamps_ori(idx(2)+1)+(0:(512*(length(timestamps_ori)-idx(2))-1))*500;
         timestamp = [subtime1';subtime2';subtime3'];
-    case 4
+    case 4 % four sessions
         subtime1 = timestamps_ori(1)+(0:(512*idx(1)-1))*500;
         subtime2 = timestamps_ori(idx(1)+1)+(0:(512*(idx(2)-idx(1))-1))*500;
         subtime3 = timestamps_ori(idx(2)+1)+(0:(512*(length(timestamps_ori)-idx(2))-1))*500;

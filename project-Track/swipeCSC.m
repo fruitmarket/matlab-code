@@ -28,3 +28,5 @@ for iPath = 2:nPath
     powerTrack;
     fclose('all');
 end
+cd(rtPath);
+disp('### CSC analysis is completed! ###');

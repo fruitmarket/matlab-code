@@ -79,10 +79,10 @@ for iFile = 1:nFile
             'XLim',[1 32], 'YLim',yLimWaveform*1.05);
     
     %% Tagging
-    if ~isempty(lightTime.Tag);
+    if ~isempty(lightTime.Plfm2hz);
         
     % Activation or Inactivation?
-      if isfield(lightTime,'Tag') && exist('xptTagBlue','var');
+      if isfield(lightTime,'Plfm2hz') && exist('xptTagBlue','var');
         lightDuration = 10;
         lightDurationColor = colorLightBlue;
         testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       

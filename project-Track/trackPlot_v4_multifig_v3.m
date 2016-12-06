@@ -271,7 +271,7 @@ for iFile = 1:nFile
     set(hTrackLightPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-25, 100],'XTick',[-25,0,10,30,50,100],'YLim',[0, max(ylimpeth)]);
 
 % Spectrogram (aligned on sensor onset)
-    load(['CSC',cellName(3),'.mat']);
+    load(['CSC','.mat']);
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'))
         iSensor = 6;
     end
@@ -296,24 +296,24 @@ for iFile = 1:nFile
     set(cBar,'Position',axpt(9,6,7,1:3,axpt(nCol,nRow,1:5,8:10,[0.08 0.05 0.90 0.83],tightInterval)));
 
 % Spectrogram (aligned on light onset)
-    hSpectroLight(1) = axes('Position',axpt(9,6,1:3,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval),wideInterval));
-        hLight(1) = pcolor(timeLightPlfm,freqLightPlfm,psdLightPlfm);
-        text(0.45,55,'Pre','fontSize',fontM,'Color',[1,1,1]);
-        text(1.1,55,'Post','fontSize',fontM,'Color',[1,1,1]);
-        ylabel('Frequency (Hz)','fontSize',fontS);
-        title('Platform','fontSize',fontS)
-        line([1,1],[0,60],'LineStyle',':','Color',[1,1,1],'LineWIdth',0.5);
-    hSpectroLight(2) = axes('Position',axpt(9,6,4:6,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval),wideInterval));
-        hLight(2) = pcolor(timeLightTrack,freqLightTrack,psdLightTrack);
-        cBar = colorbar;
-        text(0.45,55,'Pre','fontSize',fontM,'Color',[1,1,1]);
-        text(1.1,55,'Post','fontSize',fontM,'Color',[1,1,1]);
-        line([1,1],[0,60],'LineStyle',':','Color',[1,1,1],'LineWIdth',0.5);
-        title('Track','fontSize',fontS)
-    set(hLight,'EdgeColor','none');
-    set(hSpectroLight(1:2),'Box','off','TickDir','out','YLim',[0,60],'YTick',[],'XLim',[0.25,1.75],'XTick',1,'XTickLabel',{'0'},'FontSize',fontS);
-    set(hSpectroLight(1),'YTick',[0:30:90],'XTick',[0.25,1,1.75],'XTickLabel',{'-0.75 s','0','0.75 s'},'FontSize',fontS);
-    set(cBar,'Position',axpt(9,6,7,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval)));
+%     hSpectroLight(1) = axes('Position',axpt(9,6,1:3,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval),wideInterval));
+%         hLight(1) = pcolor(timeLightPlfm2hz,freqLightPlfm2hz,psdLightPlfm2hz);
+%         text(0.45,55,'Pre','fontSize',fontM,'Color',[1,1,1]);
+%         text(1.1,55,'Post','fontSize',fontM,'Color',[1,1,1]);
+%         ylabel('Frequency (Hz)','fontSize',fontS);
+%         title('Platform','fontSize',fontS)
+%         line([1,1],[0,60],'LineStyle',':','Color',[1,1,1],'LineWIdth',0.5);
+%     hSpectroLight(2) = axes('Position',axpt(9,6,4:6,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval),wideInterval));
+%         hLight(2) = pcolor(timeLightTrack,freqLightTrack,psdLightTrack);
+%         cBar = colorbar;
+%         text(0.45,55,'Pre','fontSize',fontM,'Color',[1,1,1]);
+%         text(1.1,55,'Post','fontSize',fontM,'Color',[1,1,1]);
+%         line([1,1],[0,60],'LineStyle',':','Color',[1,1,1],'LineWIdth',0.5);
+%         title('Track','fontSize',fontS)
+%     set(hLight,'EdgeColor','none');
+%     set(hSpectroLight(1:2),'Box','off','TickDir','out','YLim',[0,60],'YTick',[],'XLim',[0.25,1.75],'XTick',1,'XTickLabel',{'0'},'FontSize',fontS);
+%     set(hSpectroLight(1),'YTick',[0:30:90],'XTick',[0.25,1,1.75],'XTickLabel',{'-0.75 s','0','0.75 s'},'FontSize',fontS);
+%     set(cBar,'Position',axpt(9,6,7,2:5,axpt(nCol,nRow,1:5,9:10,[0.08 0.01 0.90 0.80],tightInterval)));
 
 % Track raster plot
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw')) % DRun session

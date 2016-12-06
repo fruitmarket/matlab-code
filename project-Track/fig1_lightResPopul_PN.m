@@ -33,8 +33,8 @@ colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
 load(['cellList_v4','.mat']);
-rtDir_sig = 'D:\Dropbox\SNL\P2_Track\v7\v7_DRun_Sig';
-rtDir_nosig = 'D:\Dropbox\SNL\P2_Track\v7\v7_DRun_noSig';
+rtDir_sig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\v7\v7_DRun_Sig';
+rtDir_nosig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\v7\v7_DRun_noSig';
 alpha = 0.001;
 %%
 total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakMap>1;

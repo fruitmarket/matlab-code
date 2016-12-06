@@ -4,8 +4,9 @@ function laserFreqCheck
 resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
-winTagBlue = [-25 100]; % unit: msec
-binSizeTagBlue = 2;
+winLightPlfm = [-25 100]; % unit: msec
+binSizeBlue = 2;
+winCri = 30; % Response check limit (from light onset; unit: mses)
 
 [tData, tList] = tLoad;
 nCell = length(tList);
@@ -19,45 +20,45 @@ for iCell = 1:nCell
     load('Events.mat','lightTime');
  % Platform 2hz & 8hz
     nPlfmLight2hz = length(lightTime.Plfm2hz);
-    spikeTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winTagBlue);
+    spikeTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winLightPlfm);
     spikeTime2hz8mw = spikeTimePlfm(nPlfmLight2hz/3+1:nPlfmLight2hz*2/3,1);    
-    [xptPlfmBlue2hz_8mw, ~,~,~,~,~] = rasterPETH(spikeTime2hz8mw,true(nPlfmLight2hz/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptPlfmBlue2hz_8mw, ~,~,~,~,~] = rasterPETH(spikeTime2hz8mw,true(nPlfmLight2hz/3,1),winLightPlfm,binSizeBlue,resolution,1);
     if isempty(xptPlfmBlue2hz_8mw)
         lightPlfmSpk2hz8mw = 0;
     else
-        lightPlfmSpk2hz8mw = sum(0<xptPlfmBlue2hz_8mw{1} & xptPlfmBlue2hz_8mw{1}<30);
+        lightPlfmSpk2hz8mw = sum(0<xptPlfmBlue2hz_8mw{1} & xptPlfmBlue2hz_8mw{1}<winCri);
     end
     lightPlfmSpk2hz8mw = lightPlfmSpk2hz8mw/(nPlfmLight2hz/3);
     
     nPlfmLight8hz = length(lightTime.Plfm8hz);
-    spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winTagBlue);
-    [xptPlfmBlue8hz, ~,~,~,~,~] = rasterPETH(spikeTimePlfm8hz,true(nPlfmLight8hz,1),winTagBlue,binSizeTagBlue,resolution,1);
+    spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winLightPlfm);
+    [xptPlfmBlue8hz, ~,~,~,~,~] = rasterPETH(spikeTimePlfm8hz,true(nPlfmLight8hz,1),winLightPlfm,binSizeBlue,resolution,1);
     if isempty(xptPlfmBlue8hz)
         lightPlfmSpk8hz = 0;
     else
-        lightPlfmSpk8hz = sum(0<xptPlfmBlue8hz{1} & xptPlfmBlue8hz{1}<30);
+        lightPlfmSpk8hz = sum(0<xptPlfmBlue8hz{1} & xptPlfmBlue8hz{1}<winCri);
     end
     lightPlfmSpk8hz = lightPlfmSpk8hz/nPlfmLight8hz;
  
 % Track   
     nTrackLight2hz = length(lightTime.Track2hz);
-    spikeTimeTrack = spikeWin(tData{iCell},lightTime.Track2hz,winTagBlue);
+    spikeTimeTrack = spikeWin(tData{iCell},lightTime.Track2hz,winLightPlfm);
     spikeTimeTrack2hz8mw = spikeTimeTrack(nTrackLight2hz/3+1:nTrackLight2hz*2/3,1);    
-    [xptTrackBlue2hz_8mw, ~,~,~,~,~] = rasterPETH(spikeTimeTrack2hz8mw,true(nTrackLight2hz/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptTrackBlue2hz_8mw, ~,~,~,~,~] = rasterPETH(spikeTimeTrack2hz8mw,true(nTrackLight2hz/3,1),winLightPlfm,binSizeBlue,resolution,1);
     if isempty(xptTrackBlue2hz_8mw)
         lightTrackSpk2hz8mw = 0;
     else
-        lightTrackSpk2hz8mw = sum(0<xptTrackBlue2hz_8mw{1} & xptTrackBlue2hz_8mw{1}<30);
+        lightTrackSpk2hz8mw = sum(0<xptTrackBlue2hz_8mw{1} & xptTrackBlue2hz_8mw{1}<winCri);
     end
     lightTrackSpk2hz8mw = lightTrackSpk2hz8mw/(nTrackLight2hz/3);
     
     nTrackLight8hz = length(lightTime.Track8hz);
-    spikeTimeTrack8hz = spikeWin(tData{iCell},lightTime.Track8hz,winTagBlue);
-    [xptTrackBlue8hz, ~,~,~,~,~] = rasterPETH(spikeTimeTrack8hz,true(nTrackLight8hz,1),winTagBlue,binSizeTagBlue,resolution,1);
+    spikeTimeTrack8hz = spikeWin(tData{iCell},lightTime.Track8hz,winLightPlfm);
+    [xptTrackBlue8hz, ~,~,~,~,~] = rasterPETH(spikeTimeTrack8hz,true(nTrackLight8hz,1),winLightPlfm,binSizeBlue,resolution,1);
     if isempty(xptTrackBlue8hz)
         lightTrackSpk8hz = 0;
     else
-        lightTrackSpk8hz = sum(0<xptTrackBlue8hz{1} & xptTrackBlue8hz{1}<30);
+        lightTrackSpk8hz = sum(0<xptTrackBlue8hz{1} & xptTrackBlue8hz{1}<winCri);
     end
     lightTrackSpk8hz = lightTrackSpk8hz/nTrackLight8hz;
     

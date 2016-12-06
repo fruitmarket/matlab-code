@@ -1,4 +1,4 @@
-function laserIntCheck
+function laserIntTrack
 
 % binSize = 10; % Unit: msec
 resolution = 10; % sigma = resoution * binSize = 100 msec
@@ -6,9 +6,8 @@ resolution = 10; % sigma = resoution * binSize = 100 msec
 % Tag variables
 winTagBlue = [-25 100]; % unit: msec
 binSizeTagBlue = 2;
-% winTagYel = [-500 2000]; % unit: msec
-% binSizeTagYel = 20;
-winCri = 20;
+winCri = 30;
+
 [tData, tList] = tLoad;
 nCell = length(tList);
 
@@ -19,25 +18,7 @@ for iCell = 1:nCell
     
     % Load Events variables
     load('Events.mat','lightTime');
- % Platform
-    nPlfmLight = length(lightTime.Plfm2hz);
-    
-    spikeTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winTagBlue);
-    spikeTime5mw = spikeTimePlfm(1:nPlfmLight/3,1);
-    spikeTime8mw = spikeTimePlfm(nPlfmLight/3+1:nPlfmLight*2/3,1);
-    spikeTime10mw = spikeTimePlfm(nPlfmLight*2/3+1:nPlfmLight,1);
-    
-    [xptPlfmBlue, ~,~,~,~,~] = rasterPETH(spikeTimePlfm,true(size(lightTime.Plfm2hz)),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_5mw, ~,~,~,~,~] = rasterPETH(spikeTime5mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    
-    lightPlfmSpk = sum(0<xptPlfmBlue{1} & xptPlfmBlue{1}<winCri);
-    lightPlfmSpk5mw = sum(0<xptPlfmBlue_5mw{1} & xptPlfmBlue_5mw{1}<winCri);
-    lightPlfmSpk8mw = sum(0<xptPlfmBlue_8mw{1} & xptPlfmBlue_8mw{1}<winCri);
-    lightPlfmSpk10mw = sum(0<xptPlfmBlue_10mw{1} & xptPlfmBlue_10mw{1}<winCri);
- 
-% Track   
+
     nTrackLight = length(lightTime.Track2hz);
     
     spikeTimeTrack = spikeWin(tData{iCell},lightTime.Track2hz,winTagBlue);
@@ -45,32 +26,17 @@ for iCell = 1:nCell
     spikeTime8mw = spikeTimeTrack(nTrackLight/3+1:nTrackLight*2/3,1);
     spikeTime10mw = spikeTimeTrack(nTrackLight*2/3+1:nTrackLight,1);
     
-    [xptTrackBlue, ~,~,~,~,~] = rasterPETH(spikeTimePlfm,true(size(lightTime.Track2hz)),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptTrackBlue_5mw, ~,~,~,~,~] = rasterPETH(spikeTime5mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptTrackBlue_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptTrackBlue_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    if isempty(xptTrackBlue)
-        lightTrackSpk = 0;
-    else
-        lightTrackSpk = sum(0<xptTrackBlue{1} & xptTrackBlue{1}<winCri);
-    end
-    if isempty(xptTrackBlue_5mw)
-        lightTrackSpk5mw = 0;
-    else
-        lightTrackSpk5mw = sum(0<xptTrackBlue_5mw{1} & xptTrackBlue_5mw{1}<winCri);
-    end
-    if isempty(xptTrackBlue_8mw)
-        lightTrackSpk8mw = 0;
-    else
-        lightTrackSpk8mw = sum(0<xptTrackBlue_8mw{1} & xptTrackBlue_8mw{1}<winCri);
-    end
-    if isempty(xptTrackBlue_10mw)
-        lightTrackSpk10mw = 0;
-    else
-        lightTrackSpk10mw = sum(0<xptTrackBlue_10mw{1} & xptTrackBlue_10mw{1}<winCri);
-    end
+    [xptTrackLight, ~,~,~,~,~] = rasterPETH(spikeTimeTrack,true(size(lightTime.Track2hz)),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptTrackLight_5mw, ~,~,~,~,~] = rasterPETH(spikeTime5mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptTrackLight_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xptTrackLight_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nTrackLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
     
-    save([cellName,'.mat'],'lightPlfmSpk5mw','lightPlfmSpk8mw','lightPlfmSpk10mw','lightTrackSpk5mw','lightTrackSpk8mw','lightTrackSpk10mw','-append');
+    lightTrackSpk = sum(0<xptTrackLight{1} & xptTrackLight{1}<winCri);
+    lightTrackSpk5mw = sum(0<xptTrackLight_5mw{1} & xptTrackLight_5mw{1}<winCri);
+    lightTrackSpk8mw = sum(0<xptTrackLight_8mw{1} & xptTrackLight_8mw{1}<winCri);
+    lightTrackSpk10mw = sum(0<xptTrackLight_10mw{1} & xptTrackLight_10mw{1}<winCri);
+    
+    save([cellName,'.mat'],'lightTrackSpk5mw','lightTrackSpk8mw','lightTrackSpk10mw','-append');
 end
 disp('### Laser Intensity Check is done!!!');
 

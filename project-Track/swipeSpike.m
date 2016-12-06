@@ -44,9 +44,9 @@ for iPath = 1:nPath
 %     pearson_field_correlation_baseComp_Track;
 %       tagstatTrack_Poster; % newest version
 %     mapCorr;
-%     mapCorrEvOd;
+    mapCorrEvOd;
 %     trackPlot_v3
-%     laserIntCheck_Ori;
+    laserIntCheck_Ori;
     fclose('all');
     close all;
 end

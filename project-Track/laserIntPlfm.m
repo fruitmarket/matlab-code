@@ -1,4 +1,4 @@
-function laserIntCheck_Ori
+function laserIntPlfm
 
 % binSize = 10; % Unit: msec
 resolution = 10; % sigma = resoution * binSize = 100 msec

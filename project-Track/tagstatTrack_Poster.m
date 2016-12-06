@@ -105,16 +105,25 @@ for iCell = 1:nCell
         end
         
 % Modulation direction (Platform)
-        spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm2hz+movingWin(idxPlfm2hz),winTest);
-        [xptPlfm2hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm2hz)),winTest,binSize,resolution,1);
-        if ~iscell(xptPlfm2hz)
-             xptPlfm2hz = {xptPlfm2hz};
-        end
-        if sum(winTest(1)<xptPlfm2hz{1} & xptPlfm2hz{1}<0)*1.1 < sum(0 <= xptPlfm2hz{1} & xptPlfm2hz{1}<winTest(2)) % activation (10%)
+    % v1.0 (based on spike counts)
+%         spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm2hz+movingWin(idxPlfm2hz),winTest);
+%         [xptPlfm2hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm2hz)),winTest,binSize,resolution,1);
+%         if ~iscell(xptPlfm2hz)
+%              xptPlfm2hz = {xptPlfm2hz};
+%         end
+%         if sum(winTest(1)<xptPlfm2hz{1} & xptPlfm2hz{1}<0)*1.1 < sum(0 <= xptPlfm2hz{1} & xptPlfm2hz{1}<winTest(2)) % activation (10%)
+%             statDir_Plfm2hz = 1;
+%         elseif sum(winTest(1)<xptPlfm2hz{1} & xptPlfm2hz{1}<0) > sum(0 <= xptPlfm2hz{1} & xptPlfm2hz{1}<winTest(2))*0.9 % inactivation (10%)
+%             statDir_Plfm2hz = -1;
+%         else % no change
+%             statDir_Plfm2hz = 0;
+%         end
+    % v2.0 (based on H1, H2)
+        if H1_Plfm2hz(end)>H2_Plfm2hz(end)
             statDir_Plfm2hz = 1;
-        elseif sum(winTest(1)<xptPlfm2hz{1} & xptPlfm2hz{1}<0) > sum(0 <= xptPlfm2hz{1} & xptPlfm2hz{1}<winTest(2))*0.9 % inactivation (10%)
-            statDir_Plfm2hz = -1;
-        else % no change
+        elseif H1_Plfm2hz(end)<H2_Plfm2hz(end)
+            statDir_Plfm2hz = -1;            
+        else
             statDir_Plfm2hz = 0;
         end
         
@@ -175,17 +184,27 @@ for iCell = 1:nCell
                 calibPlfm8hz = movingWin(idxH_Plfm8hz);
             end
 
-    % Modulation direction (Platform)
-            spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm8hz+movingWin(idxPlfm8hz),winTest);
-            [xptPlfm8hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm8hz)),winTest,binSize,resolution,1);
-            if ~iscell(xptPlfm8hz)
-                 xptPlfm8hz = {xptPlfm8hz};
-            end
-            if sum(winTest(1)<xptPlfm8hz{1} & xptPlfm8hz{1}<0)*1.1 < sum(0 <= xptPlfm8hz{1} & xptPlfm8hz{1}<winTest(2)) % activation (10%)
+% Modulation direction (Platform)
+    % v1.0 (based on spike counts)
+%             spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm8hz+movingWin(idxPlfm8hz),winTest);
+%             [xptPlfm8hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm8hz)),winTest,binSize,resolution,1);
+%             if ~iscell(xptPlfm8hz)
+%                  xptPlfm8hz = {xptPlfm8hz};
+%             end
+%             if sum(winTest(1)<xptPlfm8hz{1} & xptPlfm8hz{1}<0)*1.1 < sum(0 <= xptPlfm8hz{1} & xptPlfm8hz{1}<winTest(2)) % activation (10%)
+%                 statDir_Plfm8hz = 1;
+%             elseif sum(winTest(1)<xptPlfm8hz{1} & xptPlfm8hz{1}<0) > sum(0 <= xptPlfm8hz{1} & xptPlfm8hz{1}<winTest(2))*0.9 % inactivation (10%)
+%                 statDir_Plfm8hz = -1;
+%             else % no change
+%                 statDir_Plfm8hz = 0;
+%             end
+            
+    % v2.0 (based on H1, H2)
+            if H1_Plfm8hz(end)>H2_Plfm8hz(end)
                 statDir_Plfm8hz = 1;
-            elseif sum(winTest(1)<xptPlfm8hz{1} & xptPlfm8hz{1}<0) > sum(0 <= xptPlfm8hz{1} & xptPlfm8hz{1}<winTest(2))*0.9 % inactivation (10%)
-                statDir_Plfm8hz = -1;
-            else % no change
+            elseif H1_Plfm8hz(end)<H2_Plfm8hz(end)
+                statDir_Plfm8hz = -1;            
+            else
                 statDir_Plfm8hz = 0;
             end
 
@@ -209,7 +228,6 @@ for iCell = 1:nCell
     if sum(cell2mat(cellfun(@length,spkCriteria_Track8hz,'UniformOutput',false))) < spkCriTrack
         pLR_Track = 1;
         [statDir_Track, latencyTrack, timeLR_Track, H1_Track, H2_Track, calibTrack] = deal(0);
-
     else
         for iWin = 1:10
             [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Track8hz+movingWin(iWin),testRange8hz,baseRange8hz);
@@ -254,18 +272,29 @@ for iCell = 1:nCell
         end
 
 % Modulation direction (for moving window)_Track
-        spkTrackChETA = spikeWin(spikeData,lightTime.Track8hz+movingWin(idxTrack),winTest);
-        [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Track8hz)),winTest,binSize,resolution,1);
-        if ~iscell(xptTrack)
-            xptTrack = {xptTrack};
-        end
-        if sum(winTest(1)<xptTrack{1} & xptTrack{1}<0)*1.1 < sum(0 <= xptTrack{1} & xptTrack{1}<winTest(2)) % activation
+    % v1.0 (Based on spike counts)
+%         spkTrackChETA = spikeWin(spikeData,lightTime.Track8hz+movingWin(idxTrack),winTest);
+%         [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Track8hz)),winTest,binSize,resolution,1);
+%         if ~iscell(xptTrack)
+%             xptTrack = {xptTrack};
+%         end
+%         if sum(winTest(1)<xptTrack{1} & xptTrack{1}<0)*1.1 < sum(0 <= xptTrack{1} & xptTrack{1}<winTest(2)) % activation
+%             statDir_Track = 1;
+%         elseif sum(winTest(1)<xptTrack{1} & xptTrack{1}<0) > sum(0 <= xptTrack{1} & xptTrack{1}<winTest(2))*0.9 % inactivation
+%             statDir_Track = -1;
+%         else
+%             statDir_Track = 0;
+%         end
+
+    % v2.0 (Based on H1, H2)
+        if H1_Track(end) > H2_Track(end)
             statDir_Track = 1;
-        elseif sum(winTest(1)<xptTrack{1} & xptTrack{1}<0) > sum(0 <= xptTrack{1} & xptTrack{1}<winTest(2))*0.9 % inactivation
+        elseif H1_Track(end) < H2_Track(end)
             statDir_Track = -1;
         else
             statDir_Track = 0;
         end
+        
 % Latency (Moving win)
         switch (statDir_Track)
             case 1 % activation

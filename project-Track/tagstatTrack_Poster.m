@@ -142,7 +142,7 @@ for iCell = 1:nCell
     end
     
 %% pLR_Plfm8hz
-    if isfield(lightTime,'Plfm8hz')
+    if ~isnan(lightTime.Plfm8hz)
         if sum(cell2mat(cellfun(@length,spkCriteria_Plfm8hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than 10, do not calculate pLR
             pLR_Plfm8hz = 1; 
             [statDir_Plfm8hz, latencyPlfm8hz, timeLR_Plfm8hz, H1_Plfm8hz, H2_Plfm8hz, calibPlfm8hz] = deal(0);

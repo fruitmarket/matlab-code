@@ -1,0 +1,119 @@
+lineColor = {[144, 164, 174]./255,... % Before stimulation
+    [33 150 243]./ 255,... % During stimulation
+    [38, 50, 56]./255}; % After stimulation
+
+lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
+fontS = 4; fontM = 5; fontL = 7; % font size large
+lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
+
+colorBlue = [33 150 243] ./ 255;
+colorLightBlue = [100 181 246] ./ 255;
+colorLLightBlue = [187, 222, 251]./255;
+colorRed = [237 50 52] ./ 255;
+colorLightRed = [242 138 130] ./ 255;
+colorGray = [189 189 189] ./ 255;
+colorLightGray = [238, 238, 238] ./255;
+colorDarkGray = [117, 117, 117] ./255;
+colorYellow = [255 243 3] ./ 255;
+colorLightYellow = [255 249 196] ./ 255;
+colorBlack = [0, 0, 0];
+
+markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
+tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
+width = 0.7;
+
+paperSizeX = [18.3, 8.00];
+matFile = mLoad;
+nFile = length(matFile);
+
+nCol = 4;
+nRow = 5;
+
+for iFile = 1:nFile
+    [cellDir, cellName, ~] = fileparts(matFile{iFile});
+    cellDirSplit = regexp(cellDir,'\','split');
+    cellFigName = strcat(cellDirSplit(end-1),'_',cellDirSplit(end),'_',cellName);
+    
+    cd(cellDir);
+    load(matFile{iFile});
+    load('Events.mat');
+    
+    fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 18.3 13.725]);
+
+% File name
+    hCell = axes('Position',axpt(1,1,1,1,axpt(1,20,1,1,[0.1 0.1 0.85 0.85],tightInterval),wideInterval));
+    hold on;
+    text(0,0.5,matFile{iFile}, 'FontSize',fontM, 'Interpreter','none','FontWeight','bold');
+    set(hCell,'visible','off');
+
+% Waveform
+    yLimWaveform = [min(spkwv(:)), max(spkwv(:))];
+    for iCh = 1:4
+        hWaveform(iCh) = axes('Position',axpt(4,1,iCh,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.80],tightInterval),wideInterval));
+        plot(spkwv(iCh,:), 'LineWidth', lineL, 'Color','k');
+        if iCh == 4
+            line([24 32], [yLimWaveform(2)-50 yLimWaveform(2)-50], 'Color','k', 'LineWidth', lineM);
+            line([24 24],[yLimWaveform(2)-50 yLimWaveform(2)], 'Color','k', 'LineWidth',lineM);
+        end
+    end
+    set(hWaveform, 'Visible', 'off','XLim',[1 32], 'YLim',yLimWaveform*1.05);
+
+% Information
+    hText = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],tightInterval),wideInterval));
+    hold on;
+    text(0,0.7,['Mean firing rate (baseline): ',num2str(meanFR10,3), ' Hz'], 'FontSize',fontM);
+    text(0,0.55,['Mean firing rate (task): ',num2str(meanFR50,3), ' Hz'], 'FontSize',fontM);
+    text(0,0.4,['Spike width: ',num2str(spkwth,3),' us'], 'FontSize',fontM);
+    text(0,0.25,['Half-valley width: ',num2str(hfvwth,3),' us'], 'FontSize',fontM);
+    text(0,0.1,['Peak valley ratio: ',num2str(spkpvr,3)], 'FontSize',fontM);
+    set(hText,'Visible','off');
+    
+% Raster & PSTH (10 ms pulse)
+    winLight10 = [min(pethtime10ms) max(pethtime10ms)];
+    hLight10(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85],tightInterval),wideInterval));
+    hold on;
+    plot(xpt10ms{1},ypt10ms{1},'LineStyle','non','Marker','.','MarkerSize',markerS,'Color','k');
+    set(hLight10(1),'XLim',winLight10,'XTick',[],'YLim',[0 nlight10ms],'YTick',[0 nlight10ms],'YTickLabel',{[],nlight10ms});
+    ylabel('Light Trials','FontSize',fontS);
+    title('Platform light response (10ms)','FontSize',fontM,'FontWeight','bold');
+    
+    hLight10(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85],tightInterval),wideInterval));
+    hold on;
+    yLimBar10 = ceil(max(peth10ms(:))*1.05+0.0001);
+    bar(5,300,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
+    rectangle('Position',[0 yLimBar10*0.925, 10, yLimBar10*0.075], 'LineStyle','none','FaceColor',colorBlue);
+    hBar10 = bar(pethtime10ms, peth10ms, 'histc');
+    
+    set(hBar10,'FaceColor','k','EdgeAlpha',0);
+    set(hLight10(2), 'XLim', winLight10, 'XTick', [winLight10(1) 0 winLight10(2)],'XTickLabel',{winLight10(1);0;num2str(winLight10(2))},'YLim', [0 yLimBar10], 'YTick', [0 yLimBar10], 'YTickLabel', {[], yLimBar10});
+    set(hLight10,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
+    xlabel('Time (ms)','FontSize',fontS);
+    ylabel('Rate (Hz)','FontSize',fontS);
+    align_ylabel(hLight10);
+    
+% Raster & PSTH (50 ms pulse)
+    winLight50 = [min(pethtime50ms) max(pethtime50ms)];
+    hLight50(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,3,3,[0.1 0.1 0.85 0.85],tightInterval),wideInterval));
+    hold on;
+    plot(xpt50ms{1},ypt50ms{1},'LineStyle','non','Marker','.','MarkerSize',markerS,'Color','k');
+    set(hLight50(1),'XLim',winLight50,'XTick',[],'YLim',[0 nlight50ms],'YTick',[0 nlight50ms],'YTickLabel',{[],nlight50ms});
+    ylabel('Light Trials','FontSize',fontS);
+    title('Platform light response (50ms)','FontSize',fontM,'FontWeight','bold');
+    
+    hLight50(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,3,3,[0.1 0.1 0.85 0.85],tightInterval),wideInterval));
+    hold on;
+    yLimBar50 = ceil(max(peth50ms(:))*1.05+0.0001);
+    bar(25,300,'BarWidth',50,'LineStyle','none','FaceColor',colorLLightBlue);
+    rectangle('Position',[0 yLimBar50*0.925, 50, yLimBar50*0.075], 'LineStyle','none','FaceColor',colorBlue);
+    hBar50 = bar(pethtime50ms, peth50ms, 'histc');
+    
+    set(hBar50,'FaceColor','k','EdgeAlpha',0);
+    set(hLight50(2), 'XLim', winLight50, 'XTick', [winLight50(1) 0 winLight50(2)],'XTickLabel',{winLight50(1);0;num2str(winLight50(2))},'YLim', [0 yLimBar50], 'YTick', [0 yLimBar50], 'YTickLabel', {[], yLimBar50});
+    set(hLight50,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
+    xlabel('Time (ms)','FontSize',fontS);
+    ylabel('Rate (Hz)','FontSize',fontS);
+    align_ylabel(hLight50);
+    
+    print(gcf,'-painters','-r300',[cellName,'.tiff'],'-dtiff');
+%     fclose('all');
+end

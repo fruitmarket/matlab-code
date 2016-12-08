@@ -1,13 +1,11 @@
-function laserIntPlfm
+function laserWidthCheck
 
 % binSize = 10; % Unit: msec
 resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
-winTagBlue = [-25 100]; % unit: msec
-binSizeTagBlue = 2;
-% winTagYel = [-500 2000]; % unit: msec
-% binSizeTagYel = 20;
+winLight = [-25 100]; % unit: msec
+binSize = 2;
 winCri = 30;
 [tData, tList] = tLoad;
 nCell = length(tList);
@@ -17,27 +15,24 @@ for iCell = 1:nCell
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     
-    % Load Events variables
-    load('Events.mat','lightTime');
- % Platform
-    nPlfmLight = length(lightTime.Plfm2hz);
+% Load Events variables
+    load('Events.mat');
+
+% Platform
+    nlight10ms = length(light10);
+    nlight50ms = length(light50);
     
-    spikeTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winTagBlue);
-    spikeTime5mw = spikeTimePlfm(1:nPlfmLight/3,1);
-    spikeTime8mw = spikeTimePlfm(nPlfmLight/3+1:nPlfmLight*2/3,1);
-    spikeTime10mw = spikeTimePlfm(nPlfmLight*2/3+1:nPlfmLight,1);
+    spikeTime10ms = spikeWin(tData{iCell},nlight10ms,winLight);
+    spikeTime50ms = spikeWin(tData{iCell},nlight10ms,winLight);
     
-    [xptPlfmBlue, ~,~,~,~,~] = rasterPETH(spikeTimePlfm,true(size(lightTime.Plfm2hz)),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_5mw, ~,~,~,~,~] = rasterPETH(spikeTime5mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    [xpt10ms, ypt10ms, pethtime10ms, peth10ms, pethConv10ms, pethConvZ10ms] = rasterPETH(spikeTime10ms,true(size(light10)),winLight,binSize,resolution,1);
+    [xpt50ms, ypt50ms, pethtime50ms, peth50ms, pethConv50ms, pethConvZ50ms] = rasterPETH(spikeTime50ms,true(size(light50)),winLight,binSize,resolution,1);
     
-    lightPlfmSpk = sum(0<xptPlfmBlue{1} & xptPlfmBlue{1}<winCri);
-    lightPlfmSpk5mw = sum(0<xptPlfmBlue_5mw{1} & xptPlfmBlue_5mw{1}<winCri);
-    lightPlfmSpk8mw = sum(0<xptPlfmBlue_8mw{1} & xptPlfmBlue_8mw{1}<winCri);
-    lightPlfmSpk10mw = sum(0<xptPlfmBlue_10mw{1} & xptPlfmBlue_10mw{1}<winCri);
+    lightspk10ms = sum(0<xpt10ms{1} & xpt10ms{1}<winCri);
+    lightspk50ms = sum(0<xpt50ms{1} & xpt50ms{1}<winCri);
     
-    save([cellName,'.mat'],'lightPlfmSpk5mw','lightPlfmSpk8mw','lightPlfmSpk10mw','-append');
+    save([cellName,'.mat'],'xpt10ms','ypt10ms','pethtime10ms','peth10ms','pethConv10ms','pethConvZ10ms',...
+        'xpt50ms','ypt50ms','pethtime50ms','peth50ms','pethConv50ms','pethConvZ50ms');
 end
 disp('### Laser Intensity Check is done!!!');
 

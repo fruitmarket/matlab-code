@@ -3,7 +3,7 @@ lineColor = {[144, 164, 174]./255,... % Before stimulation
     [38, 50, 56]./255}; % After stimulation
 
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 6; fontL = 8; % font size large
+fontS = 4; fontM = 5; fontL = 7; % font size large
 lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
 
 colorBlue = [33 150 243] ./ 255;
@@ -38,10 +38,10 @@ for iFile = 1:nFile
     load(matFile{iFile});
     load('Events.mat');
     
-    fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 18.3 13.725]);
+    fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 10 13.725]);
 
 % File name
-    hCell = axes('Position',axpt(1,1,1,1,axpt(1,20,1,1,[0.1 0.1 0.85 0.85],tightInterval),wideInterval));
+    hCell = axes('Position',axpt(1,1,1,1,axpt(1,20,1,1,[0.05 0.1 0.85 0.85],tightInterval),wideInterval));
     hold on;
     text(0,0.5,matFile{iFile}, 'FontSize',fontM, 'Interpreter','none','FontWeight','bold');
     set(hCell,'visible','off');
@@ -49,7 +49,7 @@ for iFile = 1:nFile
 % Waveform
     yLimWaveform = [min(spkwv(:)), max(spkwv(:))];
     for iCh = 1:4
-        hWaveform(iCh) = axes('Position',axpt(6,2,iCh,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.80],tightInterval),wideInterval));
+        hWaveform(iCh) = axes('Position',axpt(4,2,iCh,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.80],tightInterval),wideInterval));
         plot(spkwv(iCh,:), 'LineWidth', lineL, 'Color','k');
         if iCh == 4
             line([24 32], [yLimWaveform(2)-50 yLimWaveform(2)-50], 'Color','k', 'LineWidth', lineM);
@@ -58,7 +58,7 @@ for iFile = 1:nFile
     end
     set(hWaveform, 'Visible', 'off','XLim',[1 32], 'YLim',yLimWaveform*1.05);
     
-    hTextWf = axes('Position',axpt(6,2,5,1:2,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],tightInterval),wideInterval));
+    hTextWf = axes('Position',axpt(4,2,4,1:2,axpt(nCol,nRow,1,1,[0.3 0.1 0.85 0.85],tightInterval),wideInterval));
     hold on;
     text(0,0.7,['Spike width: ',num2str(spkwth,3),' us'], 'FontSize',fontM);
     text(0,0.5,['Half-valley width: ',num2str(hfvwth,3),' us'], 'FontSize',fontM);
@@ -101,7 +101,7 @@ for iFile = 1:nFile
     hold on;
     plot(xpt50ms{1},ypt50ms{1},'LineStyle','non','Marker','.','MarkerSize',markerS,'Color','k');
     set(hLight50(1),'XLim',winLight50,'XTick',[],'YLim',[0 nlight50ms],'YTick',[0 nlight50ms],'YTickLabel',{[],nlight50ms});
-    ylabel('Light Trials','FontSize',fontS);
+%     ylabel('Light Trials','FontSize',fontS);
     title('Platform light response (50ms)','FontSize',fontM,'FontWeight','bold');
     
     hLight50(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2,2,[0.1 0.1 0.85 0.75],wideInterval),wideInterval));
@@ -112,12 +112,15 @@ for iFile = 1:nFile
     hBar50 = bar(pethtime50ms, peth50ms, 'histc');
     
     set(hBar50,'FaceColor','k','EdgeAlpha',0);
-    set(hLight50(2), 'XLim', winLight50, 'XTick', [winLight50(1) 0 winLight50(2)],'XTickLabel',{winLight50(1);0;num2str(winLight50(2))},'YLim', [0 yLimBar50], 'YTick', [0 yLimBar50], 'YTickLabel', {[], yLimBar50});
+    xlabelCell = {-50,0:10:50,winLight50(2)};
+%     {winLight50(1);0:10:num2str(winLight50(2))}
+    set(hLight50(2), 'XLim', winLight50, 'XTick', [winLight50(1), 0:10:50, winLight50(2)],'XTickLabel',xlabelCell,'YLim', [0 yLimBar50], 'YTick', [0 yLimBar50], 'YTickLabel', {[], yLimBar50});
     set(hLight50,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
     xlabel('Time (ms)','FontSize',fontS);
-    ylabel('Rate (Hz)','FontSize',fontS);
-    align_ylabel(hLight50);
+%     ylabel('Rate (Hz)','FontSize',fontS);
+%     align_ylabel(hLight50);
     
     print(gcf,'-painters','-r300',[cellName,'.tiff'],'-dtiff');
-%     fclose('all');
+    close all;
+    fclose('all');
 end

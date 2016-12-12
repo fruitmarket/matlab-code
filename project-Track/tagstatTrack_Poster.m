@@ -4,21 +4,15 @@ function tagstatTrack_Poster()
 % Variables for log-rank test & salt test
 dt = 0.1;
 % testRangePlfm = 10; % unit: ms 
-% baseRangePlfm = 480; % baseline 
+% baseRangePlfm = 400; % baseline 
 % testRangeTrack = 10; % 8Hz: 10 // 20Hz: 20
-% baseRangeTrack = 100; % 8Hz: 110 // 20Hz: 15
-
-calibOnset = [0:2:20,0:2:16,0:2:10]';
-calibDuration = [10*ones(1,11),15*ones(1,9),20*ones(1,6)]';
-nRepeat = length(calibOnset);
-baseRangePlfm = [485*ones(1,11),480*ones(1,9),475*ones(1,6)]';
-baseRangeTrack = [100*ones(1,11),95*ones(1,9),90*ones(1,6)]';
+% baseRangeTrack = 80; % 8Hz: 110 // 20Hz: 15
 
 testRange8hz = 10;
 testRange2hz = 10;
 
-baseRange8hz = 100;
-baseRange2hz = 480;
+baseRange8hz = 80;
+baseRange2hz = 400;
 
 % Modulation direction
 resolution = 10;
@@ -55,8 +49,8 @@ for iCell = 1:nCell
    
 %% Log-rank test
     movingWin = (0:2:18)';
-    [pLR_Plfm2hzT,pLR_Plfm8hzT,pLR_TrackT] = deal(zeros(6,1));
-    [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT,timeLR_Plfm8hzT,H1_Plfm8hzT,H2_Plfm8hzT,timeLR_TrackT,H1_TrackT,H2_TrackT] = deal(cell(9,1));
+    [pLR_Plfm2hzT,pLR_Plfm8hzT,pLR_TrackT] = deal(zeros(10,1));
+    [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT,timeLR_Plfm8hzT,H1_Plfm8hzT,H2_Plfm8hzT,timeLR_TrackT,H1_TrackT,H2_TrackT] = deal(cell(10,1));
 %% pLR_Plfm2hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm2hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than 10, do not calculate pLR
         pLR_Plfm2hz = 1;
@@ -64,11 +58,11 @@ for iCell = 1:nCell
     else
         for iWin = 1:10
             [timePlfm2hz, censorPlfm2hz] = tagDataLoad(spikeData, lightTime.Plfm2hz+movingWin(iWin), testRange2hz, baseRange2hz);
-            [pLR_Plfm2hzT,timeLR_Plfm2hzT{iWin,1},H1_Plfm2hzT{iWin,1},H2_Plfm2hzT{iWin,1}] = logRankTest(timePlfm2hz, censorPlfm2hz); % H1: light induced firing H2: baseline
-            if isempty(pLR_Plfm2hzT)
-                pLR_Plfm2hzT = 1;
+            [pLR_Plfm2hzTemp,timeLR_Plfm2hzT{iWin,1},H1_Plfm2hzT{iWin,1},H2_Plfm2hzT{iWin,1}] = logRankTest(timePlfm2hz, censorPlfm2hz); % H1: light induced firing H2: baseline
+            if isempty(pLR_Plfm2hzTemp)
+                pLR_Plfm2hzTemp = 1;
             end
-            pLR_Plfm2hzT(iWin,1) = pLR_Plfm2hzT;
+            pLR_Plfm2hzT(iWin,1) = pLR_Plfm2hzTemp;
         end
         idxPlfm2hz = find(pLR_Plfm2hzT<alpha,1,'first');
         if isempty(idxPlfm2hz)
@@ -149,11 +143,11 @@ for iCell = 1:nCell
         else
             for iWin = 1:10
                 [timePlfm8hz, censorPlfm8hz] = tagDataLoad(spikeData, lightTime.Plfm8hz+movingWin(iWin), testRange8hz, baseRange8hz);
-                [pLR_Plfm8hzT,timeLR_Plfm8hzT{iWin,1},H1_Plfm8hzT{iWin,1},H2_Plfm8hzT{iWin,1}] = logRankTest(timePlfm8hz, censorPlfm8hz); % H1: light induced firing H2: baseline
-                if isempty(pLR_Plfm8hzT)
-                    pLR_Plfm8hzT = 1;
+                [pLR_Plfm8hzTemp,timeLR_Plfm8hzT{iWin,1},H1_Plfm8hzT{iWin,1},H2_Plfm8hzT{iWin,1}] = logRankTest(timePlfm8hz, censorPlfm8hz); % H1: light induced firing H2: baseline
+                if isempty(pLR_Plfm8hzTemp)
+                    pLR_Plfm8hzTemp = 1;
                 end
-                pLR_Plfm8hzT(iWin,1) = pLR_Plfm8hzT;
+                pLR_Plfm8hzT(iWin,1) = pLR_Plfm8hzTemp;
             end
             idxPlfm8hz = find(pLR_Plfm8hzT<alpha,1,'first');
             if isempty(idxPlfm8hz)
@@ -231,11 +225,11 @@ for iCell = 1:nCell
     else
         for iWin = 1:10
             [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Track8hz+movingWin(iWin),testRange8hz,baseRange8hz);
-            [pLR_TrackT,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
-            if isempty(pLR_TrackT)
-                pLR_TrackT = 1;
+            [pLR_TrackTemp,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
+            if isempty(pLR_TrackTemp)
+                pLR_TrackTemp = 1;
             end
-            pLR_TrackT(iWin,1) = pLR_TrackT;
+            pLR_TrackT(iWin,1) = pLR_TrackTemp;
         end
         idxTrack = find(pLR_TrackT<alpha,1,'first');
         if isempty(idxTrack)

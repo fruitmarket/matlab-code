@@ -164,10 +164,11 @@ elseif(regexp(filePath,'DRun')); % DRun session
 elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
     switch ~isempty(lightTime.Track8hz)
         case 0
-            laserDelay = randn(30,1);
+            laserDelay = 3+rand(30,1);
             for iLap = 31:60
-                tempLighttime = sensor10(iLap)+laserDelay(iLap-30)+125*(1:((sensor11(iLap)-sensor10(iLap))/125))';
+                tempLighttime = sensor10(iLap)+laserDelay(iLap-30)+125*(1:floor((sensor11(iLap)-sensor10(iLap))/125))';
                 lightTime.Track8hz = [lightTime.Track8hz;tempLighttime];
+                lightTime.Total = lightTime.Track8hz;
                 lightLap = lightTime.Track8hz((sensor10(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor11(iLap))) - sensor10(iLap);                
                 temp_psdlightPre = sensor10(iLap-30)+lightLap;
                 temp_psdlightPre = temp_psdlightPre(temp_psdlightPre<sensor11(iLap-30));
@@ -191,10 +192,11 @@ elseif(regexp(filePath,'noRw')); % Nolight session (control session for DRw)
 else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
     switch ~isempty(lightTime.Track8hz)
         case 0
-            laserDelay = randn(30,1);
+            laserDelay = 3+rand(30,1);
             for iLap = 31:60
-                tempLighttime = sensor6(iLap)+laserDelay(iLap-30)+125*(1:((sensor9(iLap)-sensor6(iLap))/125))';
+                tempLighttime = sensor6(iLap)+laserDelay(iLap-30)+125*(1:floor((sensor9(iLap)-sensor6(iLap))/125))';
                 lightTime.Track8hz = [lightTime.Track8hz; tempLighttime];
+                lightTime.Total = lightTime.Track8hz;
                 lightLap = lightTime.Track8hz((sensor6(iLap)<lightTime.Track8hz & lightTime.Track8hz<sensor9(iLap)))-sensor6(iLap);
                 temp_psdlightPre = sensor6(iLap-30)+lightLap;
                 temp_psdlightPre = temp_psdlightPre(temp_psdlightPre<sensor9(iLap-30));

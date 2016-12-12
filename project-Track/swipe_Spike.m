@@ -42,7 +42,7 @@ for iPath = 1:nPath
 %     waveform;
 %     heatMap;
 %     pearson_field_correlation_baseComp_Track;
-      tagstatTrack_Poster; % newest version
+    tagstatTrack_Poster; % newest version
 %     mapCorr;
 %     mapCorrEvOd;
 %     laserIntCheck_Ori;

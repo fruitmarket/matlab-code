@@ -38,6 +38,16 @@ for iCell = 1:nCell
     save([cellName,'.mat'],'meanFR10','meanFR50',...
         'xpt10ms','ypt10ms','pethtime10ms','peth10ms','pethConv10ms','pethConvZ10ms','nlight10ms',...
         'xpt50ms','ypt50ms','pethtime50ms','peth50ms','pethConv50ms','pethConvZ50ms','nlight50ms');
+    
+    if exist('time20','var')
+       meanFR20 = sum(histc(tData{iCell},time20))/(diff(time20)/1000);
+       nlight20ms = length(light20);
+       spikeTime20ms = spikeWin(tData{iCell},light20,winLight);
+       [xpt20ms, ypt20ms, pethtime20ms, peth20ms, pethConv20ms, pethConvZ20ms] = rasterPETH(spikeTime20ms,true(size(light20)),winLight,binSize,resolution,1);
+       lightspk20ms = sum(0<xpt10ms{1} & xpt10ms{1}<winCri);
+       
+       save([cellName,'.mat'],'meanFR20','xpt20ms','ypt20ms','pethtime20ms','peth20ms','pethConv20ms','pethConvZ20ms','nlight20ms','-append');
+    end
 end
 disp('### Laser Intensity Check is done!!!');
 

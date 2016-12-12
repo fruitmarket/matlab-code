@@ -16,11 +16,19 @@ recStart = find(strcmp(eventString,'Starting Recording'));
 recEnd = find(strcmp(eventString,'Stopping Recording'));
 
 time10 = timeStamp([recStart(1), recEnd(1)]);
-time50 = timeStamp([recStart(2), recEnd(2)]);
+time50 = timeStamp([recStart(end), recEnd(end)]);
 
 lightTotal = timeStamp(strcmp(eventString,'Light'));
-light10 = lightTotal(lightTotal < timeStamp(recEnd(1)));
-light50 = lightTotal(timeStamp(recStart(2)) < lightTotal & lightTotal < timeStamp(recEnd(2)));
+light10 = lightTotal(lightTotal < time10(2));
+light50 = lightTotal(time50(1) < lightTotal & lightTotal < time50(2));
 
+if length(recStart) == 3
+    time20 = timeStamp([recStart(2), recEnd(2)]);
+    light20 = lightTotal(time20(1) < lightTotal & lightTotal < time20(2));
+end
 save('Events.mat','time10','time50','lightTotal','light10','light50');
+
+if length(recStart) == 3
+    save('Events.mat','time20','light20','-append');
+end
 end

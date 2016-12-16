@@ -18,7 +18,7 @@ baseRange2hz = 400;
 resolution = 10;
 binSize = 2;
 winTest = [-30, 30];
-alpha = 0.001;
+alpha = 0.005;
 
 if nargin == 0; sessionFolder = {}; end;
 [tData, tList] = tLoad(sessionFolder);

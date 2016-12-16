@@ -25,7 +25,7 @@ else
                 cscList = [cscList; FindFiles('CSC*.ncs','StartingDirectory',fileparts(cscFile{iFolder}),'CheckSubdirs',0)];
             elseif exist(cscFile{iFolder},'file') == 2
                 [filePath, fileName, ext] = fileparts(cscFile{iFolder});
-                if strcmp(ext,'.csc')
+                if strcmp(ext,'.ncs')
                     cscList = [cscList; cscFile{iFolder}];
                 end
             end

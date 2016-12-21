@@ -21,7 +21,7 @@ for iCell = 1:nCell
     
     % Load Events variables
     load('Events.mat');
-    win = [-1, 1]*1000; % unit:msec, window for binning
+    win = [-7, 7]*1000; % unit:msec, window for binning
     
     % Load Spike data
     spikeData = tData{iCell}; % unit: msec

@@ -52,7 +52,7 @@ for iCell = 1:nCell
     [pLR_Plfm2hzT,pLR_Plfm8hzT,pLR_TrackT] = deal(zeros(10,1));
     [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT,timeLR_Plfm8hzT,H1_Plfm8hzT,H2_Plfm8hzT,timeLR_TrackT,H1_TrackT,H2_TrackT] = deal(cell(10,1));
 %% pLR_Plfm2hz
-    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm2hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than 10, do not calculate pLR
+    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm2hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than spkCri, do not calculate pLR
         pLR_Plfm2hz = 1;
         [statDir_Plfm2hz, latencyPlfm2hz, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(0);
     else
@@ -112,7 +112,8 @@ for iCell = 1:nCell
 %         else % no change
 %             statDir_Plfm2hz = 0;
 %         end
-    % v2.0 (based on H1, H2)
+
+% v2.0 (based on H1, H2)
         if H1_Plfm2hz(end)>H2_Plfm2hz(end)
             statDir_Plfm2hz = 1;
         elseif H1_Plfm2hz(end)<H2_Plfm2hz(end)
@@ -193,7 +194,7 @@ for iCell = 1:nCell
 %                 statDir_Plfm8hz = 0;
 %             end
             
-    % v2.0 (based on H1, H2)
+% v2.0 (based on H1, H2)
             if H1_Plfm8hz(end)>H2_Plfm8hz(end)
                 statDir_Plfm8hz = 1;
             elseif H1_Plfm8hz(end)<H2_Plfm8hz(end)
@@ -202,7 +203,7 @@ for iCell = 1:nCell
                 statDir_Plfm8hz = 0;
             end
 
-    % Latency (Platform) 
+% Latency (Platform) 
             switch (statDir_Plfm8hz)
                 case 1 % activation
                     temp_latencyPlfm8hz = cellfun(@min,spkLatency_Plfm8hz,'UniformOutput',false);
@@ -280,7 +281,7 @@ for iCell = 1:nCell
 %             statDir_Track = 0;
 %         end
 
-    % v2.0 (Based on H1, H2)
+% v2.0 (Based on H1, H2)
         if H1_Track(end) > H2_Track(end)
             statDir_Track = 1;
         elseif H1_Track(end) < H2_Track(end)
@@ -318,7 +319,7 @@ for iCell = 1:nCell
     
     spkCriteria_pre = spikeWin(spikeData,psdlightPre+calibTrack,[-50,50]);
     spkCriteria_post = spikeWin(spikeData,psdlightPost+calibTrack,[-50,50]);
-    if sum(cell2mat(cellfun(@length,spkCriteria_pre,'UniformOutput',false))) < spkCriTrack  % if the # of spikes are less than 10, do not calculate pLR
+    if sum(cell2mat(cellfun(@length,spkCriteria_pre,'UniformOutput',false))) < spkCriTrack  % if the # of spikes are less than spkCri, do not calculate pLR
         pLR_Track_pre = 1;
     end
     if sum(cell2mat(cellfun(@length,spkCriteria_post,'UniformOutput',false))) < spkCriTrack

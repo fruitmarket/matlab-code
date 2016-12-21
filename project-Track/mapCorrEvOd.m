@@ -69,12 +69,12 @@ for iCell = 1:nCell
     end
     
     % correlation
-    [r_CorrEvOd, p_CorrEvOd] = corr(even_ratemap(even_visit_map(:)&odd_visit_map(:)), odd_ratemap(even_visit_map(:)&odd_visit_map(:)),'type','Pearson');
+    [r_CorrPrePre, p_CorrPrePre] = corr(even_ratemap(even_visit_map(:)&odd_visit_map(:)), odd_ratemap(even_visit_map(:)&odd_visit_map(:)),'type','Pearson');
     
 %     even_ratemap = flipud((even_ratemap/15)');
 %     odd_ratemap = flipud((odd_ratemap/15)');
     
-    save([cellName, '.mat'],'r_CorrEvOd','p_CorrEvOd','-append');        
+    save([cellName, '.mat'],'r_CorrPrePre','p_CorrPrePre','-append');        
 end
 disp('### fieldMap_EvenOdd is done!');
 end

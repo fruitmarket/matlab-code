@@ -10,13 +10,13 @@ function [rCorr, pCorr]= fieldPcorr(period1,period2,timestamp,position,spkData)
 
 %%%%%%%%%%%%%%%%%%%%%%
 
-%% Parameters
+% Parameters
 alpha_v = 0.005;
 fr_threshold = 3;
 fieldsize_cutoff = 10;
 field_ratio = [72 48];
 
-%% Loading data
+% Loading data
     rCorr = zeros(1);
     
     comp1.time = timestamp(period1(1)<=timestamp & timestamp<=period1(end));
@@ -26,14 +26,14 @@ field_ratio = [72 48];
     comp2.position = position(period2(1)<=timestamp & timestamp<=period2(end),:);
     
     % Field map & Visit map    
-    [comp1.fr_map, comp1.visit_map, comp1.visit_dur, comp1.flags] = findmaps_trim(comp1.time, comp1.position, spkData, field_ratio);
+    [comp1.fr_map, comp1.visit_map, comp1.visit_dur, comp1.flags] = findmaps(comp1.time, comp1.position, spkData, field_ratio);
     if isempty(find(comp1.visit_map,1))
         comp1.meanrate = 0;
     else
         comp1.meanrate = sum(comp1.fr_map)/sum(comp1.visit_map);
     end
     
-    [comp2.fr_map, comp2.visit_map, comp2.visit_dur, comp2.flags] = findmaps_trim(comp2.time, comp2.position, spkData, field_ratio);
+    [comp2.fr_map, comp2.visit_map, comp2.visit_dur, comp2.flags] = findmaps(comp2.time, comp2.position, spkData, field_ratio);
     if isempty(find(comp2.visit_map,1))
         comp2.meanrate = 0;
     else
@@ -47,6 +47,3 @@ field_ratio = [72 48];
     % Pearson's correlation
     [rCorr, pCorr] = corr(comp1.ratemap(comp1.visit_map(:)&comp2.visit_map(:)), comp2.ratemap(comp1.visit_map(:)&comp2.visit_map(:)),'type','Pearson');
     return;
-    
-    
-

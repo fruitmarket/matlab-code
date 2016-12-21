@@ -38,13 +38,12 @@ for iCell = 1:nCell
     period8 = [sensor.S1(61), sensor.S12(90)];
     
     spkData = tData{iCell};
-    [r_Corrhfxhf, p_Corrhfxhf] = fieldPcorr(period1, period2, vtTimestamp, vtPosition, spkData);
-    [r_Corrbfxdr, p_Corrbfxdr] = fieldPcorr(period3, period4, vtTimestamp, vtPosition, spkData);
-    [r_Corrbfxaft, p_Corrbfxaft] = fieldPcorr(period5, period6, vtTimestamp, vtPosition, spkData);
-    [r_Corrdrxaft, p_Corrdrxaft] = fieldPcorr(period7, period8, vtTimestamp, vtPosition, spkData);
+    [r_CorrPrePre, p_CorrPrePre] = fieldPcorr(period1, period2, vtTimestamp, vtPosition, spkData);
+    [r_CorrPreStm, p_CorrPreStm] = fieldPcorr(period3, period4, vtTimestamp, vtPosition, spkData);
+    [r_CorrPrePost, p_CorrPrePost] = fieldPcorr(period5, period6, vtTimestamp, vtPosition, spkData);
+    [r_CorrStmPost, p_CorrStmPost] = fieldPcorr(period7, period8, vtTimestamp, vtPosition, spkData);
     
-    save([cellName, '.mat'],...
-        'r_Corrhfxhf', 'p_Corrhfxhf', 'r_Corrbfxdr', 'p_Corrbfxdr', 'r_Corrbfxaft', 'p_Corrbfxaft', 'r_Corrdrxaft','p_Corrdrxaft','-append');
+    save([cellName, '.mat'],'r_CorrPreStm', 'p_CorrPreStm', 'r_CorrPrePost', 'p_CorrPrePost', 'r_CorrStmPost','p_CorrStmPost','-append');
 end
 
 disp('### Correlation calculation is done! ###');

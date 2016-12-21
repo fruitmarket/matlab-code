@@ -42,14 +42,12 @@ for iPath = 1:nPath
     pethLight;
     waveform;
     heatMap;
-%     pearson_field_correlation_baseComp_Track;
     tagstatTrack_Poster; % newest version
-%     mapCorr;
-%     mapCorrEvOd;
+    mapCorr; % PreStm, PrePost, StmPost
+    mapCorrEvOd; % For Even lap, odd lap of Pre-stm
     laserIntPlfm;
-%     trackPlot_v3
-%     trackPlot_v4_multifig_v3;
     plot_Track_sin_v3;
+    
     fclose('all');
     close all;
 end

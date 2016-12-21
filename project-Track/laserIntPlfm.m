@@ -6,8 +6,6 @@ resolution = 10; % sigma = resoution * binSize = 100 msec
 % Tag variables
 winTagBlue = [-25 100]; % unit: msec
 binSizeTagBlue = 2;
-% winTagYel = [-500 2000]; % unit: msec
-% binSizeTagYel = 20;
 winCri = 30;
 [tData, tList] = tLoad;
 nCell = length(tList);

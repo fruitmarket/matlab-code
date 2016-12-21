@@ -83,14 +83,14 @@ for iCell = 1:nCell
     stm_ratemap = flipud(stm_ratemap');
     post_ratemap = flipud(post_ratemap');
     
-    peakMap = max(max([pre_ratemap,stm_ratemap,post_ratemap]))*30; % Sampleing frequency: 30Hz
-    peakBase = max(max(base_ratemap))*30;
+    peakFR_track = max(max([pre_ratemap,stm_ratemap,post_ratemap]))*30; % Sampleing frequency: 30Hz
+    peakFR_plfm = max(max(base_ratemap))*30;
     
     save ([cellName, '.mat'],...
         'pre_ratemap','pre_infos','pre_field_info','pre_flags',...
         'stm_ratemap', 'stm_infos', 'stm_field_info','stm_flags',...
         'post_ratemap', 'post_infos', 'post_field_info','post_flags',...
-        'peakMap','peakBase','-append');
+        'peakFR_track','peakFR_plfm','-append');
 end
 
 disp('### Analyzing Field map is done!');

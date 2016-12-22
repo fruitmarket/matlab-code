@@ -27,6 +27,7 @@ for iFile = 1:nFile
         peakFR_track,peakFR_plfm,...    % heatMap
         pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,pLR_Plfm8hz,statDir_Plfm8hz,latencyPlfm8hz,pLR_Track,statDir_Track,latencyTrack,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
+        r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
         lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw); % laserIntPlfm
                 
     T = [T; temT];

@@ -27,7 +27,7 @@ function event2mat_trackOri %(filename)
     end
 
 %% Sensor time
-sensorITIThreshold = 50; % sensor intevals shorter than 50ms are usually artifacts.
+sensorITIThreshold = 100; % sensor intevals shorter than 100ms are usually artifacts.
 sensor1 = timeStamp((~cellfun('isempty',regexp(eventString,'S1'))) & cellfun('length',eventString)==2);
 sensorOut = [false; (diff(sensor1(:,1)) < sensorITIThreshold)] | (sensor1(:,1) < timeStamp(recStart(1)));
 sensor1(sensorOut,:) = [];
@@ -97,10 +97,10 @@ sensor = rmfield(sensor,fields(offSensor)); % unit: msec
 nSensor = numel(fieldnames(sensor));
 fields = fieldnames(sensor);
 
-for iSensor = 1:(nSensor-1) % Sometimes there are sensor check errors. Incorrect sensor check
+for iSensor = 2:(nSensor-1) % Sometimes there are sensor check errors. Incorrect sensor check
     if size(sensor.(fields{iSensor}),1) ~= 90;
 %         sensor.(fields{iSensor})(1:size(sensor.(fields{iSensor}),1)-90) = [];
-        if sensor.(fields{iSensor})(1) - sensor.(fields{iSensor+1})(1) > 0
+        if sensor.(fields{iSensor})(1) - sensor.(fields{iSensor+1})(1) > 0 | sensor.(fields{iSensor-1})(1) - sensor.(fields{iSensor})(1) > 0
             sensor.(fields{iSensor})(1) = [];
         else
             sensor.(fields{iSensor})(91:size(sensor.(fields{iSensor}),1))=[];

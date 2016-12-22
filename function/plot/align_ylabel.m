@@ -1,4 +1,4 @@
-function align_ylabel(axHandles)
+function align_ylabel(axHandles,ratioPosition)
 nAx = size(axHandles);
 hYLabel = zeros(nAx(1),nAx(2));
 hPos = cell(nAx(1),nAx(2));
@@ -15,7 +15,7 @@ meanXPos = mean(cellfun(@(x) x(1), hPos));
 
 for iAx = 1:nAx(1)
     for jAx = 1:nAx(2)
-        hPos{iAx,jAx}(1) = meanXPos*0.7;
+        hPos{iAx,jAx}(1) = meanXPos*ratioPosition;
         set(hYLabel(iAx,jAx),'Position',hPos{iAx,jAx});
     end
 end

@@ -3,7 +3,7 @@ lineColor = {[144, 164, 174]./255,... % Before stimulation
     [38, 50, 56]./255}; % After stimulation
 
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 5; fontL = 7; % font size large
+fontS = 4; fontM = 6; fontL = 8; % font size large
 lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
 
 colorBlue = [33 150 243] ./ 255;
@@ -57,27 +57,27 @@ set(hText,'visible','off');
 hDRun(1) = axes('Position',axpt(nCol,nRow,1:2,2:4,[0.1 0.1 0.85 0.85],midInterval));
 scatter(DRun_meanFR,DRun_burstIdx,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 text(30,0.8,['n = ', num2str((nDRunTN))],'FontSize',fontL);
-ylabel('Burst index','fontSize',fontM);
-title('meanFR vs. Burst index','fontSize',fontM,'fontWeight','bold');
+ylabel('Burst index','fontSize',fontL);
+title('meanFR vs. Burst index','fontSize',fontL,'fontWeight','bold');
 
 hDRun(2) = axes('Position',axpt(nCol,nRow,1:2,5:7,[0.1 0.1 0.85 0.85],midInterval));
 scatter(DRun_meanFR,DRun_spkwth,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-ylabel('Spike width','fontSize',fontM);
-title('meanFR vs. Spike width','fontSize',fontM,'fontWeight','bold');
+ylabel('Spike width (usec)','fontSize',fontL);
+title('meanFR vs. Spike width','fontSize',fontL,'fontWeight','bold');
 
 hDRun(3) = axes('Position',axpt(nCol,nRow,1:2,8:10,[0.1 0.1 0.85 0.85],midInterval));
 scatter(DRun_meanFR,DRun_hfvwth,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-ylabel('Half valley width','fontSize',fontM);
-title('meanFR vs. Half valley width','fontSize',fontM,'fontWeight','bold');
+ylabel('Half valley width (usec)','fontSize',fontL);
+title('meanFR vs. Half valley width','fontSize',fontL,'fontWeight','bold');
 
 hDRun(4) = axes('Position',axpt(nCol,nRow,1:2,11:13,[0.1 0.1 0.85 0.85],midInterval));
 scatter(DRun_meanFR,DRun_spkpvr,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-ylabel('Peak valley ratio','fontSize',fontM);
-xlabel('Mean firing rate on track','fontSize',fontM);
-title('meanFR vs. Peak-valley ratio','fontSize',fontM,'fontWeight','bold');
+ylabel('Peak valley ratio','fontSize',fontL);
+xlabel('Mean firing rate on track (Hz)','fontSize',fontL);
+title('meanFR vs. Peak-valley ratio','fontSize',fontL,'fontWeight','bold');
 
 % align_ylabel(hDRun,0.9);
-set(hDRun,'Box','off','TickDir','out','fontSize',fontM);
+set(hDRun,'Box','off','TickDir','out','fontSize',fontL);
 set(hDRun(1),'YLim',[0, 1]);
 set(hDRun(2),'YLim',[0, max(DRun_spkwth)*1.1]);
 set(hDRun(3),'YLim',[0, max(DRun_hfvwth)*1.1]);
@@ -87,27 +87,27 @@ set(hDRun(4),'YLim',[0, max(DRun_spkpvr)*1.1]);
 hDRw(1) = axes('Position',axpt(nCol,nRow,4:5,2:4,[0.1 0.1 0.85 0.85],midInterval));
 scatter(DRw_meanFR,DRw_burstIdx,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 text(30,0.8,['n = ', num2str(nDRwTN)],'FontSize',fontL);
-ylabel('Burst index','fontSize',fontM);
-title('meanFR vs. Burst index','fontSize',fontM,'fontWeight','bold');
+ylabel('Burst index','fontSize',fontL);
+title('meanFR vs. Burst index','fontSize',fontL,'fontWeight','bold');
 
 hDRw(2) = axes('Position',axpt(nCol,nRow,4:5,5:7,[0.1 0.1 0.85 0.85],midInterval));
 scatter(DRw_meanFR,DRw_spkwth,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-ylabel('Spike width','fontSize',fontM);
-title('meanFR vs. Spike width','fontSize',fontM,'fontWeight','bold');
+ylabel('Spike width (usec)','fontSize',fontL);
+title('meanFR vs. Spike width','fontSize',fontL,'fontWeight','bold');
 
 hDRw(3) = axes('Position',axpt(nCol,nRow,4:5,8:10,[0.1 0.1 0.85 0.85],midInterval));
 scatter(DRw_meanFR,DRw_hfvwth,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-ylabel('Half valley width','fontSize',fontM);
-title('meanFR vs. Half valley width','fontSize',fontM,'fontWeight','bold');
+ylabel('Half valley width (usec)','fontSize',fontL);
+title('meanFR vs. Half valley width','fontSize',fontL,'fontWeight','bold');
 
 hDRw(4) = axes('Position',axpt(nCol,nRow,4:5,11:13,[0.1 0.1 0.85 0.85],midInterval));
 scatter(DRw_meanFR,DRw_spkpvr,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
-ylabel('Peak valley ratio','fontSize',fontM);
-xlabel('Mean firing rate on track','fontSize',fontM);
-title('meanFR vs. Peak-valley ratio','fontSize',fontM,'fontWeight','bold');
+ylabel('Peak valley ratio','fontSize',fontL);
+xlabel('Mean firing rate on track (Hz)','fontSize',fontL);
+title('meanFR vs. Peak-valley ratio','fontSize',fontL,'fontWeight','bold');
 
 % align_ylabel(hDRw,0.9);
-set(hDRw,'Box','off','TickDir','out','fontSize',fontM);
+set(hDRw,'Box','off','TickDir','out','fontSize',fontL);
 set(hDRw(1),'YLim',[0, 1]);
 set(hDRw(2),'YLim',[0, max(DRun_spkwth)*1.1]);
 set(hDRw(3),'YLim',[0, max(DRun_hfvwth)*1.1]);

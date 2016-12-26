@@ -20,11 +20,14 @@ for iFile = 1:nFile
     taskType = categorical(cellstr(fileSeg{9}));
     taskProb = categorical(cellstr(fileSeg{10}));
     spkwv = {spkwv};
-       
+    sensorMeanFR_DRun = {sensorMeanFR_DRun};
+    sensorMeanFR_DRw = {sensorMeanFR_DRw};
+    
     temT = table(mouseLine,taskType,path,taskProb,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
         lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
         spkwv,spkwth,hfvwth,spkpvr,...  % waveform
         peakFR_track,peakFR_plfm,...    % heatMap
+        sensorMeanFR_DRun,sensorMeanFR_DRw,... % sensorMeanFR
         pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,pLR_Plfm8hz,statDir_Plfm8hz,latencyPlfm8hz,pLR_Track,statDir_Track,latencyTrack,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
         r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
@@ -35,4 +38,4 @@ for iFile = 1:nFile
 end
 
 cd(rtPath);
-save('cellList_ori.mat','T');
+save('cellList_ori2.mat','T');

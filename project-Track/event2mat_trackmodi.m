@@ -9,7 +9,7 @@ function event2mat_trackOri %(filename)
 %%
 %     [timeStamp, eventStrings] = Nlx2MatEV('Events.nev', [1 0 0 0 1], 0, 1, []);
 %     timeStamp = timeStamp'/1000; % unit: ms
-    [eData, eList] = eLoad; % Unit: msec
+    [eData, eList] = eLoad_mac; % Unit: msec
     timeStamp = eData.t;
     eventString = eData.s;
     
@@ -120,37 +120,25 @@ A = [1,0,0]; B = [0,1,0]; C = [0,0,1];
 trialIndex = logical([repmat(A,nTrial/3,1); repmat(B,nTrial/3,1); repmat(C,nTrial/3,1)]);
 
 %%
-    switch numel(recStart)
-        case 3      % Baseline - Task - Tagging recording
-            lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
-            lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
-            lightTime.Track8hz = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
-            lightTime.Track2hz = [];
-            lightTime.PlfmTotal = lightTime.Total(lightTime.Total>=timeStamp(recStart(3))); % unit: msec
-            if length(lightTime.PlfmTotal) > 400
-                lightTime.PlfmTotal = lightTime.PlfmTotal(end-599:end);
-            else
-                lightTime.PlfmTotal = lightTime.PlfmTotal(end-299:end);
-            end
-            lightTime.Plfm2hz = lightTime.PlfmTotal; % unit: msec
-            lightTime.Plfm8hz = [];
-            preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
-            stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
-            postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
-        case 4
-            lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
-            lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
-            lightTime.Track2hz = []; % unit: msec
-            lightTime.Track8hz = lightTime.TrackTotal; % unit: msec
-            lightTime.Plfm2hz = lightTime.Total(timeStamp(recStart(3))<lightTime.Total & lightTime.Total<timeStamp(recEnd(3))); % unit: msec
-            lightTime.Plfm2hz = lightTime.Plfm2hz(end-599:end);
-            lightTime.Plfm8hz = lightTime.Total(timeStamp(recStart(4))<lightTime.Total & lightTime.Total<timeStamp(recEnd(4)));
-            lightTime.PlfmTotal = [lightTime.Plfm2hz;lightTime.Plfm8hz]; % unit: msec
-            preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
-            stmTime = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(nTrial*2/3)]; % unit: msec
-            postTime = [sensor.(fields{1})(nTrial*2/3+1); sensor.(fields{end})(nTrial)]; % unit: msec
-    end
- 
+lightTime.Total = timeStamp(strcmp(eventString,'Light')); % unit: msec
+lightTime.TrackTotal = lightTime.Total(lightTime.Total<=timeStamp(recEnd(2))); % unit: msec
+lightTime.Track2hz = lightTime.TrackTotal(end-599:end); % unit: msec
+lightTime.Track8hz = lightTime.TrackTotal(1:end-598); % unit: msec
+lightTime.Plfm2hz = lightTime.Total(timeStamp(recStart(3))<lightTime.Total & lightTime.Total<timeStamp(recEnd(3))); % unit: msec
+lightTime.Plfm8hz = lightTime.Total(timeStamp(recStart(4))<lightTime.Total & lightTime.Total<timeStamp(recEnd(4)));
+lightTime.PlfmTotal = [lightTime.Plfm2hz;lightTime.Plfm8hz]; % unit: msec
+
+lastlightidx = find(sensor.S12>lightTime.Track2hz(end),1,'first');
+
+preTime = [sensor.(fields{1})(1); sensor.(fields{end})(nTrial/3)]; % unit: msec
+stmTime8hz = [sensor.(fields{1})(nTrial/3+1); sensor.(fields{end})(50)]; % unit: msec
+stmTime2hz = [sensor.(fields{1})(52); sensor.(fields{end})(lastlightidx)]; % unit: msec
+postTime = [sensor.(fields{1})(lastlightidx+1); sensor.(fields{end})(nTrial)]; % unit: msec
+
+for ilap = 1:nLap
+    if sensor.S1(
+end
+
 %% Pseudo light generation
 eventFile = FindFiles('Events.nev');
 [filePath, ~, ~] = fileparts(eventFile{1});
@@ -237,7 +225,7 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
 end
 
 %% Save variables
-        save('Events.mat',...
+        save('Events_modi.mat',...
         'baseTime','preTime','stmTime','postTime','taskTime','plfmTime',...
         'sensor','fields','nTrial','nSensor','trialIndex','psdlightPre','psdlightPost','lightTime');
 end

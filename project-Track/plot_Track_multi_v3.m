@@ -1,10 +1,6 @@
 function plot_Track_multi_v3(fileList,saveDir)
 % function trackPlot_v4_multifig_v3()
 % Plot properties
-lineColor = {[144, 164, 174]./255,... % Before stimulation
-    [33 150 243]./ 255,... % During stimulation
-    [38, 50, 56]./255}; % After stimulation
-
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
 fontS = 4; fontM = 5; fontL = 7; % font size large
 lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
@@ -20,6 +16,8 @@ colorDarkGray = [117, 117, 117] ./255;
 colorYellow = [255 243 3] ./ 255;
 colorLightYellow = [255 249 196] ./ 255;
 colorBlack = [0, 0, 0];
+
+lineColor = {colorGray;colorBlue;colorBlack}; % Pre, Stm, Post
 
 markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
 tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
@@ -125,9 +123,9 @@ for iFile = 1:nFile
             'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
         xlabel('Time (ms)','FontSize',fontS);
         ylabel('Rate (Hz)', 'FontSize', fontS);
-        align_ylabel(hTagBlue(1:2),1)
+        align_ylabel(hTagBlue(1:2),0.8)
     % Hazard function
-        hTagBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,1:2,4:6,[0.08 0.15 0.9 0.90],tightInterval),wideInterval));
+        hTagBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,1:2,4:6,[0.12 0.15 0.85 0.90],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_Plfm2hz;H2_Plfm2hz])*1100+0.0001)/1000 1]);
         winHTag = [0 testRangeChETA];
@@ -140,7 +138,6 @@ for iFile = 1:nFile
         ylabel('H(t)','FontSize',fontS);
         title('Log-rank test (Platform)','FontSize',fontM,'FontWeight','bold');
         set(hTagBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
-        align_ylabel(hTagBlue(3),1)
     end
     
     % Response check: Track
@@ -176,7 +173,7 @@ for iFile = 1:nFile
         ylabel('Rate (Hz)','FontSize',fontS);
         xlabel('Time (ms)','FontSize',fontS);
     % Hazard function    
-        hModuBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,4:5,4:6,[0.08 0.15 0.9 0.90],tightInterval),wideInterval));
+        hModuBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,4:5,4:6,[0.12 0.15 0.85 0.90],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_Track;H2_Track])*1100+0.0001)/1000 1]);
         winHModu = [0 testRangeChETA];
@@ -189,7 +186,7 @@ for iFile = 1:nFile
         title('Log-rank test (Track)','FontSize',fontM,'FontWeight','bold');
         set(hModuBlue(3),'XLim',winHModu,'XTick',winHModu,'XTickLabel',{winHModu(1);num2str(winHModu(2))},'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
         set(hModuBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
-        align_ylabel(hModuBlue,1)     
+        align_ylabel(hModuBlue,0.8)     
     end
         
 % Heat map
@@ -234,7 +231,7 @@ for iFile = 1:nFile
     text(44,45,'Track heat map','FontSize',fontM,'FontWeight','bold');
     
 % Track light response raster plot (aligned on pseudo light - light - pseudo light)
-    hTrackLight(1) = axes('Position',axpt(1,8,1,5:6,axpt(nCol,nRow,7:9,4:7,[0.12 0.16 0.90 0.85],tightInterval),wideInterval));
+    hTrackLight(1) = axes('Position',axpt(1,8,1,5:6,axpt(nCol,nRow,7:9,4:7,[0.15 0.16 0.85 0.85],tightInterval),wideInterval));
         plot([xptPsdPre{1}, xptTrackLight{1}, xptPsdPost{1}],[yptPsdPre{1}, (length(psdlightPre)+yptTrackLight{1}), (sum([length(psdlightPre),length(lightTime.Track8hz)])+yptPsdPost{1})],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
         if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw'))
             rec = rectangle('Position',[0.5 length(psdlightPre)+1, 10, length(lightTime.Track8hz)], 'LineStyle','none','FaceColor',lightDurationColor{1});
@@ -254,17 +251,21 @@ for iFile = 1:nFile
         uistack(rec,'bottom');
         ylabel('Light trial','FontSize',fontS);
         title('Track light response (Psd-L-Psd)','FontSize',fontM,'FontWeight','bold');  
-    hTrackLight(2) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,7:9,4:7,[0.12 0.16 0.90 0.85],tightInterval),wideInterval));
+    hTrackLight(2) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,7:9,4:7,[0.15 0.16 0.85 0.85],tightInterval),wideInterval));
         ylimpeth = ceil(max([pethPsdPreConv,pethTrackLightConv,pethPsdPostConv])*1.1+0.0001);
         hold on;
         plot(pethtimePsdPre,pethPsdPreConv,'LineStyle','-','LineWidth',lineM,'Color',colorGray);
         plot(pethtimeTrackLight,pethTrackLightConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlue);
         plot(pethtimePsdPost,pethPsdPostConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
         ylabel('Rate (Hz)','FontSize',fontS);
-        align_ylabel(hTrackLight,1);
+    hTrackLight(3) = axes('Position',axpt(1,8,1,8,axpt(nCol,nRow,7:9,4:7,[0.10 0.10 0.85 0.85],tightInterval),wideInterval));
+        text(0.2,1,'-: Pre','FontSize',fontS,'Color',colorGray);    
+        text(0.6,1,'-: Stm','FontSize',fontS,'Color',colorBlue);
+        text(1.0,1,'-: Post','FontSize',fontS,'Color',colorBlack);
+        align_ylabel(hTrackLight(1:2),0.7);
     set(hTrackLight(1),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-25 100],'XTick',[],'YLim',[0, sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])],'YTick',[0,length(psdlightPre),sum([length(psdlightPre),length(lightTime.Track8hz)]),sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])]);
     set(hTrackLight(2),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS,'XLim',[-25, 100],'XTick',[-25,0,10,30,50,100],'YLim',[0, max(ylimpeth)]);
-
+    set(hTrackLight(3),'Box','off','visible','off');
     
 if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'))
     iSensor1 = 6; % Light on sensor
@@ -425,7 +426,7 @@ end
     set(hSpectrum,'Box','off','TickDir','out','YLim',yLim,'YTick',[],'XLim',[0,4],'XTick',[1,2,3],'XTickLabel',{'Pr','St','  Po'},'fontSize',fontS,'LineWidth',lineM)
     set(hSpectrum(1),'Box','off','TickDir','out','YLim',yLim,'YTick',[yLim(1),yLim(2)],'YTickLabel',{'0';sprintf('%.2E',yLim(2))},'XLim',[0,4],'XTick',[1,2,3],'XTickLabel',{'Pr','St','  Po'},'fontSize',fontS)
 %     set(hSpectrum(1),'Box','off','TickDir','out','YLim',yLim,'YTick',[yLim(1),yLim(2)],'YTickLabel',{'0';sprintf('%.2e|',yLim(2))},'XLim',[0,4],'XTick',[1,2,3],'XTickLabel',{'Pr','St','  Po'},'fontSize',fontS)
-    align_ylabel(hSpectrum(1),1);
+    align_ylabel(hSpectrum(1),0.7);
 
 % Cell ID
     hID = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,8,11,[0.15 0.02 0.85 0.85],tightInterval),wideInterval));

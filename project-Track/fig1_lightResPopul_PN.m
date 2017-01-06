@@ -32,20 +32,20 @@ colorLightGreen4 = [56, 142, 60]./255;
 colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
-load(['cellList_v4','.mat']);
-rtDir_sig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\v7\v7_DRw_Sig';
-rtDir_nosig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\v7\v7_DRw_noSig';
-alpha = 0.001;
+load(['cellList_ori','.mat']);
+rtDir_sig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\v8\v8_DRun_Sig';
+rtDir_nosig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\v8\v8_DRun_noSig';
+alpha = 0.005;
 %%
-total_DRun = T.taskProb == '100' & T.taskType == 'DRw' & T.peakMap>1;
+total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1;
 nTotal_DRun = sum(double(total_DRun));
 
 %% Single cell figure separation
-figList_DRunlightPN_sig = T.Path((total_DRun & T.pLR_Plfm2hz < alpha) | (total_DRun & T.pLR_Track < alpha));
-trackPlot_v4_multifig_v3(figList_DRunlightPN_sig,rtDir_sig);
+figList_DRunlightPN_sig = T.path((total_DRun & T.pLR_Plfm2hz < alpha) | (total_DRun & T.pLR_Track < alpha));
+plot_Track_multi_v3(figList_DRunlightPN_sig,rtDir_sig);
 
-figList_DRunlightPN_nosig = T.Path((total_DRun & ~(T.pLR_Plfm2hz < alpha)) & (total_DRun & ~(T.pLR_Track < alpha)));
-trackPlot_v4_multifig_v3(figList_DRunlightPN_nosig,rtDir_nosig);
+figList_DRunlightPN_nosig = T.path((total_DRun & ~(T.pLR_Plfm2hz < alpha)) & (total_DRun & ~(T.pLR_Track < alpha)));
+plot_Track_multi_v3(figList_DRunlightPN_nosig,rtDir_nosig);
 cd('D:\Dropbox\SNL\P2_Track');
 
 %% Conditio

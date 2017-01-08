@@ -25,7 +25,7 @@ width = 0.7;
 criteria_FR = 7;
 rtDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track';
 
-load('cellList_ori2.mat');
+load('cellList_ori.mat');
 
 DRunPn = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
 DRunIn = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
@@ -78,67 +78,160 @@ sensorMFR_DRwIn_none = sensorMeanFR_DRwPreStm(DRwIn_none,:);
 sensorMFR_DRwIn_either = sensorMeanFR_DRwPreStm(DRwIn_either,:);
 sensorMFR_DRwIn_both = sensorMeanFR_DRwPreStm(DRwIn_both,:);
 
-nCol = 2;
-nRow = 2;
+%% Mean Std calculation
+mean_sensorMFR_DRunPn_none = mean(sensorMFR_DRunPn_none);
+mean_sensorMFR_DRunPn_either = mean(sensorMFR_DRunPn_either);
+mean_sensorMFR_DRunPn_both = mean(sensorMFR_DRunPn_both);
 
-lim = [25, 55, 20, 35];
+mean_sensorMFR_DRunIn_none = mean(sensorMFR_DRunIn_none);
+mean_sensorMFR_DRunIn_either = mean(sensorMFR_DRunIn_either);
+mean_sensorMFR_DRunIn_both = mean(sensorMFR_DRunIn_both);
 
-hScatter(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.80 0.80],wideInterval));
+mean_sensorMFR_DRwPn_none = mean(sensorMFR_DRwPn_none);
+mean_sensorMFR_DRwPn_either = mean(sensorMFR_DRwPn_either);
+mean_sensorMFR_DRwPn_both = mean(sensorMFR_DRwPn_both);
+
+mean_sensorMFR_DRwIn_none = mean(sensorMFR_DRwIn_none);
+mean_sensorMFR_DRwIn_either = mean(sensorMFR_DRwIn_either);
+mean_sensorMFR_DRwIn_both = mean(sensorMFR_DRwIn_both);
+
+std_sensorMFR_DRunPn_none = std(sensorMFR_DRunPn_none);
+std_sensorMFR_DRunPn_either = std(sensorMFR_DRunPn_either);
+std_sensorMFR_DRunPn_both = std(sensorMFR_DRunPn_both);
+
+std_sensorMFR_DRunIn_none = std(sensorMFR_DRunIn_none);
+std_sensorMFR_DRunIn_either = std(sensorMFR_DRunIn_either);
+std_sensorMFR_DRunIn_both = std(sensorMFR_DRunIn_both);
+
+std_sensorMFR_DRwPn_none = std(sensorMFR_DRwPn_none);
+std_sensorMFR_DRwPn_either = std(sensorMFR_DRwPn_either);
+std_sensorMFR_DRwPn_both = std(sensorMFR_DRwPn_both);
+
+std_sensorMFR_DRwIn_none = std(sensorMFR_DRwIn_none);
+std_sensorMFR_DRwIn_either = std(sensorMFR_DRwIn_either);
+std_sensorMFR_DRwIn_both = std(sensorMFR_DRwIn_both);
+
+nCol = 8;
+nRow = 8;
+
+%% Plot scatter
+fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 18 18]);
+hScatter(1) = axes('Position',axpt(nCol,nRow,1:2,2:3,[0.05 0.05 0.85 0.85],wideInterval));
 scatter(sensorMFR_DRunPn_none(:,1),sensorMFR_DRunPn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 hold on;
 scatter(sensorMFR_DRunPn_either(:,1),sensorMFR_DRunPn_either(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
 hold on;
 scatter(sensorMFR_DRunPn_both(:,1),sensorMFR_DRunPn_both(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorRed);
-text(20,23,['Grey (none): n = ',num2str(size(sensorMFR_DRunPn_none,1))],'fontSize',fontL);
-text(20,21,['Blue (either): n = ',num2str(size(sensorMFR_DRunPn_either,1))],'fontSize',fontL);
-text(20,19,['Red (both): n = ',num2str(size(sensorMFR_DRunPn_both,1))],'fontSize',fontL);
+text(20,20,['Grey (none): n = ',num2str(size(sensorMFR_DRunPn_none,1))],'fontSize',fontL);
+text(20,15,['Blue (either): n = ',num2str(size(sensorMFR_DRunPn_either,1))],'fontSize',fontL);
+text(20,10,['Red (both): n = ',num2str(size(sensorMFR_DRunPn_both,1))],'fontSize',fontL);
 xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
-title('mean FR btw S6-S9, PN','fontSize',fontL);
+title('mean FR btw S6-S9, PN','fontSize',fontL,'fontWeight','bold');
 
-hScatter(2) = axes('Position',axpt(nCol,nRow,1,2,[0.1 0.1 0.80 0.80],wideInterval));
+hScatter(2) = axes('Position',axpt(nCol,nRow,1:2,4:5,[0.05 0.05 0.85 0.85],wideInterval));
 scatter(sensorMFR_DRunIn_none(:,1),sensorMFR_DRunIn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 hold on;
 scatter(sensorMFR_DRunIn_either(:,1),sensorMFR_DRunIn_either(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
 hold on;
 scatter(sensorMFR_DRunIn_both(:,1),sensorMFR_DRunIn_both(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorRed);
-text(40,21,['Grey (none): n = ',num2str(size(sensorMFR_DRunIn_none,1))],'fontSize',fontL);
-text(40,19,['Blue (either): n = ',num2str(size(sensorMFR_DRunIn_either,1))],'fontSize',fontL);
-text(40,17,['Red (both): n = ',num2str(size(sensorMFR_DRunIn_both,1))],'fontSize',fontL);
+text(55,50,['Grey (none): n = ',num2str(size(sensorMFR_DRunIn_none,1))],'fontSize',fontL);
+text(55,40,['Blue (either): n = ',num2str(size(sensorMFR_DRunIn_either,1))],'fontSize',fontL);
+text(55,30,['Red (both): n = ',num2str(size(sensorMFR_DRunIn_both,1))],'fontSize',fontL);
 xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
-title('mean FR btw S6-S9, IN','fontSize',fontL);
+title('mean FR btw S6-S9, IN','fontSize',fontL,'fontWeight','bold');
 
-hScatter(3) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.80 0.80],wideInterval));
+hScatter(3) = axes('Position',axpt(nCol,nRow,5:6,2:3,[0.05 0.05 0.85 0.85],wideInterval));
 scatter(sensorMFR_DRwPn_none(:,1),sensorMFR_DRwPn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 hold on;
 scatter(sensorMFR_DRwPn_either(:,1),sensorMFR_DRwPn_either(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
 hold on;
 scatter(sensorMFR_DRwPn_both(:,1),sensorMFR_DRwPn_both(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorRed);
-text(15,19,['Grey (none): n = ',num2str(size(sensorMFR_DRwPn_none,1))],'fontSize',fontL);
-text(15,17,['Blue (either): n = ',num2str(size(sensorMFR_DRwPn_either,1))],'fontSize',fontL);
-text(15,15,['Red (both): n = ',num2str(size(sensorMFR_DRwPn_both,1))],'fontSize',fontL);
+text(20,20,['Grey (none): n = ',num2str(size(sensorMFR_DRwPn_none,1))],'fontSize',fontL);
+text(20,15,['Blue (either): n = ',num2str(size(sensorMFR_DRwPn_either,1))],'fontSize',fontL);
+text(20,10,['Red (both): n = ',num2str(size(sensorMFR_DRwPn_both,1))],'fontSize',fontL);
 xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
-title('mean FR btw S10-S11, PN','fontSize',fontL);
+title('mean FR btw S10-S11, PN','fontSize',fontL,'fontWeight','bold');
 
-hScatter(4) = axes('Position',axpt(nCol,nRow,2,2,[0.1 0.1 0.80 0.80],wideInterval));
+hScatter(4) = axes('Position',axpt(nCol,nRow,5:6,4:5,[0.05 0.05 0.85 0.85],wideInterval));
 scatter(sensorMFR_DRwIn_none(:,1),sensorMFR_DRwIn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 hold on;
 scatter(sensorMFR_DRwIn_either(:,1),sensorMFR_DRwIn_either(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
 hold on;
 scatter(sensorMFR_DRwIn_both(:,1),sensorMFR_DRwIn_both(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorRed);
-text(25,15,['Grey (none): n = ',num2str(size(sensorMFR_DRwIn_none,1))],'fontSize',fontL);
-text(25,13,['Blue (either): n = ',num2str(size(sensorMFR_DRwIn_either,1))],'fontSize',fontL);
-text(25,11,['Red (both): n = ',num2str(size(sensorMFR_DRwIn_both,1))],'fontSize',fontL);
+text(35,30,['Grey (none): n = ',num2str(size(sensorMFR_DRwIn_none,1))],'fontSize',fontL);
+text(35,25,['Blue (either): n = ',num2str(size(sensorMFR_DRwIn_either,1))],'fontSize',fontL);
+text(35,20,['Red (both): n = ',num2str(size(sensorMFR_DRwIn_both,1))],'fontSize',fontL);
 xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
-title('mean FR btw S10-S11, IN','fontSize',fontL);
+title('mean FR btw S10-S11, IN','fontSize',fontL,'fontWeight','bold');
 
-set(hScatter(1),'XLim',[-1,lim(1)],'YLim',[-1,lim(1)]);
-set(hScatter(2),'XLim',[-1,lim(2)],'YLim',[-1,lim(2)]);
-set(hScatter(3),'XLim',[-1,lim(3)],'YLim',[-1,lim(3)]);
-set(hScatter(4),'XLim',[-1,lim(4)],'YLim',[-1,lim(4)]);
-set(hScatter,'Box','off','TickDir','out','XTick',[0:5:55],'YTick',[0:5:55],'fontSize',fontL);
+set(hScatter(1),'XLim',[-1,25],'YLim',[-1,25]);
+set(hScatter(2),'XLim',[-1,55],'YLim',[-1,55]);
+set(hScatter(3),'XLim',[-1,25],'YLim',[-1,25]);
+set(hScatter(4),'XLim',[-1,35],'YLim',[-1,35]);
+set(hScatter,'Box','off','TickDir','out','XTick',[0:10:55],'YTick',[0:10:55],'fontSize',fontL);
+
+%% Plot line
+hPlot(1) = axes('Position',axpt(nCol,nRow,3:4,2:3,[0.1 0.05 0.85 0.85],wideInterval));
+errorbar([1,2],mean_sensorMFR_DRunPn_none,std_sensorMFR_DRunPn_none/sqrt(size(sensorMFR_DRunPn_none,1)),'Color',colorBlack)
+hold on;
+errorbar([4,5],mean_sensorMFR_DRunPn_either,std_sensorMFR_DRunPn_either/sqrt(size(sensorMFR_DRunPn_either,1)),'Color',colorBlack)
+hold on;
+errorbar([7,8],mean_sensorMFR_DRunPn_both,std_sensorMFR_DRunPn_both/sqrt(size(sensorMFR_DRunPn_both,1)),'Color',colorBlack)
+hold on;
+plot([1,2],mean_sensorMFR_DRunPn_none,'-o','Color',colorBlack,'MarkerFaceColor',colorGray,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+hold on;
+plot([4,5],mean_sensorMFR_DRunPn_either,'-o','Color',colorBlack,'MarkerFaceColor',colorBlue,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+hold on;
+plot([7,8],mean_sensorMFR_DRunPn_both,'-o','Color',colorBlack,'MarkerFaceColor',colorRed,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+ylabel('Firing rate (Hz)','fontSize',fontL);
+
+hPlot(2) = axes('Position',axpt(nCol,nRow,3:4,4:5,[0.1 0.05 0.85 0.85],wideInterval));
+errorbar([4,5],mean_sensorMFR_DRunIn_either,std_sensorMFR_DRunIn_either/sqrt(size(sensorMFR_DRunIn_either,1)),'Color',colorBlack)
+hold on;
+errorbar([7,8],mean_sensorMFR_DRunIn_both,std_sensorMFR_DRunIn_both/sqrt(size(sensorMFR_DRunIn_both,1)),'Color',colorBlack)
+hold on;
+plot([1,2],mean_sensorMFR_DRunIn_none,'-o','Color',colorBlack,'MarkerFaceColor',colorGray,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+hold on;
+plot([4,5],mean_sensorMFR_DRunIn_either,'-o','Color',colorBlack,'MarkerFaceColor',colorBlue,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+hold on;
+plot([7,8],mean_sensorMFR_DRunIn_both,'-o','Color',colorBlack,'MarkerFaceColor',colorRed,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+ylabel('Firing rate (Hz)','fontSize',fontL);
+
+hPlot(3) = axes('Position',axpt(nCol,nRow,7:8,2:3,[0.1 0.05 0.85 0.85],wideInterval));
+errorbar([1,2],mean_sensorMFR_DRwPn_none,std_sensorMFR_DRwPn_none/sqrt(size(sensorMFR_DRwPn_none,1)),'Color',colorBlack)
+hold on;
+errorbar([4,5],mean_sensorMFR_DRwPn_either,std_sensorMFR_DRwPn_either/sqrt(size(sensorMFR_DRwPn_either,1)),'Color',colorBlack)
+hold on;
+errorbar([7,8],mean_sensorMFR_DRwPn_both,std_sensorMFR_DRwPn_both/sqrt(size(sensorMFR_DRwPn_both,1)),'Color',colorBlack)
+hold on;
+plot([1,2],mean_sensorMFR_DRwPn_none,'-o','Color',colorBlack,'MarkerFaceColor',colorGray,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+hold on;
+plot([4,5],mean_sensorMFR_DRwPn_either,'-o','Color',colorBlack,'MarkerFaceColor',colorBlue,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+hold on;
+plot([7,8],mean_sensorMFR_DRwPn_both,'-o','Color',colorBlack,'MarkerFaceColor',colorRed,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+ylabel('Firing rate (Hz)','fontSize',fontL);
+
+hPlot(4) = axes('Position',axpt(nCol,nRow,7:8,4:5,[0.1 0.05 0.85 0.85],wideInterval));
+errorbar([4,5],mean_sensorMFR_DRwIn_either,std_sensorMFR_DRwIn_either/sqrt(size(sensorMFR_DRwIn_either,1)),'Color',colorBlack)
+hold on;
+errorbar([7,8],mean_sensorMFR_DRwIn_both,std_sensorMFR_DRwIn_both/sqrt(size(sensorMFR_DRwIn_both,1)),'Color',colorBlack)
+hold on;
+plot([1,2],mean_sensorMFR_DRwIn_none,'-o','Color',colorBlack,'MarkerFaceColor',colorGray,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+hold on;
+plot([4,5],mean_sensorMFR_DRwIn_either,'-o','Color',colorBlack,'MarkerFaceColor',colorBlue,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+hold on;
+plot([7,8],mean_sensorMFR_DRwIn_both,'-o','Color',colorBlack,'MarkerFaceColor',colorRed,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
+ylabel('Firing rate (Hz)','fontSize',fontL);
+
+set(hPlot(1),'XLim',[0,9],'YLim',[0, 7]);
+set(hPlot(2),'XLim',[0,9],'YLim',[15,30]);
+set(hPlot(3),'XLim',[0,9],'YLim',[0, 4]);
+set(hPlot(4),'XLim',[0,9],'YLim',[15,30]);
+
+set(hPlot,'Box','off','TickDir','out','fontSize',fontL,'XTick',5,'XTickLabel',{'Pre-Stm'});
 
 print(gcf,'-painters','-r300','plot_evokedPattern.tiff','-dtiff');

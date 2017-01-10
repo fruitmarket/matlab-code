@@ -121,7 +121,7 @@ xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
 title('mean FR total track, PN','fontSize',fontL);
 
-hScatter(2) = axes('Position',axpt(nCol,nRow,1:2,5:6,[0.1 0.1 0.85 0.85],wideInterval));
+hScatter(2) = axes('Position',axpt(nCol,nRow,1:2,4:5,[0.1 0.1 0.85 0.85],wideInterval));
 scatter(totalMFR_DRunIn_none(:,1),totalMFR_DRunIn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 hold on;
 scatter(totalMFR_DRunIn_either(:,1),totalMFR_DRunIn_either(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
@@ -147,7 +147,7 @@ xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
 title('mean FR btw S10-S11, PN','fontSize',fontL);
  
-hScatter(4) = axes('Position',axpt(nCol,nRow,5:6,5:6,[0.1 0.1 0.85 0.85],wideInterval));
+hScatter(4) = axes('Position',axpt(nCol,nRow,5:6,4:5,[0.1 0.1 0.85 0.85],wideInterval));
 scatter(totalMFR_DRwIn_none(:,1),totalMFR_DRwIn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
 hold on;
 scatter(totalMFR_DRwIn_either(:,1),totalMFR_DRwIn_either(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorBlue);
@@ -181,7 +181,7 @@ hold on;
 plot([7,8],mean_totalMFR_DRunPn_both,'-o','Color',colorBlack,'MarkerFaceColor',colorRed,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
 ylabel('Firing rate (Hz)','fontSize',fontL);
 
-hPlot(2) = axes('Position',axpt(nCol,nRow,3:4,5:6,[0.1 0.1 0.85 0.85],wideInterval));
+hPlot(2) = axes('Position',axpt(nCol,nRow,3:4,4:5,[0.1 0.1 0.85 0.85],wideInterval));
 errorbar([4,5],mean_totalMFR_DRunIn_either,std_totalMFR_DRunIn_either/sqrt(size(totalMFR_DRunIn_either,1)),'Color',colorBlack)
 hold on;
 errorbar([7,8],mean_totalMFR_DRunIn_both,std_totalMFR_DRunIn_both/sqrt(size(totalMFR_DRunIn_both,1)),'Color',colorBlack)
@@ -207,7 +207,7 @@ hold on;
 plot([7,8],mean_totalMFR_DRwPn_both,'-o','Color',colorBlack,'MarkerFaceColor',colorRed,'MarkerEdgeColor',colorBlack,'markerSize',markerS);
 ylabel('Firing rate (Hz)','fontSize',fontL);
 
-hPlot(4) = axes('Position',axpt(nCol,nRow,7:8,5:6,[0.1 0.1 0.85 0.85],wideInterval));
+hPlot(4) = axes('Position',axpt(nCol,nRow,7:8,4:5,[0.1 0.1 0.85 0.85],wideInterval));
 errorbar([4,5],mean_totalMFR_DRwIn_either,std_totalMFR_DRwIn_either/sqrt(size(totalMFR_DRwIn_either,1)),'Color',colorBlack)
 hold on;
 errorbar([7,8],mean_totalMFR_DRwIn_both,std_totalMFR_DRwIn_both/sqrt(size(totalMFR_DRwIn_both,1)),'Color',colorBlack)

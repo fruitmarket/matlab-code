@@ -229,7 +229,7 @@ ylabel('Firing rate (Hz)','fontSize',fontL);
 
 set(hPlot(1),'XLim',[0,9],'YLim',[0, 7]);
 set(hPlot(2),'XLim',[0,9],'YLim',[15,30]);
-set(hPlot(3),'XLim',[0,9],'YLim',[0, 4]);
+set(hPlot(3),'XLim',[0,9],'YLim',[0, 7]);
 set(hPlot(4),'XLim',[0,9],'YLim',[15,30]);
 
 set(hPlot,'Box','off','TickDir','out','fontSize',fontL,'XTick',5,'XTickLabel',{'Pre-Stm'});

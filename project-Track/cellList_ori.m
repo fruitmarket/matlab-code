@@ -22,6 +22,8 @@ for iFile = 1:nFile
     spkwv = {spkwv};
     sensorMeanFR_DRun = {sensorMeanFR_DRun};
     sensorMeanFR_DRw = {sensorMeanFR_DRw};
+    deto_spkPlfm2hz = {deto_spkPlfm2hz};
+    deto_spkPlfm8hz = {deto_spkPlfm8hz};
     
     temT = table(mouseLine,taskType,path,taskProb,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
         lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
@@ -31,7 +33,9 @@ for iFile = 1:nFile
         pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,pLR_Plfm8hz,statDir_Plfm8hz,latencyPlfm8hz,pLR_Track,statDir_Track,latencyTrack,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
         r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
-        lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw); % laserIntPlfm
+        lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw,... % laserIntPlfm
+        lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
+        deto_spkPlfm2hz, deto_spkPlfm8hz); % detoSpike
                 
     T = [T; temT];
     fclose('all');

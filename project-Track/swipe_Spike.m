@@ -35,6 +35,7 @@ nPath = length(filePath);
 
 %% Swiping contents
 for iPath = 7:nPath
+    curPath = iPath;
     cd(filePath{iPath});    
     
 %     event2mat_trackori;
@@ -45,8 +46,11 @@ for iPath = 7:nPath
 %     tagstatTrack_Poster; % newest version
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
+
+%     sensorMeanFR;
 %     laserIntPlfm;
-    sensorMeanFR;
+    laserFreqCheck;
+%     detoSpike;
 %     plot_Track_sin_v3;
     
     fclose('all');

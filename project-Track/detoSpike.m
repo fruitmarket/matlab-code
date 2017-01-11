@@ -10,7 +10,7 @@ for iCell = 1:nCell
     cd(cellPath);
     
     load Events.mat
-    light2hz = lightTime.Plfm2hz(1:5);
+    light2hz = lightTime.Plfm2hz(201:205);
     spkTime2hz = spikeWin(tData{iCell},light2hz,winCri);
     deto_spkPlfm2hz = cellfun(@length, spkTime2hz);
      
@@ -22,7 +22,7 @@ for iCell = 1:nCell
         deto_spkPlfm8hz = NaN;
     end
     
-%     save([cellName,'.mat'],'deto_spkPlfm2hz','deto_spkPlfm8hz','-append');
+    save([cellName,'.mat'],'deto_spkPlfm2hz','deto_spkPlfm8hz','-append');
 end
 disp('### detonate spike calculation is done! ###')
 

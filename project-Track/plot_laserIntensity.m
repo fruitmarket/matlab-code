@@ -27,6 +27,9 @@ width = 0.7;
 paperSizeX = [18.3, 8.00];
 
 %%
+rtDir = 'D:\Dropbox\SNL\P2_Track';
+cd(rtDir);
+
 load('cellList_ori.mat');
 
 criteria_FR = 7;
@@ -69,28 +72,31 @@ lightPlfm10mw_DRwIn = T.lightPlfmSpk10mw(DRwIn_evoked);
 
 
 %% Figure (DRun)
-hInten(1) = axes('Position',axpt(2,2,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+nCol = 3;
+nRow = 3;
+
+hInten(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],tightInterval));
 plot([1,2,3],[lightPlfm5mw_DRunPn, lightPlfm8mw_DRunPn, lightPlfm10mw_DRunPn],'-o','Color',colorGray,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','MarkerSize',markerM);
 hold on;
 plot([1,2,3],[mean(lightPlfm5mw_DRunPn), mean(lightPlfm8mw_DRunPn), mean(lightPlfm10mw_DRunPn)],'-o','Color','k','MarkerFaceColor','k','LineWidth',2,'MarkerSize',markerM);
 text(3.5, 50,['n = ',num2str(length(lightPlfm5mw_DRunPn))]);
 ylabel('Spike counts');
 
-hInten(2) = axes('Position',axpt(2,2,1,2,[0.1 0.1 0.85 0.85], wideInterval));
+hInten(2) = axes('Position',axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85], tightInterval));
 plot([1,2,3],[lightPlfm5mw_DRunIn, lightPlfm8mw_DRunIn, lightPlfm10mw_DRunIn],'-o','Color',colorGray,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','MarkerSize',markerM);
 hold on;
 plot([1,2,3],[mean(lightPlfm5mw_DRunIn), mean(lightPlfm8mw_DRunIn), mean(lightPlfm10mw_DRunIn)],'-o','Color','k','MarkerFaceColor','k','LineWidth',2,'MarkerSize',markerM);
 text(3.5, 50,['n = ',num2str(length(lightPlfm5mw_DRunIn))]);
 ylabel('Spike counts');
 
-hInten(3) = axes('Position',axpt(2,2,2,1,[0.1 0.1 0.85 0.85], wideInterval));
+hInten(3) = axes('Position',axpt(nCol,nRow,3,1,[0.1 0.1 0.85 0.85], tightInterval));
 plot([1,2,3],[lightPlfm5mw_DRwPn, lightPlfm8mw_DRwPn, lightPlfm10mw_DRwPn],'-o','Color',colorGray,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','MarkerSize',markerM);
 hold on;
 plot([1,2,3],[mean(lightPlfm5mw_DRwPn), mean(lightPlfm8mw_DRwPn), mean(lightPlfm10mw_DRwPn)],'-o','Color','k','MarkerFaceColor','k','LineWidth',2,'MarkerSize',markerM);
 text(3.5, 50,['n = ',num2str(length(lightPlfm5mw_DRwPn))]);
 ylabel('Spike counts');
 
-hInten(4) = axes('Position',axpt(2,2,2,2,[0.1 0.1 0.85 0.85], wideInterval));
+hInten(4) = axes('Position',axpt(nCol,nRow,3,3,[0.1 0.1 0.85 0.85], tightInterval));
 plot([1,2,3],[lightPlfm5mw_DRwIn, lightPlfm8mw_DRwIn, lightPlfm10mw_DRwIn],'-o','Color',colorGray,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','MarkerSize',markerM);
 hold on;
 plot([1,2,3],[mean(lightPlfm5mw_DRwIn), mean(lightPlfm8mw_DRwIn), mean(lightPlfm10mw_DRwIn)],'-o','Color','k','MarkerFaceColor','k','LineWidth',2,'MarkerSize',markerM);
@@ -103,4 +109,4 @@ set(hInten(2),'YLim',[0,400]);
 set(hInten(3),'YLim',[0,300]);
 set(hInten(4),'YLim',[0,400]);
 
-print('-painters','laserIntensity2hz','-r300','-dtiff');
+print('-painters','plot_laserIntensity2hz.tiff','-r300','-dtiff');

@@ -435,9 +435,7 @@ end
     text(0.9, 0, ['Cell ID: ',num2str(iFile)],'FontSize',fontM,'fontWeight','bold');
     set(hID,'visible','off');
     
-    
-%     print(gcf,'-dtiff','-r300',[cellFigName{1},'.tiff']);
-    print(gcf,'-painters','-r300',[cellFigName{1},'.tiff'],'-dtiff');
+    print('-painters',[cellFigName{1},'.tif'],'-r300','-dtiff');
 %     print(gcf,'-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
     close;
 end

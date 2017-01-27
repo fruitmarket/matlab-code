@@ -15,7 +15,10 @@ for iFile = 1:nFile
     load(matFile{iFile});
 
     path = matFile(iFile);
-    fileSeg = strsplit(matFile{iFile},{'\','_'});
+    dateSession = strsplit(matFile{iFile},{'\'});
+    tetLocation = strsplit(dateSession{4},'_');
+    tetLocation = categorical(cellstr(tetLocation{2}));
+    fileSeg = strsplit(matFile{iFile},{'\','_'});    
     mouseLine = categorical(cellstr(fileSeg{5}));
     taskType = categorical(cellstr(fileSeg{9}));
     taskProb = categorical(cellstr(fileSeg{10}));
@@ -25,7 +28,7 @@ for iFile = 1:nFile
     deto_spkPlfm2hz = {deto_spkPlfm2hz};
     deto_spkPlfm8hz = {deto_spkPlfm8hz};
     
-    temT = table(mouseLine,taskType,path,taskProb,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
+    temT = table(path,mouseLine,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
         lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
         spkwv,spkwth,hfvwth,spkpvr,...  % waveform
         peakFR_track,peakFR_plfm,...    % heatMap
@@ -35,11 +38,44 @@ for iFile = 1:nFile
         r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
         lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw,... % laserIntPlfm
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
-        deto_spkPlfm2hz, deto_spkPlfm8hz); % detoSpike
+        deto_spkPlfm2hz, deto_spkPlfm8hz,...% detoSpike
+        lightProb2hzPlfm,lightProb8hzPlfm); % laserSpikeProb
                 
     T = [T; temT];
     fclose('all');
 end
-
 cd(rtPath);
 save('cellList_ori.mat','T');
+
+%% excel file format
+T = table();
+for iFile = 1:nFile
+    load(matFile{iFile});
+
+    path = matFile(iFile);
+    dateSession = strsplit(matFile{iFile},{'\'});
+    tetLocation = strsplit(dateSession{4},'_');
+    tetLocation = categorical(cellstr(tetLocation{2}));
+    fileSeg = strsplit(matFile{iFile},{'\','_'});    
+    mouseLine = categorical(cellstr(fileSeg{5}));
+    taskType = categorical(cellstr(fileSeg{9}));
+    taskProb = categorical(cellstr(fileSeg{10}));
+    spkwv = {spkwv};
+    sensorMeanFR_DRun = {sensorMeanFR_DRun};
+    sensorMeanFR_DRw = {sensorMeanFR_DRw};
+    deto_spkPlfm2hz = {deto_spkPlfm2hz};
+    deto_spkPlfm8hz = {deto_spkPlfm8hz};
+    
+    temT = table(path,mouseLine,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
+        peakFR_track,peakFR_plfm,...    % heatMap
+        pLR_Plfm2hz,pLR_Plfm8hz,pLR_Track,pLR_Track_pre,pLR_Track_post,statDir_Plfm2hz,statDir_Plfm8hz,statDir_Track,latencyPlfm2hz,latencyPlfm8hz,latencyTrack,...  % tagstatTrack_poster
+        r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
+        lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw,... % laserIntPlfm
+        lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
+        lightProb2hzPlfm,lightProb8hzPlfm); % laserSpikeProb
+                
+    T = [T; temT];
+    fclose('all');
+end
+cd(rtPath);
+writetable(T,['cellList_',datestr(date),'.xlsx']);

@@ -87,7 +87,7 @@ for iFile = 1:nFile
     set(hLight10,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
     xlabel('Time (ms)','FontSize',fontS);
     ylabel('Rate (Hz)','FontSize',fontS);
-    align_ylabel(hLight10);
+    align_ylabel(hLight10,1);
     
 % Raster & PSTH (50 ms pulse)
     winLight50 = [min(pethtime50ms) max(pethtime50ms)];
@@ -111,7 +111,7 @@ for iFile = 1:nFile
     set(hLight50,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
     xlabel('Time (ms)','FontSize',fontS);
     ylabel('Rate (Hz)','FontSize',fontS);
-    align_ylabel(hLight50);
+    align_ylabel(hLight50,1);
   
 % Raster & psth (20 ms pulse)
     if exist('time20','var')
@@ -136,7 +136,7 @@ for iFile = 1:nFile
         set(hLight20,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontS);
         xlabel('Time (ms)','FontSize',fontS);
         ylabel('Rate (Hz)','FontSize',fontS);
-        align_ylabel(hLight20);
+        align_ylabel(hLight20,1);
     end
 
 % Information

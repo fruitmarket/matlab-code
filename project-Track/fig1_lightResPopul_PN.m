@@ -33,13 +33,13 @@ colorOrange = [27, 94, 32]./255;
 
 % Stimulation during running
 load(['cellList_ori','.mat']);
-rtDir_total = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRw_total';
+rtDir_total = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRun_total';
 % rtDir_sig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRun_sig';
 % rtDir_nosig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRun_noSig';
 alpha = 0.005;
 %%
-total_DRun = T.taskProb == '100' & T.taskType == 'DRw';
-% total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1;
+% total_DRun = T.taskProb == '100' & T.taskType == 'DRw';
+total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1;
 nTotal_DRun = sum(double(total_DRun));
 
 %% Single cell figure separation
@@ -48,7 +48,7 @@ plot_Track_multi_v3(figList_DRun_total,rtDir_total);
 
 % figList_DRunlightPN_sig = T.path((total_DRun & T.pLR_Plfm2hz < alpha) | (total_DRun & T.pLR_Track < alpha));
 % plot_Track_multi_v3(figList_DRunlightPN_sig,rtDir_sig);
-
+% 
 % figList_DRunlightPN_nosig = T.path((total_DRun & ~(T.pLR_Plfm2hz < alpha)) & (total_DRun & ~(T.pLR_Track < alpha)));
 % plot_Track_multi_v3(figList_DRunlightPN_nosig,rtDir_nosig);
 cd('D:\Dropbox\SNL\P2_Track');

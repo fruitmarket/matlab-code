@@ -1,24 +1,23 @@
 function tagstatTrack_Poster()
 %tagstatCC calculates statistical significance using log-rank test
-
 % Variables for log-rank test & salt test
 dt = 0.1;
-% testRangePlfm = 10; % unit: ms 
-% baseRangePlfm = 400; % baseline 
-% testRangeTrack = 10; % 8Hz: 10 // 20Hz: 20
-% baseRangeTrack = 80; % 8Hz: 110 // 20Hz: 15
 
 testRange8hz = 10;
 testRange2hz = 10;
 
 baseRange8hz = 80;
-baseRange2hz = 400;
+baseRange2hz = 450;
+
+spkCriPlfm = 10;
+spkCriTrack = 10; % spikes should be more than 10
+
+allowance = 0.005; % 0.5% allowance for hazerd function.
 
 % Modulation direction
 resolution = 10;
 binSize = 2;
-winTest = [-30, 30];
-alpha = 0.005;
+alpha = 0.001;
 
 if nargin == 0; sessionFolder = {}; end;
 [tData, tList] = tLoad(sessionFolder);
@@ -32,9 +31,6 @@ for iCell = 1:nCell
 
     load('Events.mat','lightTime','psdlightPre','psdlightPost');
     spikeData = tData{iCell};
-    
-    spkCriPlfm = 15;
-    spkCriTrack = 15; % spikes should be more than 15
 
     spkCriteria_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz,[-50,50]);
     spkCriteria_Track8hz = spikeWin(spikeData,lightTime.Track8hz,[-50,50]);
@@ -72,7 +68,7 @@ for iCell = 1:nCell
         idxH2_Plfm2hz = find(~cellfun(@isempty,H2_Plfm2hzT));
         idxcom_Plfm2hz = idxH1_Plfm2hz(idxH1_Plfm2hz == idxH2_Plfm2hz);
         for iTest = 1:length(idxcom_Plfm2hz)
-            testPlfm(iTest) = all((H1_Plfm2hzT{iTest,:}-H2_Plfm2hzT{iTest,:})>0) | all((H1_Plfm2hzT{iTest,:}-H2_Plfm2hzT{iTest,:})<0);
+            testPlfm(iTest) = all((H1_Plfm2hzT{iTest,:}-H2_Plfm2hzT{iTest,:}) >= -max(H1_Plfm2hzT{iTest,:})*allowance) | all((H2_Plfm2hzT{iTest,:}-H1_Plfm2hzT{iTest,:}) >= -max(H2_Plfm2hzT{iTest,:})*allowance); % H1 should all bigger or smaller than H2 (0.1% allowance)
         end
         idxH_Plfm2hz = idxcom_Plfm2hz(find(testPlfm==1,1,'first'));
 %         H1Start = cellfun(@(x) x(1), H1_PlfmT(idxH1_Plfm,1));
@@ -158,7 +154,7 @@ for iCell = 1:nCell
             idxH2_Plfm8hz = find(~cellfun(@isempty,H2_Plfm8hzT));
             idxcom_Plfm8hz = idxH1_Plfm8hz(idxH1_Plfm8hz == idxH2_Plfm8hz);
             for iTest = 1:length(idxcom_Plfm8hz)
-                testPlfm(iTest) = all((H1_Plfm8hzT{iTest,:}-H2_Plfm8hzT{iTest,:})>0) | all((H1_Plfm8hzT{iTest,:}-H2_Plfm8hzT{iTest,:})<0);
+                testPlfm(iTest) = all((H1_Plfm8hzT{iTest,:}-H2_Plfm8hzT{iTest,:}) >= - max(H1_Plfm8hzT{iTest,:})*allowance) | all((H2_Plfm8hzT{iTest,:}-H1_Plfm8hzT{iTest,:}) >= -max(H2_Plfm8hzT{iTest,:}));
             end
             idxH_Plfm8hz = idxcom_Plfm8hz(find(testPlfm==1,1,'first'));
 
@@ -240,7 +236,7 @@ for iCell = 1:nCell
         idxH2_Track = find(~cellfun(@isempty,H2_TrackT));
         idxcom_Track = idxH1_Track(idxH1_Track == idxH2_Track);
         for iTest = 1:length(idxcom_Track)
-            testTrack(iTest) = all((H1_TrackT{iTest,:}-H2_TrackT{iTest,:})>0) | all((H1_TrackT{iTest,:}-H2_TrackT{iTest,:})<0);
+            testTrack(iTest) = all((H1_TrackT{iTest,:}-H2_TrackT{iTest,:})>= -max(H1_TrackT{iTest,:})*allowance) | all((H2_TrackT{iTest,:}-H1_TrackT{iTest,:})>= -max(H2_TrackT{iTest,:})*allowance);
         end
         idxH_Track = idxcom_Track(find(testTrack==1,1,'first'));
 %         H1Start = cellfun(@(x) x(1), H1_TrackT(idxH1_Track,1));

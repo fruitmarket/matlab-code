@@ -113,5 +113,27 @@ set(hDRw(2),'YLim',[0, max(DRun_spkwth)*1.1]);
 set(hDRw(3),'YLim',[0, max(DRun_hfvwth)*1.1]);
 set(hDRw(4),'YLim',[0, max(DRun_spkpvr)*1.1]);
 
-print(gcf,'-painters','-r300','plot_populDiscri.tiff','-dtiff');
+% print(gcf,'-painters','-r300','plot_populDiscri.tiff','-dtiff');
 close;
+%% For journal figure1
+figure()
+hDRun2 = axes('Position',axpt(nCol,nRow,1:2,5:10,[0.1 0.1 0.85 0.85],midInterval));
+scatter(DRun_meanFR,DRun_hfvwth,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+hold on;
+line([7,7],[0,700],'LineStyle','--','color',colorRed,'LineWidth',lineL);
+ylabel('Half valley width (usec)','fontSize',fontL);
+xlabel('Mean firing rate (Hz)','fontSize',fontL);
+title('meanFR vs. Half valley width','fontSize',fontL,'fontWeight','bold');
+set(hDRun2,'Box','off','TickDir','out','fontSize',fontL);
+set(hDRun2,'YTick',[0:200:600],'YLim',[0, 700],'XLim',[-1,40]);
+
+hDRw2 = axes('Position',axpt(nCol,nRow,4:5,5:10,[0.1 0.1 0.85 0.85],midInterval));
+scatter(DRw_meanFR,DRw_hfvwth,markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
+line([7,7],[0,700],'LineStyle','--','color',colorRed,'LineWidth',lineL);
+ylabel('Half valley width (usec)','fontSize',fontL);
+xlabel('Mean firing rate (Hz)','fontSize',fontL);
+title('meanFR vs. Half valley width','fontSize',fontL,'fontWeight','bold');
+set(hDRw2,'Box','off','TickDir','out','fontSize',fontL);
+set(hDRw2,'YTick',[0:200:600],'YLim',[0, 700],'XLim',[-1,40]);
+
+print('-painters','plot_journalfigure1_population','-r300','-dtiff');

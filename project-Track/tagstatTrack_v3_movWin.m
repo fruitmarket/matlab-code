@@ -34,12 +34,12 @@ for iCell = 1:nCell
     load('Events.mat','lightTime','psdlightPre','psdlightPost');
     spikeData = tData{iCell};
     
-% Log-rank test (4ms moving window)
-    movingWin = (0:2:20)';
+% Log-rank test (2ms moving window)
+    movingWin = (0:2:18)';
     [pSaltPlfmT,pSaltTrackT,lSaltPlfmT,lSaltTrackT,pLR_PlfmT,pLR_TrackT] = deal(zeros(6,1));
     [timeLR_PlfmT,H1_PlfmT,H2_PlfmT,timeLR_TrackT,H1_TrackT,H2_TrackT] = deal(cell(6,1));
 
-    for iWin = 1:11
+    for iWin = 1:10
         [timePlfm, censorPlfm] = tagDataLoad(spikeData, lightTime.Plfm2hz+movingWin(iWin), testRangePlfm, baseRangePlfm);
         [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Track8hz+movingWin(iWin), testRangeTrack, baseRangeTrack);
 

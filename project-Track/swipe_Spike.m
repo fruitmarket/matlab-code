@@ -34,24 +34,25 @@ filePath = unique(filePath);
 nPath = length(filePath);
 
 %% Swiping contents
-for iPath = 7:nPath
+for iPath = 1:nPath
     curPath = iPath;
     cd(filePath{iPath});    
     
 %     event2mat_trackori;
-%     pethSensor;
-%     pethLight;
-%     waveform;
-%     heatMap;
-%     tagstatTrack_Poster; % newest version
-%     mapCorr; % PreStm, PrePost, StmPost
-%     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
+    pethSensor;
+    pethLight;
+    waveform;
+    heatMap;
+    tagstatTrack_Poster; % newest version
+    mapCorr; % PreStm, PrePost, StmPost
+    mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 
-%     sensorMeanFR;
-%     laserIntPlfm;
+    sensorMeanFR;
+    laserIntPlfm;
     laserFreqCheck;
-%     detoSpike;
-%     plot_Track_sin_v3;
+    laserSpikeProb;
+    detoSpike;
+    plot_Track_sin_v3;
     
     fclose('all');
     close all;

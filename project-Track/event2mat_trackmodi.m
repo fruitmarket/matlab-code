@@ -1,4 +1,4 @@
-function event2mat_trackOri %(filename)
+function event2mat_trackmodi %(filename)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Purpose: Creating event file
 % Writer: Jun (Modified DK's eventmat.m)
@@ -9,9 +9,13 @@ function event2mat_trackOri %(filename)
 %%
 %     [timeStamp, eventStrings] = Nlx2MatEV('Events.nev', [1 0 0 0 1], 0, 1, []);
 %     timeStamp = timeStamp'/1000; % unit: ms
-    [eData, eList] = eLoad_mac; % Unit: msec
+if exist('Events.xlsx','file')
+    [timeStamp,eventString,~] = xlsread('Events.xlsx');
+else
+    [eData, eList] = eLoad; % Unit: msec
     timeStamp = eData.t;
     eventString = eData.s;
+end
     
     % Time bins
     recStart = find(strcmp(eventString,'Starting Recording'));

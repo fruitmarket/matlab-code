@@ -435,8 +435,8 @@ end
     
     cd(saveDir);
 %     print(gcf,'-dtiff','-r300',[cellFigName{1},'.tiff']);
-    print(gcf,'-painters','-r300',[cellFigName{1},'.tiff'],'-dtiff');
-%     print(gcf,'-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
+    print('-painters','-r300',[cellFigName{1},'.tiff'],'-dtiff');
+%     print('-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
     close;
 end
 

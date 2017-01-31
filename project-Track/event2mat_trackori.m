@@ -238,7 +238,7 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
             end
     end
 end
-
+disp('error?')
 %% Save variables
         save('Events.mat',...
         'baseTime','preTime','stmTime','postTime','taskTime','plfmTime',...

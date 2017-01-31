@@ -39,20 +39,19 @@ for iPath = 1:nPath
     cd(filePath{iPath});    
     
 %     event2mat_trackori;
-    pethSensor;
-    pethLight;
-    waveform;
-    heatMap;
-    tagstatTrack_Poster; % newest version
-    mapCorr; % PreStm, PrePost, StmPost
-    mapCorrEvOd; % For Even lap, odd lap of Pre-stm
-
-    sensorMeanFR;
-    laserIntPlfm;
-    laserFreqCheck;
+%     pethSensor;
+%     pethLight;
+%     waveform;
+%     heatMap;
+%     tagstatTrack_Poster; % newest version
+%     mapCorr; % PreStm, PrePost, StmPost
+%     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
+%     sensorMeanFR;
+%     laserIntPlfm;
+%     laserFreqCheck;
     laserSpikeProb;
-    detoSpike;
-    plot_Track_sin_v3;
+%     detoSpike;
+%     plot_Track_sin_v3;
     
     fclose('all');
     close all;

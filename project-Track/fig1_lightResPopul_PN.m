@@ -31,15 +31,21 @@ colorLightGreen4 = [56, 142, 60]./255;
 
 colorOrange = [27, 94, 32]./255;
 
+alpha = 0.005;
+
 % Stimulation during running
 load(['cellList_ori','.mat']);
-rtDir_total = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRun_total';
+rtDir_total = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRw_total';
+
+rtDir_total = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_noRw_total';
+
 % rtDir_sig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRun_sig';
 % rtDir_nosig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRun_noSig';
-alpha = 0.005;
+
 %%
 % total_DRun = T.taskProb == '100' & T.taskType == 'DRw';
-total_DRun = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1;
+total_DRun = T.taskType == 'DRw';
+% total_DRun = T.taskType == 'DRun' & T.peakFR_track>1;
 nTotal_DRun = sum(double(total_DRun));
 
 %% Single cell figure separation

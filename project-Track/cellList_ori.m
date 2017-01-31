@@ -18,7 +18,7 @@ for iFile = 1:nFile
     dateSession = strsplit(matFile{iFile},{'\'});
     tetLocation = strsplit(dateSession{4},'_');
     tetLocation = categorical(cellstr(tetLocation{2}));
-    fileSeg = strsplit(matFile{iFile},{'\','_'});    
+    fileSeg = strsplit(matFile{iFile},{'\','_'});
     mouseLine = categorical(cellstr(fileSeg{5}));
     taskType = categorical(cellstr(fileSeg{9}));
     taskProb = categorical(cellstr(fileSeg{10}));
@@ -39,13 +39,13 @@ for iFile = 1:nFile
         lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw,... % laserIntPlfm
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
         deto_spkPlfm2hz, deto_spkPlfm8hz,...% detoSpike
-        lightProb2hzPlfm,lightProb8hzPlfm); % laserSpikeProb
+        lightProbTrack_2hz,lightProbTrack_8hz,lightProbPlfm_2hz,lightProbPlfm_8hz); % laserSpikeProb
                 
     T = [T; temT];
     fclose('all');
 end
 cd(rtPath);
-save('cellList_ori.mat','T');
+% save('cellList_ori.mat','T');
 
 %% excel file format
 T = table();
@@ -72,10 +72,10 @@ for iFile = 1:nFile
         r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
         lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw,... % laserIntPlfm
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
-        lightProb2hzPlfm,lightProb8hzPlfm); % laserSpikeProb
+        lightProbTrack_2hz,lightProbTrack_8hz,lightProbPlfm_2hz,lightProbPlfm_8hz); % laserSpikeProb
                 
     T = [T; temT];
     fclose('all');
 end
 cd(rtPath);
-writetable(T,['cellList_',datestr(date),'.xlsx']);
+% writetable(T,['cellList_',datestr(date),'.xlsx']);

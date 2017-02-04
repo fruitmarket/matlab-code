@@ -27,6 +27,8 @@ for iFile = 1:nFile
     sensorMeanFR_DRw = {sensorMeanFR_DRw};
     deto_spkPlfm2hz = {deto_spkPlfm2hz};
     deto_spkPlfm8hz = {deto_spkPlfm8hz};
+    m_spont_wv = {m_spont_wv};
+    m_evoked_wv = {m_evoked_wv};
     
     temT = table(path,mouseLine,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
         lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
@@ -39,13 +41,14 @@ for iFile = 1:nFile
         lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw,... % laserIntPlfm
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
         deto_spkPlfm2hz, deto_spkPlfm8hz,...% detoSpike
-        lightProbTrack_2hz,lightProbTrack_8hz,lightProbPlfm_2hz,lightProbPlfm_8hz); % laserSpikeProb
+        lightProbTrack_2hz,lightProbTrack_8hz,lightProbPlfm_2hz,lightProbPlfm_8hz,...
+        r_wv,m_spont_wv,m_evoked_wv); % laserSpikeProb
                 
     T = [T; temT];
     fclose('all');
 end
 cd(rtPath);
-% save('cellList_ori.mat','T');
+save(['cellList_ori',datestr(date),'.mat'],'T');
 
 %% excel file format
 T = table();

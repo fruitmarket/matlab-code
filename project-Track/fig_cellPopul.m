@@ -1,7 +1,7 @@
 alpha = 0.005;
 
 % Load table
-cd('D:\Dropbox\#team_hippocampus Team Folder\project_Track');
+% cd('D:\Dropbox\#team_hippocampus Team Folder\project_Track');
 load(['cellList_ori','.mat']);
 
 % rtDir_total = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRw_total';

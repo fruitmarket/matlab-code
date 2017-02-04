@@ -23,13 +23,14 @@ tightInterval = [0.02 0.02]; midInterval = [0.09, 0.09]; wideInterval = [0.14 0.
 width = 0.7;
 
 criteria_FR = 7;
+criteria_Peak = 0;
 rtDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track';
-load('cellList_ori.mat');
+load('cellList_ori_04-Feb-2017.mat');
 
-DRunPn = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
-DRunIn = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
-DRwPn = T.taskProb == '100' & T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
-DRwIn = T.taskProb == '100' & T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
+DRunPn = T.taskType == 'DRun' & T.peakFR_track>criteria_Peak & T.meanFR_task<criteria_FR;
+DRunIn = T.taskType == 'DRun' & T.peakFR_track>criteria_Peak & T.meanFR_task>criteria_FR;
+DRwPn = T.taskType == 'DRw' & T.peakFR_track>criteria_Peak & T.meanFR_task<criteria_FR;
+DRwIn = T.taskType == 'DRw' & T.peakFR_track>criteria_Peak & T.meanFR_task>criteria_FR;
 
 plfmLight = T.statDir_Plfm2hz ~= 0 & T.pLR_Plfm2hz<0.005;
 trackLight = T.statDir_Track ~= 0 & T.pLR_Track<0.005;
@@ -37,22 +38,41 @@ trackLight = T.statDir_Track ~= 0 & T.pLR_Track<0.005;
 % plfmLight = T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005;
 % trackLight = T.statDir_Track == 1 & T.pLR_Track<0.005;
 
-DRunPn_none = DRunPn & ~(plfmLight | trackLight);
-DRunPn_either = DRunPn & (plfmLight | trackLight);
-DRunPn_both = DRunPn & (plfmLight & trackLight);
+%% condition 1
+% DRunPn_none = DRunPn & ~(plfmLight | trackLight);
+% DRunPn_either = DRunPn & (plfmLight | trackLight);
+% DRunPn_both = DRunPn & (plfmLight & trackLight);
+% 
+% DRunIn_none = DRunIn & ~(plfmLight | trackLight);
+% DRunIn_either = DRunIn & (plfmLight | trackLight);
+% DRunIn_both = DRunIn & (plfmLight & trackLight);
+% 
+% DRwPn_none = DRwPn & ~(plfmLight | trackLight);
+% DRwPn_either = DRwPn & (plfmLight | trackLight);
+% DRwPn_both = DRwPn & (plfmLight & trackLight);
+% 
+% DRwIn_none = DRwIn & ~(plfmLight | trackLight);
+% DRwIn_either = DRwIn & (plfmLight | trackLight);
+% DRwIn_both = DRwIn & (plfmLight & trackLight);
 
-DRunIn_none = DRunIn & ~(plfmLight | trackLight);
-DRunIn_either = DRunIn & (plfmLight | trackLight);
-DRunIn_both = DRunIn & (plfmLight & trackLight);
+%% condition 2 (used only light-activated population)
+DRunPn_none = DRunPn & (T.pLR_Plfm2hz>0.005 & T.pLR_Track>0.005);
+DRunPn_either = DRunPn & ((T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005) | (T.statDir_Track == 1 & T.pLR_Track<0.005));
+DRunPn_both = DRunPn & ((T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005) & (T.statDir_Track == 1 & T.pLR_Track<0.005));
 
-DRwPn_none = DRwPn & ~(plfmLight | trackLight);
-DRwPn_either = DRwPn & (plfmLight | trackLight);
-DRwPn_both = DRwPn & (plfmLight & trackLight);
+DRunIn_none = DRunIn & (T.pLR_Plfm2hz>0.005 & T.pLR_Track>0.005);
+DRunIn_either = DRunIn & ((T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005) | (T.statDir_Track == 1 & T.pLR_Track<0.005));
+DRunIn_both = DRunIn & ((T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005) & (T.statDir_Track == 1 & T.pLR_Track<0.005));
 
-DRwIn_none = DRwIn & ~(plfmLight | trackLight);
-DRwIn_either = DRwIn & (plfmLight | trackLight);
-DRwIn_both = DRwIn & (plfmLight & trackLight);
+DRwPn_none = DRwPn & (T.pLR_Plfm2hz>0.005 & T.pLR_Track>0.005);
+DRwPn_either = DRwPn & ((T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005) | (T.statDir_Track == 1 & T.pLR_Track<0.005));
+DRwPn_both = DRwPn & ((T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005) & (T.statDir_Track == 1 & T.pLR_Track<0.005));
 
+DRwIn_none = DRwIn & (T.pLR_Plfm2hz>0.005 & T.pLR_Track>0.005);
+DRwIn_either = DRwIn & ((T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005) | (T.statDir_Track == 1 & T.pLR_Track<0.005));
+DRwIn_both = DRwIn & ((T.statDir_Plfm2hz == 1 & T.pLR_Plfm2hz<0.005) & (T.statDir_Track == 1 & T.pLR_Track<0.005));
+
+%%
 [sensorMeanFR_DRunPreStm, sensorMeanFR_DRwPreStm] = deal(zeros(30,1));
 
 nCell = size(T,1);
@@ -236,5 +256,4 @@ set(hPlot(4),'XLim',[0,9],'YLim',[0,40]);
 
 set(hPlot,'Box','off','TickDir','out','fontSize',fontL,'XTick',5,'XTickLabel',{'Pre-Stm'});
 
-print(gcf,'-painters','-r300','plot_evokedPattern.tiff','-dtiff');
-% print(gcf,'-painters','-r300','plot_evokedPattern_activated.tiff','-dtiff');
+print('-painters','-r300','plot_evokedPattern_lightactivated_0.tif','-dtiff');

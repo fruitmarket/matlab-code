@@ -23,7 +23,7 @@ tightInterval = [0.02 0.02]; midInterval = [0.09, 0.09]; wideInterval = [0.14 0.
 width = 0.7;
 
 criteria_FR = 7;
-criteria_Peak = 0;
+criteria_Peak = 1;
 rtDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track';
 
 load('cellList_ori_04-Feb-2017.mat');
@@ -138,7 +138,7 @@ text(1,9,['Blue (either): n = ',num2str(size(totalMFR_DRunPn_either,1))],'fontSi
 text(1,8,['Red (both): n = ',num2str(size(totalMFR_DRunPn_both,1))],'fontSize',fontL);
 xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
-title('mean FR total track, PN','fontSize',fontL);
+title('mean FR total track, PN','fontSize',fontL,'fontWeight','bold');
 
 hScatter(2) = axes('Position',axpt(nCol,nRow,1:2,4:5,[0.1 0.1 0.85 0.85],wideInterval));
 scatter(totalMFR_DRunIn_none(:,1),totalMFR_DRunIn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
@@ -151,7 +151,7 @@ text(1,45,['Blue (either): n = ',num2str(size(totalMFR_DRunIn_either,1))],'fontS
 text(1,40,['Red (both): n = ',num2str(size(totalMFR_DRunIn_both,1))],'fontSize',fontL);
 xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
-title('mean FR total track, IN','fontSize',fontL);
+title('mean FR total track, IN','fontSize',fontL,'fontWeight','bold');
  
 hScatter(3) = axes('Position',axpt(nCol,nRow,5:6,2:3,[0.1 0.1 0.85 0.85],wideInterval));
 scatter(totalMFR_DRwPn_none(:,1),totalMFR_DRwPn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
@@ -164,7 +164,7 @@ text(1,9,['Blue (either): n = ',num2str(size(totalMFR_DRwPn_either,1))],'fontSiz
 text(1,8,['Red (both): n = ',num2str(size(totalMFR_DRwPn_both,1))],'fontSize',fontL);
 xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
-title('mean FR btw S10-S11, PN','fontSize',fontL);
+title('mean FR total track, PN','fontSize',fontL,'fontWeight','bold');
  
 hScatter(4) = axes('Position',axpt(nCol,nRow,5:6,4:5,[0.1 0.1 0.85 0.85],wideInterval));
 scatter(totalMFR_DRwIn_none(:,1),totalMFR_DRwIn_none(:,2),markerXL,'MarkerEdgeColor','k','MarkerFaceColor',colorGray);
@@ -177,7 +177,7 @@ text(1,45,['Blue (either): n = ',num2str(size(totalMFR_DRwIn_either,1))],'fontSi
 text(1,40,['Red (both): n = ',num2str(size(totalMFR_DRwIn_both,1))],'fontSize',fontL);
 xlabel('Mean FR (Pre)','fontSize',fontL);
 ylabel('Mean FR (Stm)','fontSize',fontL);
-title('mean FR btw S10-S11, IN','fontSize',fontL);
+title('mean FR total track, IN','fontSize',fontL,'fontWeight','bold');
 
 set(hScatter(1),'XLim',[-1,10],'YLim',[-1,10]);
 set(hScatter(2),'XLim',[-1,50],'YLim',[-1,50]);
@@ -244,4 +244,4 @@ set(hPlot(3),'XLim',[0,9],'YLim',[0, 4]);
 set(hPlot(4),'XLim',[0,9],'YLim',[10,30]);
 set(hPlot,'Box','off','TickDir','out','fontSize',fontL,'XTick',5,'XTickLabel',{'Pre-Stm'});
 
-print(gcf,'-painters','-r300','plot_meanFRpattern_lightactivated_0.tif','-dtiff');
+print(gcf,'-painters','-r300','plot_meanFRpattern_lightactivated.tif','-dtiff');

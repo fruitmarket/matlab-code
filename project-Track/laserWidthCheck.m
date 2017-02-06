@@ -4,9 +4,12 @@ function laserWidthCheck
 resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
-winSpike = [-25 200]; % unit: msec
+% winSpike = [-25 200]; % unit: msec
+winSpike = [-200 300]; % unit: msec
 binSize = 2;
-winLight = 70;
+winLight_10ms = 30;
+winLight_20ms = 40;
+winLight_50ms = 70;
 
 [tData, tList] = tLoad;
 nCell = length(tList);
@@ -33,8 +36,8 @@ for iCell = 1:nCell
     [xpt10ms, ypt10ms, pethtime10ms, peth10ms, pethConv10ms, pethConvZ10ms] = rasterPETH(spikeTime10ms,true(size(light10)),winSpike,binSize,resolution,1);
     [xpt50ms, ypt50ms, pethtime50ms, peth50ms, pethConv50ms, pethConvZ50ms] = rasterPETH(spikeTime50ms,true(size(light50)),winSpike,binSize,resolution,1);
     
-    lightspk10ms = sum(0<xpt10ms{1} & xpt10ms{1}<winLight);
-    lightspk50ms = sum(0<xpt50ms{1} & xpt50ms{1}<winLight);
+    lightspk10ms = sum(0<xpt10ms{1} & xpt10ms{1}<winLight_10ms);
+    lightspk50ms = sum(0<xpt50ms{1} & xpt50ms{1}<winLight_50ms);
     
     save([cellName,'.mat'],'meanFR10','meanFR50',...
         'xpt10ms','ypt10ms','pethtime10ms','peth10ms','pethConv10ms','pethConvZ10ms','nlight10ms',...
@@ -45,7 +48,7 @@ for iCell = 1:nCell
        nlight20ms = length(light20);
        spikeTime20ms = spikeWin(tData{iCell},light20,winSpike);
        [xpt20ms, ypt20ms, pethtime20ms, peth20ms, pethConv20ms, pethConvZ20ms] = rasterPETH(spikeTime20ms,true(size(light20)),winSpike,binSize,resolution,1);
-       lightspk20ms = sum(0<xpt10ms{1} & xpt10ms{1}<winLight);
+       lightspk20ms = sum(0<xpt10ms{1} & xpt10ms{1}<winLight_20ms);
        
        save([cellName,'.mat'],'meanFR20','xpt20ms','ypt20ms','pethtime20ms','peth20ms','pethConv20ms','pethConvZ20ms','nlight20ms','-append');
     end

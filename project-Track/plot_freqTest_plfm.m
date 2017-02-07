@@ -28,13 +28,16 @@ paperSize = {[0 0 21.0 29.7];
              [0 0 21.6 27.9]};
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
-load('neuronList_freq_05-Feb-2017.mat');
+load('neuronList_freq_06-Feb-2017.mat');
 
-lightProb1hz = T.lightProb1hz(~isnan(T.lightProb1hz));
-lightProb2hz = T.lightProb2hz(~isnan(T.lightProb2hz));
-lightProb8hz = T.lightProb8hz(~isnan(T.lightProb8hz));
-lightProb20hz = T.lightProb20hz(~isnan(T.lightProb20hz));
-lightProb50hz = T.lightProb50hz(~isnan(T.lightProb50hz));
+%% Light responsive population
+lightCri = T.pLR_Plfm2hz<0.005 | T.pLR_Plfm8hz<0.005;
+
+lightProb1hz = T.lightProb1hz((lightCri));
+lightProb2hz = T.lightProb2hz((lightCri));
+lightProb8hz = T.lightProb8hz((lightCri));
+lightProb20hz = T.lightProb20hz((lightCri));
+lightProb50hz = T.lightProb50hz((lightCri));
 
 nCell = length(lightProb1hz);
 
@@ -50,23 +53,55 @@ sem_8hz = std(lightProb8hz)/nCell;
 sem_20hz = std(lightProb20hz)/nCell;
 sem_50hz = std(lightProb50hz)/nCell;
 
+%% No light responsive population
+nolightProb1hz = T.lightProb1hz(~lightCri);
+nolightProb2hz = T.lightProb2hz(~lightCri);
+nolightProb8hz = T.lightProb8hz(~lightCri);
+nolightProb20hz = T.lightProb20hz(~lightCri);
+nolightProb50hz = T.lightProb50hz(~lightCri);
+
+nNoLCell = length(nolightProb1hz);
+
+m_no_1hz = mean(nolightProb1hz);
+m_no_2hz = mean(nolightProb2hz);
+m_no_8hz = mean(nolightProb8hz);
+m_no_20hz = mean(nolightProb20hz);
+m_no_50hz = mean(nolightProb50hz);
+
+sem_no_1hz = std(nolightProb1hz)/nNoLCell;
+sem_no_2hz = std(nolightProb2hz)/nNoLCell;
+sem_no_8hz = std(nolightProb8hz)/nNoLCell;
+sem_no_20hz = std(nolightProb20hz)/nNoLCell;
+sem_no_50hz = std(nolightProb50hz)/nNoLCell;
+
 %% Plot
 nCol = 4;
 nRow = 4;
 
 hHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});
-hPlot = axes('Position',axpt(nCol,nRow,1:3,1:2,[0.1 0.1 0.85 0.85],wideInterval));
+hPlot(1) = axes('Position',axpt(nCol,nRow,1:2,1:2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3,4,5],[lightProb1hz, lightProb2hz, lightProb8hz, lightProb20hz, lightProb50hz],'o','color',colorBlack,'markerSize',markerM,'markerEdgeColor',colorBlack,'markerFaceColor','none');
 hold on;
 plot([1,2,3,4,5],[m_1hz, m_2hz, m_8hz, m_20hz, m_50hz],'o','color',colorBlack,'markerSize',markerM,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlue);
 hold on;
 errorbar([1,2,3,4,5],[m_1hz, m_2hz, m_8hz, m_20hz, m_50hz],[sem_1hz,sem_2hz,sem_8hz,sem_20hz,sem_50hz],'o','color',colorBlack);
 
-set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YLim',[0,70]);
-set(hPlot,'TickDir','out','Box','off');
-
 text(1,60,['n = ',num2str(nCell)],'fontSize',fontXL);
 xlabel('Frequency, Hz','fontSize',fontXL);
 ylabel('Spike P, %','fontSize',fontXL);
 
-print('-painters',['plot_freqTest_plfm',datestr(date)],'-r300','-dtiff');
+hPlot(2) = axes('Position',axpt(nCol,nRow,3:4,1:2,[0.1 0.1 0.85 0.85],wideInterval));
+plot([1,2,3,4,5],[nolightProb1hz, nolightProb2hz, nolightProb8hz, nolightProb20hz, nolightProb50hz],'o','color',colorBlack,'markerSize',markerM,'markerEdgeColor',colorBlack,'markerFaceColor','none');
+hold on;
+plot([1,2,3,4,5],[m_no_1hz, m_no_2hz, m_no_8hz, m_no_20hz, m_no_50hz],'o','color',colorBlack,'markerSize',markerM,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlue);
+hold on;
+errorbar([1,2,3,4,5],[m_no_1hz, m_no_2hz, m_no_8hz, m_no_20hz, m_no_50hz],[sem_no_1hz,sem_no_2hz,sem_no_8hz,sem_no_20hz,sem_no_50hz],'o','color',colorBlack);
+
+text(1,60,['n = ',num2str(nNoLCell)],'fontSize',fontXL);
+xlabel('Frequency, Hz','fontSize',fontXL);
+ylabel('Spike P, %','fontSize',fontXL);
+
+set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YLim',[-1,70]);
+set(hPlot,'TickDir','out','Box','off');
+
+% print('-painters',['plot_freqTest_plfm_',datestr(date),'.tif'],'-r300','-dtiff');

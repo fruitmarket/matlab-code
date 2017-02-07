@@ -149,7 +149,7 @@ for iFile = 1:nFile
     end
     set(hText10,'visible','off');
         
-    print(gcf,'-painters','-r300',[cellName,'.tiff'],'-dtiff');
+    print('-painters','-r300',[cellName,'.tiff'],'-dtiff');
     close all;
     fclose('all');
 end

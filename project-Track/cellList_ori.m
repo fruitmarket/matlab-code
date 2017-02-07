@@ -48,7 +48,7 @@ for iFile = 1:nFile
     fclose('all');
 end
 cd(rtPath);
-save(['cellList_ori',datestr(date),'.mat'],'T');
+save(['neuronList_ori_',datestr(date),'.mat'],'T');
 
 %% excel file format
 T = table();
@@ -81,4 +81,4 @@ for iFile = 1:nFile
     fclose('all');
 end
 cd(rtPath);
-% writetable(T,['cellList_',datestr(date),'.xlsx']);
+writetable(T,['neuronList_',datestr(date),'.xlsx']);

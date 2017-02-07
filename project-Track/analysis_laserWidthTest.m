@@ -1,6 +1,5 @@
-function laserWidthCheck
+function analysis_laserWidthTest
 
-% binSize = 10; % Unit: msec
 resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
@@ -27,31 +26,33 @@ for iCell = 1:nCell
     meanFR50 = sum(histc(tData{iCell},time50))/(diff(time50)/1000);
 
 % Light
-    nlight10ms = length(light10);
-    nlight50ms = length(light50);
+    nlight10ms = length(lightTime.width10);
+    nlight50ms = length(lightTime.width50);
     
-    spikeTime10ms = spikeWin(tData{iCell},light10,winSpike);
-    spikeTime50ms = spikeWin(tData{iCell},light50,winSpike);
+    spikeTime10ms = spikeWin(tData{iCell},lightTime.width10,winSpike);
+    spikeTime50ms = spikeWin(tData{iCell},lightTime.width50,winSpike);
     
-    [xpt10ms, ypt10ms, pethtime10ms, peth10ms, pethConv10ms, pethConvZ10ms] = rasterPETH(spikeTime10ms,true(size(light10)),winSpike,binSize,resolution,1);
-    [xpt50ms, ypt50ms, pethtime50ms, peth50ms, pethConv50ms, pethConvZ50ms] = rasterPETH(spikeTime50ms,true(size(light50)),winSpike,binSize,resolution,1);
+    [xpt10ms, ypt10ms, pethtime10ms, peth10ms, pethConv10ms, pethConvZ10ms] = rasterPETH(spikeTime10ms,true(size(lightTime.width10)),winSpike,binSize,resolution,1);
+    [xpt50ms, ypt50ms, pethtime50ms, peth50ms, pethConv50ms, pethConvZ50ms] = rasterPETH(spikeTime50ms,true(size(lightTime.width50)),winSpike,binSize,resolution,1);
     
     lightspk10ms = sum(0<xpt10ms{1} & xpt10ms{1}<winLight_10ms);
     lightspk50ms = sum(0<xpt50ms{1} & xpt50ms{1}<winLight_50ms);
     
     save([cellName,'.mat'],'meanFR10','meanFR50',...
-        'xpt10ms','ypt10ms','pethtime10ms','peth10ms','pethConv10ms','pethConvZ10ms','nlight10ms',...
-        'xpt50ms','ypt50ms','pethtime50ms','peth50ms','pethConv50ms','pethConvZ50ms','nlight50ms');
+        'xpt10ms','ypt10ms','pethtime10ms','peth10ms','pethConv10ms','pethConvZ10ms','nlight10ms','lightspk10ms',...
+        'xpt50ms','ypt50ms','pethtime50ms','peth50ms','pethConv50ms','pethConvZ50ms','nlight50ms','lightspk50ms');
     
     if exist('time20','var')
-       meanFR20 = sum(histc(tData{iCell},time20))/(diff(time20)/1000);
-       nlight20ms = length(light20);
-       spikeTime20ms = spikeWin(tData{iCell},light20,winSpike);
-       [xpt20ms, ypt20ms, pethtime20ms, peth20ms, pethConv20ms, pethConvZ20ms] = rasterPETH(spikeTime20ms,true(size(light20)),winSpike,binSize,resolution,1);
-       lightspk20ms = sum(0<xpt10ms{1} & xpt10ms{1}<winLight_20ms);
-       
-       save([cellName,'.mat'],'meanFR20','xpt20ms','ypt20ms','pethtime20ms','peth20ms','pethConv20ms','pethConvZ20ms','nlight20ms','-append');
+        meanFR20 = sum(histc(tData{iCell},time20))/(diff(time20)/1000);
+        nlight20ms = length(lightTime.width20);
+        spikeTime20ms = spikeWin(tData{iCell},lightTime.width20,winSpike);
+        [xpt20ms, ypt20ms, pethtime20ms, peth20ms, pethConv20ms, pethConvZ20ms] = rasterPETH(spikeTime20ms,true(size(lightTime.width20)),winSpike,binSize,resolution,1);
+        lightspk20ms = sum(0<xpt10ms{1} & xpt10ms{1}<winLight_20ms);
+    else
+        [meanFR20, xpt20ms, ypt20ms, pethtime20ms, peth20ms, pethConv20ms, pethConvZ20ms, nlight20ms, lightspk20ms] = deal(NaN);
     end
+    save([cellName,'.mat'],'meanFR20','xpt20ms','ypt20ms','pethtime20ms','peth20ms','pethConv20ms','pethConvZ20ms','nlight20ms','lightspk20ms','-append');
+    
 end
 disp('### Laser Intensity Check is done!!!');
 

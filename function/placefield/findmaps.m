@@ -31,14 +31,9 @@ num_visit = zeros(original_resol);
 visit_time = zeros(original_resol);
 
 for iposition = 1:length(nz_position_idx)
-    firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = ...
-        firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) +...
-        spk(nz_position_idx(iposition));
-    num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = ...
-        num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + 1;
-    visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) =...
-        visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) +...
-        dt(nz_position_idx(iposition));
+    firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + spk(nz_position_idx(iposition));
+    num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + 1;
+    visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + dt(nz_position_idx(iposition));
 end
 nz_num_visit = find(num_visit);
 map_resol = original_resol/field_ratio;

@@ -1,4 +1,3 @@
-
 function [fr_map, visit_map, visit_dur, flags] = findmaps2(time, position, spkdata, field_ratio)
 %%%%%%%%%%%%%%%%%%%%
 % Purpose: Generate maps (firing rate map, visit map, visit duration, flags(portion of bad detection)
@@ -10,7 +9,7 @@ function [fr_map, visit_map, visit_dur, flags] = findmaps2(time, position, spkda
 %%
 % time: msec unit.
 
-spk = histc(spkdata, time); % spk: msec unit
+spk = histc(spkdata,time); % spk: msec unit
 
 pos_prod = prod(position,2);
 position(pos_prod==0,:) = 0;
@@ -31,14 +30,9 @@ num_visit = zeros(original_resol);
 visit_time = zeros(original_resol);
 
 for iposition = 1:length(nz_position_idx)
-    firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = ...
-        firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) +...
-        spk(nz_position_idx(iposition));
-    num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = ...
-        num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + 1;
-    visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) =...
-        visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) +...
-        dt(nz_position_idx(iposition));
+    firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + spk(nz_position_idx(iposition));
+    num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + 1;
+    visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + dt(nz_position_idx(iposition));
 end
 nz_num_visit = find(num_visit);
 map_resol = original_resol/field_ratio;
@@ -52,12 +46,9 @@ map_ratio = [720 480]./field_ratio;
 
 for xpt = 1:field_ratio(1) % Generating 72x48 map
     for ypt = 1:field_ratio(2)
-        re_firing_map(xpt,ypt) = sum(sum(firing_map(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
-        re_num_visit(xpt,ypt) = sum(sum(num_visit(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
-        re_visit_time(xpt,ypt) = sum(sum(visit_time(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),...
-            map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_firing_map(xpt,ypt) = sum(sum(firing_map(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_num_visit(xpt,ypt) = sum(sum(num_visit(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
+        re_visit_time(xpt,ypt) = sum(sum(visit_time(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
     end
 end
 

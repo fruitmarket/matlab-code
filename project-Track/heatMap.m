@@ -71,7 +71,6 @@ for iCell = 1:nCell
         post_meanrate = sum(post_fr_map)/sum(post_visit_map);
     end
     
-    
 %% Temporal field map analysis
     [base_ratemap, ~, ~] = compute_rate72x48(base_visit_map,base_fr_map,alpha_v,base_meanrate,fr_threshold,fieldsize_cutoff);
     [pre_ratemap,pre_infos,pre_field_info] = compute_rate72x48(pre_visit_map,pre_fr_map,alpha_v,pre_meanrate,fr_threshold,fieldsize_cutoff);

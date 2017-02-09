@@ -1,4 +1,4 @@
-function [x,y]=linecirc(slope,intercpt,centerx,centery,radius) 
+function [xout,yout]=linecirc(slope,intercpt,centerx,centery,radius) 
  
 %LINECIRC  Find the intersections of a circle and a line in cartesian space 
 % 
@@ -39,21 +39,21 @@ if ~isinf(slope)
 	b=2*(slope.*(intercpt-centery)-centerx); 
 	c=centery.^2+centerx.^2+intercpt.^2-2*centery.*intercpt-radius.^2; 
  
-	x=roots([a,b,c])'; 
+	xout=roots([a,b,c])'; 
  
 	%  Make NaN's if they don't intersect. 
  
-	if ~isreal(x) 
-		x=[NaN NaN]; y=[NaN NaN]; 
+	if ~isreal(xout) 
+		xout=[NaN NaN]; yout=[NaN NaN]; 
 	else 
-		y=[intercpt intercpt]+[slope slope].*x; 
+		yout=[intercpt intercpt]+[slope slope].*xout; 
 	end 
  
 % vertical slope case 
 elseif abs(centerx-intercpt)>radius  % They don't intercept 
-	x=[NaN;NaN]; y=[NaN;NaN]; 
+	xout=[NaN;NaN]; yout=[NaN;NaN]; 
 else 
-	x=[intercpt intercpt]; 
+	xout=[intercpt intercpt]; 
 	step=sqrt(radius^2-(intercpt-centerx)^2); 
-	y=centery+[step,-step]; 
+	yout=centery+[step,-step]; 
 end 

@@ -53,7 +53,7 @@ for iCell = 1:nCell
     for iSensor = 1:nSensor
         [xpt.(fields{iSensor}), ypt.(fields{iSensor}), pethtime.(fields{iSensor}), pethbar.(fields{iSensor}), pethconv.(fields{iSensor}), pethconvz.(fields{iSensor})] = rasterPETH(spikeTime.(fields{iSensor}), trialIndex, win, binSize, resolution, 1);
         xpt.(fields{iSensor}) = cellfun(@(x) x/1000, xpt.(fields{iSensor}), 'UniformOutput', false);
-        pethtime.(fields{iSensor}) = pethtime.(fields{iSensor})/10^3;
+        pethtime.(fields{iSensor}) = pethtime.(fields{iSensor})/10^3; % devided to draw in 'sec' unit
     end
 
     save([cellName,'.mat'],...
@@ -80,7 +80,6 @@ for iEvent = 1:nEvent(1)
         spikeTime{iEvent,jEvent} = spikeData(logical(timeIndex))-eventTime(iEvent,jEvent);
     end
 end
-
 function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = rasterPETH(spikeTime, trialIndex, win, binSize, resolution, dot)
 % raterPSTH converts spike time into raster plot
 %   spikeTime: cell array. Each cell contains vector array of spike times per each trial unit is ms.
@@ -140,7 +139,6 @@ for iCue = 1:nCue
     spikeHist(iCue,:) = spkhist_temp;
     spikeConv(iCue,:) = spkconv_temp;
 end
-
 totalHist = histc(cell2mat(spikeTime),spikeBin)/(binSize/10^3*nTrial);
 fireMean = mean(totalHist);
 fireStd = std(totalHist);

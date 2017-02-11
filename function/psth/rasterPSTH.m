@@ -64,3 +64,7 @@ for iCue = 1:nCue
     spikeHist(iCue,:) = spkhist_temp;
     spikeConv(iCue,:) = spkconv_temp;
 end
+totalHist = histc(cell2mat(spikeTime),spikeBin)/(binSize/10^3*nTrial);
+fireMean = mean(totalHist);
+fireStd = std(totalHist);
+spikeConvZ = (spikeConv-fireMean)/fireStd;

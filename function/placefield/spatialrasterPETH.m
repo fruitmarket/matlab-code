@@ -66,6 +66,10 @@ for iCue = 1:nCue
     spikeConv(iCue,:) = spkconv_temp;
 end
 totalHist = histc(cell2mat(spikeTime),spikeBin)/(binSize*nTrial);
-fireMean = mean(totalHist);
-fireStd = std(totalHist);
-spikeConvZ = (spikeConv-fireMean)/fireStd;
+if isempty(totalHist)
+    [fireMean, fireStd, spikeConvZ] = deal(NaN);
+else
+    fireMean = mean(totalHist);
+    fireStd = std(totalHist);
+    spikeConvZ = (spikeConv-fireMean)/fireStd;
+end

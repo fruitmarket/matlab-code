@@ -15,11 +15,11 @@ field_ratio = [72 48];
 
 %% Loading data
 [tData, tList] = tLoad; % tData: msec
-[vtTime, vtPosition, vtList] = vtLoad; % vtTime: msec
+[vtTime, vtPosition, ~] = vtLoad; % vtTime: msec
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Analyzing ',tList{iCell}, '...']);
+    disp(['### Analyzing heat map: ',tList{iCell}, '...']);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     
     spkdata = tData{iCell}; %unit: msec
@@ -44,7 +44,7 @@ for iCell = 1:nCell
 %     p_plfm2hz = vtPosition{1}(win.plfm2hz);
     
 %% Field map analysis
-    [base_fr_map, base_visit_map,~,~] = findmaps2(t_base,p_base,spkdata,field_ratio);
+    [base_fr_map, base_visit_map,~,~] = findmaps(t_base,p_base,spkdata,field_ratio);
     if isempty(base_visit_map)
         base_meanrate = 0;
     else

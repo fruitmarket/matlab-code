@@ -4,18 +4,19 @@ function [fr_map, visit_map, visit_dur, flags] = findmaps(time, position, spkdat
 % Purpose: Generate maps (firing rate map, visit map, visit duration, flags(portion of bad detection)
 % 1st author: Jeong-wook Ghim
 % Edited: Joonyeup Lee (2015. 4. 20.)
-
+% time [unit: msec]
+% spkdata [unit: msec]
 %%%%%%%%%%%%%%%%%%%%
 
 %%
 % time: msec unit.
-
-spk = histc(spkdata, time); % spkdata, time: msec unit
+spk = histc(spkdata, time); % 'spkdata', 'time': [unit: msec]
 
 pos_prod = prod(position,2);
 position(pos_prod==0,:) = 0;
 
-[dt, newVTflag] = VTRecBreakProcess(time);
+[dt, newVTflag] = VTRecBreakProcess(time); %dt: [unit: msec]
+
 if newVTflag 
     original_resol = [720 480];
 else
@@ -24,16 +25,16 @@ end
 
 position(position(:,1) > original_resol(1),:) = 0; % x-position limit
 position(position(:,2) > 480,:) = 0; % y-position limit
-nz_position_idx = find(position(:,1));
+nzPosiIdex = find(position(:,1));
 %% Generating field
 firing_map = zeros(original_resol);
 num_visit = zeros(original_resol);
 visit_time = zeros(original_resol);
 
-for iposition = 1:length(nz_position_idx)
-    firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = firing_map(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + spk(nz_position_idx(iposition));
-    num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = num_visit(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + 1;
-    visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) = visit_time(position(nz_position_idx(iposition),1),position(nz_position_idx(iposition),2)) + dt(nz_position_idx(iposition));
+for iPosi = 1:length(nzPosiIdex)
+    firing_map(position(nzPosiIdex(iPosi),1),position(nzPosiIdex(iPosi),2)) = firing_map(position(nzPosiIdex(iPosi),1),position(nzPosiIdex(iPosi),2)) + spk(nzPosiIdex(iPosi));
+    num_visit(position(nzPosiIdex(iPosi),1),position(nzPosiIdex(iPosi),2)) = num_visit(position(nzPosiIdex(iPosi),1),position(nzPosiIdex(iPosi),2)) + 1;
+    visit_time(position(nzPosiIdex(iPosi),1),position(nzPosiIdex(iPosi),2)) = visit_time(position(nzPosiIdex(iPosi),1),position(nzPosiIdex(iPosi),2)) + dt(nzPosiIdex(iPosi));
 end
 nz_num_visit = find(num_visit);
 map_resol = original_resol/field_ratio;
@@ -56,6 +57,6 @@ end
 %% Passing values
 fr_map = re_firing_map;
 visit_map = re_num_visit;
-visit_dur = re_visit_time/10^4; % [unit: sec] At line 18, already divided by 10^2 
-flags = [length(nz_position_idx) length(position)]; % Percentage of good recording
+visit_dur = re_visit_time/10^3; % [change unit from msec to sec] 
+flags = [length(nzPosiIdex) length(position)]; % Percentage of good recording
 end

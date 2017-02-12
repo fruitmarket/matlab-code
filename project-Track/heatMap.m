@@ -50,25 +50,25 @@ for iCell = 1:nCell
     else
         base_meanrate = sum(base_fr_map)/sum(base_visit_map);
     end
-    [pre_fr_map, pre_visit_map, pre_visit_dur, pre_flags] = findmaps2(t_pre, p_pre, spkdata, field_ratio);
+    [pre_fr_map, pre_visit_map, pre_visit_dur, pre_flags] = findmaps(t_pre, p_pre, spkdata, field_ratio);
     if isempty(pre_visit_map)
         pre_meanrate = 0;
     else
-        pre_meanrate = sum(pre_fr_map)/sum(pre_visit_map);
+        pre_meanrate = sum(sum(pre_fr_map))/sum(sum(pre_visit_map));
     end
         
-    [stm_fr_map, stm_visit_map, stm_visit_dur, stm_flags] = findmaps2(t_stm, p_stm, spkdata, field_ratio);
+    [stm_fr_map, stm_visit_map, stm_visit_dur, stm_flags] = findmaps(t_stm, p_stm, spkdata, field_ratio);
     if isempty(stm_visit_map);
         stm_meanrate = 0;
     else
-        stm_meanrate = sum(stm_fr_map)/sum(stm_visit_map);
+        stm_meanrate = sum(sum(stm_fr_map))/sum(sum(stm_visit_map));
     end
     
-    [post_fr_map, post_visit_map, post_visit_dur, post_flags] = findmaps2(t_post, p_post, spkdata, field_ratio);
+    [post_fr_map, post_visit_map, post_visit_dur, post_flags] = findmaps(t_post, p_post, spkdata, field_ratio);
     if isempty(post_visit_map)
         post_meanrate = 0;
     else
-        post_meanrate = sum(post_fr_map)/sum(post_visit_map);
+        post_meanrate = sum(sum(post_fr_map))/sum(sum(post_visit_map));
     end
     
 %% Temporal field map analysis

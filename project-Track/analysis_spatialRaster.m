@@ -1,7 +1,7 @@
 % Variables for PETH & raster
-win = [0, 100]; % 0 to 104 cm
-binSize = 0.5; % 0.5 [unit: cm]
-resolution = 10;
+win = [0, 104]; % 0 to 104 cm
+binSize = 1; % 1 [unit: cm]
+resolution = 1;
 dot = 1;
 
 % Load files
@@ -36,8 +36,8 @@ for iCell = 1:nCell
     spikeLocation = theta(spkPositionIdx); % position data of each spike
 
     spikePosition = spikeWin(spikeLocation,eventPosition,win);
-    [xptSpatial,yptSpatial,pethtimeSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, win, binSize, resolution, dot);
+    [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, win, binSize, resolution, dot);
     
-    save([cellName,'.mat'],'xptSpatial','yptSpatial','pethtimeSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','-append');
+    save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','-append');
 end
 disp('### Making Spatial Raster & PETH is done!')

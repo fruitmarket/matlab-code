@@ -55,7 +55,7 @@ for iPath = 1:nPath
 %     laserSpikeProb;
 %     detoSpike;
 %     plot_Track_sin_v3;
-    
+
     fclose('all');
     close all;
 end

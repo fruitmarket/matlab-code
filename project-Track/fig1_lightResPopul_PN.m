@@ -34,23 +34,35 @@ colorOrange = [27, 94, 32]./255;
 alpha = 0.005;
 
 % Stimulation during running
-load(['cellList_ori','.mat']);
-rtDir_total = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRw_total';
-
-rtDir_total = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_noRw_total';
+load('neuronList_ori_12-Feb-2017.mat');
+% rtDir_DRun = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\v9_DRun';
+rtDir_noRun = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\v9_noRun';
+% rtDir_DRw = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\v9_DRw';
+rtDir_noRw = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\v9_noRw';
 
 % rtDir_sig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRun_sig';
 % rtDir_nosig = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\v8_DRun_noSig';
 
 %%
-% total_DRun = T.taskProb == '100' & T.taskType == 'DRw';
-total_DRun = T.taskType == 'DRw';
-% total_DRun = T.taskType == 'DRun' & T.peakFR_track>1;
+% total_DRun = T.taskType == 'DRun';
+total_noRun = T.taskType == 'noRun';
 nTotal_DRun = sum(double(total_DRun));
 
+% total_DRw = T.taskType == 'DRw';
+total_noRw = T.taskType == 'noRw';
+
 %% Single cell figure separation
-figList_DRun_total = T.path(total_DRun);
-plot_Track_multi_v3(figList_DRun_total,rtDir_total);
+% figList_DRun = T.path(total_DRun);
+% plot_Track_multi_v3(figList_DRun,rtDir_DRun);
+
+figList_noRun = T.path(total_noRun);
+plot_Track_multi_v3(figList_noRun,rtDir_noRun);
+
+% figList_DRw = T.path(total_DRw);
+% plot_Track_multi_v3(figList_DRw,rtDir_DRw);
+
+figList_noRw = T.path(total_noRw);
+plot_Track_multi_v3(figList_noRw,rtDir_noRw);
 
 % figList_DRunlightPN_sig = T.path((total_DRun & T.pLR_Plfm2hz < alpha) | (total_DRun & T.pLR_Track < alpha));
 % plot_Track_multi_v3(figList_DRunlightPN_sig,rtDir_sig);

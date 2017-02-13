@@ -19,7 +19,7 @@ field_ratio = [72 48];
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Analyzing ',tList{iCell}, '...']);
+    disp(['### Heat map analyzing ',tList{iCell}, '...']);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     
     spkdata = tData{iCell}; %unit: msec
@@ -44,7 +44,7 @@ for iCell = 1:nCell
 %     p_plfm2hz = vtPosition{1}(win.plfm2hz);
     
 %% Field map analysis
-    [base_fr_map, base_visit_map,~,~] = findmaps2(t_base,p_base,spkdata,field_ratio);
+    [base_fr_map, base_visit_map,~,~] = findmaps(t_base,p_base,spkdata,field_ratio);
     if isempty(base_visit_map)
         base_meanrate = 0;
     else
@@ -82,8 +82,8 @@ for iCell = 1:nCell
     stm_ratemap = flipud(stm_ratemap');
     post_ratemap = flipud(post_ratemap');
     
-    peakFR_track = max(max([pre_ratemap,stm_ratemap,post_ratemap]))*30; % Sampleing frequency: 30Hz
-    peakFR_plfm = max(max(base_ratemap))*30;
+    peakFR_track = round(max(max([pre_ratemap,stm_ratemap,post_ratemap]))*30); % Sampleing frequency: 30Hz
+    peakFR_plfm = round(max(max(base_ratemap))*30);
     
     save ([cellName, '.mat'],...
         'pre_ratemap','pre_infos','pre_field_info','pre_flags',...

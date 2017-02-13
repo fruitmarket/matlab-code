@@ -286,7 +286,7 @@ end
         for iType = 1:3
             plot(pethtimeSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
-        ylabel('Spikes/(cm*Trial)','FontSize',fontM);
+        ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Position (cm)','FontSize',fontM);
         uistack(rec,'bottom');
 % Temporal raster plot
@@ -308,23 +308,23 @@ end
 
     if ~isempty(strfind(cellDir,'noRun')) | ~isempty(strfind(cellDir,'noRw')) % No light session
 % Spatial rastser plot
-        hSRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1:5,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
+        hSRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1:4,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
         hold on;
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        if ~isempty(strfind(cellDir,'DRun'))
+        if ~isempty(strfind(cellDir,'noRun'))
             rec = rectangle('Position',[17*5/6*pi 31 17*pi/2 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         else
             rec = rectangle('Position',[17*3/2*pi 31 17*pi/6 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         end
         ylabel('Trial','FontSize',fontM);
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontM,'FontWeight','bold');
-        hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:5,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
+        hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconv.(fields{iSensor1})(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
             plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
-        ylabel('Spikes/(cm*Trial)','FontSize',fontM);
+        ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Position (cm)','FontSize',fontM);
         uistack(rec,'bottom');  
 % Temporal raster plot
@@ -425,7 +425,7 @@ end
     set(hID,'visible','off');
     
     cd(saveDir);
-    print('-painters','-r300',[cellFigName{1},'.tiff'],'-dtiff');
+    print('-painters','-r300',[cellFigName{1},'.tif'],'-dtiff');
 %     print('-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
     close;
 end

@@ -1,22 +1,23 @@
-function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = spatialrasterPETH(spikeTime, trialIndex, win, binSize, resolution, dot)
-%rasterPSTH converts spike time into raster plot
+function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = spatialrasterPETH(spikePosition, trialIndex, Occupancy, win, binSize, resolution, dot)
+%   rasterPSTH converts spike time into raster plot
 %   spikeTime: cell array. each cell contains vector array of spike times per each trial. unit is msec
 %   trialIndex: number of rows should be same as number of trials (length of spikeTime)
+%   Occupancy: visit time
 %   win: window range of xpt. should be 2 numbers. unit is msec.
 %   binsize: unit is msec.
 %   resolution: sigma for convolution = binsize * resolution.
 %   dot: 1-dot, 0-line
 %   unit of xpt will be msec.
-narginchk(5, 6);
-if isempty(spikeTime) || isempty(trialIndex) || length(spikeTime) ~= size(trialIndex,1) || length(win) ~= 2
+narginchk(6, 7);
+if isempty(spikePosition) || isempty(trialIndex) || length(spikePosition) ~= size(trialIndex,1) || length(win) ~= 2
     xpt = []; ypt = []; spikeBin = []; spikeHist = []; spikeConv = []; spikeConvZ = [];
     return;
 end;
 
-spikeBin = win(1):binSize:win(2); % unit: msec
+spikeBin = win(1):binSize:win(2); % unit: cm
 nSpikeBin = length(spikeBin);
 
-nTrial = length(spikeTime);
+nTrial = length(spikePosition);
 nCue = size(trialIndex,2);
 trialResult = sum(trialIndex);
 resultSum = [0 cumsum(trialResult)];
@@ -28,21 +29,15 @@ spikeHist = zeros(nCue,nSpikeBin);
 spikeConv = zeros(nCue,nSpikeBin);
 
 for iCue = 1:nCue
-    if trialResult(iCue) == 0
-        spikeHist(iCue,:) = NaN;
-        spikeConv(iCue,:) = NaN;
-        continue; 
-    end
-    
     % raster
-    nSpikePerTrial = cellfun(@length,spikeTime(trialIndex(:,iCue)));
+    nSpikePerTrial = cellfun(@length,spikePosition(trialIndex(:,iCue)));
     nSpikeTotal = sum(nSpikePerTrial);
     if nSpikeTotal == 0; continue; end;
     
-    spikeTemp = cell2mat(spikeTime(trialIndex(:,iCue)))';
+    spikeTemp = cell2mat(spikePosition(trialIndex(:,iCue)))';
     
     xptTemp = [spikeTemp;spikeTemp;NaN(1,nSpikeTotal)];
-    if (nargin == 6) && (dot==1)
+    if (nargin == 7) && (dot==1)
         xpt{iCue} = xptTemp(2,:);
     else
         xpt{iCue} = xptTemp(:);
@@ -52,20 +47,22 @@ for iCue = 1:nCue
     for iy = 1:trialResult(iCue)
         yptTemp = [yptTemp repmat(yTemp(:,resultSum(iCue)+iy),1,nSpikePerTrial(iy))];
     end
-    if (nargin == 6) && (dot==1)
+    if (nargin == 7) && (dot==1)
         ypt{iCue} = yptTemp(2,:);
     else
         ypt{iCue} = yptTemp(:);
     end
 
     % psth
-%     spkhist_temp = histc(spikeTemp,spikeBin)/(binSize/10^3*trialResult(iCue));
-    spkhist_temp = histc(spikeTemp,spikeBin)/(binSize*trialResult(iCue));
+%     spkhist_temp = histc(spikeTemp,spikeBin)/(binSize/10^3*trialResult(iCue)); % for temporal raster plot
+    spkhist_temp = histc(spikeTemp,spikeBin)/binSize;
+    spkhist_temp = spkhist_temp./Occupancy(:,iCue)';
     spkconv_temp = conv(spkhist_temp,fspecial('Gaussian',[1 5*resolution],resolution),'same');
     spikeHist(iCue,:) = spkhist_temp;
     spikeConv(iCue,:) = spkconv_temp;
 end
-totalHist = histc(cell2mat(spikeTime),spikeBin)/(binSize*nTrial);
+% totalHist = histc(cell2mat(spikePosition),spikeBin)/(binSize*nTrial); % for temporal raster plot
+totalHist = histc(cell2mat(spikePosition),spikeBin)/binSize*30;
 if isempty(totalHist)
     [fireMean, fireStd, spikeConvZ] = deal(NaN);
 else

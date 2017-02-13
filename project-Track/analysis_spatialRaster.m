@@ -17,7 +17,7 @@ load('Events.mat','sensor','trialIndex');
 
 % align spike time to position time
 for iCell = 1:nCell    
-    disp(['### Analyzing ',tList{iCell},'...']);
+    disp(['### Spatial raster analysis: ',tList{iCell},'...']);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     cd(cellPath);
     

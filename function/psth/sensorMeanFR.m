@@ -7,7 +7,7 @@ fields = fieldnames(sensor);
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Analyzing ', tList{iCell},'...']);
+    disp(['### sensorMeanFR analysis: ', tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     

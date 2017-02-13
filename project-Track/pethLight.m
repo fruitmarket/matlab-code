@@ -25,7 +25,7 @@ criteria_add = 0;
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Analyzing ',tList{iCell},'...']);
+    disp(['### pethLight analysis:  ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     

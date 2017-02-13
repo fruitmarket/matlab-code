@@ -77,13 +77,13 @@ for iCell = 1:nCell
     [stm_ratemap,stm_infos,stm_field_info] = compute_rate72x48(stm_visit_map,stm_fr_map,alpha_v,stm_meanrate,fr_threshold,fieldsize_cutoff);
     [post_ratemap,post_infos,post_field_info] = compute_rate72x48(post_visit_map,post_fr_map,alpha_v,post_meanrate,fr_threshold,fieldsize_cutoff);
     
-    base_ratemap = flipud(base_ratemap')*30;
-    pre_ratemap = flipud(pre_ratemap')*30;
-    stm_ratemap = flipud(stm_ratemap')*30;
-    post_ratemap = flipud(post_ratemap')*30;
+    base_ratemap = flipud(base_ratemap');
+    pre_ratemap = flipud(pre_ratemap');
+    stm_ratemap = flipud(stm_ratemap');
+    post_ratemap = flipud(post_ratemap');
     
-    peakFR_track = (max(max([pre_ratemap,stm_ratemap,post_ratemap]))*30); % Sampleing frequency: 30Hz
-    peakFR_plfm = (max(max(base_ratemap))*30);
+    peakFR_track = max(max([pre_ratemap,stm_ratemap,post_ratemap]));
+    peakFR_plfm = max(max(base_ratemap));
     
     save ([cellName, '.mat'],...
         'pre_ratemap','pre_infos','pre_field_info','pre_flags',...

@@ -11,7 +11,7 @@ winCri = 30;
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Analyzing ',tList{iCell},'...']);
+    disp(['### laserIntPlfm analysis: ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     

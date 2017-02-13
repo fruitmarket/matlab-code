@@ -49,6 +49,7 @@ end
 for iCell = 1:nCell
     % Load waveform of single cluster
     [cellPath,cellName,~] = fileparts(mList{iCell});
+    disp(['### Waveform Crosscor analysis: ',mList{iCell},'...']);
     ttname = regexp(cellName,'_','split');
     
     load(cFile{iCell},'-mat','MClust_Clusters');

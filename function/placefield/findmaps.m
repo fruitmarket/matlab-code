@@ -55,7 +55,7 @@ end
 
 %% Passing values
 fr_map = re_firing_map;
-visit_map = re_num_visit;
+visit_map = re_num_visit/30; % devide by video tracking rate (30hz)
 visit_dur = re_visit_time/10^3; % [change unit from msec to sec] 
 flags = [length(nzPosiIdex) length(position)]; % Percentage of good recording
 end

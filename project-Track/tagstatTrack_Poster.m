@@ -25,7 +25,7 @@ if isempty(tList); return; end;
 
 nCell = length(tList);
 for iCell = 1:nCell
-    disp(['### Tag stat test: ',tList{iCell}]);
+    disp(['### Response stat analysis: ',tList{iCell}]);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     cd(cellPath);
 

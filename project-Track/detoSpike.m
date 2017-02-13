@@ -5,7 +5,7 @@ winCri = [0, 30]; % time duration which are interested in
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Analyzing ',tList{iCell},'...']);
+    disp(['### detoSpike analysis: ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     

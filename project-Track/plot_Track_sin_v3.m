@@ -198,10 +198,14 @@ for iFile = 1:nFile
     post_ratemap(post_ratemap==0) = NaN;
     
     totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
+    if peakFR_track<1
+        totalmap = 0;
+    end
     hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:5,7:8,[0.07 0.22 0.80 0.75]),tightInterval));
     hold on;
     hField = pcolor(totalmap);
-    
+    caxis([0 peakFR_track]);
+
 % Arc property
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'));
         arc = linspace(pi,pi/2*3,170); % s6-s9
@@ -222,7 +226,7 @@ for iFile = 1:nFile
     end;
     set(hField,'linestyle','none');
     set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
-    text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
+    text(125,40,[num2str(floor(peakFR_track*10)/10), ' Hz'],'color','k','FontSize',fontM)
     text(14,3,'Pre-stm','color','k','FontSize',fontM);
     text(62,3,'Stm','color','k','FontSize',fontM)
     text(104,3,'Post-stm','color','k','FontSize',fontM)

@@ -46,7 +46,7 @@ rtDir_noRw = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\
 %%
 % total_DRun = T.taskType == 'DRun';
 total_noRun = T.taskType == 'noRun';
-nTotal_DRun = sum(double(total_DRun));
+% nTotal_DRun = sum(double(total_DRun));
 
 % total_DRw = T.taskType == 'DRw';
 total_noRw = T.taskType == 'noRw';

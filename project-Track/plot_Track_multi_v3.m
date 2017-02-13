@@ -200,6 +200,7 @@ for iFile = 1:nFile
     hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:5,7:8,[0.07 0.22 0.80 0.75]),tightInterval));
     hold on;
     hField = pcolor(totalmap);
+    caxis([0 peakFR_track]);
     
 % Arc property
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'));
@@ -221,7 +222,7 @@ for iFile = 1:nFile
     end;
     set(hField,'linestyle','none');
     set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
-    text(125,40,[num2str(ceil(max(max(totalmap*sfreq(1))))), ' Hz'],'color','k','FontSize',fontM)
+    text(125,40,[num2str(floor(peakFR_track*10)/10), ' Hz'],'color','k','FontSize',fontM)
     text(14,3,'Pre-stm','color','k','FontSize',fontM);
     text(62,3,'Stm','color','k','FontSize',fontM)
     text(104,3,'Post-stm','color','k','FontSize',fontM)
@@ -319,7 +320,7 @@ end
         ylabel('Trial','FontSize',fontM);
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontM,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
-        ylimpethSpatial = ceil(max(pethconv.(fields{iSensor1})(:))*1.1+0.0001);
+        ylimpethSpatial = ceil(max(pethconvSpatial(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
             plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})

@@ -1,4 +1,3 @@
-
 function [fr_map, visit_map, visit_dur, flags] = findmaps(time, position, spkdata, field_ratio)
 %%%%%%%%%%%%%%%%%%%%
 % Purpose: Generate maps (firing rate map, visit map, visit duration, flags(portion of bad detection)

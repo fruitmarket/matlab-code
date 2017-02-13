@@ -19,7 +19,7 @@ field_ratio = [72 48];
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Heat map analyzing ',tList{iCell}, '...']);
+    disp(['### Heat map analysis: ',tList{iCell}, '...']);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     
     spkdata = tData{iCell}; %unit: msec
@@ -91,6 +91,5 @@ for iCell = 1:nCell
         'post_ratemap', 'post_infos', 'post_field_info','post_flags',...
         'peakFR_track','peakFR_plfm','-append');
 end
-
 disp('### Analyzing Field map is done!');
 end  

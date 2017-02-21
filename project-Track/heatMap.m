@@ -19,7 +19,7 @@ field_ratio = [72 48];
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### Heat map analysis: ',tList{iCell}, '...']);
+    disp(['### Heat map analysis: ',tList{iCell},'...']);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     
     spkdata = tData{iCell}; %unit: msec
@@ -77,6 +77,11 @@ for iCell = 1:nCell
     [stm_ratemap,stm_infos,stm_field_info] = compute_rate72x48(stm_visit_map,stm_fr_map,alpha_v,stm_meanrate,fr_threshold,fieldsize_cutoff);
     [post_ratemap,post_infos,post_field_info] = compute_rate72x48(post_visit_map,post_fr_map,alpha_v,post_meanrate,fr_threshold,fieldsize_cutoff);
     
+    base_ratemap(base_visit_map == 0) = NaN;
+    pre_ratemap(pre_visit_map == 0) = NaN;
+    stm_ratemap(stm_visit_map == 0) = NaN;
+    post_ratemap(post_visit_map == 0) = NaN;
+    
     base_ratemap = flipud(base_ratemap');
     pre_ratemap = flipud(pre_ratemap');
     stm_ratemap = flipud(stm_ratemap');
@@ -84,7 +89,7 @@ for iCell = 1:nCell
     
     peakFR_track = max(max([pre_ratemap,stm_ratemap,post_ratemap]));
     peakFR_plfm = max(max(base_ratemap));
-    
+
     save ([cellName, '.mat'],...
         'pre_ratemap','pre_infos','pre_field_info','pre_flags',...
         'stm_ratemap', 'stm_infos', 'stm_field_info','stm_flags',...

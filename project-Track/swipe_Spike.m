@@ -36,13 +36,13 @@ nPath = length(filePath);
 %% Swiping contents
 for iPath = 1:nPath
     curPath = iPath;
-    cd(filePath{iPath});    
+    cd(filePath{iPath});
     
 %     event2mat_trackori;
 %     pethSensor;
 %     pethLight;
 %     waveform;
-%     heatMap;
+    heatMap;
 %     tagstatTrack_Poster; % newest version
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm

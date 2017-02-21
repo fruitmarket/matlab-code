@@ -20,7 +20,7 @@ nCell = length(tList);
 
 for iCell = 1:nCell
     disp(['### Heat map analysis: ',tList{iCell},'...']);
-    [cellPath,cellName,~] = fileparts(tList{iCell});
+    [~,cellName,~] = fileparts(tList{iCell});
     
     spkdata = tData{iCell}; %unit: msec
 %     load('Events.mat','baseTime','preTime','stmTime','postTime','plfm2z');
@@ -72,11 +72,30 @@ for iCell = 1:nCell
     end
     
 %% Temporal field map analysis
+if find(base_fr_map)
     [base_ratemap, ~, ~] = compute_rate72x48(base_visit_map,base_fr_map,alpha_v,base_meanrate,fr_threshold,fieldsize_cutoff);
+else
+    base_ratemap = 0;
+end
+if find(pre_fr_map)
     [pre_ratemap,pre_infos,pre_field_info] = compute_rate72x48(pre_visit_map,pre_fr_map,alpha_v,pre_meanrate,fr_threshold,fieldsize_cutoff);
+else
+    pre_ratemap = zeros(72,48);
+    [pre_infos,pre_field_info] = deal(NaN);
+end
+if find(stm_fr_map)
     [stm_ratemap,stm_infos,stm_field_info] = compute_rate72x48(stm_visit_map,stm_fr_map,alpha_v,stm_meanrate,fr_threshold,fieldsize_cutoff);
+else
+    stm_ratemap = zeros(72,48);
+    [stm_infos,stm_field_info] = deal(NaN);
+end
+if find(post_fr_map)
     [post_ratemap,post_infos,post_field_info] = compute_rate72x48(post_visit_map,post_fr_map,alpha_v,post_meanrate,fr_threshold,fieldsize_cutoff);
-    
+else
+    post_ratemap = zeros(72,48);
+    [post_infos, post_field_info] = deal(NaN);
+end
+ 
     base_ratemap(base_visit_map == 0) = NaN;
     pre_ratemap(pre_visit_map == 0) = NaN;
     stm_ratemap(stm_visit_map == 0) = NaN;

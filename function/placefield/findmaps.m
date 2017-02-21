@@ -13,7 +13,6 @@ spk = histc(spkdata, time); % 'spkdata', 'time': [unit: msec]
 
 pos_prod = prod(position,2);
 position(pos_prod==0,:) = 0;
-
 [dt, newVTflag] = VTRecBreakProcess(time); %dt: [unit: msec]
 
 if newVTflag 

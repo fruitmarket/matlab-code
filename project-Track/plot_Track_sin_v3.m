@@ -191,13 +191,12 @@ for iFile = 1:nFile
         set(hTrackBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM);
     end
     align_ylabel(hTrackBlue)
-        
+
 % Heat map
     totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
     hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:5,7:8,[0.07 0.22 0.80 0.75]),tightInterval));
     hold on;
     hField = pcolor(totalmap);
-    caxis([0 peakFR_track]);
 
 % Arc property
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'));

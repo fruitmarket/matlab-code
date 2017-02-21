@@ -53,15 +53,13 @@ for iCue = 1:nCue
         ypt{iCue} = yptTemp(:);
     end
 
-    % psth
-%     spkhist_temp = histc(spikeTemp,spikeBin)/(binSize/10^3*trialResult(iCue)); % for temporal raster plot
+% psth
     spkhist_temp = histc(spikeTemp,spikeBin)/binSize;
     spkhist_temp = spkhist_temp./Occupancy(:,iCue)';
     spkconv_temp = conv(spkhist_temp,fspecial('Gaussian',[1 5*resolution],resolution),'same');
     spikeHist(iCue,:) = spkhist_temp;
     spikeConv(iCue,:) = spkconv_temp;
 end
-% totalHist = histc(cell2mat(spikePosition),spikeBin)/(binSize*nTrial); % for temporal raster plot
 totalHist = histc(cell2mat(spikePosition),spikeBin)/binSize*30;
 if isempty(totalHist)
     [fireMean, fireStd, spikeConvZ] = deal(NaN);

@@ -193,14 +193,7 @@ for iFile = 1:nFile
     align_ylabel(hTrackBlue)
         
 % Heat map
-    pre_ratemap(pre_ratemap==0) = NaN;
-    stm_ratemap(stm_ratemap==0) = NaN;
-    post_ratemap(post_ratemap==0) = NaN;
-    
     totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
-    if peakFR_track<1
-        totalmap = 0;
-    end
     hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:5,7:8,[0.07 0.22 0.80 0.75]),tightInterval));
     hold on;
     hField = pcolor(totalmap);
@@ -215,8 +208,8 @@ for iFile = 1:nFile
     if ~isempty(lightTime.Track8hz)
         hold on;
         arc_r = 20;
-        x = arc_r*cos(arc)+67;
-        y = arc_r*sin(arc)+23;
+        x = arc_r*cos(arc)+66;
+        y = arc_r*sin(arc)+24;
         if exist('xptTrackLight','var') & (~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'DRun')));
             plot(x,y,'LineWidth',4,'color',colorBlue);
         else exist('xptTrackLight','var') & (~isempty(strfind(cellDir,'noRw')) | ~isempty(strfind(cellDir,'noRun')));

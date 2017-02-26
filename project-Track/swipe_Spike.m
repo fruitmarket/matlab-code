@@ -49,7 +49,7 @@ for iPath = 1:nPath
 %     sensorMeanFR;
 %     analysis_burst6ms;
 %     analysis_wvformCrosscor;
-%     analysis_spatialRaster;
+    analysis_spatialRaster;
 %     laserIntPlfm;
 %     laserFreqCheck;
 %     laserSpikeProb;

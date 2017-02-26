@@ -18,6 +18,7 @@ colorLightBlue = [100 181 246] ./ 255;
 colorLLightBlue = [187, 222, 251]./255;
 colorRed = [237 50 52] ./ 255;
 colorLightRed = [242 138 130] ./ 255;
+colorLLightRed = [239 154 154] ./ 255;
 colorGray = [189 189 189] ./ 255;
 colorLightGray = [238, 238, 238] ./255;
 colorDarkGray = [117, 117, 117] ./255;
@@ -193,11 +194,10 @@ for iFile = 1:nFile
     align_ylabel(hTrackBlue)
 
 % Heat map
-    totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
-    hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:5,7:8,[0.07 0.22 0.80 0.75]),tightInterval));
+    hMap = axes('Position',axpt(1,8,1,5:8,axpt(nCol,nRow,1:5,5:7,[0.10 0.11 0.85 0.85],tightInterval),wideInterval));
     hold on;
     hField = pcolor(totalmap);
-
+    caxis([0, peakFR_track]);
 % Arc property
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'));
         arc = linspace(pi,pi/2*3,170); % s6-s9
@@ -207,22 +207,22 @@ for iFile = 1:nFile
     if ~isempty(lightTime.Track8hz)
         hold on;
         arc_r = 20;
-        x = arc_r*cos(arc)+66;
-        y = arc_r*sin(arc)+24;
+        x = arc_r*cos(arc)+110;
+        y = arc_r*sin(arc)+25;
         if exist('xptTrackLight','var') & (~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'DRun')));
             plot(x,y,'LineWidth',4,'color',colorBlue);
         else exist('xptTrackLight','var') & (~isempty(strfind(cellDir,'noRw')) | ~isempty(strfind(cellDir,'noRun')));
             plot(x,y,'LineWidth',4,'color',colorGray);                
         end
-    else
-    end;
+    end
     set(hField,'linestyle','none');
-    set(hMap,'XLim',[0,135],'YLim',[0,45],'visible','off');
-    text(125,40,[num2str(floor(peakFR_track*10)/10), ' Hz'],'color','k','FontSize',fontM)
-    text(14,3,'Pre-stm','color','k','FontSize',fontM);
-    text(62,3,'Stm','color','k','FontSize',fontM)
-    text(104,3,'Post-stm','color','k','FontSize',fontM)
-    text(44,45,'Track heat map','FontSize',fontL,'FontWeight','bold');
+%     set(hMap,'XLim',[10 140],'YLim',[15, 65]);
+    set(hMap,'XLim',[20 230],'YLim',[10, 60],'visible','off');
+    text(195,45,[num2str(floor(peakFR_track*10)/10), ' Hz'],'color','k','FontSize',fontM)
+    text(30,5,'Pre-stm','color','k','FontSize',fontM);
+    text(110,5,'Stm','color','k','FontSize',fontM)
+    text(175,5,'Post-stm','color','k','FontSize',fontM)
+    text(80,55,'Track heat map','FontSize',fontL,'FontWeight','bold');
     
 % Track light response raster plot (aligned on pseudo light - light - pseudo light)
     hTrackLight(1) = axes('Position',axpt(1,8,1,5:6,axpt(nCol,nRow,7:10,5:7,[0.10 0.11 0.85 0.85],tightInterval),wideInterval));
@@ -279,6 +279,9 @@ end
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
+        recRw(1) = rectangle('Position',[29,0,2,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
+        hold on;
+        recRw(2) = rectangle('Position',[84,0,2,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -317,6 +320,9 @@ end
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
+        recRw(1) = rectangle('Position',[29,0,2,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
+        hold on;
+        recRw(2) = rectangle('Position',[84,0,2,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -347,11 +353,12 @@ end
     set(hTPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-5, 5],'XTick',[-5:5],'YLim',[0, ylimpethTemporal],'YTick',[0,ylimpethTemporal]);
 
     hLine = axes('Position',axpt(1,2,1,1:2,axpt(nCol,nRow,5:6,8,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
-        text(0.2,1.00,'-: Pre','FontSize',fontL,'Color',colorGray,'fontWeight','Bold');    
-        text(0.2,0.75,'-: Stm','FontSize',fontL,'Color',colorBlue,'fontWeight','Bold');
-        text(0.2,0.50,'-: Post','FontSize',fontL,'Color',colorBlack,'fontWeight','Bold');
+        text(0.2,1.00,'-: Pre','FontSize',fontL,'Color',lineColor{1},'fontWeight','Bold');    
+        text(0.2,0.75,'-: Stm','FontSize',fontL,'Color',lineColor{2},'fontWeight','Bold');
+        text(0.2,0.50,'-: Post','FontSize',fontL,'Color',lineColor{3},'fontWeight','Bold');
+        text(0.1,0.25,' : Reward','FontSize',fontL,'Color',colorLightRed,'fontWeight','Bold');
     set(hLine,'Box','off','visible','off');
-    
+
 % Spectrogram (aligned on sensor onset)
     load(['CSC','.mat']);
     hSpectro(1) = axes('Position',axpt(6,6,1:5,1:2,axpt(nCol,nRow,1:3,10:11,[0.1 0.04 0.8 0.80],tightInterval),wideInterval));

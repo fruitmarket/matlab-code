@@ -20,7 +20,7 @@ function [dT, newVTflag] = VTRecBreakProcess(time)
 % tmp_RecBreak_n = reshape(histc(spike_time,RecBreak_T(:)),2,size(RecBreak_T,2));
 % n([RecBreak_idx+1,end]) = tmp_RecBreak_n(1,:);
 
-dT = diff(time); % T: msec
+dT = diff(time); % time: msec [time*10 = 100usec]
 % newVTflag = mean(dT)>1000/50; % Is the sampling frequency 30Hz or 60Hz?
 % 30Hz == 1 (New Cheetah), 60Hz == 0 (Old Cheetah);
 newVTflag = 1; % Since Digital Cheetah is always 30Hz

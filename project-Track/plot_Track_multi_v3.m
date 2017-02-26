@@ -1,4 +1,4 @@
-function plot_Track_multi_v3(fileList,saveDir)
+function plot_Track_multi_v3(fileList, cellID, saveDir)
 % function trackPlot_v4_multifig_v3()
 % Plot properties
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
@@ -44,7 +44,6 @@ for iFile = 1:nFile
     else ~isempty(strfind(cellDir,'DRw'));
         arc = linspace(pi/6*5, pi/6*4,170);
     end
-    
     cd(cellDir);
     load(matFile{iFile});
     load('Events.mat');
@@ -274,10 +273,13 @@ end
         ylabel('Trial','FontSize',fontM);
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
-        ylimpethSpatial = ceil(max(pethconvSpatial(:))*1.1+0.0001);
+        ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
+        recRw(1) = rectangle('Position',[28,0,4,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
+        hold on;
+        recRw(2) = rectangle('Position',[83,0,4,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
         hold on;
         for iType = 1:3
-            plot(pethtimeSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
+            plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Position (cm)','FontSize',fontM);
@@ -312,7 +314,10 @@ end
         ylabel('Trial','FontSize',fontM);
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontM,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
-        ylimpethSpatial = ceil(max(pethconvSpatial(:))*1.1+0.0001);
+        ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
+        recRw(1) = rectangle('Position',[28,0,4,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
+        hold on;
+        recRw(2) = rectangle('Position',[83,0,4,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -346,6 +351,7 @@ end
         text(0.2,1.00,'-: Pre','FontSize',fontL,'Color',colorGray,'fontWeight','Bold');    
         text(0.2,0.75,'-: Stm','FontSize',fontL,'Color',colorBlue,'fontWeight','Bold');
         text(0.2,0.50,'-: Post','FontSize',fontL,'Color',colorBlack,'fontWeight','Bold');
+        text(0.1,0.25,' : Reward','FontSize',fontL,'Color',colorLightRed,'fontWeight','Bold');
     set(hLine,'Box','off','visible','off');
 
 % Spectrogram (aligned on sensor onset)
@@ -414,13 +420,14 @@ end
 
 % Cell ID
     hID = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,10,1,[0.11 0.18 0.80 0.80],tightInterval),wideInterval));
-    text(1, 1, ['Cell ID: ',num2str(iFile)],'FontSize',fontL,'fontWeight','bold');
+    text(1, 1, ['Cell ID: ',num2str(cellID(iFile))],'FontSize',fontL,'fontWeight','bold');
     set(hID,'visible','off');
     
     cd(saveDir);
-    print('-painters','-r300',[cellFigName{1},'.tif'],'-dtiff');
+    print('-painters','-r300',['cellID_',num2str(cellID(iFile)),'.tif'],'-dtiff');
+%     print('-painters','-r300',[cellFigName{1},'.tif'],'-dtiff');
 %     print('-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
     close;
 end
-fclose('all');
+% fclose('all');
 end

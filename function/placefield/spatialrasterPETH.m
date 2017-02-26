@@ -1,4 +1,4 @@
-function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = spatialrasterPETH(spikePosition, trialIndex, Occupancy, win, binSize, resolution, dot)
+function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = spatialrasterPETH(spikePosition, trialIndex, occupancy, win, binSize, resolution, dot)
 %   rasterPSTH converts spike time into raster plot
 %   spikeTime: cell array. each cell contains vector array of spike times per each trial. unit is msec
 %   trialIndex: number of rows should be same as number of trials (length of spikeTime)
@@ -54,11 +54,12 @@ for iCue = 1:nCue
     end
 
 % psth
-    spkhist_temp = histc(spikeTemp,spikeBin)/binSize;
-    spkhist_temp = spkhist_temp./Occupancy(:,iCue)';
-    spkconv_temp = conv(spkhist_temp,fspecial('Gaussian',[1 5*resolution],resolution),'same');
-    spikeHist(iCue,:) = spkhist_temp;
-    spikeConv(iCue,:) = spkconv_temp;
+    spikehist_temp = histc(spikeTemp,spikeBin)/binSize;
+    spikehistOccu_temp = spikehist_temp./occupancy(iCue,:);
+%     spikehistOccu_temp = spikehist_temp;
+    spikeconv_temp = conv(spikehistOccu_temp,fspecial('Gaussian',[1 5*resolution],resolution),'same');
+    spikeHist(iCue,:) = spikehistOccu_temp;
+    spikeConv(iCue,:) = spikeconv_temp;
 end
 totalHist = histc(cell2mat(spikePosition),spikeBin)/binSize*30;
 if isempty(totalHist)

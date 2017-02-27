@@ -56,7 +56,6 @@ for iCue = 1:nCue
 % psth
     spikehist_temp = histc(spikeTemp,spikeBin)/binSize;
     spikehistOccu_temp = spikehist_temp./occupancy(iCue,:);
-%     spikehistOccu_temp = spikehist_temp;
     spikeconv_temp = conv(spikehistOccu_temp,fspecial('Gaussian',[1 5*resolution],resolution),'same');
     spikeHist(iCue,:) = spikehistOccu_temp;
     spikeConv(iCue,:) = spikeconv_temp;

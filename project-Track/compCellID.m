@@ -8,11 +8,12 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 %% Session compare
 % compareID = ~isnan(T.compCellID); % find non-nan index
 % nComp = max(T.compCellID(compareID));
-% parentDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v8\group';
+% parentDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\group';
 % for iCell = 1:nComp
 %    fileName = T.path(T.compCellID == iCell);
+%    cellID = T.cellID(T.compCellID == iCell);
 %    mkdir(parentDir, ['comp_',num2str(iCell)]);
-%    plot_Track_multi_v3(fileName,[parentDir,'\comp_',num2str(iCell)]);   
+%    plot_Track_multi_v3(fileName,cellID,[parentDir,'\comp_',num2str(iCell)]);   
 % end
 % cd(parentDir);
 % compPlace = ~isnan(T.compCellID) & (T.placefieldTrack == 1);
@@ -40,13 +41,13 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % pcStm_DRun = ((T.taskType == 'DRun') & (T.placefieldTrack == 1) & (T.placefieldStmZone == 1));
 % parentDir = [folder, 'pcStm_DRun'];
 % fileName = T.path(pcStm_DRun);
-% cellID = T.cellID(psStm_DRun);
+% cellID = T.cellID(pcStm_DRun);
 % plot_Track_multi_v3(fileName, cellID, parentDir);
 % 
 % pcStm_DRw = ((T.taskType == 'DRw') & (T.placefieldTrack == 1) & (T.placefieldStmZone == 1));
 % parentDir = [folder, 'pcStm_DRw'];
 % fileName = T.path(pcStm_DRw);
-% cellID = T.cellID(psStm_DRw);
+% cellID = T.cellID(pcStm_DRw);
 % plot_Track_multi_v3(fileName, cellID, parentDir);
 % cd('D:\Dropbox\SNL\P2_Track');
 
@@ -65,27 +66,53 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % cd('D:\Dropbox\SNL\P2_Track');
 
 %% Light response
-sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-fd_sigDRun = [folder, 'light_sigDRun'];
-fileName = T.path(sig_DRun);
-cellID = T.cellID(sig_DRun);
-plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
+% sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+% fd_sigDRun = [folder, 'light_sigDRun'];
+% fileName = T.path(sig_DRun);
+% cellID = T.cellID(sig_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
+% 
+% nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+% fd_nosigDRun = [folder, 'light_nosigDRun'];
+% fileName = T.path(nosig_DRun);
+% cellID = T.cellID(nosig_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
+% 
+% sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+% fd_sigDRw = [folder, 'light_sigDRw'];
+% fileName = T.path(sig_DRw);
+% cellID = T.cellID(sig_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
+% 
+% nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+% fd_nosigDRw = [folder, 'light_nosigDRw'];
+% fileName = T.path(nosig_DRw);
+% cellID = T.cellID(nosig_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
+% cd('D:\Dropbox\SNL\P2_Track');
 
-nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-fd_nosigDRun = [folder, 'light_nosigDRun'];
-fileName = T.path(nosig_DRun);
-cellID = T.cellID(nosig_DRun);
-plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
+%% Task Type
+total_DRun = T.taskType == 'DRun';
+fd_totalDRun = [folder, 'v9_DRun'];
+fileName = T.path(total_DRun);
+cellID = T.cellID(total_DRun);
+plot_Track_multi_v3(fileName, cellID, fd_totalDRun);
 
-sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-fd_sigDRw = [folder, 'light_sigDRw'];
-fileName = T.path(sig_DRw);
-cellID = T.cellID(sig_DRw);
-plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
+total_noRun = T.taskType == 'noRun';
+fd_totalnoRun = [folder, 'v9_noRun'];
+fileName = T.path(total_noRun);
+cellID = T.cellID(total_noRun);
+plot_Track_multi_v3(fileName, cellID, fd_totalnoRun);
 
-nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-fd_nosigDRw = [folder, 'light_nosigDRw'];
-fileName = T.path(nosig_DRw);
-cellID = T.cellID(nosig_DRw);
-plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
+total_DRw = T.taskType == 'DRw';
+fd_totalDRw = [folder, 'v9_DRw'];
+fileName = T.path(total_DRw);
+cellID = T.cellID(total_DRw);
+plot_Track_multi_v3(fileName, cellID, fd_totalDRw);
+
+total_noRw = T.taskType == 'noRw';
+fd_totalnoRw = [folder, 'v9_noRw'];
+fileName = T.path(total_noRw);
+cellID = T.cellID(total_noRw);
+plot_Track_multi_v3(fileName, cellID, fd_totalnoRw);
 cd('D:\Dropbox\SNL\P2_Track');

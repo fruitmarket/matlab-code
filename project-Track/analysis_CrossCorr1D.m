@@ -1,6 +1,6 @@
 % Variables for PETH & raster
-winLinear = [1,108]; % 1 to 104 cm
-winSpace = [0,107];
+winLinear = [1,125]; % 1 to 125 cm (lose around 4 cm)
+winSpace = [0,124];
 binSize = 1; % 1 [unit: cm]
 resolution = 2;
 dot = 1;
@@ -18,7 +18,7 @@ numOccu = numOccu';
     
 % align spike time to position time
 for iCell = 1:nCell
-    disp(['### Spatial raster analysis: ',tList{iCell},'...']);
+    disp(['### 1D rate map CrossCorr analysis: ',tList{iCell},'...']);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     cd(cellPath);
     
@@ -44,9 +44,12 @@ for iCell = 1:nCell
     rateMap1D_stm = pethconvSpatial(2,:);
     rateMap1D_post = pethconvSpatial(3,:);
     
-    [rCorr1D_preXstm, pCorr1D_preXstm] = corr(rateMap1D_pre,rateMap1D_stm,'type','Pearson');
-    [rCorr1D_preXpost, pCorr1D_preXpost] = corr(rateMap1D_pre,rateMap1D_post,'type','Pearson');
+    idxCompare = min([sum(double(isfinite(rateMap1D_pre))), sum(double(isfinite(rateMap1D_stm))), sum(double(isfinite(rateMap1D_post)))]);
     
-    save([cellName,'.mat'],'rCorr1D_preXstm','pCorr1D_preXstm','rCorr1D_preXpost','pCorr1D_preXpost','-append');
+    [rCorr1D_preXstm, pCorr1D_preXstm] = corr(rateMap1D_pre(1:idxCompare)',rateMap1D_stm(1:idxCompare)','type','Pearson'); % corr calculates based on column vectors
+    [rCorr1D_preXpost, pCorr1D_preXpost] = corr(rateMap1D_pre(1:idxCompare)',rateMap1D_post(1:idxCompare)','type','Pearson');
+    [rCorr1D_stmXpost, pCorr1D_stmXpost] = corr(rateMap1D_stm(1:idxCompare)',rateMap1D_post(1:idxCompare)','type','Pearson');
+    
+    save([cellName,'.mat'],'rCorr1D_preXstm','pCorr1D_preXstm','rCorr1D_preXpost','pCorr1D_preXpost','rCorr1D_stmXpost','pCorr1D_stmXpost','-append');
 end
 disp('### 1D cross-correlation calculation is done!')

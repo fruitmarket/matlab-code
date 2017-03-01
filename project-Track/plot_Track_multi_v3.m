@@ -342,9 +342,9 @@ end
     end
     align_ylabel([hSRaster,hSPsth]);
     align_ylabel([hTRaster,hTPsth]);
-    set(hSRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0 100],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
+    set(hSRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0 124],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
     set(hTRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-5 5],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
-    set(hSPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0, 100],'XTick',[0:10:100],'YLim',[0 ylimpethSpatial]);
+    set(hSPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0, 124],'XTick',[0:10:120],'YLim',[0 ylimpethSpatial]);
     set(hTPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-5, 5],'XTick',[-5:5],'YLim',[0 ylimpeth1]);
     
     hLine = axes('Position',axpt(1,2,1,1:2,axpt(nCol,nRow,5:6,8,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
@@ -425,7 +425,7 @@ end
     
     cd(saveDir);
     print('-painters','-r300',['cellID_',num2str(cellID(iFile)),'.tif'],'-dtiff');
-%     print('-painters','-r300',[cellFigName{1},'.tif'],'-dtiff');
+%     print('-painters','-r300',[cellFigName{1},'_cellID-',num2str(cellID(iFile)),'.tif'],'-dtiff');
 %     print('-painters','-r300',[cellFigName{1},'.ai'],'-depsc');
     close;
 end

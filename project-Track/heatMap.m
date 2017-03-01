@@ -123,10 +123,10 @@ post_ratemap = post_fr_map./post_visit_dur;
 
     totalmap = [pre_ratemap,stm_ratemap,post_ratemap];
     
-    peakFR_track = max(max(totalmap));
-    peakFR_plfm = max(max(base_ratemap));
+    peakFR2D_track = [max(pre_ratemap(:));max(stm_ratemap(:));max(post_ratemap(:))];
+    peakFR2D_plfm = max(base_ratemap(:));
     
-    save([cellName,'.mat'],'pre_ratemap','stm_ratemap','post_ratemap','peakFR_track','peakFR_plfm','totalmap','-append');
+    save([cellName,'.mat'],'pre_ratemap','stm_ratemap','post_ratemap','peakFR2D_track','peakFR2D_plfm','totalmap','-append');
 
 %     save ([cellName, '.mat'],...
 %         'pre_ratemap','pre_infos','pre_field_info','pre_flags',...

@@ -197,8 +197,8 @@ for iFile = 1:nFile
     hMap = axes('Position',axpt(1,8,1,5:8,axpt(nCol,nRow,1:5,5:7,[0.10 0.11 0.85 0.85],tightInterval),wideInterval));
     hold on;
     hField = pcolor(totalmap);
-    caxis([0, peakFR_track]);
-% Arc property
+
+    % Arc property
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'));
         arc = linspace(pi,pi/2*3,170); % s6-s9
     else ~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'noRw'));
@@ -207,8 +207,8 @@ for iFile = 1:nFile
     if ~isempty(lightTime.Track8hz)
         hold on;
         arc_r = 20;
-        x = arc_r*cos(arc)+110;
-        y = arc_r*sin(arc)+25;
+        x = arc_r*cos(arc)+67;
+        y = arc_r*sin(arc)+23;
         if exist('xptTrackLight','var') & (~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'DRun')));
             plot(x,y,'LineWidth',4,'color',colorBlue);
         else exist('xptTrackLight','var') & (~isempty(strfind(cellDir,'noRw')) | ~isempty(strfind(cellDir,'noRun')));
@@ -217,7 +217,7 @@ for iFile = 1:nFile
     end
     set(hField,'linestyle','none');
 %     set(hMap,'XLim',[10 140],'YLim',[15, 65]);
-    set(hMap,'XLim',[20 230],'YLim',[10, 60],'visible','off');
+    set(hMap,'XLim',[0 135],'YLim',[0, 45],'visible','off');
     text(195,45,[num2str(floor(peakFR_track*10)/10), ' Hz'],'color','k','FontSize',fontM)
     text(30,5,'Pre-stm','color','k','FontSize',fontM);
     text(110,5,'Stm','color','k','FontSize',fontM)
@@ -347,9 +347,9 @@ end
     end
     align_ylabel([hSRaster,hSPsth]);
     align_ylabel([hTRaster,hTPsth]);
-    set(hSRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0 100],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
+    set(hSRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0 124],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
     set(hTRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-5 5],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
-    set(hSPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0, 100],'XTick',[0:10:100],'YLim',[0, ylimpethSpatial],'YTick',[0,ylimpethSpatial]);
+    set(hSPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0, 124],'XTick',[0:10:120],'YLim',[0, ylimpethSpatial],'YTick',[0,ylimpethSpatial]);
     set(hTPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-5, 5],'XTick',[-5:5],'YLim',[0, ylimpethTemporal],'YTick',[0,ylimpethTemporal]);
 
     hLine = axes('Position',axpt(1,2,1,1:2,axpt(nCol,nRow,5:6,8,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));

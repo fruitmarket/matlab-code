@@ -19,7 +19,7 @@ narginchk(4,6);
 if isempty(vtPositionX);isempty(vtPositionY);isempty(vtTime);isempty(refSensor);isempty(timeOnTrack); return; end;
 
 %% laserOnTime
-px2cm = 0.13;
+% px2cm = 0.966;
 timeTrack = vtTime(timeOnTrack(1)<=vtTime & vtTime<=timeOnTrack(2));
 refSensorIdx = zeros(90,1);
 for iSensor = 1:90
@@ -34,7 +34,8 @@ posiY = posiY((~isnan(posiX) & ~isnan(posiY)));
 
 centerX = mean(posiX);
 centerY = mean(posiY);
-radius = mean(sqrt((posiX-centerX).^2+(posiY-centerY).^2));
+% radius = mean(sqrt((posiX-centerX).^2+(posiY-centerY).^2));
+radius = 20; % r = 20 cm
 
 nPosition = length(posiX);
 
@@ -76,9 +77,9 @@ theta = abs(theta);
 % end
 
 %%
- theta2cmPre = theta(refSensorIdx(1):(refSensorIdx(31)-1))*radius*px2cm;
- theta2cmStm = theta(refSensorIdx(31):(refSensorIdx(61)-1))*radius*px2cm;
- theta2cmPost = theta(refSensorIdx(61):end)*radius*px2cm;
+ theta2cmPre = theta(refSensorIdx(1):(refSensorIdx(31)-1))*radius;
+ theta2cmStm = theta(refSensorIdx(31):(refSensorIdx(61)-1))*radius;
+ theta2cmPost = theta(refSensorIdx(61):end)*radius;
  numOccu(:,1) = histc(theta2cmPre,spatialBin);
  numOccu(:,2) = histc(theta2cmStm,spatialBin);
  numOccu(:,3) = histc(theta2cmPost,spatialBin);
@@ -91,7 +92,6 @@ for i =1:89
     addDist = [addDist;tempDist];
 end
 addDist((end+1):nPosition) = 2*pi*89;
-thetaDist = (theta+addDist)*radius*px2cm; % (degree >> cm) absolute distance in (cm)
+thetaDist = (theta+addDist)*radius; % (degree >> cm) absolute distance in (cm)
 refPosition = thetaDist(refSensorIdx);
-save('videoData.mat','theta','thetaDist', 'timeTrack', 'refPosition', 'numOccu');
 end

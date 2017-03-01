@@ -437,7 +437,7 @@ for iCell = 1:nCell
 
             xlabel('Time (ms)','FontSize',fontL);
             ylabel('Rate (Hz)', 'FontSize', fontL);
-            align_ylabel(hLight1hzOri,1);
+            align_ylabel(hLight1hzOri);
 
             set(hLight1hzOri(1),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
             set(hLight1hzOri(2), 'XLim', winCri_ori, 'XTick', [0,30,winCri_ori(2)],'YLim', [0 yLim1hzOri], 'YTick', [0 yLim1hzOri], 'YTickLabel', {[], yLim1hzOri});
@@ -459,7 +459,7 @@ for iCell = 1:nCell
 
             xlabel('Time (ms)','FontSize',fontL);
             ylabel('Rate (Hz)', 'FontSize', fontL);
-            align_ylabel(hLight2hzOri,1);
+            align_ylabel(hLight2hzOri);
 
             set(hLight2hzOri(1),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
             set(hLight2hzOri(2), 'XLim', winCri_ori, 'XTick', [0,30,winCri_ori(2)],'YLim', [0 yLim2hzOri], 'YTick', [0 yLim2hzOri], 'YTickLabel', {[], yLim2hzOri});
@@ -480,7 +480,7 @@ for iCell = 1:nCell
 
             xlabel('Time (ms)','FontSize',fontL);
             ylabel('Rate (Hz)','FontSize',fontL);
-            align_ylabel(hLight8hzOri,1);
+            align_ylabel(hLight8hzOri);
 
             set(hLight8hzOri(1),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
             set(hLight8hzOri(2), 'XLim', winCri_ori, 'XTick', [0,30,winCri_ori(2)],'YLim', [0 yLim8hzOri], 'YTick', [0 yLim8hzOri], 'YTickLabel', {[], yLim8hzOri});
@@ -501,7 +501,7 @@ for iCell = 1:nCell
 
             xlabel('Time (ms)','FontSize',fontL);
             ylabel('Rate (Hz)','FontSize',fontL);
-            align_ylabel(hLight20hzOri,1);
+            align_ylabel(hLight20hzOri);
 
             set(hLight20hzOri(1),'XLim',winCri_ori2,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
             set(hLight20hzOri(2), 'XLim', winCri_ori2, 'XTick', [0,10,winCri_ori2(2)],'YLim', [0 yLim20hzOri], 'YTick', [0 yLim20hzOri], 'YTickLabel', {[], yLim20hzOri});
@@ -522,7 +522,7 @@ for iCell = 1:nCell
 
             xlabel('Time (ms)','FontSize',fontL);
             ylabel('Rate (Hz)','FontSize',fontL);
-            align_ylabel(hLight50hzOri,1);
+            align_ylabel(hLight50hzOri);
 
             set(hLight50hzOri(1),'XLim',winCri_ori3,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
             set(hLight50hzOri(2), 'XLim', winCri_ori3, 'XTick', [0,10,winCri_ori3(2)],'YLim', [0 yLim50hzOri], 'YTick', [0 yLim50hzOri], 'YTickLabel', {[], yLim50hzOri});

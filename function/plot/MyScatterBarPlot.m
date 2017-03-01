@@ -37,7 +37,7 @@ for iGroup = 1:nGroup
     h(iGroup).errorbar = errorbar(iGroup,yMean,ySem,'LineWidth',2,'Color',[0, 0, 0]);
     errorbarT(h(iGroup).errorbar, 0.2, 0.5);
     
-    plot(xPoint,yPoint,'LineStyle','none','Marker','.','MarkerSize',6,'Color',xColor{iGroup});
+    plot(xPoint,yPoint,'LineStyle','none','LineWidth',1,'Marker','o','MarkerSize',3,'MarkerFaceColor',xColor{iGroup},'MarkerEdgeColor','k');
 end
 yMax = max(yMax);
 yMin = min(yMin);
@@ -49,19 +49,13 @@ if nargin==5 && iscell(sigGroup)
         if length(sigGroup{iS})==2
             yHor = max(yPeak(sigGroup{iS}))+(yMax-yMin)*0.05;
             
-            plot([sigGroup{iS}(1) sigGroup{iS}(1)], [yPeak(sigGroup{iS}(1))+(yMax-yMin)*0.025 yHor], ...
-                'LineWidth', 0.35, 'Color', 'k');
-            plot([sigGroup{iS}(2) sigGroup{iS}(2)], [yPeak(sigGroup{iS}(2))+(yMax-yMin)*0.025 yHor], ...
-                'LineWidth', 0.35, 'Color', 'k');
-            plot([sigGroup{iS}(1) sigGroup{iS}(2)], [yHor yHor], ...
-                'LineWidth', 0.35, 'Color', 'k');
-            text(mean(sigGroup{iS}), yHor+(yMax-yMin)*0.025, '*', ...
-                'FontSize', 10, 'HorizontalAlignment', 'center');
+            plot([sigGroup{iS}(1) sigGroup{iS}(1)], [yPeak(sigGroup{iS}(1))+(yMax-yMin)*0.025 yHor],'LineWidth', 0.35, 'Color', 'k');
+            plot([sigGroup{iS}(2) sigGroup{iS}(2)], [yPeak(sigGroup{iS}(2))+(yMax-yMin)*0.025 yHor],'LineWidth', 0.35, 'Color', 'k');
+            plot([sigGroup{iS}(1) sigGroup{iS}(2)], [yHor yHor],'LineWidth', 0.35, 'Color', 'k');
+            text(mean(sigGroup{iS}), yHor+(yMax-yMin)*0.025, '*','FontSize', 10, 'HorizontalAlignment', 'center');
         end
     end
 end
     
-set(gca,'Box','off','TickDir','out','FontSize',4,'LineWidth',0.35,...
-    'XLim',[0.5 nGroup+0.5],'XTick',1:nGroup, ...
-    'YLim', [yMin yMax]*1.2);
+set(gca,'Box','off','TickDir','out','FontSize',4,'LineWidth',0.35,'XLim',[0.5 nGroup+0.5],'XTick',1:nGroup,'YLim', [yMin yMax]*1.2);
     

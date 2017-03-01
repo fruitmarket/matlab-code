@@ -42,14 +42,15 @@ for iPath = 1:nPath
 %     pethSensor;
 %     pethLight;
 %     waveform;
-    heatMap;
+%     heatMap;
 %     tagstatTrack_Poster; % newest version
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 %     sensorMeanFR;
 %     analysis_burst6ms;
 %     analysis_wvformCrosscor;
-    analysis_spatialRaster;
+%     analysis_spatialRaster;
+%     analysis_CrossCorr1D;
 %     laserIntPlfm;
 %     laserFreqCheck;
 %     laserSpikeProb;

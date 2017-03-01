@@ -1,5 +1,5 @@
 function laserSpikeProb()
-% Calculate light induced spike ratio
+% Calculate light induced spike ratio on both track and platform
 
 winCri = [0, 30];
 
@@ -49,18 +49,6 @@ for iCell = 1:nCell
         end
     end
     save([cellName,'.mat'],'lightProbPlfm_2hz','lightProbPlfm_8hz','-append');
-    
-    if isfield(lightTime,'Plfm20hz') & isfield(lightTime,'Plfm50hz')
-        spkTime20hz = spikeWin(tData{iCell},lightTime.Plfm20hz,winCri);
-        lightProbPlfm_20hz = sum(double(~cellfun(@isempty,spkTime20hz)))/length(lightTime.Plfm20hz)*100;
-
-        spkTime50hz = spikeWin(tData{iCell},lightTime.Plfm50hz,winCri);
-        lightProbPlfm_50hz = sum(double(~cellfun(@isempty,spkTime50hz)))/length(lightTime.Plfm50hz)*100;
-    else
-        lightProbPlfm_20hz = NaN;
-        lightProbPlfm_50hz = NaN;
-    end
-    save([cellName,'.mat'],'lightProbPlfm_20hz','lightProbPlfm_50hz','-append');
 end
 
 disp('### Light induced spike ratio calculation is done ! ###')

@@ -30,7 +30,6 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 15.7 21.0]; % A4_half landscape
              [0 0 21.6 27.9]}; % Letter
 
-%
 cd('D:\Dropbox\SNL\P2_Track');
 load('neuronList_ori_28-Feb-2017.mat');
 

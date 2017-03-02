@@ -37,6 +37,7 @@ for iGroup = 1:nGroup
     h(iGroup).errorbar = errorbar(iGroup,yMean,ySem,'LineWidth',2,'Color',[0, 0, 0]);
     errorbarT(h(iGroup).errorbar, 0.2, 0.5);
     
+%     scatter(xPoint,yPoint,3,'filled','Marker','o','MarkerFaceColor',xColor{iGroup},'MarkerEdgeColor','k','LineWidth',1);
     plot(xPoint,yPoint,'LineStyle','none','LineWidth',1,'Marker','o','MarkerSize',3,'MarkerFaceColor',xColor{iGroup},'MarkerEdgeColor','k');
 end
 yMax = max(yMax);

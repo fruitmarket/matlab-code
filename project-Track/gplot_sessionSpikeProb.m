@@ -32,7 +32,8 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 
 cd('D:\Dropbox\SNL\P2_Track');
 
-T = readtable('neuronList_02-Mar-2017.xlsx');
+Txls = readtable('neuronList_02-Mar-2017.xlsx');
+load('neuronList_ori_02-Mar-017.mat');
 
 criteriaFR = 7;
 alpha = 0.005;

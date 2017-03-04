@@ -1,7 +1,7 @@
 clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
 
-T = readtable('neuronList_12-Feb-2017.xlsx');
+T = readtable('neuronList_03-Mar-2017.xlsx');
 T.taskType = categorical(T.taskType);
 alpha = 0.005;
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';

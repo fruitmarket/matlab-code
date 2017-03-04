@@ -33,35 +33,36 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 cd('D:\Dropbox\SNL\P2_Track');
 
 Txls = readtable('neuronList_02-Mar-2017.xlsx');
-load('neuronList_ori_02-Mar-017.mat');
+load('neuronList_ori_02-Mar-2017.mat');
 
 criteriaFR = 7;
 alpha = 0.005;
 T.taskType = categorical(T.taskType);
-compareID = ~isnan(T.compCellID);
+compareID = ~isnan(Txls.compCellID);
 
 DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > 1) & compareID;
 DRwTN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > 1) & compareID;
 noRunTN = (T.taskType == 'noRun') & (cellfun(@max, T.peakFR1D_track) > 1) & compareID;
 noRwTN = (T.taskType == 'noRw') & (cellfun(@max, T.peakFR1D_track) > 1) & compareID;
 
-DRunTN_cellID = T.cellID(DRunTN);
-DRunTN_compID = T.compCellID(DRunTN);
+DRunTN_cellID = Txls.cellID(DRunTN);
+DRunTN_compID = Txls.compCellID(DRunTN);
 DRunTN_taskType = T.taskType(DRunTN);
 DRunTN_evokeProb = T.lightProbTrack_8hz(DRunTN);
 
-DRwTN_cellID = T.cellID(DRwTN);
-DRwTN_compID = T.compCellID(DRwTN);
+DRwTN_cellID = Txls.cellID(DRwTN);
+DRwTN_compID = Txls.compCellID(DRwTN);
 DRwTN_taskType = T.taskType(DRwTN);
 DRwTN_evokeProb = T.lightProbTrack_8hz(DRwTN);
 
-noRunTN_cellID = T.cellID(noRunTN);
-noRunTN_compID = T.compCellID(noRunTN);
+noRunTN_cellID = Txls.cellID(noRunTN);
+noRunTN_compID = Txls.compCellID(noRunTN);
 noRunTN_taskType = T.taskType(noRunTN);
 noRunTN_evokeProb = T.lightProbTrack_8hz(noRunTN);
 
-noRwTN_cellID = T.cellID(noRwTN);
-noRwTN_compID = T.compCellID(noRwTN);
+noRwTN_cellID = Txls.cellID(noRwTN);
+noRwTN_compID = Txls.compCellID(noRwTN);
 noRwTN_taskType = T.taskType(noRwTN);
 noRwTN_evokeProb = T.lightProbTrack_8hz(noRwTN);
 
+disp('ok');

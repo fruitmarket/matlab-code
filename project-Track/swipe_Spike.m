@@ -37,7 +37,7 @@ nPath = length(filePath);
 for iPath = 1:nPath
     curPath = iPath;
     cd(filePath{iPath});
-    
+
 %     event2mat_trackori;
 %     pethSensor;
 %     pethLight;
@@ -49,8 +49,8 @@ for iPath = 1:nPath
 %     sensorMeanFR;
 %     analysis_burst6ms;
 %     analysis_wvformCrosscor;
-%     analysis_spatialRaster;
-%     analysis_CrossCorr1D;
+    analysis_spatialRaster;
+    analysis_CrossCorr1D;
 %     laserIntPlfm;
 %     laserFreqCheck;
 %     laserSpikeProb;

@@ -27,10 +27,10 @@ criteria_FR = 7;
 
 load('cellList_ori.mat');
 
-DRunPn = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
-DRunIn = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
-DRwPn = T.taskProb == '100' & T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
-DRwIn = T.taskProb == '100' & T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
+DRunPn = T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
+DRunIn = T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
+DRwPn = T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
+DRwIn = T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
 
 DRunPn_both = DRunPn & ((T.statDir_Plfm2hz==1 & T.pLR_Plfm2hz<0.005) & (T.statDir_Track==1 & T.pLR_Track<0.005));
 DRunIn_both = DRunIn & ((T.statDir_Plfm2hz==1 & T.pLR_Plfm2hz<0.005) & (T.statDir_Track==1 & T.pLR_Track<0.005));

@@ -271,17 +271,17 @@ end
         hSRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
         if ~isempty(strfind(cellDir,'DRun'))
-            rec = rectangle('Position',[17*5/6*pi 31 17*pi/2 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
+            rec = rectangle('Position',[20*5/6*pi 31 20*pi/2 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
         else
-            rec = rectangle('Position',[17*3/2*pi 31 17*pi/6 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
+            rec = rectangle('Position',[20*3/2*pi 31 20*pi/6 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
         end
         ylabel('Trial','FontSize',fontM);
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        recRw(1) = rectangle('Position',[29,0,2,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
+        pRw(1) = patch([34.65, 38.65, 38.65, 34.65],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
-        recRw(2) = rectangle('Position',[84,0,2,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
+        pRw(2) = patch([97.48, 101.48, 101.48, 97.48],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -312,17 +312,17 @@ end
         hold on;
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
         if ~isempty(strfind(cellDir,'noRun'))
-            rec = rectangle('Position',[17*5/6*pi 31 17*pi/2 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
+            rec = rectangle('Position',[20*5/6*pi 31 20*pi/2 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         else
-            rec = rectangle('Position',[17*3/2*pi 31 17*pi/6 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
+            rec = rectangle('Position',[20*3/2*pi 31 20*pi/6 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         end
         ylabel('Trial','FontSize',fontM);
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        recRw(1) = rectangle('Position',[29,0,2,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
+        pRw(1) = patch([34.65, 38.65, 38.65, 34.65],[0, 0, ylimpethSpatial, ylimpethSpatial],'FaceColor',colorLightRed);
         hold on;
-        recRw(2) = rectangle('Position',[84,0,2,ylimpethSpatial],'LineStyle','none','FaceColor',colorLightRed);
+        pRw(2) = patch([97.48, 101.48, 101.48, 97.48],[0, 0, ylimpethSpatial, ylimpethSpatial],'FaceColor',colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -351,7 +351,8 @@ end
     set(hTRaster,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-5 5],'XTick',[],'YLim',[0, 90],'YTick',[0:30:90]);
     set(hSPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0, 124],'XTick',[0:10:120],'YLim',[0, ylimpethSpatial],'YTick',[0,ylimpethSpatial]);
     set(hTPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-5, 5],'XTick',[-5:5],'YLim',[0, ylimpethTemporal],'YTick',[0,ylimpethTemporal]);
-
+    set(pRw,'LineStyle','none','FaceAlpha',0.2);
+    
     hLine = axes('Position',axpt(1,2,1,1:2,axpt(nCol,nRow,5:6,8,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
         text(0.2,1.00,'-: Pre','FontSize',fontL,'Color',lineColor{1},'fontWeight','Bold');    
         text(0.2,0.75,'-: Stm','FontSize',fontL,'Color',lineColor{2},'fontWeight','Bold');

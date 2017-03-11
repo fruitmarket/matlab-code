@@ -4,7 +4,7 @@ function laserFreqCheck
 resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
-winCri = [0, 30]; % unit: msec
+winCri = [0, 20]; % unit: msec
 binSizeBlue = 2;
 
 [tData, tList] = tLoad;

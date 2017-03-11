@@ -40,7 +40,7 @@ for iPath = 1:nPath
     cd(filePath{iPath});
     
 %     event2mat_pulse;
-%     analysis_laserWidthTest;
+    analysis_laserWidthTest;
     analysis_respstatWidthTest;
 %     waveform;
 %     plot_LightPulse;

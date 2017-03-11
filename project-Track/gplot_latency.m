@@ -23,14 +23,14 @@ tightInterval = [0.02 0.02]; midInterval = [0.09, 0.09]; wideInterval = [0.14 0.
 width = 0.7;
 
 rtDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track';
-criteria_FR = 7;
+cr_meanFR = 7;
 
 load('cellList_ori.mat');
 
-DRunPn = T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
-DRunIn = T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
-DRwPn = T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
-DRwIn = T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
+DRunPn = T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task<=cr_meanFR;
+DRunIn = T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task>cr_meanFR;
+DRwPn = T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task<=cr_meanFR;
+DRwIn = T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task>cr_meanFR;
 
 DRunPn_both = DRunPn & ((T.statDir_Plfm2hz==1 & T.pLR_Plfm2hz<0.005) & (T.statDir_Track==1 & T.pLR_Track<0.005));
 DRunIn_both = DRunIn & ((T.statDir_Plfm2hz==1 & T.pLR_Plfm2hz<0.005) & (T.statDir_Track==1 & T.pLR_Track<0.005));

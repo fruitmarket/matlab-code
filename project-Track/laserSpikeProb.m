@@ -1,7 +1,8 @@
 function laserSpikeProb()
 % Calculate light induced spike ratio on both track and platform
-
-winCri = [0, 30];
+% prob for plfm: only 8mW stimulation were calculated!!
+% winCri = 20 ms;
+winCri = [0, 20];
 
 [tData, tList] = tLoad;
 nCell = length(tList);
@@ -33,8 +34,8 @@ for iCell = 1:nCell
 %% On Platform
     if isfield(lightTime,'Plfm2hz')
         if ~isempty(lightTime.Plfm2hz)
-            spkTime2hz = spikeWin(tData{iCell},lightTime.Plfm2hz,winCri);
-            lightProbPlfm_2hz = sum(double(~cellfun(@isempty,spkTime2hz)))/length(lightTime.Plfm2hz)*100;        
+            spkTime2hz = spikeWin(tData{iCell},lightTime.Plfm2hz(201:400),winCri);
+            lightProbPlfm_2hz = sum(double(~cellfun(@isempty,spkTime2hz)))/length(lightTime.Plfm2hz(201:400))*100;        
         else
             lightProbPlfm_2hz = NaN;
         end

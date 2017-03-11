@@ -35,7 +35,7 @@ load('neuronList_ori_28-Feb-2017.mat');
 
 criPeak = 10;
 criFR = 7;
-alpha = 0.005;
+alpha = 0.01;
 figName = {'gplot_CrossCor_1Dmap_peak10.tif';
             'gplot_CrossCor1Dmap_peak10.tif'};
 % TN: track neuron

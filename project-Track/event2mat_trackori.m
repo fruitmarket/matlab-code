@@ -26,11 +26,12 @@ end
         plfmTime.twohz = timeStamp([recStart(3), recEnd(3)]);
     end
     if length(recStart) == 4
+       plfmTime.twohz = timeStamp([recStart(3), recEnd(3)]);
        plfmTime.eighthz = timeStamp([recStart(4), recEnd(4)]); 
     end
 
 %% Sensor time
-sensorITIThreshold = 100; % sensor intevals shorter than 100ms are usually artifacts.
+sensorITIThreshold = 1000; % sensor intevals shorter than 100ms are usually artifacts.
 sensor1 = timeStamp((~cellfun('isempty',regexp(eventString,'S1'))) & cellfun('length',eventString)==2);
 sensorOut = [false; (diff(sensor1(:,1)) < sensorITIThreshold)] | (sensor1(:,1) < timeStamp(recStart(1)));
 sensor1(sensorOut,:) = [];
@@ -238,7 +239,6 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
             end
     end
 end
-disp('error?')
 %% Save variables
         save('Events.mat',...
         'baseTime','preTime','stmTime','postTime','taskTime','plfmTime',...

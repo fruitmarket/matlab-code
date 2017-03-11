@@ -36,29 +36,30 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 
 cd('D:\Dropbox\SNL\P2_Track');
 Txls = readtable('neuronList_03-Mar-2017.xlsx');
-load('neuronList_ori_03-Mar-2017.mat');
+load('neuronList_ori_07-Mar-2017.mat');
 
-criteriaFR = 7;
-alpha = 0.005;
+cri_meanFR = 7;
+cri_peakFR = 0;
+alpha = 0.01;
 
 % TN: track neuron
-DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > 1);
-DRwTN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > 1);
-noRunTN = (T.taskType == 'noRun') & (cellfun(@max, T.peakFR1D_track) > 1);
-noRwTN = (T.taskType == 'noRw') & (cellfun(@max, T.peakFR1D_track) > 1);
+DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > cri_peakFR);
+DRwTN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > cri_peakFR);
+noRunTN = (T.taskType == 'noRun') & (cellfun(@max, T.peakFR1D_track) > cri_peakFR);
+noRwTN = (T.taskType == 'noRw') & (cellfun(@max, T.peakFR1D_track) > cri_peakFR);
 
 % total population (DRunPN / DRunIN / DRwPN / DRwIN) with light responsiveness (light activated)
-DRunPN = DRunTN & T.meanFR_task <= criteriaFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-DRunIN = DRunTN & T.meanFR_task >= criteriaFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
+DRunPN = DRunTN & T.meanFR_task <= cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
+DRunIN = DRunTN & T.meanFR_task > cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
 
-DRwPN = DRwTN & T.meanFR_task <= criteriaFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-DRwIN = DRwTN & T.meanFR_task >= criteriaFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
+DRwPN = DRwTN & T.meanFR_task <= cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
+DRwIN = DRwTN & T.meanFR_task > cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
 
-noRunPN = noRunTN & T.meanFR_task <= criteriaFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-noRunIN = noRunTN & T.meanFR_task >= criteriaFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
+noRunPN = noRunTN & T.meanFR_task <= cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
+noRunIN = noRunTN & T.meanFR_task > cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
 
-noRwPN = noRwTN & T.meanFR_task <= criteriaFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-noRwIN = noRwTN & T.meanFR_task >= criteriaFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
+noRwPN = noRwTN & T.meanFR_task <= cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
+noRwIN = noRwTN & T.meanFR_task > cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
 
 % Latency on platform
 lat_DRunPN = T.latencyPlfm2hz(DRunPN);
@@ -200,4 +201,3 @@ print('-painters','-r300','gplot_latencySession_plfm.tif','-dtiff');
 % fileName = T.path(noRwIN);
 % cellID = Txls.cellID(noRwIN);
 % plot_Track_multi_v3(fileName, cellID, fd_noRwIN);
-

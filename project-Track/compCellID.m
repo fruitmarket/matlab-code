@@ -1,9 +1,9 @@
 clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
 
-T = readtable('neuronList_03-Mar-2017.xlsx');
+T = readtable('neuronList_07-Mar-2017.xlsx');
 T.taskType = categorical(T.taskType);
-alpha = 0.005;
+alpha = 0.01;
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 %% Session compare
 % compareID = ~isnan(T.compCellID); % find non-nan index
@@ -91,28 +91,36 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
 % cd('D:\Dropbox\SNL\P2_Track');
 
-%% Task Type
-total_DRun = T.taskType == 'DRun';
-fd_totalDRun = [folder, 'v9_DRun'];
-fileName = T.path(total_DRun);
-cellID = T.cellID(total_DRun);
-plot_Track_multi_v3(fileName, cellID, fd_totalDRun);
-
-total_noRun = T.taskType == 'noRun';
-fd_totalnoRun = [folder, 'v9_noRun'];
-fileName = T.path(total_noRun);
-cellID = T.cellID(total_noRun);
-plot_Track_multi_v3(fileName, cellID, fd_totalnoRun);
-
-total_DRw = T.taskType == 'DRw';
-fd_totalDRw = [folder, 'v9_DRw'];
-fileName = T.path(total_DRw);
-cellID = T.cellID(total_DRw);
-plot_Track_multi_v3(fileName, cellID, fd_totalDRw);
-
-total_noRw = T.taskType == 'noRw';
-fd_totalnoRw = [folder, 'v9_noRw'];
-fileName = T.path(total_noRw);
-cellID = T.cellID(total_noRw);
-plot_Track_multi_v3(fileName, cellID, fd_totalnoRw);
+%% platform 2hz, 8hz stimulation population
+total_2hz8hz = ~isnan(T.pLR_Plfm8hz);
+fd_total2hz8hz = [folder,'plfm_2hz8hz'];
+fileName = T.path(total_2hz8hz);
+cellID = T.cellID(total_2hz8hz);
+plot_Track_multi_v3(fileName, cellID, fd_total2hz8hz);
 cd('D:\Dropbox\SNL\P2_Track');
+
+%% Task Type
+% total_DRun = T.taskType == 'DRun';
+% fd_totalDRun = [folder, 'v9_DRun'];
+% fileName = T.path(total_DRun);
+% cellID = T.cellID(total_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_totalDRun);
+% 
+% total_noRun = T.taskType == 'noRun';
+% fd_totalnoRun = [folder, 'v9_noRun'];
+% fileName = T.path(total_noRun);
+% cellID = T.cellID(total_noRun);
+% plot_Track_multi_v3(fileName, cellID, fd_totalnoRun);
+% 
+% total_DRw = T.taskType == 'DRw';
+% fd_totalDRw = [folder, 'v9_DRw'];
+% fileName = T.path(total_DRw);
+% cellID = T.cellID(total_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_totalDRw);
+% 
+% total_noRw = T.taskType == 'noRw';
+% fd_totalnoRw = [folder, 'v9_noRw'];
+% fileName = T.path(total_noRw);
+% cellID = T.cellID(total_noRw);
+% plot_Track_multi_v3(fileName, cellID, fd_totalnoRw);
+% cd('D:\Dropbox\SNL\P2_Track');

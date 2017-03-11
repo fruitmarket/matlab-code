@@ -17,7 +17,7 @@ winPlfm2hz = [-25 200]; % unit: msec
 winPlfm8hz = [-25 100];
 binSizeBlue = 2;
 
-winCri = 30; % light effect criteria: 30ms
+winCri = 20; % light effect criteria: 20ms
 criteria_multi = 0;
 criteria_add = 0;
 
@@ -61,25 +61,25 @@ for iCell = 1:nCell
     
     % Light (Plfm)
     if isfield(lightTime,'Plfm2hz') % Activation (ChETA)
-       spikeTimePlfm2hz = spikeWin(tData{iCell},lightTime.Plfm2hz,winPlfm2hz);
-       [xptPlfm2hz, yptPlfm2hz, pethtimePlfm2hz, pethPlfm2hz,~,~] = rasterPETH(spikeTimePlfm2hz,true(size(lightTime.Plfm2hz)),winPlfm2hz,binSizeBlue,resolution,1);
+       spikeTimePlfm2hz = spikeWin(tData{iCell},lightTime.Plfm2hz(201:400),winPlfm2hz);
+       [xptPlfm2hz, yptPlfm2hz, pethtimePlfm2hz, pethPlfm2hz,pethPlfm2hzConv,pethPlfm2hzConvZ] = rasterPETH(spikeTimePlfm2hz,true(size(lightTime.Plfm2hz(201:400))),winPlfm2hz,binSizeBlue,resolution,1);
        lightSpkPlfm2hz = sum(0<xptPlfm2hz{1} & xptPlfm2hz{1}<winCri);
        lightSpkPlfm2hz_pre = sum(-winCri<xptPlfm2hz{1} & xptPlfm2hz{1}<0);
        lightSpkPlfm2hz_post = sum(winCri<xptPlfm2hz{1} & xptPlfm2hz{1}<2*winCri);
        
-       save([cellName,'.mat'],'spikeTimePlfm2hz','xptPlfm2hz','yptPlfm2hz','pethtimePlfm2hz','pethPlfm2hz','lightSpkPlfm2hz','lightSpkPlfm2hz_pre','lightSpkPlfm2hz_post','-append');
+       save([cellName,'.mat'],'spikeTimePlfm2hz','xptPlfm2hz','yptPlfm2hz','pethtimePlfm2hz','pethPlfm2hz','lightSpkPlfm2hz','pethPlfm2hzConv','pethPlfm2hzConvZ','lightSpkPlfm2hz_pre','lightSpkPlfm2hz_post','-append');
     end
     
     if isfield(lightTime,'Plfm8hz') & ~isempty(lightTime.Plfm8hz);
         spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winPlfm8hz);
-        [xptPlfm8hz, yptPlfm8hz, pethtimePlfm8hz, pethPlfm8hz,~,~] = rasterPETH(spikeTimePlfm8hz,true(size(lightTime.Plfm8hz)),winPlfm8hz,binSizeBlue,resolution,1);
+        [xptPlfm8hz, yptPlfm8hz, pethtimePlfm8hz, pethPlfm8hz,pethPlfm8hzConv,pethPlfm8hzConvZ] = rasterPETH(spikeTimePlfm8hz,true(size(lightTime.Plfm8hz)),winPlfm8hz,binSizeBlue,resolution,1);
         lightSpkPlfm8hz = sum(0<xptPlfm8hz{1} & xptPlfm8hz{1}<winCri);
         lightSpkPlfm8hz_pre = sum(-winCri<xptPlfm8hz{1} & xptPlfm8hz{1}<0);
         lightSpkPlfm8hz_post = sum(winCri<xptPlfm8hz{1} & xptPlfm8hz{1}<2*winCri);
-        save([cellName,'.mat'],'spikeTimePlfm8hz','xptPlfm8hz','yptPlfm8hz','pethtimePlfm8hz','pethPlfm8hz','lightSpkPlfm8hz','lightSpkPlfm8hz_pre','lightSpkPlfm8hz_post','-append');
+        save([cellName,'.mat'],'spikeTimePlfm8hz','xptPlfm8hz','yptPlfm8hz','pethtimePlfm8hz','pethPlfm8hz','pethPlfm8hzConv','pethPlfm8hzConvZ','lightSpkPlfm8hz','lightSpkPlfm8hz_pre','lightSpkPlfm8hz_post','-append');
     else
-        [spikeTimePlfm8hz,xptPlfm8hz,yptPlfm8hz,pethtimePlfm8hz,pethPlfm8hz,lightSpkPlfm8hz,lightSpkPlfm8hz_pre,lightSpkPlfm8hz_post] = deal(NaN);
-        save([cellName,'.mat'],'spikeTimePlfm8hz','xptPlfm8hz','yptPlfm8hz','pethtimePlfm8hz','pethPlfm8hz','lightSpkPlfm8hz','lightSpkPlfm8hz_pre','lightSpkPlfm8hz_post','-append');
+        [spikeTimePlfm8hz,xptPlfm8hz,yptPlfm8hz,pethtimePlfm8hz,pethPlfm8hz,pethPlfm8hzConv,pethPlfm8hzConvZ,lightSpkPlfm8hz,lightSpkPlfm8hz_pre,lightSpkPlfm8hz_post] = deal(NaN);
+        save([cellName,'.mat'],'spikeTimePlfm8hz','xptPlfm8hz','yptPlfm8hz','pethtimePlfm8hz','pethPlfm8hz','pethPlfm8hzConv','pethPlfm8hzConvZ','lightSpkPlfm8hz','lightSpkPlfm8hz_pre','lightSpkPlfm8hz_post','-append');
     end
 end
 disp('### pethLight is done! ###');

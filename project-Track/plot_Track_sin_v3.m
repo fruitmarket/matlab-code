@@ -106,13 +106,13 @@ for iFile = 1:nFile
         nBlue = length(lightTime.Plfm2hz);
         winBlue = [min(pethtimePlfm2hz) max(pethtimePlfm2hz)];
 % Raster
-        hPlfmBlue(1) = axes('Position',axpt(1,8,1,1:2,axpt(nCol,nRow,1:4,2:5,[0.1 0.15 0.85 0.75],tightInterval),wideInterval));
+        hPlfmBlue(1) = axes('Position',axpt(2,8,1,1:2,axpt(nCol,nRow,1:4,2:5,[0.1 0.15 0.85 0.75],tightInterval),wideInterval));
         plot(xptPlfm2hz{1},yptPlfm2hz{1},'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
         set(hPlfmBlue(1),'XLim',winBlue,'XTick',[],'YLim',[0 nBlue], 'YTick', [0 nBlue], 'YTickLabel', {0, nBlue});
         ylabel('Trials','FontSize',fontM);
         title('Platform light response (2Hz)','FontSize',fontL,'FontWeight','bold');
 % Psth
-        hPlfmBlue(2) = axes('Position',axpt(1,8,1,3:4,axpt(nCol,nRow,1:4,2:5,[0.1 0.15 0.85 0.75],tightInterval),wideInterval));
+        hPlfmBlue(2) = axes('Position',axpt(2,8,1,3:4,axpt(nCol,nRow,1:4,2:5,[0.1 0.15 0.85 0.75],tightInterval),wideInterval));
         hold on;
         yLimBarBlue = ceil(max(pethPlfm2hz(:))*1.05+0.0001);
         bar(5, 1000, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLLightBlue);
@@ -128,7 +128,7 @@ for iFile = 1:nFile
         xlabel('Time (ms)','FontSize',fontM);
         ylabel('Rate (Hz)', 'FontSize',fontM);
 % Hazard function
-        hPlfmBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,1:4,2:5,[0.1 0.17 0.85 0.75],tightInterval),wideInterval));
+        hPlfmBlue(3) = axes('Position',axpt(2,8,1,7:8,axpt(nCol,nRow,1:4,2:5,[0.1 0.17 0.85 0.75],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_Plfm2hz;H2_Plfm2hz])*1100+0.0001)/1000 1]);
         winHTag = [0 testRangeChETA];
@@ -139,23 +139,70 @@ for iFile = 1:nFile
         set(hPlfmBlue(3),'XLim',winHTag,'XTick',winHTag,'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
         xlabel('Time (ms)','FontSize',fontM);
         ylabel('H(t)','FontSize',fontM);
-        title('Log-rank test (Platform)','FontSize',fontL,'FontWeight','bold');
+        title('LR test (platform 2Hz)','FontSize',fontL,'FontWeight','bold');
         set(hPlfmBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM);
     end
     align_ylabel(hPlfmBlue)
 
+% Response check: Plfm8hz
+    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var');
+        lightDuration = 10;
+        lightDurationColor = {colorLLightBlue, colorLightGray};
+        testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
+    end
+    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var') && ~isempty(xptPlfm8hz)
+        nBlue = length(lightTime.Plfm8hz);
+        winBlue = [min(pethtimePlfm8hz) max(pethtimePlfm8hz)];
+% Raster
+        hPlfmBlue(1) = axes('Position',axpt(2,8,2,1:2,axpt(nCol,nRow,1:4,2:5,[0.17 0.15 0.85 0.75],tightInterval),wideInterval));
+        plot(xptPlfm8hz{1},yptPlfm8hz{1},'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
+        set(hPlfmBlue(1),'XLim',winBlue,'XTick',[],'YLim',[0 nBlue], 'YTick', [0 nBlue], 'YTickLabel', {0, nBlue});
+%         ylabel('Trials','FontSize',fontM);
+        title('Platform light response (8Hz)','FontSize',fontL,'FontWeight','bold');
+% Psth
+        hPlfmBlue(2) = axes('Position',axpt(2,8,2,3:4,axpt(nCol,nRow,1:4,2:5,[0.17 0.15 0.85 0.75],tightInterval),wideInterval));
+        hold on;
+        yLimBarBlue = ceil(max(pethPlfm8hz(:))*1.05+0.0001);
+        bar(5, 1000, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLLightBlue);
+        rectangle('Position', [0 yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
+        hBarBlue = bar(pethtimePlfm8hz, pethPlfm8hz, 'histc');
+        if statDir_Plfm8hz == 1
+            text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(latencyPlfm8hz,3)],'FontSize',fontM,'interpreter','none');
+        else
+        end
+        set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
+        set(hPlfmBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1) 0 winBlue(2)],'XTickLabel',{winBlue(1);0;num2str(winBlue(2))},'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
+        xlabel('Time (ms)','FontSize',fontM);
+%         ylabel('Rate (Hz)', 'FontSize',fontM);
+% Hazard function
+        hPlfmBlue(3) = axes('Position',axpt(2,8,2,7:8,axpt(nCol,nRow,1:4,2:5,[0.17 0.17 0.85 0.75],tightInterval),wideInterval));
+        hold on;
+        ylimH = min([ceil(max([H1_Plfm8hz;H2_Plfm8hz])*1100+0.0001)/1000 1]);
+        winHTag = [0 testRangeChETA];
+        stairs(timeLR_Plfm8hz, H2_Plfm8hz, 'LineStyle',':','LineWidth',lineL,'Color','k');
+        stairs(timeLR_Plfm8hz, H1_Plfm8hz,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
+        text(diff(winHTag)*0.1,ylimH*0.9,['p = ',num2str(pLR_Plfm8hz,3)],'FontSize',fontM,'Interpreter','none');
+        text(diff(winHTag)*0.1,ylimH*0.7,['calib: ',num2str(calibPlfm8hz,3),' ms'],'FontSize',fontM,'Interpreter','none');
+        set(hPlfmBlue(3),'XLim',winHTag,'XTick',winHTag,'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
+        xlabel('Time (ms)','FontSize',fontM);
+%         ylabel('H(t)','FontSize',fontM);
+        title('LR test (platform 8Hz)','FontSize',fontL,'FontWeight','bold');
+        set(hPlfmBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM);
+    end
+    align_ylabel(hPlfmBlue)
+    
 % Response check: Track
     if isfield(lightTime,'Track8hz') && exist('xptTrackLight','var') && ~isempty(xptTrackLight)
         nBlue = length(lightTime.Track8hz);
         winBlue = [min(pethtimeTrackLight) max(pethtimeTrackLight)];
     % Raster
-        hTrackBlue(1) = axes('Position',axpt(1,8,1,1:2,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.85 0.75],tightInterval),wideInterval));
+        hTrackBlue(1) = axes('Position',axpt(2,8,1,1:2,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.82 0.75],tightInterval),wideInterval));
         plot(xptTrackLight{1},yptTrackLight{1},'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
         set(hTrackBlue(1),'XLim',winBlue,'XTick',[],'YLim',[0 nBlue], 'YTick', [0 nBlue], 'YTickLabel', {0, nBlue});
         ylabel('Trials','FontSize',fontM);
         title('Track light response (8Hz)','FontSize',fontL,'FontWeight','bold');    
     % Psth
-        hTrackBlue(2) = axes('Position',axpt(1,8,1,3:4,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.85 0.75],tightInterval),wideInterval));
+        hTrackBlue(2) = axes('Position',axpt(2,8,1,3:4,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.82 0.75],tightInterval),wideInterval));
         hold on;
         yLimBarBlue = ceil(max(pethTrackLight(:))*1.05+0.0001);
         if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw'))
@@ -177,7 +224,7 @@ for iFile = 1:nFile
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Time (ms)','FontSize',fontM);
     % Hazard function    
-        hTrackBlue(3) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.17 0.85 0.75],tightInterval),wideInterval));
+        hTrackBlue(3) = axes('Position',axpt(2,8,1,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.17 0.82 0.75],tightInterval),wideInterval));
         hold on;
         ylimH = min([ceil(max([H1_Track;H2_Track])*1100+0.0001)/1000 1]);
         winHModu = [0 testRangeChETA];
@@ -193,8 +240,18 @@ for iFile = 1:nFile
     end
     align_ylabel(hTrackBlue)
 
+% Light response spike probability 
+    hTextSpkProb = axes('Position',axpt(2,8,2,1:4,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
+    text(0.2,0.8,['Plfm 2Hz spike Prob. (%): ',num2str(round(lightProbPlfm_2hz*10)/10)],'fontSize',fontM);
+    if ~isnan(lightProbPlfm_8hz)
+        text(0.2,0.6,['Plfm 8Hz spike Prob. (%): ',num2str(round(lightProbPlfm_8hz*10)/10)],'fontSize',fontM);
+    end
+    text(0.2,0.4,['Track 8Hz spike Prob. (%): ',num2str(round(lightProbTrack_8hz*10)/10)],'fontSize',fontM);
+    set(hTextSpkProb,'Box','off','visible','off');
+    
 % Heat map
-    hMap = axes('Position',axpt(1,8,1,5:8,axpt(nCol,nRow,1:5,5:7,[0.10 0.11 0.85 0.85],tightInterval),wideInterval));
+    totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
+    hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:5,7:8,[0.07 0.22 0.80 0.75]),tightInterval));
     hold on;
     hField = pcolor(totalmap);
 
@@ -216,13 +273,26 @@ for iFile = 1:nFile
         end
     end
     set(hField,'linestyle','none');
-%     set(hMap,'XLim',[10 140],'YLim',[15, 65]);
     set(hMap,'XLim',[0 135],'YLim',[0, 45],'visible','off');
-    text(195,45,[num2str(floor(peakFR_track*10)/10), ' Hz'],'color','k','FontSize',fontM)
-    text(30,5,'Pre-stm','color','k','FontSize',fontM);
-    text(110,5,'Stm','color','k','FontSize',fontM)
-    text(175,5,'Post-stm','color','k','FontSize',fontM)
-    text(80,55,'Track heat map','FontSize',fontL,'FontWeight','bold');
+    text(120,40,[num2str(floor(peakFR_track*10)/10), ' Hz'],'color','k','FontSize',fontM)
+    text(14,3,'Pre-stm','color','k','FontSize',fontM);
+    text(62,3,'Stm','color','k','FontSize',fontM)
+    text(104,3,'Post-stm','color','k','FontSize',fontM)
+    text(44,45,'Track heat map','FontSize',fontL,'FontWeight','bold');
+    
+     hPlfmMap(1) = axes('Position',axpt(1,4,1,1:2,axpt(nCol,nRow,5,6:7,[0.12 0.15 0.85 0.75],tightInterval),wideInterval));
+     hFieldBase = pcolor(base_ratemap);
+     text(45,38,[num2str(floor(peakFR2D_plfm*10)/10),' Hz'],'fontSize',fontM);
+     text(33,10,'baseline','fontSize',fontM);
+     
+     hPlfmMap(2) = axes('Position',axpt(1,4,1,3:4,axpt(nCol,nRow,5,6:7,[0.12 0.15 0.85 0.75],tightInterval),wideInterval));
+     hFieldTwo = pcolor(twohz_ratemap);
+     text(45,38,[num2str(floor(peakFR2D_two*10)/10),' Hz'],'fontSize',fontM);
+     text(34,10,'2hz stm','fontSize',fontM);
+
+     set(hFieldBase,'linestyle','none');
+     set(hFieldTwo,'linestyle','none');
+     set(hPlfmMap,'Box','off','visible','off','XLim',[30,60],'YLim',[10,40]);
     
 % Track light response raster plot (aligned on pseudo light - light - pseudo light)
     hTrackLight(1) = axes('Position',axpt(1,8,1,5:6,axpt(nCol,nRow,7:10,5:7,[0.10 0.11 0.85 0.85],tightInterval),wideInterval));

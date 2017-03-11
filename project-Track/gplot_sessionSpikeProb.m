@@ -1,10 +1,15 @@
+% The file plot light evoked spike probability of two sessions (DRun & DRw)
+% criFR: pn/in criteria
+% 
+
 % common part
+clearvars;
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [33 150 243]./ 255,... % During stimulation
     [38, 50, 56]./255}; % After stimulation
 
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 6; fontL = 8; % font size large
+fontS = 4; fontM = 6; fontL = 8; fontXL = 10;% font size large
 lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
 
 colorBlue = [33, 150, 243]/255;
@@ -33,36 +38,74 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 cd('D:\Dropbox\SNL\P2_Track');
 
 Txls = readtable('neuronList_02-Mar-2017.xlsx');
-load('neuronList_ori_02-Mar-2017.mat');
+load('neuronList_ori_05-Mar-2017.mat');
 
-criteriaFR = 7;
+criPeakFR = 7;
+criMeanFR = 3;
 alpha = 0.005;
+figName = 'plot_sessionEvokedSpikeProb.tif';
 T.taskType = categorical(T.taskType);
 compareID = ~isnan(Txls.compCellID);
 
-DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > 1) & compareID;
-DRwTN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > 1) & compareID;
-noRunTN = (T.taskType == 'noRun') & (cellfun(@max, T.peakFR1D_track) > 1) & compareID;
-noRwTN = (T.taskType == 'noRw') & (cellfun(@max, T.peakFR1D_track) > 1) & compareID;
+DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > criMeanFR) & compareID;
+DRwTN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > criMeanFR) & compareID;
+noRunTN = (T.taskType == 'noRun') & (cellfun(@max, T.peakFR1D_track) > criMeanFR) & compareID;
+noRwTN = (T.taskType == 'noRw') & (cellfun(@max, T.peakFR1D_track) > criMeanFR) & compareID;
 
-DRunTN_cellID = Txls.cellID(DRunTN);
-DRunTN_compID = Txls.compCellID(DRunTN);
-DRunTN_taskType = T.taskType(DRunTN);
-DRunTN_evokeProb = T.lightProbTrack_8hz(DRunTN);
+DRunPN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > criMeanFR) & compareID & T.meanFR_task<=criPeakFR;
+DRwPN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > criMeanFR) & compareID & T.meanFR_task<=criPeakFR;
 
-DRwTN_cellID = Txls.cellID(DRwTN);
-DRwTN_compID = Txls.compCellID(DRwTN);
-DRwTN_taskType = T.taskType(DRwTN);
-DRwTN_evokeProb = T.lightProbTrack_8hz(DRwTN);
+DRunIN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > criMeanFR) & compareID & T.meanFR_task>criPeakFR;
+DRwIN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > criMeanFR) & compareID & T.meanFR_task>criPeakFR;
 
-noRunTN_cellID = Txls.cellID(noRunTN);
-noRunTN_compID = Txls.compCellID(noRunTN);
-noRunTN_taskType = T.taskType(noRunTN);
-noRunTN_evokeProb = T.lightProbTrack_8hz(noRunTN);
+commonIdxTN = intersect(Txls.compCellID(DRunTN),Txls.compCellID(DRwTN));
+nCellTN = length(commonIdxTN);
+[DRunSpkProb_track, DRunSpkProb_plfm, DRwSpkProb_track, DRwSpkProb_plfm] = deal(zeros(nCellTN,1));
 
-noRwTN_cellID = Txls.cellID(noRwTN);
-noRwTN_compID = Txls.compCellID(noRwTN);
-noRwTN_taskType = T.taskType(noRwTN);
-noRwTN_evokeProb = T.lightProbTrack_8hz(noRwTN);
+commonIdxPN = intersect(Txls.compCellID(DRunPN),Txls.compCellID(DRwPN));
+nCellPN = length(commonIdxPN);
+[DRunSpkProb_trackPN, DRunSpkProb_plfmPN, DRwSpkProb_trackPN, DRwSpkProb_plfmPN] = deal(zeros(nCellPN,1));
 
-disp('ok');
+commonIdxIN = intersect(Txls.compCellID(DRunIN),Txls.compCellID(DRwIN));
+nCellIN = length(commonIdxIN);
+[DRunSpkProb_trackIN, DRunSpkProb_plfmIN, DRwSpkProb_trackIN, DRwSpkProb_plfmIN] = deal(zeros(nCellIN,1));
+
+% Total neuron
+for iCell = 1:nCellTN
+    DRunSpkProb_track(iCell) = T.lightProbTrack_8hz(Txls.compCellID == commonIdxTN(iCell) & T.taskType == 'DRun');
+    DRunSpkProb_plfm(iCell) = T.lightProbPlfm_2hz(Txls.compCellID == commonIdxTN(iCell) & T.taskType == 'DRun');
+    DRwSpkProb_track(iCell) = T.lightProbTrack_8hz(Txls.compCellID == commonIdxTN(iCell) & T.taskType == 'DRw');
+    DRwSpkProb_plfm(iCell) = T.lightProbPlfm_2hz(Txls.compCellID == commonIdxTN(iCell) & T.taskType == 'DRw');
+end
+
+% PN only
+for iCell = 1:nCellPN
+    DRunSpkProb_trackPN(iCell) = T.lightProbTrack_8hz(Txls.compCellID == commonIdxPN(iCell) & T.taskType == 'DRun');
+    DRunSpkProb_plfmPN(iCell) = T.lightProbPlfm_2hz(Txls.compCellID == commonIdxPN(iCell) & T.taskType == 'DRun');
+    DRwSpkProb_trackPN(iCell) = T.lightProbTrack_8hz(Txls.compCellID == commonIdxPN(iCell) & T.taskType == 'DRw');
+    DRwSpkProb_plfmPN(iCell) = T.lightProbPlfm_2hz(Txls.compCellID == commonIdxPN(iCell) & T.taskType == 'DRw');
+end
+
+% IN only
+for iCell = 1:nCellIN
+    DRunSpkProb_trackIN(iCell) = T.lightProbTrack_8hz(Txls.compCellID == commonIdxIN(iCell) & T.taskType == 'DRun');
+    DRunSpkProb_plfmIN(iCell) = T.lightProbPlfm_2hz(Txls.compCellID == commonIdxIN(iCell) & T.taskType == 'DRun');
+    DRwSpkProb_trackIN(iCell) = T.lightProbTrack_8hz(Txls.compCellID == commonIdxIN(iCell) & T.taskType == 'DRw');
+    DRwSpkProb_plfmIN(iCell) = T.lightProbPlfm_2hz(Txls.compCellID == commonIdxIN(iCell) & T.taskType == 'DRw');
+end
+
+%%
+nCol = 2;
+nRow = 3;
+fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{2},'Name','Evoked spikes between sessions');
+hSpkProb = axes('Position',axpt(nCol,nRow,1,1:3,[0.1 0.1 0.85 0.85],wideInterval));
+plot([1-0.05,2-0.05,3-0.05,4-0.05],[DRunSpkProb_trackPN,DRunSpkProb_plfmPN,DRwSpkProb_trackPN,DRwSpkProb_plfmPN],'-o','color',colorGray,'lineWidth',1.5,'MarkerFaceColor',colorBlue,'MarkerEdgeColor',colorBlack);
+hold on;
+plot([1+0.05,2+0.05,3+0.05,4+0.05],[DRunSpkProb_trackIN,DRunSpkProb_plfmIN,DRwSpkProb_trackIN,DRwSpkProb_plfmIN],'-o','color',colorGray,'lineWidth',1.5,'MarkerFaceColor',colorRed,'MarkerEdgeColor',colorBlack);
+text(4.5, 80, ['PN (n = ', num2str(nCellPN),')'],'fontSize',fontL,'color',colorBlue);
+text(4.5, 75, ['IN (n = ', num2str(nCellIN),')'],'fontSize',fontL,'color',colorRed);
+ylabel('Spike P, %','fontSize',fontXL);
+title('Evoked spike probability','fontSize',fontL,'fontWeight','bold');
+
+set(hSpkProb,'Box','off','TickDir','out','XLim',[0,5],'XTick',[1:4],'XTickLabel',{'DRunTrack'; 'DRunPlfm'; 'DRwTrack'; 'DRwPlfm'},'YLim',[-5,100])
+print('-painters','-r300',figName,'-dtiff');

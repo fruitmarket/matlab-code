@@ -141,7 +141,7 @@ for iFile = 1:nFile
         lightDurationColor = {colorLLightBlue, colorLightGray};
         testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
     end
-    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var') && ~isempty(xptPlfm8hz)
+    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var') && ~isempty(lightTime.Plfm8hz)
         nBlue = length(lightTime.Plfm8hz);
         winBlue = [min(pethtimePlfm8hz) max(pethtimePlfm8hz)];
 % Raster
@@ -230,13 +230,22 @@ for iFile = 1:nFile
 
 % Light response spike probability 
     hTextSpkProb = axes('Position',axpt(2,8,2,1:4,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
-    text(0.2,0.8,['Plfm 2Hz spike Prob. (%): ',num2str(round(lightProbPlfm_2hz*10)/10)],'fontSize',fontM);
+    text(0.2,0.7,'Spike probability (%)','fontSize',fontL,'fontWeight','bold');
+    text(0.4,0.5,['Plfm 2Hz spike Prob. (%): ',num2str(round(lightProbPlfm_2hz*10)/10)],'fontSize',fontM);
     if ~isnan(lightProbPlfm_8hz)
-        text(0.2,0.6,['Plfm 8Hz spike Prob. (%): ',num2str(round(lightProbPlfm_8hz*10)/10)],'fontSize',fontM);
+        text(0.4,0.35,['Plfm 8Hz spike Prob. (%): ',num2str(round(lightProbPlfm_8hz*10)/10)],'fontSize',fontM);
     end
-    text(0.2,0.4,['Track 8Hz spike Prob. (%): ',num2str(round(lightProbTrack_8hz*10)/10)],'fontSize',fontM);
+    text(0.4,0.2,['Track 8Hz spike Prob. (%): ',num2str(round(lightProbTrack_8hz*10)/10)],'fontSize',fontM);
     set(hTextSpkProb,'Box','off','visible','off');
 
+% Light response spike probability 
+    hStmzoneSpike = axes('Position',axpt(2,8,2,5:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
+    text(0.2,0.7,'Stm zone spike number','fontSize',fontL,'fontWeight','bold');
+    text(0.4,0.5,['Pre: ',num2str(stmzoneSpike(1))],'fontSize',fontM);
+    text(0.4,0.35,['Stm: ',num2str(stmzoneSpike(2))],'fontSize',fontM);
+    text(0.4,0.2,['Post: ',num2str(stmzoneSpike(3))],'fontSize',fontM);
+    set(hStmzoneSpike,'Box','off','visible','off');
+    
 % Heat map   
     totalmap = [pre_ratemap(1:45,23:67),stm_ratemap(1:45,23:67),post_ratemap(1:45,23:67)];
     hMap = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:5,7:8,[0.07 0.22 0.80 0.75]),tightInterval));

@@ -46,7 +46,7 @@ for iPath = 1:nPath
 
 %     event2mat_trackori;
 %     pethSensor;
-    pethLight;
+%     pethLight;
 %     waveform;
 %     heatMap;
 %     tagstatTrack_Poster; % newest version
@@ -60,7 +60,8 @@ for iPath = 1:nPath
 %     laserIntPlfm;
 %     laserFreqCheck;
 %     laserSpikeProb;
-%     detoSpike;
+%     analysis_detoSpike8hz;
+    analysis_stmzoneSpike;
 %     plot_Track_sin_v3;
 
     fclose('all');

@@ -3,6 +3,7 @@ function h=errorbarJun(xData,yData,sem,barLength,lineWidth,lineColor)
 % xData: data points of x
 % yData: data points of y
 % sem: either sem or std (xData, yData, sem should be the same length)
+% bar Length:
 % linecolor: RGB color code [x, y, z]
 
 xptH = NaN(length(xData)*6,1);

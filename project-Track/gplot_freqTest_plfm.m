@@ -28,10 +28,10 @@ paperSize = {[0 0 21.0 29.7];
              [0 0 21.6 27.9]};
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
-load('neuronList_freq_06-Feb-2017.mat');
+load('neuronList_freq_15-Mar-2017.mat');
 
 %% Light responsive population
-lightCri = T.pLR_Plfm2hz<0.005 | T.pLR_Plfm8hz<0.005;
+lightCri = ~isnan(T.lightProb1hz) & (T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01);
 
 lightProb1hz = T.lightProb1hz((lightCri));
 lightProb2hz = T.lightProb2hz((lightCri));
@@ -54,11 +54,11 @@ sem_20hz = std(lightProb20hz)/nCell;
 sem_50hz = std(lightProb50hz)/nCell;
 
 %% No light responsive population
-nolightProb1hz = T.lightProb1hz(~lightCri);
-nolightProb2hz = T.lightProb2hz(~lightCri);
-nolightProb8hz = T.lightProb8hz(~lightCri);
-nolightProb20hz = T.lightProb20hz(~lightCri);
-nolightProb50hz = T.lightProb50hz(~lightCri);
+nolightProb1hz = T.lightProb1hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
+nolightProb2hz = T.lightProb2hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
+nolightProb8hz = T.lightProb8hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
+nolightProb20hz = T.lightProb20hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
+nolightProb50hz = T.lightProb50hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
 
 nNoLCell = length(nolightProb1hz);
 
@@ -79,6 +79,7 @@ nCol = 4;
 nRow = 4;
 
 hHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});
+% light response population
 hPlot(1) = axes('Position',axpt(nCol,nRow,1:2,1:2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3,4,5],[lightProb1hz, lightProb2hz, lightProb8hz, lightProb20hz, lightProb50hz],'o','color',colorBlack,'markerSize',markerM,'markerEdgeColor',colorBlack,'markerFaceColor','none');
 hold on;
@@ -90,6 +91,7 @@ text(1,60,['n = ',num2str(nCell)],'fontSize',fontXL);
 xlabel('Frequency, Hz','fontSize',fontXL);
 ylabel('Spike P, %','fontSize',fontXL);
 
+% no light response
 hPlot(2) = axes('Position',axpt(nCol,nRow,3:4,1:2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3,4,5],[nolightProb1hz, nolightProb2hz, nolightProb8hz, nolightProb20hz, nolightProb50hz],'o','color',colorBlack,'markerSize',markerM,'markerEdgeColor',colorBlack,'markerFaceColor','none');
 hold on;
@@ -104,4 +106,4 @@ ylabel('Spike P, %','fontSize',fontXL);
 set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YLim',[-1,70]);
 set(hPlot,'TickDir','out','Box','off');
 
-% print('-painters',['plot_freqTest_plfm_',datestr(date),'.tif'],'-r300','-dtiff');
+print('-painters',['plot_freqTest_plfm_',datestr(date),'.tif'],'-r300','-dtiff');

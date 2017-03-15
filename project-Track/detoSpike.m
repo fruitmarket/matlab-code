@@ -1,6 +1,6 @@
 function detoSpike()
 
-winCri = [0, 30]; % time duration which are interested in
+winCri = [0, 20]; % time duration which are interested in
 [tData, tList] = tLoad;
 nCell = length(tList);
 

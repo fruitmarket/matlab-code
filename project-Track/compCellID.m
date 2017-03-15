@@ -1,9 +1,11 @@
 clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
 
-T = readtable('neuronList_07-Mar-2017.xlsx');
-T.taskType = categorical(T.taskType);
+Txls = readtable('neuronList_07-Mar-2017.xlsx');
+Txls.taskType = categorical(Txls.taskType);
+load('neuronList_ori_14-Mar-2017.mat');
 alpha = 0.01;
+cri_Peak = 7;
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 %% Session compare
 % compareID = ~isnan(T.compCellID); % find non-nan index
@@ -92,11 +94,27 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % cd('D:\Dropbox\SNL\P2_Track');
 
 %% platform 2hz, 8hz stimulation population
-total_2hz8hz = ~isnan(T.pLR_Plfm8hz);
-fd_total2hz8hz = [folder,'plfm_2hz8hz'];
-fileName = T.path(total_2hz8hz);
-cellID = T.cellID(total_2hz8hz);
-plot_Track_multi_v3(fileName, cellID, fd_total2hz8hz);
+% total_2hz8hz = ~isnan(T.pLR_Plfm8hz);
+% fd_total2hz8hz = [folder,'plfm_2hz8hz'];
+% fileName = T.path(total_2hz8hz);
+% cellID = T.cellID(total_2hz8hz);
+% plot_Track_multi_v3(fileName, cellID, fd_total2hz8hz);
+% cd('D:\Dropbox\SNL\P2_Track');
+
+%%
+rapid_DRunTrack = (T.taskType == 'DRun') & T.meanFR_task<cri_Peak & (T.latencyTrack<10) & (T.pLR_Track<alpha);
+fd_neuronRapid = [folder,'rapid_track_DRun'];
+fileName = T.path(rapid_DRunTrack);
+cellID = Txls.cellID(rapid_DRunTrack);
+plot_Track_multi_v3(fileName, cellID, fd_neuronRapid);
+cd('D:\Dropbox\SNL\P2_Track');
+
+%%
+rapid_DRwTrack = (T.taskType == 'DRw') & T.meanFR_task<cri_Peak & (T.latencyTrack<10) & (T.pLR_Track<alpha);
+fd_neuronRapid = [folder,'rapid_track_DRw'];
+fileName = T.path(rapid_DRwTrack);
+cellID = Txls.cellID(rapid_DRwTrack);
+plot_Track_multi_v3(fileName, cellID, fd_neuronRapid);
 cd('D:\Dropbox\SNL\P2_Track');
 
 %% Task Type

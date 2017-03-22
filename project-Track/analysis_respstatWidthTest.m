@@ -3,11 +3,12 @@ function analysis_respstatWidthTest()
 % The code is only designed for different light pulse test.
 
 %% Variables for log-rank test & salt test
-testRange2hz = 10;
+testRange2hz = 8;
 baseRange2hz = 450;
 spkCriPlfm = 10;
 
-alpha = 0.005;
+movingWin = (0:2:8)';
+alpha = 0.05/length(movingWin);
 allowance = 0.005; % 0.5% allowance for hazerd function.
 
 %% Load data
@@ -28,7 +29,6 @@ for iCell = 1:nCell
     spkLatency_Plfm2hz = spikeWin(spikeData,lightTime.width10,[0,25]);
     
 % Log-rank test
-    movingWin = (0:2:18)';
     pLR_Plfm2hzT = zeros(10,1);
     [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT] = deal(cell(10,1));
     

@@ -1,16 +1,17 @@
-function analysis_respstatPlfm()
+function analysis_respstatFreqTest()
 %respstatPlfm calculates statistical significance using log-rank test
 
 % Variables for log-rank test & salt test
-testRange8hz = 10;
-testRange2hz = 10;
+testRange8hz = 8;
+testRange2hz = 8;
 
 baseRange8hz = 80;
 baseRange2hz = 450;
 
 spkCriPlfm = 10;
 
-alpha = 0.005;
+movingWin = (0:2:8)';
+alpha = 0.05/length(movingWin);
 allowance = 0.005; % 0.5% allowance for hazerd function.
 
 % Load data
@@ -34,7 +35,6 @@ for iCell = 1:nCell
     spkLatency_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,[0,25]);
 
 %% Log-rank test
-    movingWin = (0:2:18)';
     [pLR_Plfm2hzT,pLR_Plfm8hzT] = deal(zeros(10,1));
     [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT,timeLR_Plfm8hzT,H1_Plfm8hzT,H2_Plfm8hzT] = deal(cell(10,1));
 %% pLR_Plfm2hz

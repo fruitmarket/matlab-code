@@ -35,8 +35,8 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
 
 cd('D:\Dropbox\SNL\P2_Track');
-Txls = readtable('neuronList_03-Mar-2017.xlsx');
-load('neuronList_ori_07-Mar-2017.mat');
+Txls = readtable('neuronList_19-Mar-2017.xlsx');
+load('neuronList_ori_19-Mar-2017.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -157,7 +157,7 @@ title('IN & noRw','fontSize',fontL,'fontWeight','bold');
 xlabel('Latency from light onset (ms)','fontSize',fontL);
 
 set(hLat,'Box','off','TickDir','out','XLim',[0,30],'XTick',[0:4:30],'YLim',[0,8]);
-print('-painters','-r300','gplot_latencySession_plfm.tif','-dtiff');
+print('-painters','-r300','plot_latencySession_plfm.tif','-dtiff');
 
 %% collect examples
 % folder = 'D:\Dropbox\SNL\P2_Track\latency_plfm\';

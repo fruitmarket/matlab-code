@@ -1,3 +1,6 @@
+% Frequency dependency on platform
+% the function plot Frequency Vs. spike probability
+%
 clearvars;
 
 lineColor = {[144, 164, 174]./255,... % Before stimulation
@@ -28,7 +31,9 @@ paperSize = {[0 0 21.0 29.7];
              [0 0 21.6 27.9]};
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
-load('neuronList_freq_15-Mar-2017.mat');
+Txls = readtable('neuronList_freq_20-Mar-2017.xlsx');
+load('neuronList_freq_20-Mar-2017.mat');
+folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
 %% Light responsive population
 lightCri = ~isnan(T.lightProb1hz) & (T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01);
@@ -107,3 +112,10 @@ set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YLim'
 set(hPlot,'TickDir','out','Box','off');
 
 print('-painters',['plot_freqTest_plfm_',datestr(date),'.tif'],'-r300','-dtiff');
+
+%%
+% fd_neuronFreq = [folder,'plfm_frequency'];
+% fileName = T.path(lightCri);
+% cellID = Txls.cellID(lightCri);
+% plot_Track_multi_v3(fileName, cellID, fd_neuronFreq);
+% cd('D:\Dropbox\SNL\P2_Track');

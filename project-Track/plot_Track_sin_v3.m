@@ -103,7 +103,7 @@ for iFile = 1:nFile
         testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
     end
     if isfield(lightTime,'Plfm2hz') && exist('xptPlfm2hz','var') && ~isempty(xptPlfm2hz)
-        nBlue = length(lightTime.Plfm2hz);
+        nBlue = length(lightTime.Plfm2hz)/3;
         winBlue = [min(pethtimePlfm2hz) max(pethtimePlfm2hz)];
 % Raster
         hPlfmBlue(1) = axes('Position',axpt(2,8,1,1:2,axpt(nCol,nRow,1:4,2:5,[0.1 0.15 0.85 0.75],tightInterval),wideInterval));
@@ -118,10 +118,7 @@ for iFile = 1:nFile
         bar(5, 1000, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLLightBlue);
         rectangle('Position', [0 yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
         hBarBlue = bar(pethtimePlfm2hz, pethPlfm2hz, 'histc');
-        if statDir_Plfm2hz == 1
-            text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(latencyPlfm2hz,3)],'FontSize',fontM,'interpreter','none');
-        else
-        end
+        text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(latencyPlfm2hz,3)],'FontSize',fontM,'interpreter','none');
         %         text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyPlfm,3)],'FontSize',fontM,'interpreter','none');
         set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
         set(hPlfmBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1) 0 winBlue(2)],'XTickLabel',{winBlue(1);0;num2str(winBlue(2))},'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
@@ -145,12 +142,12 @@ for iFile = 1:nFile
     align_ylabel(hPlfmBlue)
 
 % Response check: Plfm8hz
-    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var');
+    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var')
         lightDuration = 10;
         lightDurationColor = {colorLLightBlue, colorLightGray};
         testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
     end
-    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var') && ~isempty(xptPlfm8hz)
+    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var')
         nBlue = length(lightTime.Plfm8hz);
         winBlue = [min(pethtimePlfm8hz) max(pethtimePlfm8hz)];
 % Raster
@@ -240,27 +237,26 @@ for iFile = 1:nFile
     end
     align_ylabel(hTrackBlue)
 
-% Light response spike probability 
-    hTextSpkProb = axes('Position',axpt(2,8,2,1:4,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
-    text(0.2,0.8,['Plfm 2Hz spike Prob. (%): ',num2str(round(lightProbPlfm_2hz*10)/10)],'fontSize',fontM);
-    if ~isnan(lightProbPlfm_8hz)
-        text(0.2,0.6,['Plfm 8Hz spike Prob. (%): ',num2str(round(lightProbPlfm_8hz*10)/10)],'fontSize',fontM);
-    end
-    text(0.2,0.4,['Track 8Hz spike Prob. (%): ',num2str(round(lightProbTrack_8hz*10)/10)],'fontSize',fontM);
-    set(hTextSpkProb,'Box','off','visible','off');
+% detonate spike plot
+    hDetoSpk = axes('Position',axpt(4,8,3:4,1:4,axpt(nCol,nRow,7:10, 2:5,[0.16 0.15 0.80 0.75],tightInterval),wideInterval));
+    plot(m_deto_spkTrack8hz*100,'-o','color',colorBlack,'MarkerFaceColor',colorBlue,'MarkerSize',markerM);
+    xlabel('Light pulse','fontSize',fontM);
+    ylabel('Spike probability, P (%)','fontSize',fontM);
+    title('Detonate spike (Track 8hz)','fontSize',fontL,'fontWeight','bold');
+    set(hDetoSpk,'Box','off','TickDir','out','XLim',[0,length(m_deto_spkTrack8hz)+1],'YLim',[0, max(m_deto_spkTrack8hz*100)*1.1+5],'fontSize',fontM);
 
 % Light response spike probability
-    hTextSpkProb = axes('Position',axpt(2,8,2,1:4,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
-    text(0.2,0.7,'Spike probability (%)','fontSize',fontL,'fontWeight','bold');
-    text(0.4,0.5,['Plfm 2Hz spike Prob. (%): ',num2str(round(lightProbPlfm_2hz*10)/10)],'fontSize',fontM);
+    hTextSpkProb = axes('Position',axpt(2,8,2,6:7,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
+    text(0.2,0.9,'Spike probability (%)','fontSize',fontL,'fontWeight','bold');
+    text(0.4,0.7,['Plfm 2Hz spike Prob. (%): ',num2str(round(lightProbPlfm_2hz*10)/10)],'fontSize',fontM);
     if ~isnan(lightProbPlfm_8hz)
-        text(0.4,0.35,['Plfm 8Hz spike Prob. (%): ',num2str(round(lightProbPlfm_8hz*10)/10)],'fontSize',fontM);
+        text(0.4,0.55,['Plfm 8Hz spike Prob. (%): ',num2str(round(lightProbPlfm_8hz*10)/10)],'fontSize',fontM);
     end
-    text(0.4,0.2,['Track 8Hz spike Prob. (%): ',num2str(round(lightProbTrack_8hz*10)/10)],'fontSize',fontM);
+    text(0.4,0.4,['Track 8Hz spike Prob. (%): ',num2str(round(lightProbTrack_8hz*10)/10)],'fontSize',fontM);
     set(hTextSpkProb,'Box','off','visible','off');
 
 % Light response spike probability 
-    hStmzoneSpike = axes('Position',axpt(2,8,2,5:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
+    hStmzoneSpike = axes('Position',axpt(2,8,2,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
     text(0.2,0.7,'Stm zone spike number','fontSize',fontL,'fontWeight','bold');
     text(0.4,0.5,['Pre: ',num2str(stmzoneSpike(1))],'fontSize',fontM);
     text(0.4,0.35,['Stm: ',num2str(stmzoneSpike(2))],'fontSize',fontM);
@@ -292,7 +288,7 @@ for iFile = 1:nFile
     end
     set(hField,'linestyle','none');
     set(hMap,'XLim',[0 135],'YLim',[0, 45],'visible','off');
-    text(120,40,[num2str(floor(peakFR_track*10)/10), ' Hz'],'color','k','FontSize',fontM)
+    text(120,40,[num2str(floor(max(peakFR2D_track*10))/10), ' Hz'],'color','k','FontSize',fontM)
     text(14,3,'Pre-stm','color','k','FontSize',fontM);
     text(62,3,'Stm','color','k','FontSize',fontM)
     text(104,3,'Post-stm','color','k','FontSize',fontM)
@@ -408,9 +404,9 @@ end
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        pRw(1) = patch([34.65, 38.65, 38.65, 34.65],[0, 0, ylimpethSpatial, ylimpethSpatial],'FaceColor',colorLightRed);
+        pRw(1) = patch([34.65, 38.65, 38.65, 34.65],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
-        pRw(2) = patch([97.48, 101.48, 101.48, 97.48],[0, 0, ylimpethSpatial, ylimpethSpatial],'FaceColor',colorLightRed);
+        pRw(2) = patch([97.48, 101.48, 101.48, 97.48],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial,pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})

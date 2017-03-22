@@ -167,7 +167,7 @@ for iCell = 1:nCell
             set(hFreq8hz(3), 'XLim', win8hz, 'XTick', [0:500:win8hz(2)],'YLim',[0, yLim8hz],'YTick',[0 yLim8hz],'YTickLabel',{[], yLim8hz});
             set(hFreq8hz,'Box','off','TickDir','out','fontSize',fontL);
 
-            print('-painters',[cellName,'.tiff'],'-r300','-dtiff');
+            print('-painters',[cellName,'.tif'],'-r300','-dtiff');
             close;
 
             fclose('all');
@@ -380,7 +380,7 @@ for iCell = 1:nCell
             set(hFreq50hz(3), 'XLim', win50hz, 'XTick', [0:500:win50hz(2)],'YLim',[0, yLim50hz],'YTick',[0 yLim50hz],'YTickLabel',{[], yLim50hz});
             set(hFreq50hz,'Box','off','TickDir','out','fontSize',fontL);
 
-            print('-painters',[cellName,'.tiff'],'-r300','-dtiff');
+            print('-painters',[cellName,'.tif'],'-r300','-dtiff');
             close;
 
             fclose('all')
@@ -642,7 +642,7 @@ for iCell = 1:nCell
             set(hFreq50hz(3), 'XLim', win50hz, 'XTick', [0:500:win50hz(2)],'YLim',[0, yLim50hz],'YTick',[0 yLim50hz],'YTickLabel',{[], yLim50hz});
             set(hFreq50hz,'Box','off','TickDir','out','fontSize',fontL);
 
-            print('-painters',[cellName,'.tiff'],'-r300','-dtiff');
+            print('-painters',[cellName,'.tif'],'-r300','-dtiff');
             close;
 
             fclose('all');

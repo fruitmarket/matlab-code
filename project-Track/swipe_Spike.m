@@ -7,7 +7,10 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';
                'D:\Projects\Track_160417-2_Rbp34ori';
                'D:\Projects\Track_160422-14_Rbp36ori';
                'D:\Projects\Track_160726-1_Rbp48ori';
-               'D:\Projects\Track_160726-2_Rbp50ori'};
+               'D:\Projects\Track_160726-2_Rbp50ori';
+               'D:\Projects\Track_160824-2_Rbp58ori';
+               'D:\Projects\Track_160824-5_Rbp60ori'};
+% startingDir = {'D:\Projects\Track_160824-2_Rbp58ori'};
 
 matFile = [];
 tFile = [];
@@ -23,7 +26,7 @@ for iDir = 1:nDir
 %     tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
 %     matFile = [matFile;tempEventFile];
 end
-
+% 
 nFile = length(matFile);
 for ifile = 1:nFile
     [cellpath, ~, ~] = fileparts(matFile{ifile});
@@ -49,7 +52,7 @@ for iPath = 1:nPath
 %     pethLight;
 %     waveform;
 %     heatMap;
-%     tagstatTrack_Poster; % newest version
+    tagstatTrack_Poster; % newest version
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 %     sensorMeanFR;
@@ -61,7 +64,7 @@ for iPath = 1:nPath
 %     laserFreqCheck;
 %     laserSpikeProb;
 %     analysis_detoSpike8hz;
-    analysis_stmzoneSpike;
+%     analysis_stmzoneSpike;
 %     plot_Track_sin_v3;
 
     fclose('all');

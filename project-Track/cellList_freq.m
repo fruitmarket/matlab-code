@@ -3,7 +3,8 @@ rtPath = 'D:\Dropbox\SNL\P2_Track';
 startingDir = {'D:\Projects\Track_160824-2_Rbp58freq';
                'D:\Projects\Track_160824-5_Rbp60freq'
                'D:\Projects\Track_161130-3_Rbp64freq';
-               'D:\Projects\Track_161130-5_Rbp66freq'};
+               'D:\Projects\Track_161130-5_Rbp66freq';
+               'D:\Projects\Track_161130-7_Rbp68freq'};
 matFile = [];
 nDir = size(startingDir,1);
 for iDir = 1:nDir
@@ -29,3 +30,4 @@ for iFile = 1:nFile
 end
 cd(rtPath);
 save(['neuronList_freq_',datestr(date),'.mat'],'T');
+writetable(T,['neuronList_freq_',datestr(date),'.xlsx']);

@@ -1,9 +1,9 @@
 clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
 
-Txls = readtable('neuronList_07-Mar-2017.xlsx');
+Txls = readtable('neuronList_19-Mar-2017.xlsx');
 Txls.taskType = categorical(Txls.taskType);
-load('neuronList_ori_14-Mar-2017.mat');
+load('neuronList_ori_19-Mar-2017.mat');
 alpha = 0.01;
 cri_Peak = 7;
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';

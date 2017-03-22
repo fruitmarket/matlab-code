@@ -35,8 +35,8 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
 
 cd('D:\Dropbox\SNL\P2_Track');
-Txls = readtable('neuronList_19-Mar-2017.xlsx');
-load('neuronList_ori_19-Mar-2017.mat');
+Txls = readtable('neuronList_22-Mar-2017.xlsx');
+load('neuronList_ori_22-Mar-2017.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -62,30 +62,30 @@ noRwPN = noRwTN & T.meanFR_task <= cri_meanFR & T.pLR_Track<alpha & T.statDir_Tr
 noRwIN = noRwTN & T.meanFR_task > cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1;
 
 % Latency on platform
-lat_DRunPN = T.latencyPlfm2hz(DRunPN);
-lat_DRunIN = T.latencyPlfm2hz(DRunIN);
+lat_DRunPN = T.latencyPlfm2hz1st(DRunPN);
+lat_DRunIN = T.latencyPlfm2hz1st(DRunIN);
 
-lat_DRwPN = T.latencyPlfm2hz(DRwPN);
-lat_DRwIN = T.latencyPlfm2hz(DRwIN);
+lat_DRwPN = T.latencyPlfm2hz1st(DRwPN);
+lat_DRwIN = T.latencyPlfm2hz1st(DRwIN);
 
-lat_noRunPN = T.latencyPlfm2hz(noRunPN);
-lat_noRunIN = T.latencyPlfm2hz(noRunIN);
+lat_noRunPN = T.latencyPlfm2hz1st(noRunPN);
+lat_noRunIN = T.latencyPlfm2hz1st(noRunIN);
 
-lat_noRwPN = T.latencyPlfm2hz(noRwPN);
-lat_noRwIN = T.latencyPlfm2hz(noRwIN);
+lat_noRwPN = T.latencyPlfm2hz1st(noRwPN);
+lat_noRwIN = T.latencyPlfm2hz1st(noRwIN);
 
 % same neurons but latency on track
-latTrack_DRunPN = T.latencyTrack(DRunPN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
-latTrack_DRunIN = T.latencyTrack(DRunIN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
+latTrack_DRunPN = T.latencyTrack1st(DRunPN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
+latTrack_DRunIN = T.latencyTrack1st(DRunIN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
 
-latTrack_DRwPN = T.latencyTrack(DRwPN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
-latTrack_DRwIN = T.latencyTrack(DRwIN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
+latTrack_DRwPN = T.latencyTrack1st(DRwPN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
+latTrack_DRwIN = T.latencyTrack1st(DRwIN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
 
-latTrack_noRunPN = T.latencyTrack(noRunPN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
-latTrack_noRunIN = T.latencyTrack(noRunIN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
+latTrack_noRunPN = T.latencyTrack1st(noRunPN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
+latTrack_noRunIN = T.latencyTrack1st(noRunIN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
 
-latTrack_noRwPN = T.latencyTrack(noRwPN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
-latTrack_noRwIN = T.latencyTrack(noRwIN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
+latTrack_noRwPN = T.latencyTrack1st(noRwPN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
+latTrack_noRwIN = T.latencyTrack1st(noRwIN & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1);
 
 %% plot
 nCol = 2;
@@ -130,7 +130,7 @@ title('IN & DRw','fontSize',fontL,'fontWeight','bold');
 xlabel('Latency from light onset (ms)','fontSize',fontL);
 
 set(hLat,'Box','off','TickDir','out','XLim',[0,30],'XTick',[0:4:30],'YLim',[0,8]);
-print('-painters','-r300','plot_latencySession_track.tif','-dtiff');
+print('-painters','-r300',['plot_latencySession_track_',datestr(date),'.tif'],'-dtiff');
 
 %% collect examples
 % folder = 'D:\Dropbox\SNL\P2_Track\latency_track\';

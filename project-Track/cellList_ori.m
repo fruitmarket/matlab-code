@@ -73,7 +73,9 @@ for iFile = 1:nFile
         peakFR2D_track,peakFR2D_plfm,...    % heatMap
         peakFR1D_track,... % analysis_spatialRaster
         sensorMeanFR_DRun,sensorMeanFR_DRw,... % sensorMeanFR
-        pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,pLR_Plfm8hz,statDir_Plfm8hz,latencyPlfm8hz,pLR_Track,statDir_Track,latencyTrack,...  % tagstatTrack_poster
+        pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd,...
+        pLR_Plfm8hz, statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd,...
+        pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
         rCorr1D_preXstm, pCorr1D_preXstm, rCorr1D_preXpost, pCorr1D_preXpost, rCorr1D_stmXpost, pCorr1D_stmXpost,...% analysis_CrossCorr1D // r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
         lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw,... % laserIntPlfm
@@ -85,7 +87,7 @@ for iFile = 1:nFile
         r_wv,m_spont_wv,m_evoked_wv,...
         stmzoneSpike,...
         m_deto_spkPlfm8hz,m_deto_spkTrack8hz);
-                
+
     T = [T; temT];
     fclose('all');
 end
@@ -110,17 +112,19 @@ for iFile = 1:nFile
     peakFR1D_track = {peakFR1D_track}; % pre/stm/post
     m_deto_spkPlfm8hz = {m_deto_spkPlfm8hz};
     m_deto_spkTrack8hz = {m_deto_spkTrack8hz}; 
-    
+
     temT = table(path,mouseLine,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
         lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
         spkwth,hfvwth,spkpvr,...  % waveform
         peakFR2D_track,peakFR2D_plfm,...    % heatMap
         peakFR1D_track,... % analysis_spatialRaster
-        pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,pLR_Plfm8hz,statDir_Plfm8hz,latencyPlfm8hz,pLR_Track,statDir_Track,latencyTrack,...  % tagstatTrack_poster
+        pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd,...
+        pLR_Plfm8hz,statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd,...
+        pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
         rCorr1D_preXstm, pCorr1D_preXstm, rCorr1D_preXpost, pCorr1D_preXpost, rCorr1D_stmXpost, pCorr1D_stmXpost,...% analysis_CrossCorr1D // r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
         r_wv); % laserSpikeProb
-                
+
     T = [T; temT];
     fclose('all');
 end

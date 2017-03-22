@@ -2,8 +2,8 @@ function tagstatTrack_Poster()
 %tagstatCC calculates statistical significance using log-rank test
 % Variables for log-rank test & salt test
 
-testRange8hz = 10;
-testRange2hz = 10;
+testRange8hz = 8;
+testRange2hz = 8;
 
 baseRange8hz = 100;
 baseRange2hz = 480;
@@ -19,6 +19,7 @@ winLatency = [0 20];
 
 if nargin == 0; sessionFolder = {}; end;
 [tData, tList] = tLoad(sessionFolder);
+matList = mLoad();
 if isempty(tList); return; end;
 
 nCell = length(tList);
@@ -28,6 +29,7 @@ for iCell = 1:nCell
     cd(cellPath);
 
     load('Events.mat','lightTime','psdlightPre','psdlightPost');
+    load(matList{iCell},'pethPlfm2hz','pethTrackLight');
     spikeData = tData{iCell};
 
     spkCriteria_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz(201:400),[-50,50]);
@@ -114,20 +116,54 @@ for iCell = 1:nCell
         else
             statDir_Plfm2hz = 0;
         end
-        
-% Latency (Platform) 
-        spkLatency_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz(201:400),winLatency);
+
+% Latency (Platform)
+        [pksPlfm2hz,locPlfm2hz] = findpeaks(pethPlfm2hz,'minpeakheight',10); % check whether there are two peaks or not. if there are two peaks, calculate each peaek.
         switch (statDir_Plfm2hz)
-            case 1 % activation
-                temp_latencyPlfm2hz = cellfun(@min,spkLatency_Plfm2hz,'UniformOutput',false);
-                temp_latencyPlfm2hz = nanmedian(cell2mat(temp_latencyPlfm2hz));
-            case -1 % inactivation
+            case 1
+                if length(locPlfm2hz) == 1
+                    spkLatency_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz(201:400),winLatency);
+                    temp_latencyPlfm2hz = cellfun(@min,spkLatency_Plfm2hz,'UniformOutput',false);
+                    temp_latencyPlfm2hz = nanmedian(cell2mat(temp_latencyPlfm2hz));
+                elseif length(locPlfm2hz) == 2
+                    spkLatency_Plfm2hz1st = spikeWin(spikeData,lightTime.Plfm2hz(201:400),[0 9]);
+                    temp_latencyPlfm2hz1st = cellfun(@min,spkLatency_Plfm2hz1st,'UniformOutput',false);
+                    temp_latencyPlfm2hz1st = nanmedian(cell2mat(temp_latencyPlfm2hz1st));
+
+                    spkLatency_Plfm2hz2nd = spikeWin(spikeData,lightTime.Plfm2hz(201:400),[11 20]);
+                    temp_latencyPlfm2hz2nd = cellfun(@min,spkLatency_Plfm2hz2nd,'UniformOutput',false);
+                    temp_latencyPlfm2hz2nd = nanmedian(cell2mat(temp_latencyPlfm2hz2nd));
+                else
+                    error1('Too many peaks. Check the PETH');
+                end
+            case -1
+                spkLatency_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz(201:400),winLatency);
                 temp_latencyPlfm2hz = cellfun(@max,spkLatency_Plfm2hz,'UniformOutput',false);
                 temp_latencyPlfm2hz = nanmedian(cell2mat(temp_latencyPlfm2hz));
             case 0
+                spkLatency_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz(201:400),winLatency);
                 temp_latencyPlfm2hz = 0;
         end
-        latencyPlfm2hz = temp_latencyPlfm2hz;
+        if exist('temp_latencyPlfm2hz1st','var')
+            latencyPlfm2hz1st = temp_latencyPlfm2hz1st;
+            latencyPlfm2hz2nd = temp_latencyPlfm2hz2nd;
+        else
+            latencyPlfm2hz1st = temp_latencyPlfm2hz;
+            latencyPlfm2hz2nd = [];
+        end
+
+%         spkLatency_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz(201:400),winLatency);
+%             switch (statDir_Plfm2hz)
+%                 case 1 % activation
+%                     temp_latencyPlfm2hz = cellfun(@min,spkLatency_Plfm2hz,'UniformOutput',false);
+%                     temp_latencyPlfm2hz = nanmedian(cell2mat(temp_latencyPlfm2hz));
+%                 case -1 % inactivation
+%                     temp_latencyPlfm2hz = cellfun(@max,spkLatency_Plfm2hz,'UniformOutput',false);
+%                     temp_latencyPlfm2hz = nanmedian(cell2mat(temp_latencyPlfm2hz));
+%                 case 0
+%                     temp_latencyPlfm2hz = 0;
+%             end
+%             latencyPlfm2hz = temp_latencyPlfm2hz;
     end
     
 %% pLR_Plfm8hz
@@ -198,19 +234,54 @@ for iCell = 1:nCell
                 statDir_Plfm8hz = 0;
             end
 
-% Latency (Platform) 
-            spkLatency_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,winLatency);
-            switch (statDir_Plfm8hz)
-                case 1 % activation
+% Latency (Platform)
+        load(matList{iCell},'pethPlfm8hz')
+        [pksPlfm8hz,locPlfm8hz] = findpeaks(pethPlfm8hz,'minpeakheight',10); % check whether there are two peaks or not. if there are two peaks, calculate each peaek.
+        switch (statDir_Plfm8hz)
+            case 1
+                if length(locPlfm8hz) == 1
+                    spkLatency_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,winLatency);
                     temp_latencyPlfm8hz = cellfun(@min,spkLatency_Plfm8hz,'UniformOutput',false);
                     temp_latencyPlfm8hz = nanmedian(cell2mat(temp_latencyPlfm8hz));
-                case -1 % inactivation
-                    temp_latencyPlfm8hz = cellfun(@max,spkLatency_Plfm8hz,'UniformOutput',false);
-                    temp_latencyPlfm8hz = nanmedian(cell2mat(temp_latencyPlfm8hz));
-                case 0
-                    temp_latencyPlfm8hz = 0;
-            end
-            latencyPlfm8hz = temp_latencyPlfm8hz;
+                elseif length(locPlfm2hz) == 2
+                    spkLatency_Plfm8hz1st = spikeWin(spikeData,lightTime.Plfm8hz,[0 9]);
+                    temp_latencyPlfm8hz1st = cellfun(@min,spkLatency_Plfm8hz1st,'UniformOutput',false);
+                    temp_latencyPlfm8hz1st = nanmedian(cell2mat(temp_latencyPlfm8hz1st));
+
+                    spkLatency_Plfm8hz2nd = spikeWin(spikeData,lightTime.Plfm8hz,[11 20]);
+                    temp_latencyPlfm8hz2nd = cellfun(@min,spkLatency_Plfm8hz2nd,'UniformOutput',false);
+                    temp_latencyPlfm8hz2nd = nanmedian(cell2mat(temp_latencyPlfm8hz2nd));
+                else
+                    error1('Too many peaks. Check the PETH');
+                end
+            case -1
+                spkLatency_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,winLatency);
+                temp_latencyPlfm8hz = cellfun(@max,spkLatency_Plfm8hz,'UniformOutput',false);
+                temp_latencyPlfm8hz = nanmedian(cell2mat(temp_latencyPlfm8hz));
+            case 0
+                spkLatency_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,winLatency);
+                temp_latencyPlfm8hz = 0;
+        end
+        if exist('temp_latencyPlfm8hz1st','var')
+            latencyPlfm8hz1st = temp_latencyPlfm8hz1st;
+            latencyPlfm8hz2nd = temp_latencyPlfm8hz2nd;
+        else
+            latencyPlfm8hz1st = temp_latencyPlfm8hz;
+            latencyPlfm8hz2nd = [];
+        end
+            
+%             spkLatency_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,winLatency);
+%             switch (statDir_Plfm8hz)
+%                 case 1 % activation
+%                     temp_latencyPlfm8hz = cellfun(@min,spkLatency_Plfm8hz,'UniformOutput',false);
+%                     temp_latencyPlfm8hz = nanmedian(cell2mat(temp_latencyPlfm8hz));
+%                 case -1 % inactivation
+%                     temp_latencyPlfm8hz = cellfun(@max,spkLatency_Plfm8hz,'UniformOutput',false);
+%                     temp_latencyPlfm8hz = nanmedian(cell2mat(temp_latencyPlfm8hz));
+%                 case 0
+%                     temp_latencyPlfm8hz = 0;
+%             end
+%             latencyPlfm8hz = temp_latencyPlfm8hz;
         end
     else
         [pLR_Plfm8hz, timeLR_Plfm8hz, H1_Plfm8hz, H2_Plfm8hz, calibPlfm8hz, statDir_Plfm8hz, latencyPlfm8hz] = deal(NaN);
@@ -287,18 +358,52 @@ for iCell = 1:nCell
         end
         
 % Latency (Moving win)
-        spkLatency_Track8hz = spikeWin(spikeData,lightTime.Track8hz,winLatency);
-        switch (statDir_Track)
-            case 1 % activation
-                temp_latencyTrack = cellfun(@min,spkLatency_Track8hz,'UniformOutput',false);
-                temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
-            case -1 % inactivation
-                temp_latencyTrack = cellfun(@max,spkLatency_Track8hz,'UniformOutput',false);
+        [pksTrack,locTrack] = findpeaks(pethTrackLight,'minpeakheight',10); % check whether there are two peaks or not. if there are two peaks, calculate each peaek.
+        switch (statDir_Plfm8hz)
+            case 1
+                if length(locTrack) == 1
+                    spkLatency_Track = spikeWin(spikeData,lightTime.Track8hz,winLatency);
+                    temp_latencyTrack = cellfun(@min,spkLatency_Track,'UniformOutput',false);
+                    temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
+                elseif length(locTrack) == 2
+                    spkLatency_Track1st = spikeWin(spikeData,lightTime.Track8hz,[0 9]);
+                    temp_latencyTrack1st = cellfun(@min,spkLatency_Track1st,'UniformOutput',false);
+                    temp_latencyTrack1st = nanmedian(cell2mat(temp_latencyTrack1st));
+
+                    spkLatency_Track2nd = spikeWin(spikeData,lightTime.Track8hz,[11 20]);
+                    temp_latencyTrack2nd = cellfun(@min,spkLatency_Track2nd,'UniformOutput',false);
+                    temp_latencyTrack2nd = nanmedian(cell2mat(temp_latencyTrack2nd));
+                else
+                    error1('Too many peaks. Check the PETH');
+                end
+            case -1
+                spkLatency_Track = spikeWin(spikeData,lightTime.Track,winLatency);
+                temp_latencyTrack = cellfun(@max,spkLatency_Track,'UniformOutput',false);
                 temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
             case 0
+                spkLatency_Track = spikeWin(spikeData,lightTime.Track,winLatency);
                 temp_latencyTrack = 0;
         end
-        latencyTrack = temp_latencyTrack;
+        if exist('temp_latencyPlfm8hz1st','var')
+            latencyTrack1st = temp_latencyTrack1st;
+            latencyTrack2nd = temp_latencyTrack2nd;
+        else
+            latencyTrack1st = temp_latencyTrack;
+            latencyTrack2nd = [];
+        end
+
+%         spkLatency_Track8hz = spikeWin(spikeData,lightTime.Track8hz,winLatency);
+%         switch (statDir_Track)
+%             case 1 % activation
+%                 temp_latencyTrack = cellfun(@min,spkLatency_Track8hz,'UniformOutput',false);
+%                 temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
+%             case -1 % inactivation
+%                 temp_latencyTrack = cellfun(@max,spkLatency_Track8hz,'UniformOutput',false);
+%                 temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
+%             case 0
+%                 temp_latencyTrack = 0;
+%         end
+%         latencyTrack = temp_latencyTrack;
     end
 
     save([cellName,'.mat'],...

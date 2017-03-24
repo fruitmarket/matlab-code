@@ -59,7 +59,6 @@ DRunIN_actDelay = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.st
 DRunIN_ina = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == -1;
 DRunIN_no = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz>=alpha;
 
-
 %% PETH
 DRunPN_act_pethPlfm2hz = cell2mat(T.pethPlfm2hz(DRunPN_act));
 DRunPN_actRapid_pethPlfm2hz = cell2mat(T.pethPlfm2hz(DRunPN_actRapid));

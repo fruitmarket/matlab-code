@@ -52,7 +52,7 @@ for iPath = 1:nPath
 %     pethLight;
 %     waveform;
 %     heatMap;
-    tagstatTrack_Poster; % newest version
+%     tagstatTrack_Poster; % newest version
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 %     sensorMeanFR;
@@ -65,6 +65,7 @@ for iPath = 1:nPath
 %     laserSpikeProb;
 %     analysis_detoSpike8hz;
 %     analysis_stmzoneSpike;
+    analysis_laserSpikeChange;
 %     plot_Track_sin_v3;
 
     fclose('all');

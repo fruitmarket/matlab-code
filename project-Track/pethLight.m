@@ -12,7 +12,7 @@ resolution = 10; % sigma = resoution * binSize = 100 msec
 winTrack = [-25 100];
 
 % Tag variables
-winPlfm2hz = [-25 200]; % unit: msec
+winPlfm2hz = [-25 475]; % unit: msec
 winPlfm8hz = [-25 100];
 binSizeBlue = 2;
 

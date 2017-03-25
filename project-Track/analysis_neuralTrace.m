@@ -1,20 +1,26 @@
-function [neuralDist, tracePCA, latentPCA] = analysis_neuralTrace(neuronMatrix)
+function [neuralDist, tracePCA, latentPCA] = analysis_neuralTrace(neuronList)
 % function analysis_neural Track calculates neural response distance and
 % spike trace (by using PCA)
-%  input: neuronMatrix n x m matrix (row: neuron / column: spikes in each time bin)
+%  input: neuronList 1 x n cell array that each row represents spike times of each neuron 
 %   
 %   Author: Joonyeup Lee
 %   Version 1.0 (3/23/2017)
 
-nBin = size(neuronMatrix,2);
-nCell = size(neuronMatrix,1);
-neuralDist = zeros(nBin,1);
+win = [0, 20];
+movingWin = -20:5:80;
+nWin = length(movingWin);
+nCell = size(neuronList,1);
+spikes = zeros(nCell,nWin);
 
-for iBin = 1:nBin
-    neuralDist(iBin,1) = norm(neuronMatrix(iBin)-neuronMatrix(1));
+for iWin = 1:nWin
+    spikes(:,iWin) = cellfun(@(x) sum(double(win(1)+movingWin(iWin)<x & x<win(2)+movingWin(iWin))),neuronList);
 end
 
-[coeffPCA, ~, latentPCA] = pca(neuronMatrix');
-tracePCA = neuronMatrix'*coeffPCA;
+ for iWin = 1:nWin
+    neuralDist(iWin,1) = norm(spikes(iWin)-spikes(1));
+end
+
+[coeffPCA, ~, latentPCA] = pca(spikes');
+tracePCA = spikes'*coeffPCA;
 latentPCA = latentPCA/(sum(latentPCA))*100;
 end

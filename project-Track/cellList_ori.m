@@ -34,7 +34,7 @@ for iFile = 1:nFile
     spkwv = {spkwv};
     sensorMeanFR_DRun = {sensorMeanFR_DRun};
     sensorMeanFR_DRw = {sensorMeanFR_DRw};
-       
+
     m_spont_wv = {m_spont_wv};
     m_evoked_wv = {m_evoked_wv};
     
@@ -73,6 +73,7 @@ for iFile = 1:nFile
         peakFR2D_track,peakFR2D_plfm,...    % heatMap
         peakFR1D_track,... % analysis_spatialRaster
         sensorMeanFR_DRun,sensorMeanFR_DRw,... % sensorMeanFR
+        xptTrackLight, xptPsdPre, xptPsdPost,...
         pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd,...
         pLR_Plfm8hz, statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd,...
         pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...  % tagstatTrack_poster

@@ -36,8 +36,9 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
 
 cd('D:\Dropbox\SNL\P2_Track');
-Txls = readtable('neuronList_21-Mar-2017.xlsx');
-load('neuronList_ori_21-Mar-2017.mat');
+% Txls = readtable('neuronList_21-Mar-2017.xlsx');
+% load('neuronList_ori_21-Mar-2017.mat');
+load('neuronList_ori_25-Mar-2017.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -48,14 +49,14 @@ noRunTN = (T.taskType == 'noRun') & (cellfun(@max, T.peakFR1D_track) > cri_peakF
 
 % total population (noRunPN / noRunIN / DRwPN / DRwIN) with light responsiveness (light activated)
 noRunPN_act = noRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-noRunPN_actRapid = noRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz<10;
-noRunPN_actDelay = noRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz>10;
+noRunPN_actRapid = noRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st<10;
+noRunPN_actDelay = noRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st>10;
 noRunPN_ina = noRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == -1;
 noRunPN_no = noRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Plfm2hz>alpha;
 
 noRunIN_act = noRunTN & T.meanFR_task>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-noRunIN_actRapid = noRunTN & T.meanFR_task>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz<10;
-noRunIN_actDelay = noRunTN & T.meanFR_task>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz>10;
+noRunIN_actRapid = noRunTN & T.meanFR_task>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st<10;
+noRunIN_actDelay = noRunTN & T.meanFR_task>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st>10;
 noRunIN_ina = noRunTN & T.meanFR_task>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == -1;
 noRunIN_no = noRunTN & T.meanFR_task>cri_meanFR & T.pLR_Plfm2hz>alpha;
 
@@ -248,6 +249,6 @@ set(hBarnoRunPN,'FaceColor',colorDarkGray,'EdgeColor','none');
 set(hBarnoRunIN,'FaceColor',colorDarkGray,'EdgeColor','none');
 set(hPlotnoRunPN,'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, yMaxnoRunPN],'fontSize',fontM);
 set(hPlotnoRunIN,'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, yMaxnoRunIN],'fontSize',fontM);
-print('-painters','-r300','plot_latencyPETH_noRunPlfm.tif','-dtiff');
+print('-painters','-r300','plot_latencyPETH_noRunPlfm1.tif','-dtiff');
 
 close('all');

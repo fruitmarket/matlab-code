@@ -35,8 +35,9 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
 
 cd('D:\Dropbox\SNL\P2_Track');
-Txls = readtable('neuronList_21-Mar-2017.xlsx');
-load('neuronList_ori_21-Mar-2017.mat');
+% Txls = readtable('neuronList_21-Mar-2017.xlsx');
+% load('neuronList_ori_21-Mar-2017.mat');
+load('neuronList_ori_25-Mar-2017.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -50,14 +51,14 @@ noRwTN = (T.taskType == 'noRw') & (cellfun(@max, T.peakFR1D_track) > cri_peakFR)
 
 % total population (DRwPN / DRwIN / DRwPN / DRwIN) with light responsiveness (light activated)
 DRwPN_act = DRwTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-DRwPN_actRapid = DRwTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz<10;
-DRwPN_actDelay = DRwTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz>10;
+DRwPN_actRapid = DRwTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st<10;
+DRwPN_actDelay = DRwTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st>10;
 DRwPN_ina = DRwTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == -1;
 DRwPN_no = DRwTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz>alpha;
 
 DRwIN_act = DRwTN & T.meanFR_base>cri_meanFR & T.pLR_Track<alpha & T.statDir_Plfm2hz == 1;
-DRwIN_actRapid = DRwTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz<10;
-DRwIN_actDelay = DRwTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz>10;
+DRwIN_actRapid = DRwTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st<10;
+DRwIN_actDelay = DRwTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st>10;
 DRwIN_ina = DRwTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == -1;
 DRwIN_no = DRwTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz>alpha;
 
@@ -216,7 +217,7 @@ hold on;
 rectangle('Position',[0,yMaxDRwIN*0.925,10,yMaxDRwIN*0.075],'LineStyle','none','FaceColor',colorBlue);
 hold on;
 hBarDRwIN(3) = bar(xpt,m_DRwIN_actDelay_pethPlfm2hz,'histc');
-errorbarJun(xpt+1,m_DRwIN_actDelay_pethPlfm2hz,sem_DRwIN_actDelay_pethPlfm2hz,1,0.4,colorBlack);
+% errorbarJun(xpt+1,m_DRwIN_actDelay_pethPlfm2hz,sem_DRwIN_actDelay_pethPlfm2hz,1,0.4,colorBlack);
 text(100, yMaxDRwIN*0.8,['n = ',num2str(n_DRwIN_actDelay_pethPlfm2hz)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
@@ -253,5 +254,5 @@ set(hPlotDRwPN(5),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:
 set(hPlotDRwIN(1:4),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, yMaxDRwIN],'fontSize',fontM);
 set(hPlotDRwIN(5),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, 50],'fontSize',fontM);
 
-print('-painters','-r300','plot_latencyPETH_DRwPlfm.tif','-dtiff');
+print('-painters','-r300','plot_latencyPETH_DRwPlfm1.tif','-dtiff');
 close('all');

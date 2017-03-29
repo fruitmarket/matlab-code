@@ -35,8 +35,9 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
 
 cd('D:\Dropbox\SNL\P2_Track');
-Txls = readtable('neuronList_21-Mar-2017.xlsx');
-load('neuronList_ori_21-Mar-2017.mat');
+% Txls = readtable('neuronList_21-Mar-2017.xlsx');
+% load('neuronList_ori_21-Mar-2017.mat');
+load('neuronList_ori_25-Mar-2017.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -48,14 +49,14 @@ noRwTN = (T.taskType == 'noRw') & (cellfun(@max, T.peakFR1D_track) > cri_peakFR)
 
 % total population (DRwPN / DRwIN / DRwPN / DRwIN) with light responsiveness (light activated)
 DRwPN_act = DRwTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1;
-DRwPN_actRapid = DRwTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack<10;
-DRwPN_actDelay = DRwTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack>10;
+DRwPN_actRapid = DRwTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack1st<10;
+DRwPN_actDelay = DRwTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack1st>10;
 DRwPN_ina = DRwTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == -1;
 DRwPN_no = DRwTN & T.meanFR_task<=cri_meanFR & T.pLR_Track>alpha;
 
 DRwIN_act = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1;
-DRwIN_actRapid = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack<10;
-DRwIN_actDelay = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack>10;
+DRwIN_actRapid = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack1st<10;
+DRwIN_actDelay = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack1st>10;
 DRwIN_ina = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == -1;
 DRwIN_no = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track>alpha;
 
@@ -249,6 +250,6 @@ set(hPlotDRwPN(1:4),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:
 set(hPlotDRwPN(5),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, 10],'fontSize',fontM);
 set(hPlotDRwIN,'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, yMaxDRwIN],'fontSize',fontM);
 
-print('-painters','-r300','plot_latencyPETH_DRwTrack.tif','-dtiff');
+print('-painters','-r300','plot_latencyPETH_DRwTrack1.tif','-dtiff');
 
 close('all');

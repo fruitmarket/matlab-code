@@ -36,8 +36,9 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
 
 cd('D:\Dropbox\SNL\P2_Track');
-Txls = readtable('neuronList_21-Mar-2017.xlsx');
-load('neuronList_ori_21-Mar-2017.mat');
+% Txls = readtable('neuronList_21-Mar-2017.xlsx');
+% load('neuronList_ori_21-Mar-2017.mat');
+load('neuronList_ori_25-Mar-2017.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -48,14 +49,14 @@ DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > cri_peakFR)
 
 % total population (DRunPN / DRunIN / DRwPN / DRwIN) with light responsiveness (light activated)
 DRunPN_act = DRunTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-DRunPN_actRapid = DRunTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz<10;
-DRunPN_actDelay = DRunTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz>10;
+DRunPN_actRapid = DRunTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st<10;
+DRunPN_actDelay = DRunTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st>10;
 DRunPN_ina = DRunTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == -1;
 DRunPN_no = DRunTN & T.meanFR_base<=cri_meanFR & T.pLR_Plfm2hz>=alpha;
 
 DRunIN_act = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1;
-DRunIN_actRapid = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz<10;
-DRunIN_actDelay = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz>10;
+DRunIN_actRapid = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st<10;
+DRunIN_actDelay = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1 & T.latencyPlfm2hz1st>10;
 DRunIN_ina = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == -1;
 DRunIN_no = DRunTN & T.meanFR_base>cri_meanFR & T.pLR_Plfm2hz>=alpha;
 
@@ -250,5 +251,5 @@ set(hPlotDRunPN(5),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5
 set(hPlotDRunIN(1:4),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, yMaxDRunIN],'fontSize',fontM);
 set(hPlotDRunIN(5),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, 50],'fontSize',fontM);
 
-print('-painters','-r300','plot_latencyPETH_DRunPlfm.tif','-dtiff');
+print('-painters','-r300','plot_latencyPETH_DRunPlfm1.tif','-dtiff');
 close('all');

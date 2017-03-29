@@ -55,9 +55,15 @@ DRwIN_act = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Tra
 DRwIN_ina = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == -1;
 DRwIN_no = DRwTN & T.meanFR_task>cri_meanFR & T.pLR_Track>=alpha;
 
-[nDist_DRwPN_act, tracePCA_DRwPN_act, latentPCA_DRwPN_act] = analysis_neuralTrace(T.xptTrackLight(DRwPN_act));
-[nDist_DRwPN_ina, tracePCA_DRwPN_ina, latentPCA_DRwPN_ina] = analysis_neuralTrace(T.xptTrackLight(DRwPN_ina));
-[nDist_DRwPN_no, tracePCA_DRwPN_no, latentPCA_DRwPN_no] = analysis_neuralTrace(T.xptTrackLight(DRwPN_no));
+winSize = [ones(1,4)*5, ones(1,9)*10, ones(1,14)*15];
+mvWinSize = [1:4,1:9,1:14];
+nCycle = length(winSize);
+baseLine = [-20, 0];
+for iCycle = 1:nCycle
+
+[neuDist_DRwPN_act, tracePCA_DRwPN_act, latentPCA_DRwPN_act] = analysis_neuralTrace(T.xptTrackLight(DRwPN_act),winSize(iCycle),mvWinSize(iCycle),baseLine);
+[neuDist_DRwPN_ina, tracePCA_DRwPN_ina, latentPCA_DRwPN_ina] = analysis_neuralTrace(T.xptTrackLight(DRwPN_ina),winSize(iCycle),mvWinSize(iCycle),baseLine);
+% [neuDist_DRwPN_no, tracePCA_DRwPN_no, latentPCA_DRwPN_no] = analysis_neuralTrace(T.xptTrackLight(DRwPN_no),10,5);
 
 %%
 nCol = 3;
@@ -97,6 +103,10 @@ plot(tracePCA_DRwPN_act(end,3),tracePCA_DRwPN_act(end,1),'o','LineWidth',lineL,'
 xlabel('PC3','fontSize',fontL);
 ylabel('PC1','fontSize',fontL);
 
+hNeuDist(1) =  axes('Position',axpt(nCol,nRow,3,1,[0.10, 0.10, 0.85, 0.85],wideInterval));
+plot(neuDist_DRwPN_act,'-o','color',colorBlack,'MarkerFaceColor',colorGray,'LineWidth',lineL);
+xlabel('Time moving step (ms)','fontSize',fontL);
+ylabel('Neural Distance','fontSize',fontL);
 %%
 hLatent(2) = axes('Position',axpt(nCol,nRow,1,3,[0.10 0.10 0.85 0.85],wideInterval));
 plot(cumsum(latentPCA_DRwPN_ina),'-o','color',colorBlack,'MarkerFaceColor',colorGray);
@@ -129,6 +139,11 @@ hold on;
 plot(tracePCA_DRwPN_ina(end,3),tracePCA_DRwPN_ina(end,1),'o','LineWidth',lineL,'MarkerFaceColor',colorRed,'markerEdgeColor',colorBlack);
 xlabel('PC3','fontSize',fontL);
 ylabel('PC1','fontSize',fontL);
+
+hNeuDist(2) =  axes('Position',axpt(nCol,nRow,3,3,[0.10, 0.10, 0.85, 0.85],wideInterval));
+plot(neuDist_DRwPN_ina,'-o','color',colorBlack,'MarkerFaceColor',colorGray,'LineWidth',lineL);
+xlabel('Time moving step (ms)','fontSize',fontL);
+ylabel('Neural Distance','fontSize',fontL);
 
 %%
 % hLatent(3) = axes('Position',axpt(nCol,nRow,1,5,[0.10 0.10 0.85 0.85],wideInterval));
@@ -165,4 +180,14 @@ ylabel('PC1','fontSize',fontL);
 
 set(hLatent,'Box','off','TickDir','out','YLim',[0,110]);
 set(hTrace,'Box','off','TickDir','out');
-print('-painters','-r300','gplot_neuralTrace_DRwPN.tif','-dtiff');
+set(hNeuDist,'Box','off','TickDir','out');
+% print('-painters','-r300','plot_neuralTrace_DRwPN_5-2.tif','-dtiff');
+% print('-painters','-r300','plot_neuralTrace_DRwPN_10-2.tif','-dtiff');
+% print('-painters','-r300','plot_neuralTrace_DRwPN_10-5.tif','-dtiff');
+% print('-painters','-r300','plot_neuralTrace_DRwPN_15-2.tif','-dtiff');
+% print('-painters','-r300','plot_neuralTrace_DRwPN_15-5.tif','-dtiff');
+% print('-painters','-r300','plot_neuralTrace_DRwPN_15-10.tif','-dtiff');
+
+print('-painters','-r300',['plot_neuralTrace_DRwPN_',num2str(winSize(iCycle)),'-',num2str(mvWinSize(iCycle)),'.tif'],'-dtiff');
+close('all')
+end

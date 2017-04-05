@@ -31,12 +31,13 @@ paperSize = {[0 0 21.0 29.7];
              [0 0 21.6 27.9]};
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
-Txls = readtable('neuronList_freq_20-Mar-2017.xlsx');
-load('neuronList_freq_20-Mar-2017.mat');
+Txls = readtable('neuronList_freq_170405.xlsx');
+load('neuronList_freq_170405.mat');
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
 %% Light responsive population
-lightCri = ~isnan(T.lightProb1hz) & (T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01);
+lightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & (T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01);
+nolightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01);
 
 lightProb1hz = T.lightProb1hz((lightCri));
 lightProb2hz = T.lightProb2hz((lightCri));
@@ -59,11 +60,11 @@ sem_20hz = std(lightProb20hz)/nCell;
 sem_50hz = std(lightProb50hz)/nCell;
 
 %% No light responsive population
-nolightProb1hz = T.lightProb1hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
-nolightProb2hz = T.lightProb2hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
-nolightProb8hz = T.lightProb8hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
-nolightProb20hz = T.lightProb20hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
-nolightProb50hz = T.lightProb50hz(~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01));
+nolightProb1hz = T.lightProb2hz(nolightCri);
+nolightProb2hz = T.lightProb2hz(nolightCri);
+nolightProb8hz = T.lightProb8hz(nolightCri);
+nolightProb20hz = T.lightProb20hz(nolightCri);
+nolightProb50hz = T.lightProb50hz(nolightCri);
 
 nNoLCell = length(nolightProb1hz);
 
@@ -111,7 +112,8 @@ ylabel('Spike P, %','fontSize',fontXL);
 set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YLim',[-1,70]);
 set(hPlot,'TickDir','out','Box','off');
 
-print('-painters',['plot_freqTest_plfm_',datestr(date),'.tif'],'-r300','-dtiff');
+formatOut = 'yymmdd';
+print('-painters',['plot_freqTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');
 
 %%
 % fd_neuronFreq = [folder,'plfm_frequency'];

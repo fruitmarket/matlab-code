@@ -92,6 +92,10 @@ sensorOut = [false; (diff(sensor12(:,1)) < sensorITIThreshold)] | (sensor12(:,1)
 sensor12(sensorOut,:) = [];
 sensor.S12 = sensor12;
 
+%% Reward time
+reward2 = timeStamp(~cellfun('isempty',regexp(eventString,'Reward2')));
+reward4 = timeStamp(~cellfun('isempty',regexp(eventString,'Reward4')));
+
 %% Result
 fields = fieldnames(sensor);
 for iField = 1: numel(fields)
@@ -241,6 +245,6 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
 end
 %% Save variables
         save('Events.mat',...
-        'baseTime','preTime','stmTime','postTime','taskTime','plfmTime',...
+        'baseTime','preTime','stmTime','postTime','taskTime','plfmTime','reward2','reward4',...
         'sensor','fields','nTrial','nSensor','trialIndex','psdlightPre','psdlightPost','lightTime');
 end

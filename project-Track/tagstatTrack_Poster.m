@@ -330,10 +330,10 @@ for iCell = 1:nCell
         end
         
 % Latency (Moving win)
-        [pksTrack,locTrack] = findpeaks(pethTrackLight,'minpeakheight',10); % check whether there are two peaks or not. if there are two peaks, calculate each peaek.
+        [pksTrack,locTrack] = findpeaks(pethTrackLight,'minpeakheight',15); % check whether there are two peaks or not. if there are two peaks, calculate each peaek.
         switch (statDir_Track)
             case 1                
-                if length(locTrack) == 2
+                if length(locTrack) >= 2
                     spkLatency_Track1st = spikeWin(spikeData,lightTime.Track8hz,[0 9]);
                     temp_latencyTrack1st = cellfun(@min,spkLatency_Track1st,'UniformOutput',false);
                     temp_latencyTrack1st = nanmedian(cell2mat(temp_latencyTrack1st));

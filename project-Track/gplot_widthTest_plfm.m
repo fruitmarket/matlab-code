@@ -28,14 +28,14 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
          
 rtDir = 'D:\Dropbox\SNL\P2_Track';
-load('neuronList_pulse_07-Feb-2017.mat');
+load('neuronList_pulse_170405.mat');
 
 %% Population separation
 cri_meanFR = 7;
 listPN = T.meanFR10<cri_meanFR;
-cri_lightAct = T.pLR_Plfm2hz<0.005 & T.statDir_Plfm2hz==1;
-cri_lightInAct = T.pLR_Plfm2hz<0.005 & T.statDir_Plfm2hz==-1;
-cri_lightNo = ~(T.pLR_Plfm2hz<0.005);
+cri_lightAct = T.pLR_Plfm2hz<0.01 & T.statDir_Plfm2hz==1;
+cri_lightInAct = T.pLR_Plfm2hz<0.01 & T.statDir_Plfm2hz==-1;
+cri_lightNo = ~(T.pLR_Plfm2hz<0.01);
 
 % Pyramidal neuron
 actPN_peth10ms = cell2mat(T.peth10ms(listPN & cri_lightAct));
@@ -119,7 +119,7 @@ hBarPN(1) = bar(xpt,m_actPN_peth10ms,'histc');
 text(100, yMaxPN*0.8,['n = ',num2str(nactPN10ms)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
-
+title('PN_activated','fontSize',fontL,'interpreter','none','fontWeight','bold');
 hPlotPN(2) = axes('Position',axpt(nCol,nRow,1,2,[0.10 0.10 0.85 0.8],wideInterval));
 bar(25,yMaxPN,'BarWidth',50,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
@@ -129,39 +129,41 @@ hBarPN(2) = bar(xpt,m_actPN_peth50ms,'histc');
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 
-hPlotPN(3) = axes('Position',axpt(nCol,nRow,2,1,[0.10 0.10 0.85 0.8],wideInterval));
-bar(5,yMaxPN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
-hold on;
-rectangle('Position',[0,yMaxPN*0.925,10,yMaxPN*0.075],'LineStyle','none','FaceColor',colorBlue);
-hold on;
-hBarPN(3) = bar(xpt,m_inactPN_peth10ms,'histc');
-text(100, yMaxPN*0.8,['n = ',num2str(ninactPN10ms)],'fontSize',fontL);
-xlabel('Time (ms)','fontSize',fontL);
-ylabel('Spikes/bin','fontSize',fontL);
-hPlotPN(4) = axes('Position',axpt(nCol,nRow,2,2,[0.10 0.10 0.85 0.8],wideInterval));
-bar(25,yMaxPN,'BarWidth',50,'LineStyle','none','FaceColor',colorLLightBlue);
-hold on;
-rectangle('Position',[0,yMaxPN*0.925,50,yMaxPN*0.075],'LineStyle','none','FaceColor',colorBlue);
-hold on;
-hBarPN(4) = bar(xpt,m_inactPN_peth50ms,'histc');
-xlabel('Time (ms)','fontSize',fontL);
-ylabel('Spikes/bin','fontSize',fontL);
+% hPlotPN(3) = axes('Position',axpt(nCol,nRow,2,1,[0.10 0.10 0.85 0.8],wideInterval));
+% bar(5,yMaxPN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
+% hold on;
+% rectangle('Position',[0,yMaxPN*0.925,10,yMaxPN*0.075],'LineStyle','none','FaceColor',colorBlue);
+% hold on;
+% hBarPN(3) = bar(xpt,m_inactPN_peth10ms,'histc');
+% text(100, yMaxPN*0.8,['n = ',num2str(ninactPN10ms)],'fontSize',fontL);
+% xlabel('Time (ms)','fontSize',fontL);
+% ylabel('Spikes/bin','fontSize',fontL);
+% hPlotPN(4) = axes('Position',axpt(nCol,nRow,2,2,[0.10 0.10 0.85 0.8],wideInterval));
+% bar(25,yMaxPN,'BarWidth',50,'LineStyle','none','FaceColor',colorLLightBlue);
+% hold on;
+% rectangle('Position',[0,yMaxPN*0.925,50,yMaxPN*0.075],'LineStyle','none','FaceColor',colorBlue);
+% hold on;
+% hBarPN(4) = bar(xpt,m_inactPN_peth50ms,'histc');
+% xlabel('Time (ms)','fontSize',fontL);
+% ylabel('Spikes/bin','fontSize',fontL);
+% title('PN_inactivated',fontL);
 
-hPlotPN(5) = axes('Position',axpt(nCol,nRow,3,1,[0.10 0.10 0.85 0.8],wideInterval));
+hPlotPN(3) = axes('Position',axpt(nCol,nRow,3,1,[0.10 0.10 0.85 0.8],wideInterval));
 bar(5,yMaxPN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 rectangle('Position',[0,yMaxPN*0.925,10,yMaxPN*0.075],'LineStyle','none','FaceColor',colorBlue);
 hold on;
-hBarPN(5) = bar(xpt,m_noPN_peth10ms,'histc');
+hBarPN(3) = bar(xpt,m_noPN_peth10ms,'histc');
 text(100, yMaxPN*0.8,['n = ',num2str(nnoPN10ms)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
-hPlotPN(6) = axes('Position',axpt(nCol,nRow,3,2,[0.10 0.10 0.85 0.8],wideInterval));
+title('PN_no response','fontSize',fontL,'interpreter','none','fontWeight','bold');
+hPlotPN(4) = axes('Position',axpt(nCol,nRow,3,2,[0.10 0.10 0.85 0.8],wideInterval));
 bar(25,yMaxPN,'BarWidth',50,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 rectangle('Position',[0,yMaxPN*0.925,50,yMaxPN*0.075],'LineStyle','none','FaceColor',colorBlue);
 hold on;
-hBarPN(6) = bar(xpt,m_noPN_peth50ms,'histc');
+hBarPN(4) = bar(xpt,m_noPN_peth50ms,'histc');
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 
@@ -178,6 +180,7 @@ hBarIN(1) = bar(xpt,m_actIN_peth10ms,'histc');
 text(100, yMaxIN*0.8,['n = ',num2str(nactIN10ms)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
+title('IN_activated','fontSize',fontL,'interpreter','none','fontWeight','bold');
 hPlotIN(2) = axes('Position',axpt(nCol,nRow,1,4,[0.10 0.10 0.85 0.8],wideInterval));
 bar(25,yMaxIN,'BarWidth',50,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
@@ -196,6 +199,7 @@ hBarIN(3) = bar(xpt,m_inactIN_peth10ms,'histc');
 text(100, yMaxIN*0.8,['n = ',num2str(ninactIN10ms)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
+title('IN_inactivated','fontSize',fontL,'interpreter','none','fontWeight','bold');
 hPlotIN(4) = axes('Position',axpt(nCol,nRow,2,4,[0.10 0.10 0.85 0.8],wideInterval));
 bar(25,yMaxIN,'BarWidth',50,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
@@ -206,12 +210,28 @@ uistack(hBarIN(4),'up');
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 
-% hPlotIN(5) = axes('Position',axpt(nCol,nRow,3,1,[0.10 0.15 0.85 0.8],wideInterval));
-% hBar(5) = bar(xpt,m_noIN_peth10ms,'histc');
-% hPlotIN(6) = axes('Position',axpt(nCol,nRow,3,2,[0.10 0.15 0.85 0.8],wideInterval));
-% hBar(6) = bar(xpt,m_noIN_peth50ms,'histc');
+hPlotIN(5) = axes('Position',axpt(nCol,nRow,3,3,[0.10 0.10 0.85 0.8],wideInterval));
+bar(5,yMaxIN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
+hold on;
+rectangle('Position',[0,yMaxIN*0.925,10,yMaxIN*0.075],'LineStyle','none','FaceColor',colorBlue);
+hold on;
+hBarIN(5) = bar(xpt,m_noIN_peth10ms,'histc');
+text(100, yMaxIN*0.8,['n = ',num2str(nnoIN10ms)],'fontSize',fontL);
+xlabel('Time (ms)','fontSize',fontL);
+ylabel('Spikes/bin','fontSize',fontL);
+title('IN_no response','fontSize',fontL,'interpreter','none','fontWeight','bold');
+hPlotIN(6) = axes('Position',axpt(nCol,nRow,3,4,[0.10 0.10 0.85 0.8],wideInterval));
+bar(25,yMaxIN,'BarWidth',50,'LineStyle','none','FaceColor',colorLLightBlue);
+hold on;
+rectangle('Position',[0,yMaxIN*0.925,50,yMaxIN*0.075],'LineStyle','none','FaceColor',colorBlue);
+hold on;
+hBarIN(6) = bar(xpt,m_noIN_peth50ms,'histc');
+uistack(hBarIN(4),'up');
+xlabel('Time (ms)','fontSize',fontL);
+ylabel('Spikes/bin','fontSize',fontL);
 
 set(hBarIN,'FaceColor',colorBlack,'EdgeAlpha',0);
 set(hPlotIN,'Box','off','TickDir','out','XLim',[-50,150],'XTick',[-50:50:150],'YLim',[0,yMaxIN],'fontSize',fontL);
 
-print('-painters',['plot_widthTest_plfm_',datestr(date),'.tif'],'-r300','-dtiff');
+formatOut = 'yymmdd';
+print('-painters',['plot_widthTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');

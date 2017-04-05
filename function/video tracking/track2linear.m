@@ -1,4 +1,4 @@
-function [thetaDist, timeTrack, refPosition, numOccu] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win)
+function [thetaDist, theta, timeTrack, refPosition, numOccu] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win)
 %
 % outputs
 % theta: cumulative position expressed in radian (2*pi is added for each lap)
@@ -25,7 +25,7 @@ refSensorIdx = zeros(90,1);
 for iSensor = 1:90
     [~,refSensorIdx(iSensor)] = (min(abs(refSensor(iSensor)-timeTrack)));
 end
-
+refSensorIdx = [refSensorIdx(1); refSensorIdx(2:end)+1]; % each component is the index of start position of each lap.
 posiX = vtPositionX(timeOnTrack(1)<=vtTime & vtTime<=timeOnTrack(2));
 posiY = vtPositionY(timeOnTrack(1)<=vtTime & vtTime<=timeOnTrack(2));
 

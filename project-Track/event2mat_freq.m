@@ -18,6 +18,8 @@ end
 recStart = find(strcmp(eventString,'Starting Recording'));
 recEnd = find(strcmp(eventString,'Stopping Recording'));
 nSession = numel(recStart);
+time_recStart = timeStamp(recStart);
+time_recEnd =  timeStamp(recEnd);
 
 switch numel(recStart)
     case 2
@@ -28,7 +30,7 @@ switch numel(recStart)
         lightTime.Plfm2hz = lightTime.Total(time2hz(1) < lightTime.Total & lightTime.Total < time2hz(2));
         lightTime.Plfm8hz = lightTime.Total(time8hz(1) < lightTime.Total & lightTime.Total < time8hz(2));
         
-        save('Events.mat','time2hz','time8hz','lightTime','nSession');
+        save('Events.mat','time_recStart','time_recEnd','time2hz','time8hz','lightTime','nSession');
     case 4
         time2hz = timeStamp([recStart(1), recEnd(1)]);
         time8hz = timeStamp([recStart(2), recEnd(2)]);
@@ -41,7 +43,7 @@ switch numel(recStart)
         lightTime.Plfm20hz = lightTime.Total(time20hz(1) < lightTime.Total & lightTime.Total < time20hz(2));
         lightTime.Plfm50hz = lightTime.Total(time50hz(1) < lightTime.Total & lightTime.Total < time50hz(2));
 
-        save('Events.mat','time2hz','time8hz','time20hz','time50hz','lightTime','nSession');
+        save('Events.mat','time_recStart','time_recEnd','time2hz','time8hz','time20hz','time50hz','lightTime','nSession');
     
     case 5
         time1hz = timeStamp([recStart(1), recEnd(1)]);
@@ -57,6 +59,6 @@ switch numel(recStart)
         lightTime.Plfm20hz = lightTime.Total(time20hz(1) < lightTime.Total & lightTime.Total < time20hz(2));
         lightTime.Plfm50hz = lightTime.Total(time50hz(1) < lightTime.Total & lightTime.Total < time50hz(2));
         
-        save('Events.mat','time1hz','time2hz','time8hz','time20hz','time50hz','lightTime','nSession');
+        save('Events.mat','time_recStart','time_recEnd','time1hz','time2hz','time8hz','time20hz','time50hz','lightTime','nSession');
 end
 end

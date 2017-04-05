@@ -1,9 +1,9 @@
 clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
 
-Txls = readtable('neuronList_19-Mar-2017.xlsx');
+Txls = readtable('neuronList_05-Apr-2017.xlsx');
 Txls.taskType = categorical(Txls.taskType);
-load('neuronList_ori_19-Mar-2017.mat');
+load('neuronList_ori_05-Apr-2017.mat');
 alpha = 0.01;
 cri_Peak = 7;
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
@@ -68,30 +68,30 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % cd('D:\Dropbox\SNL\P2_Track');
 
 %% Light response
-% sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-% fd_sigDRun = [folder, 'light_sigDRun'];
-% fileName = T.path(sig_DRun);
-% cellID = T.cellID(sig_DRun);
-% plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
-% 
-% nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-% fd_nosigDRun = [folder, 'light_nosigDRun'];
-% fileName = T.path(nosig_DRun);
-% cellID = T.cellID(nosig_DRun);
-% plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
-% 
-% sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-% fd_sigDRw = [folder, 'light_sigDRw'];
-% fileName = T.path(sig_DRw);
-% cellID = T.cellID(sig_DRw);
-% plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
-% 
-% nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-% fd_nosigDRw = [folder, 'light_nosigDRw'];
-% fileName = T.path(nosig_DRw);
-% cellID = T.cellID(nosig_DRw);
-% plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
-% cd('D:\Dropbox\SNL\P2_Track');
+sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+fd_sigDRun = [folder, 'light_sigDRun'];
+fileName = T.path(sig_DRun);
+cellID = Txls.cellID(sig_DRun);
+plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
+
+nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+fd_nosigDRun = [folder, 'light_nosigDRun'];
+fileName = T.path(nosig_DRun);
+cellID = Txls.cellID(nosig_DRun);
+plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
+
+sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+fd_sigDRw = [folder, 'light_sigDRw'];
+fileName = T.path(sig_DRw);
+cellID = Txls.cellID(sig_DRw);
+plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
+
+nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+fd_nosigDRw = [folder, 'light_nosigDRw'];
+fileName = T.path(nosig_DRw);
+cellID = Txls.cellID(nosig_DRw);
+plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
+cd('D:\Dropbox\SNL\P2_Track');
 
 %% platform 2hz, 8hz stimulation population
 % total_2hz8hz = ~isnan(T.pLR_Plfm8hz);
@@ -102,20 +102,20 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % cd('D:\Dropbox\SNL\P2_Track');
 
 %%
-rapid_DRunTrack = (T.taskType == 'DRun') & T.meanFR_task<cri_Peak & (T.latencyTrack<10) & (T.pLR_Track<alpha);
-fd_neuronRapid = [folder,'rapid_track_DRun'];
-fileName = T.path(rapid_DRunTrack);
-cellID = Txls.cellID(rapid_DRunTrack);
-plot_Track_multi_v3(fileName, cellID, fd_neuronRapid);
-cd('D:\Dropbox\SNL\P2_Track');
+% rapid_DRunTrack = (T.taskType == 'DRun') & T.meanFR_task<cri_Peak & (T.latencyTrack1st<10) & (T.pLR_Track<alpha);
+% fd_neuronRapid = [folder,'rapid_track_DRun'];
+% fileName = T.path(rapid_DRunTrack);
+% cellID = Txls.cellID(rapid_DRunTrack);
+% plot_Track_multi_v3(fileName, cellID, fd_neuronRapid);
+% cd('D:\Dropbox\SNL\P2_Track');
 
 %%
-rapid_DRwTrack = (T.taskType == 'DRw') & T.meanFR_task<cri_Peak & (T.latencyTrack<10) & (T.pLR_Track<alpha);
-fd_neuronRapid = [folder,'rapid_track_DRw'];
-fileName = T.path(rapid_DRwTrack);
-cellID = Txls.cellID(rapid_DRwTrack);
-plot_Track_multi_v3(fileName, cellID, fd_neuronRapid);
-cd('D:\Dropbox\SNL\P2_Track');
+% rapid_DRwTrack = (T.taskType == 'DRw') & T.meanFR_task<cri_Peak & (T.latencyTrack1st<10) & (T.pLR_Track<alpha);
+% fd_neuronRapid = [folder,'rapid_track_DRw'];
+% fileName = T.path(rapid_DRwTrack);
+% cellID = Txls.cellID(rapid_DRwTrack);
+% plot_Track_multi_v3(fileName, cellID, fd_neuronRapid);
+% cd('D:\Dropbox\SNL\P2_Track');
 
 %% Task Type
 % total_DRun = T.taskType == 'DRun';

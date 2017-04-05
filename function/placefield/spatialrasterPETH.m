@@ -15,7 +15,7 @@ if isempty(spikePosition) || isempty(trialIndex) || length(spikePosition) ~= siz
 end;
 
 spikeBin = win(1):binSize:win(2); % unit: cm
-nSpikeBin = length(spikeBin);
+nSpikeBin = length(spikeBin)-1; % 124 bin
 
 nTrial = length(spikePosition);
 nCue = size(trialIndex,2);
@@ -55,7 +55,7 @@ for iCue = 1:nCue
 
 % psth
     spikehist_temp = histc(spikeTemp,spikeBin)/binSize;
-    spikehistOccu_temp = spikehist_temp./occupancy(iCue,:);
+    spikehistOccu_temp = spikehist_temp(1:end-1)./occupancy(iCue,:);
     spikeconv_temp = conv(spikehistOccu_temp,fspecial('Gaussian',[1 5*resolution],resolution),'same');
     spikeHist(iCue,:) = spikehistOccu_temp;
     spikeConv(iCue,:) = spikeconv_temp;

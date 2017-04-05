@@ -23,11 +23,13 @@ for iFile = 1:nFile
        
     temT = table(mouseLine,path,...
         pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,pLR_Plfm8hz,statDir_Plfm8hz,latencyPlfm8hz,...  % tagstatTrack_
-        lightProb1hz,lightProb2hz,lightProb8hz,lightProb20hz,lightProb50hz);
+        lightProb1hz,lightProb2hz,lightProb8hz,lightProb20hz,lightProb50hz,...
+        total_mFR);
                 
     T = [T; temT];
     fclose('all');
 end
 cd(rtPath);
-save(['neuronList_freq_',datestr(date),'.mat'],'T');
-writetable(T,['neuronList_freq_',datestr(date),'.xlsx']);
+formatOut = 'yymmdd';
+save(['neuronList_freq_',datestr(now,formatOut),'.mat'],'T');
+writetable(T,['neuronList_freq_',datestr(now,formatOut),'.xlsx']);

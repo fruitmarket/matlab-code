@@ -34,8 +34,8 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
 
 cd('D:\Dropbox\SNL\P2_Track');
-Txls = readtable('neuronList_03-Mar-2017.xlsx');
-load('neuronList_ori_14-Mar-2017.mat');
+Txls = readtable('neuronList_170405.xlsx');
+load('neuronList_ori_170405.mat');
 
 criPeak = 0;
 criFR = 7;
@@ -46,7 +46,7 @@ DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > criPeak);
 DRwTN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > criPeak);
 
 % light activated total population (DRunPN / DRunIN / DRwPN / DRwIN)
-DRunPN_plfm = DRunTN & T.meanFR_task <= criFR & (T.pLR_Plfm8hz<alpha & T.statDir_Plfm8hz == 1);
+DRunPN_plfm = DRunTN & T.meanFR_task <= criFR & (T.pLR_Plfm8hz<alpha & T.statDir_Plfm8hz == 1); % only consider plfm8hz sessions were performed
 DRunIN_plfm = DRunTN & T.meanFR_task > criFR & (T.pLR_Plfm8hz<alpha & T.statDir_Plfm8hz == 1);
 DRwPN_plfm = DRwTN & T.meanFR_task <= criFR & (T.pLR_Plfm8hz<alpha & T.statDir_Plfm8hz == 1);
 DRwIN_plfm = DRwTN & T.meanFR_task > criFR & (T.pLR_Plfm8hz<alpha & T.statDir_Plfm8hz == 1);
@@ -181,4 +181,5 @@ set(hdetoDRun,'TickDir','out','Box','off','YLim',[0,50],'XLim',[0,7]);
 set(hdetoDRw(1),'TickDir','out','Box','off','YLim',[0,50],'XLim',[0,20]);
 set(hdetoDRw(2),'TickDir','out','Box','off','YLim',[0,50],'XLim',[0,23]);
 
-print('-painters','-r300','-dtiff','plot_detonateSpike');
+formatOut = 'yymmdd';
+print('-painters','-r300','-dtiff',['plot_detonateSpike_',datestr(now,formatOut),'.tif']);

@@ -29,15 +29,15 @@ for iCell = 1:nCell
     spkLatency_Plfm2hz = spikeWin(spikeData,lightTime.width10,[0,25]);
     
 % Log-rank test
-    pLR_Plfm2hzT = zeros(10,1);
-    [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT] = deal(cell(10,1));
+    pLR_Plfm2hzT = zeros(5,1);
+    [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT] = deal(cell(5,1));
     
 % pLR_Plfm2hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm2hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than spkCri, do not calculate pLR
         pLR_Plfm2hz = 1;
         [statDir_Plfm2hz, latencyPlfm2hz, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(0);
     else
-        for iWin = 1:10
+        for iWin = 1:length(movingWin)
             [timePlfm2hz, censorPlfm2hz] = tagDataLoad(spikeData, lightTime.width10+movingWin(iWin), testRange2hz, baseRange2hz);
             [pLR_Plfm2hzTemp,timeLR_Plfm2hzT{iWin,1},H1_Plfm2hzT{iWin,1},H2_Plfm2hzT{iWin,1}] = logRankTest(timePlfm2hz, censorPlfm2hz); % H1: light induced firing H2: baseline
             if isempty(pLR_Plfm2hzTemp)

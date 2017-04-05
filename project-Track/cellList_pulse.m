@@ -3,7 +3,10 @@ rtPath = 'D:\Dropbox\SNL\P2_Track';
 startingDir = {'D:\Projects\Track_160726-1_Rbp48pulse';
                'D:\Projects\Track_160726-2_Rbp50pulse';
                'D:\Projects\Track_160824-2_Rbp58pulse';
-               'D:\Projects\Track_160824-5_Rbp60pulse'};
+               'D:\Projects\Track_160824-5_Rbp60pulse';
+               'D:\Projects\Track_161130-3_Rbp64pulse';
+               'D:\Projects\Track_161130-5_Rbp66pulse';
+               'D:\Projects\Track_161130-7_Rbp68pulse'};
 
 matFile = [];
 nDir = size(startingDir,1);
@@ -56,4 +59,6 @@ for iFile = 1:nFile
     fclose('all');
 end
 cd(rtPath);
-save(['neuronList_pulse_',datestr(date),'.mat'],'T');
+
+formatOut = 'yymmdd';
+save(['neuronList_pulse_',datestr(now,formatOut),'.mat'],'T');

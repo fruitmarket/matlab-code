@@ -9,7 +9,11 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';
                'D:\Projects\Track_160726-1_Rbp48ori';
                'D:\Projects\Track_160726-2_Rbp50ori';
                'D:\Projects\Track_160824-2_Rbp58ori';
-               'D:\Projects\Track_160824-5_Rbp60ori'};
+               'D:\Projects\Track_160824-5_Rbp60ori';
+               'D:\Projects\Track_161130-3_Rbp64ori';
+               'D:\Projects\Track_161130-5_Rbp66ori';
+               'D:\Projects\Track_161130-7_Rbp68ori'};
+
 % startingDir = {'D:\Projects\Track_160824-2_Rbp58ori'};
 
 matFile = [];
@@ -17,32 +21,34 @@ tFile = [];
 nDir = size(startingDir,1);
 for iDir = 1:nDir
 %% Mat file
-    tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-    matFile = [matFile; tempmatFile];
+%     tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+%     matFile = [matFile; tempmatFile];
 %% t-file
-%       temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-%       tFile = [tFile;temptFile];
+      temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+      tFile = [tFile;temptFile];
 %% Event file
 %     tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
 %     matFile = [matFile;tempEventFile];
 end
-% 
-nFile = length(matFile);
-for ifile = 1:nFile
-    [cellpath, ~, ~] = fileparts(matFile{ifile});
-    filePath{ifile,1} = cellpath;
-end
 
-% nFile = length(tFile);
+%% Mat file
+% nFile = length(matFile);
 % for ifile = 1:nFile
-%     [cellpath, ~, ~] = fileparts(tFile{ifile});
+%     [cellpath, ~, ~] = fileparts(matFile{ifile});
 %     filePath{ifile,1} = cellpath;
 % end
 
+%% t-file
+nFile = length(tFile);
+for ifile = 1:nFile
+    [cellpath, ~, ~] = fileparts(tFile{ifile});
+    filePath{ifile,1} = cellpath;
+end
+
+%% Swiping contents
 filePath = unique(filePath);
 nPath = length(filePath);
 
-%% Swiping contents
 for iPath = 1:nPath
     curPath = iPath;
     cd(filePath{iPath});
@@ -52,7 +58,7 @@ for iPath = 1:nPath
 %     pethLight;
 %     waveform;
 %     heatMap;
-%     tagstatTrack_Poster; % newest version
+    tagstatTrack_Poster; % newest version
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 %     sensorMeanFR;
@@ -65,7 +71,7 @@ for iPath = 1:nPath
 %     laserSpikeProb;
 %     analysis_detoSpike8hz;
 %     analysis_stmzoneSpike;
-    analysis_laserSpikeChange;
+%     analysis_laserSpikeChange;
 %     plot_Track_sin_v3;
 
     fclose('all');

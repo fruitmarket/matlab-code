@@ -37,7 +37,7 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 cd('D:\Dropbox\SNL\P2_Track');
 % Txls = readtable('neuronList_21-Mar-2017.xlsx');
 % load('neuronList_ori_21-Mar-2017.mat');
-load('neuronList_ori_25-Mar-2017.mat');
+load('neuronList_ori_170405.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -254,5 +254,5 @@ set(hPlotDRunPN(5),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5
 set(hPlotDRunIN(1:3),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, yMaxDRunIN],'fontSize',fontM);
 set(hPlotDRunIN(4),'Box','off','TickDir','out','XLim',[-20 105],'XTick',[-20,0:5:20,100],'YLim',[0, 50],'fontSize',fontM);
 
-print('-painters','-r300','plot_latencyPETH_DRunTrack1.tif','-dtiff');
+print('-painters','-r300','plot_latencyPETH_DRunTrack.tif','-dtiff');
 close('all');

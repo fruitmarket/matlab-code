@@ -34,4 +34,5 @@ for iFile = 1:nFile
 end
 
 cd(rtPath);
-save('cellList_ori.mat','T');
+formatOut = 'yymmdd';
+save(['neuronList_modi_',datestr(now,formatOut),'.mat'],'T');

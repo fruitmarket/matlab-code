@@ -39,9 +39,10 @@ for iPath = 1:nPath
     curPath = iPath;
     cd(filePath{iPath});
     
-    event2mat_freq;
+%     event2mat_freq;
     tagstatTrack_freqTest;
     analysis_laserFreqTest;
+    analysis_meanFRfreqTest;
     
     fclose('all');
     close all;

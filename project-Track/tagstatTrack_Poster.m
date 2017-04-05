@@ -144,9 +144,12 @@ for iCell = 1:nCell
                 spkLatency_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz(201:400),winLatency);
                 temp_latencyPlfm2hz = 0;
         end
-        if exist('temp_latencyPlfm2hz1st','var')
+        if exist('temp_latencyPlfm2hz1st','var') & ~isnan(temp_latencyPlfm2hz1st)
             latencyPlfm2hz1st = temp_latencyPlfm2hz1st;
             latencyPlfm2hz2nd = temp_latencyPlfm2hz2nd;
+        elseif exist('temp_latencyPlfm2hz1st','var') & isnan(temp_latencyPlfm2hz1st)
+            latencyPlfm2hz1st = temp_latencyPlfm2hz2nd;
+            latencyPlfm2hz2nd = NaN;
         else
             latencyPlfm2hz1st = temp_latencyPlfm2hz;
             latencyPlfm2hz2nd = NaN;
@@ -247,9 +250,12 @@ for iCell = 1:nCell
                 spkLatency_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,winLatency);
                 temp_latencyPlfm8hz = 0;
         end
-            if exist('temp_latencyPlfm8hz1st','var')
+            if exist('temp_latencyPlfm8hz1st','var') & ~isnan(temp_latencyPlfm8hz1st)
                 latencyPlfm8hz1st = temp_latencyPlfm8hz1st;
                 latencyPlfm8hz2nd = temp_latencyPlfm8hz2nd;
+            elseif exist('temp_latencyPlfm8hz1st','var') & isnan(temp_latencyPlfm8hz1st)
+                latencyPlfm8hz1st = temp_latencyPlfm8hz2nd;
+                latencyPlfm8hz2nd = NaN;
             else
                 latencyPlfm8hz1st = temp_latencyPlfm8hz;
                 latencyPlfm8hz2nd = NaN;
@@ -354,9 +360,12 @@ for iCell = 1:nCell
                 spkLatency_Track = spikeWin(spikeData,lightTime.Track8hz,winLatency);
                 temp_latencyTrack = 0;
         end
-        if exist('temp_latencyTrack1st','var')
+        if exist('temp_latencyTrack1st','var') & ~isnan(temp_latencyTrack1st)
             latencyTrack1st = temp_latencyTrack1st;
             latencyTrack2nd = temp_latencyTrack2nd;
+        elseif exist('temp_latencyTrack1st','var') & isnan(temp_latencyTrack1st)
+            latencyTrack1st = temp_latencyTrack2nd;
+            latencyTrack2nd = NaN;
         else
             latencyTrack1st = temp_latencyTrack;
             latencyTrack2nd = NaN;

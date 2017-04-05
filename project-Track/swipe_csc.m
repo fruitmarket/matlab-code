@@ -23,8 +23,7 @@ end
 nFile = length(cscFile);
 
 for ifile = 1:nFile
-    [cellpath, ~, ~] = fileparts(cscFile{ifile});
-    
+    [cellpath, ~, ~] = fileparts(cscFile{ifile});  
     filePath{ifile,1} = cellpath;
 end
 
@@ -32,9 +31,8 @@ filePath = unique(filePath);
 nPath = length(filePath);
 
 %% Swiping contents
-for iPath = 2:nPath
+for iPath = 1:nPath
     cd(filePath{iPath});
-    delete('CSC*.mat');
 %     event2mat_trackori;
     spectroTrack;
     powerTrack;

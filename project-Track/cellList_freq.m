@@ -14,7 +14,7 @@ end
 nFile = length(matFile);
 
 T = table();
-for iFile = 1:nFile
+for iFile = 31:nFile
     load(matFile{iFile});
 
     path = matFile(iFile);
@@ -22,7 +22,10 @@ for iFile = 1:nFile
     mouseLine = categorical(cellstr(fileSeg{5}));
        
     temT = table(mouseLine,path,...
-        pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,pLR_Plfm8hz,statDir_Plfm8hz,latencyPlfm8hz,...  % tagstatTrack_
+        pLR_Plfm1hz,...
+        pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,...
+        pLR_Plfm8hz,statDir_Plfm8hz,latencyPlfm8hz,...  % tagstatTrack_
+        pLR_Plfm20hz,pLR_Plfm50hz,...
         lightProb1hz,lightProb2hz,lightProb8hz,lightProb20hz,lightProb50hz,...
         total_mFR);
                 

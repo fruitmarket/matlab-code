@@ -1,7 +1,8 @@
 function [cscTime, cscSample, cscList] = cscLoad(cscFile)
 % cscLoad searches csc files and load time sample, and list of csc data
 % [cscTime, cscSample, cscList] = cscLoad(cscFile)
-%
+%   outputIdx: depende on the value, it will return different types of data
+%   (0: default, extract each csc files, 1: merge csc files to one file)
 %   cscTime: 1D matrix array of time (unit: msec)
 %   cscSample: matrix array of samples (unit: mVolt)
 %   cscList: shows list of csc.ncs files
@@ -39,13 +40,20 @@ if isempty(cscList)
 end
 cscList = unique(cscList);
 nCSC = length(cscList);
-
 cscTime = cell(nCSC,1);
 % cscSample = cell(nCSC,1);
-
-for iCSC = 1:nCSC
-    [timestamp, cscSample(:,iCSC)] = csc2mat(cscList{iCSC});
-    cscTime = timestamp/1000; % cscTime unit: msec
+outputIdx = 0;
+switch outputIdx
+    case 0 % extract each csc file
+        [timestamp, cscSample] = deal(cell(nCSC,1));
+        for iCSC = 1:nCSC
+            [timestamp{iCSC},cscSample{iCSC}] = csc2mat(cscList{iCSC});
+        end
+        cscTime = cellfun(@(x) x/1000, timestamp,'UniformOutput',false);
+    case 1 % merge all csc files to one matfile
+        for iCSC = 1:nCSC
+            [timestamp, cscSample(:,iCSC)] = csc2mat(cscList{iCSC});
+            cscTime = timestamp/1000; % cscTime unit: msec
+        end
+        cscSample = mean(cscSample,2);
 end
-cscSample = mean(cscSample,2);
-% cscList = 

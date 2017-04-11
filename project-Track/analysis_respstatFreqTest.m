@@ -35,14 +35,14 @@ for iCell = 1:nCell
     spkLatency_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,[0,25]);
 
 %% Log-rank test
-    [pLR_Plfm2hzT,pLR_Plfm8hzT] = deal(zeros(10,1));
-    [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT,timeLR_Plfm8hzT,H1_Plfm8hzT,H2_Plfm8hzT] = deal(cell(10,1));
+    [pLR_Plfm2hzT,pLR_Plfm8hzT] = deal(zeros(5,1));
+    [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT,timeLR_Plfm8hzT,H1_Plfm8hzT,H2_Plfm8hzT] = deal(cell(5,1));
 %% pLR_Plfm2hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm2hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than spkCri, do not calculate pLR
         pLR_Plfm2hz = 1;
         [statDir_Plfm2hz, latencyPlfm2hz, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(0);
     else
-        for iWin = 1:10
+        for iWin = 1:length(movingWin)
             [timePlfm2hz, censorPlfm2hz] = tagDataLoad(spikeData, lightTime.Plfm2hz+movingWin(iWin), testRange2hz, baseRange2hz);
             [pLR_Plfm2hzTemp,timeLR_Plfm2hzT{iWin,1},H1_Plfm2hzT{iWin,1},H2_Plfm2hzT{iWin,1}] = logRankTest(timePlfm2hz, censorPlfm2hz); % H1: light induced firing H2: baseline
             if isempty(pLR_Plfm2hzTemp)
@@ -61,12 +61,6 @@ for iCell = 1:nCell
             testPlfm(iTest) = all((H1_Plfm2hzT{iTest,:}-H2_Plfm2hzT{iTest,:}) >= -max(H1_Plfm2hzT{iTest,:})*allowance) | all((H2_Plfm2hzT{iTest,:}-H1_Plfm2hzT{iTest,:}) >= -max(H2_Plfm2hzT{iTest,:})*allowance); % H1 should all bigger or smaller than H2 (0.1% allowance)
         end
         idxH_Plfm2hz = idxcom_Plfm2hz(find(testPlfm==1,1,'first'));
-%         H1Start = cellfun(@(x) x(1), H1_PlfmT(idxH1_Plfm,1));
-%         H1End = cellfun(@(x) x(end), H1_PlfmT(idxH1_Plfm,1));
-%         H2Start = cellfun(@(x) x(1), H2_PlfmT(idxH2_Plfm,1));
-%         H2End = cellfun(@(x) x(end), H2_PlfmT(idxH2_Plfm,1));
-%         HproductPlfm = (H1Start-H1End).*(H2Start-H2End);
-%         idxHPlfm = find(HproductPlfm~=-1,1,'first');
         if isempty(idxH_Plfm2hz)
             idxH_Plfm2hz = 1;
         end
@@ -85,20 +79,6 @@ for iCell = 1:nCell
         end
         
 % Modulation direction (Platform)
-    % v1.0 (based on spike counts)
-%         spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm2hz+movingWin(idxPlfm2hz),winTest);
-%         [xptPlfm2hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm2hz)),winTest,binSize,resolution,1);
-%         if ~iscell(xptPlfm2hz)
-%              xptPlfm2hz = {xptPlfm2hz};
-%         end
-%         if sum(winTest(1)<xptPlfm2hz{1} & xptPlfm2hz{1}<0)*1.1 < sum(0 <= xptPlfm2hz{1} & xptPlfm2hz{1}<winTest(2)) % activation (10%)
-%             statDir_Plfm2hz = 1;
-%         elseif sum(winTest(1)<xptPlfm2hz{1} & xptPlfm2hz{1}<0) > sum(0 <= xptPlfm2hz{1} & xptPlfm2hz{1}<winTest(2))*0.9 % inactivation (10%)
-%             statDir_Plfm2hz = -1;
-%         else % no change
-%             statDir_Plfm2hz = 0;
-%         end
-
 % v2.0 (based on H1, H2)
         if H1_Plfm2hz(end)>H2_Plfm2hz(end)
             statDir_Plfm2hz = 1;
@@ -128,7 +108,7 @@ for iCell = 1:nCell
             pLR_Plfm8hz = 1; 
             [statDir_Plfm8hz, latencyPlfm8hz, timeLR_Plfm8hz, H1_Plfm8hz, H2_Plfm8hz, calibPlfm8hz] = deal(0);
         else
-            for iWin = 1:10
+            for iWin = 1:length(movingWin)
                 [timePlfm8hz, censorPlfm8hz] = tagDataLoad(spikeData, lightTime.Plfm8hz+movingWin(iWin), testRange8hz, baseRange8hz);
                 [pLR_Plfm8hzTemp,timeLR_Plfm8hzT{iWin,1},H1_Plfm8hzT{iWin,1},H2_Plfm8hzT{iWin,1}] = logRankTest(timePlfm8hz, censorPlfm8hz); % H1: light induced firing H2: baseline
                 if isempty(pLR_Plfm8hzTemp)
@@ -166,20 +146,6 @@ for iCell = 1:nCell
             end
 
 % Modulation direction (Platform)
-    % v1.0 (based on spike counts)
-%             spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm8hz+movingWin(idxPlfm8hz),winTest);
-%             [xptPlfm8hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm8hz)),winTest,binSize,resolution,1);
-%             if ~iscell(xptPlfm8hz)
-%                  xptPlfm8hz = {xptPlfm8hz};
-%             end
-%             if sum(winTest(1)<xptPlfm8hz{1} & xptPlfm8hz{1}<0)*1.1 < sum(0 <= xptPlfm8hz{1} & xptPlfm8hz{1}<winTest(2)) % activation (10%)
-%                 statDir_Plfm8hz = 1;
-%             elseif sum(winTest(1)<xptPlfm8hz{1} & xptPlfm8hz{1}<0) > sum(0 <= xptPlfm8hz{1} & xptPlfm8hz{1}<winTest(2))*0.9 % inactivation (10%)
-%                 statDir_Plfm8hz = -1;
-%             else % no change
-%                 statDir_Plfm8hz = 0;
-%             end
-            
 % v2.0 (based on H1, H2)
             if H1_Plfm8hz(end)>H2_Plfm8hz(end)
                 statDir_Plfm8hz = 1;

@@ -5,44 +5,60 @@ startingDir = {'D:\Projects\Track_160824-2_Rbp58freq';
                'D:\Projects\Track_161130-3_Rbp64freq';
                'D:\Projects\Track_161130-5_Rbp66freq';
                'D:\Projects\Track_161130-7_Rbp68freq'};
-matFile = [];
-tFile = [];
+[matFile, tFile, cscFile] = deal([]);
 nDir = size(startingDir,1);
 for iDir = 1:nDir
 %% Mat file
-%     tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-%     matFile = [matFile; tempmatFile];
+    tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+    matFile = [matFile; tempmatFile];
 %% t-file
-      temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-      tFile = [tFile;temptFile];
+%       temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+%       tFile = [tFile;temptFile];
 %% Event file
 %     tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
 %     matFile = [matFile;tempEventFile];
+%% CSC file
+%       tempFile = FindFiles('CSC*.ncs','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+%       cscFile = [cscFile;tempFile];
 end
 
-% nFile = length(matFile);
+%% matFile
+nFile = length(matFile);
+for ifile = 1:nFile
+    [cellPath, ~, ~] = fileparts(matFile{ifile});
+    filePath{ifile,1} = cellPath;
+end
+
+%% tFile
+% nFile = length(tFile);
 % for ifile = 1:nFile
-%     [cellpath, ~, ~] = fileparts(matFile{ifile});
-%     filePath{ifile,1} = cellpath;
+%     [cellPath, ~, ~] = fileparts(tFile{ifile});
+%     filePath{ifile,1} = cellPath;
 % end
 
-nFile = length(tFile);
-for ifile = 1:nFile
-    [cellpath, ~, ~] = fileparts(tFile{ifile});
-    filePath{ifile,1} = cellpath;
-end
+%% cscFile
+% nFile = length(cscFile);
+% for ifile = 1:nFile
+%     [cellPath, ~, ~] = fileparts(cscFile{ifile});
+%     filePath{ifile,1} = cellPath;
+% end
 
+%%
 filePath = unique(filePath);
 nPath = length(filePath);
 
-for iPath = 1:nPath
+for iPath = 4:nPath
     curPath = iPath;
     cd(filePath{iPath});
     
 %     event2mat_freq;
-    tagstatTrack_freqTest;
+
     analysis_laserFreqTest;
-    analysis_meanFRfreqTest;
+    analysis_respstatFreqTest_v2;
+%     analysis_meanFRfreqTest;
+    
+%     analysis_cscFreqTest;
+%     plot_cscLightStm;
     
     fclose('all');
     close all;

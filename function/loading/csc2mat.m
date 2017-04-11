@@ -39,5 +39,12 @@ switch length(idx)+1
         subtime3 = timestamps_ori(idx(2)+1)+(0:(512*(idx(3)-idx(2))-1))*500;
         subtime4 = timestamps_ori(idx(3)+1)+(0:(512*(length(timestamps_ori)-idx(3))-1))*500;
         timestamp = [subtime1';subtime2';subtime3';subtime4'];
+    case 5 % five sessions
+        subtime1 = timestamps_ori(1)+(0:(512*idx(1)-1))*500;
+        subtime2 = timestamps_ori(idx(1)+1)+(0:(512*(idx(2)-idx(1))-1))*500;
+        subtime3 = timestamps_ori(idx(2)+1)+(0:(512*(idx(3)-idx(2))-1))*500;
+        subtime4 = timestamps_ori(idx(3)+1)+(0:(512*(idx(4)-idx(3))-1))*500;
+        subtime5 = timestamps_ori(idx(4)+1)+(0:(512*(length(timestamps_ori)-idx(4))-1))*500;
+        timestamp = [subtime1';subtime2';subtime3';subtime4';subtime5'];
 end
 end

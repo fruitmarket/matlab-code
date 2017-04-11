@@ -31,13 +31,13 @@ paperSize = {[0 0 21.0 29.7];
              [0 0 21.6 27.9]};
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
-Txls = readtable('neuronList_freq_170405.xlsx');
-load('neuronList_freq_170405.mat');
+Txls = readtable('neuronList_freq_170410.xlsx');
+load('neuronList_freq_170410.mat');
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
 %% Light responsive population
-lightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & (T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01);
-nolightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01);
+lightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & (T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01 | T.pLR_Plfm20hz<0.01 | T.pLR_Plfm50hz<0.01);
+nolightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01 | T.pLR_Plfm20hz<0.01 | T.pLR_Plfm50hz<0.01);
 
 lightProb1hz = T.lightProb1hz((lightCri));
 lightProb2hz = T.lightProb2hz((lightCri));
@@ -113,7 +113,7 @@ set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YLim'
 set(hPlot,'TickDir','out','Box','off');
 
 formatOut = 'yymmdd';
-print('-painters',['plot_freqTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');
+% print('-painters',['plot_freqTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');
 
 %%
 % fd_neuronFreq = [folder,'plfm_frequency'];

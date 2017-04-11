@@ -35,9 +35,10 @@ Txls = readtable('neuronList_freq_170410.xlsx');
 load('neuronList_freq_170410.mat');
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
+alpha = 0.01/5;
 %% Light responsive population
-lightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & (T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01 | T.pLR_Plfm20hz<0.01 | T.pLR_Plfm50hz<0.01);
-nolightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<0.01 | T.pLR_Plfm8hz<0.01 | T.pLR_Plfm20hz<0.01 | T.pLR_Plfm50hz<0.01);
+lightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & (T.pLR_Plfm1hz<alpha | T.pLR_Plfm2hz<alpha | T.pLR_Plfm8hz<alpha | T.pLR_Plfm20hz<alpha | T.pLR_Plfm50hz<alpha);
+nolightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<alpha | T.pLR_Plfm8hz<alpha | T.pLR_Plfm20hz<alpha | T.pLR_Plfm50hz<alpha);
 
 lightProb1hz = T.lightProb1hz((lightCri));
 lightProb2hz = T.lightProb2hz((lightCri));
@@ -46,6 +47,13 @@ lightProb20hz = T.lightProb20hz((lightCri));
 lightProb50hz = T.lightProb50hz((lightCri));
 
 nCell = length(lightProb1hz);
+
+nLight_1hz = sum(double(T.pLR_Plfm1hz<alpha));
+nLight_2hz = sum(double(T.pLR_Plfm2hz<alpha));
+nLight_8hz = sum(double(T.pLR_Plfm8hz<alpha));
+nLight_20hz = sum(double(T.pLR_Plfm20hz<alpha));
+nLight_50hz = sum(double(T.pLR_Plfm50hz<alpha));
+nlight_all = sum(double(T.pLR_Plfm1hz<alpha & T.pLR_Plfm2hz<alpha & T.pLR_Plfm8hz<alpha & T.pLR_Plfm20hz<alpha & T.pLR_Plfm50hz<alpha));
 
 m_1hz = mean(lightProb1hz);
 m_2hz = mean(lightProb2hz);
@@ -109,11 +117,18 @@ text(1,60,['n = ',num2str(nNoLCell)],'fontSize',fontXL);
 xlabel('Frequency, Hz','fontSize',fontXL);
 ylabel('Spike P, %','fontSize',fontXL);
 
-set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YLim',[-1,70]);
+hPlot(3) = axes('Position',axpt(nCol,nRow,1:2,3:4,[0.1 0.1 0.85 0.85],wideInterval));
+plot([1,2,3,4,5],[nLight_1hz, nLight_2hz, nLight_8hz, nLight_20hz, nLight_50hz],'-o','color',colorBlack,'MarkerFaceColor',colorBlue,'MarkerSize',markerM);
+xlabel('Frequency, Hz','fontSize',fontXL);
+ylabel('Number of neurons, n','fontSize',fontXL);
+
 set(hPlot,'TickDir','out','Box','off');
+set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'});
+set(hPlot(1:2),'YLim',[-1,70]);
+set(hPlot(3),'YLim',[1,11],'YTick',[5:10]);
 
 formatOut = 'yymmdd';
-% print('-painters',['plot_freqTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');
+print('-painters',['plot_freqTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');
 
 %%
 % fd_neuronFreq = [folder,'plfm_frequency'];

@@ -1,6 +1,7 @@
 clearvars;
+cd('D:\Dropbox\SNL\P2_Track\analysis_expressCount\ChETA');
 
-xlsList = FindFiles('*.xls');
+xlsList = FindFiles('*.xls*');
 nFile = length(xlsList);
 T = table();
 
@@ -37,4 +38,6 @@ end
 eYFPmeanTotal = mean(eYFPmeanMice);
 eYFPstdTotal = std(eYFPmeanMice);
 
-save('eYFPexpression','T','eYFPmeanMice','eYFPmeanTotal','eYFPstdTotal');
+formatOut = 'yymmdd';
+save(['expChETA_',datestr(now,formatOut),'.mat'],'T','eYFPmeanMice','eYFPmeanTotal','eYFPstdTotal');
+disp('### Done! ###');

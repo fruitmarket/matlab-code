@@ -14,7 +14,7 @@ nCell = length(tList);
 load('Events.mat','sensor','trialIndex');
 
 % Linearize position data
-[realDist, timeTrack, eventPosition, numOccu] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
+[realDist, theta, timeTrack, eventPosition, numOccu] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
 numOccu = numOccu';
     
 % align spike time to position time

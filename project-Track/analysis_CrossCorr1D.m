@@ -13,7 +13,7 @@ nCell = length(tList);
 load('Events.mat','sensor','trialIndex');
 
 % Linearize position data
-[realDist, timeTrack, eventPosition, numOccu] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
+[realDist, theta, timeTrack, eventPosition, numOccu] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
 numOccu = numOccu';
     
 % align spike time to position time
@@ -38,7 +38,7 @@ for iCell = 1:nCell
     
     spikeLocation = realDist(spkPositionIdx); % position data of each spike
     spikePosition = spikeWin(spikeLocation,eventPosition,winSpace);
-    [~,~,~,~,pethconvSpatial,~] = spatialrasterPETH(spikePosition, trialIndex, numOccu, winSpace, binSize, resolution, dot);
+    [~,~,~,~,pethconvSpatial,~] = spatialrasterPETH(spikePosition, trialIndex, numOccu(:,1:end-1), winSpace, binSize, resolution, dot); % drop the last bin of numOccu
 %     [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu, winSpace, binSize, resolution, dot);
     rateMap1D_pre = pethconvSpatial(1,:);
     rateMap1D_stm = pethconvSpatial(2,:);

@@ -41,7 +41,7 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 
 cd('D:\Dropbox\SNL\P2_Track');
 % Txls = readtable('neuronList_24-Mar-2017.xlsx');
-load('neuronList_ori_25-Mar-2017.mat');
+load('neuronList_ori_170413.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -81,7 +81,7 @@ baseLine = [-20, 0];
 nCol = 2;
 nRow = 2;
 
-fHandle(1) = figure('PaperUnits','centimeters','PaperPosition',paperSize{1},'Name','DRunPN_act');
+fHandle(1) = figure('PaperUnits','centimeters','PaperPosition',paperSize{1},'Name','DRun_total');
 
 hLatent(1) = axes('Position',axpt(nCol,nRow,1,1,[0.10 0.10 0.85 0.85],wideInterval));
 plot(cumsum(latentPCA_DRunPN_act),'-o','color',colorBlack,'MarkerFaceColor',colorGray);

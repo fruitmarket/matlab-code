@@ -37,7 +37,7 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 
 cd('D:\Dropbox\SNL\P2_Track');
 % Txls = readtable('neuronList_24-Mar-2017.xlsx');
-load('neuronList_ori_25-Mar-2017.mat');
+load('neuronList_ori_170413.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -105,7 +105,7 @@ ylabel('PC1','fontSize',fontL);
 
 hNeuDist(1) =  axes('Position',axpt(nCol,nRow,3,1,[0.10, 0.10, 0.85, 0.85],wideInterval));
 plot(neuDist_DRwPN_act,'-o','color',colorBlack,'MarkerFaceColor',colorGray,'LineWidth',lineL);
-xlabel('Time moving step (ms)','fontSize',fontL);
+xlabel('Moving window step','fontSize',fontL);
 ylabel('Neural Distance','fontSize',fontL);
 %%
 hLatent(2) = axes('Position',axpt(nCol,nRow,1,3,[0.10 0.10 0.85 0.85],wideInterval));
@@ -142,7 +142,7 @@ ylabel('PC1','fontSize',fontL);
 
 hNeuDist(2) =  axes('Position',axpt(nCol,nRow,3,3,[0.10, 0.10, 0.85, 0.85],wideInterval));
 plot(neuDist_DRwPN_ina,'-o','color',colorBlack,'MarkerFaceColor',colorGray,'LineWidth',lineL);
-xlabel('Time moving step (ms)','fontSize',fontL);
+xlabel('Moving window step','fontSize',fontL);
 ylabel('Neural Distance','fontSize',fontL);
 
 %%

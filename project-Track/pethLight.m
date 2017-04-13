@@ -22,7 +22,7 @@ winCri = 20; % light effect criteria: 20ms
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### pethLight analysis:  ',tList{iCell},'...']);
+    disp(['### pethLight analysis: ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     

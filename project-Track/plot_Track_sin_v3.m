@@ -142,12 +142,12 @@ for iFile = 1:nFile
     align_ylabel(hPlfmBlue)
 
 % Response check: Plfm8hz
-    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var')
+    if isfield(lightTime,'Plfm8hz') && ~isempty(lightTime.Plfm8hz) && exist('xptPlfm8hz','var')
         lightDuration = 10;
         lightDurationColor = {colorLLightBlue, colorLightGray};
         testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
     end
-    if isfield(lightTime,'Plfm8hz') && exist('xptPlfm8hz','var')
+    if isfield(lightTime,'Plfm8hz') && ~isempty(lightTime.Plfm8hz)&& exist('xptPlfm8hz','var')
         nBlue = length(lightTime.Plfm8hz);
         winBlue = [min(pethtimePlfm8hz) max(pethtimePlfm8hz)];
 % Raster
@@ -342,11 +342,11 @@ for iFile = 1:nFile
     set(hTrackLight(2),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-25, 100],'XTick',[-25,0,10,30,50,100],'YLim',[0, max(ylimpeth)]);
     
 if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'))
-    iSensor1 = 6; % Light on sensor
+    iSensor = 6; % Light on sensor
     lightDur = 1; % Putative light duration
 end
 if ~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'noRw'))
-    iSensor1 = 10; % Light on sensor
+    iSensor = 10; % Light on sensor
     lightDur = 4; % Putative light duration
 end
 
@@ -356,7 +356,7 @@ end
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
         rec = rectangle('Position',[lightLoc(1), 31, lightLoc(2)-lightLoc(1), 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
         ylabel('Trial','FontSize',fontM);
-        title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
+        title(['Spatial Raster & PETH at ',fields{iSensor}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
         pRw(1) = patch([rewardLoc(1)+2, rewardLoc(1)+6, rewardLoc(1)+6, rewardLoc(1)+2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
@@ -371,15 +371,15 @@ end
         uistack(rec,'bottom');
 % Temporal raster plot
         hTRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:10,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
-        plot([xpt.(fields{iSensor1}){:}],[ypt.(fields{iSensor1}){:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
+        plot([xpt.(fields{iSensor}){:}],[ypt.(fields{iSensor}){:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
         rec = rectangle('Position',[0 31 lightDur 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
         ylabel('Trial','FontSize',fontM);
-        title(['Temporal Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
+        title(['Temporal Raster & PETH at ',fields{iSensor}],'FontSize',fontL,'FontWeight','bold');
         hTPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:10,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
-        ylimpethTemporal = ceil(max(pethconv.(fields{iSensor1})(:))*1.1+0.0001);
+        ylimpethTemporal = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
-            plot(pethtime.(fields{iSensor1}),pethconv.(fields{iSensor1})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
+            plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Time (sec)','FontSize',fontM);
@@ -393,12 +393,12 @@ end
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
         rec = rectangle('Position',[lightLoc(1), 31, lightLoc(2)-lightLoc(1), 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         ylabel('Trial','FontSize',fontM);
-        title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
+        title(['Spatial Raster & PETH at ',fields{iSensor}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        pRw(1) = patch([rewardLoc(1)-2, rewardLoc(1)+2, rewardLoc(1)+2, rewardLoc(1)-2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(1) = patch([rewardLoc(1)+2, rewardLoc(1)+6, rewardLoc(1)+6, rewardLoc(1)+2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
-        pRw(2) = patch([rewardLoc(2)-2, rewardLoc(2)+2, rewardLoc(2)+2, rewardLoc(2)-2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(2) = patch([rewardLoc(2)+2.5, rewardLoc(2)+6.5, rewardLoc(2)+6.5, rewardLoc(2)+2.5],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -409,15 +409,15 @@ end
 % Temporal raster plot
         hTRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:10,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
         hold on;
-        plot([xpt.(fields{iSensor1}){:}],[ypt.(fields{iSensor1}){:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
+        plot([xpt.(fields{iSensor}){:}],[ypt.(fields{iSensor}){:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
         rec = rectangle('Position',[0 31 lightDur 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         ylabel('Trial','FontSize',fontM);
-        title(['Temporal Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
+        title(['Temporal Raster & PETH at ',fields{iSensor}],'FontSize',fontL,'FontWeight','bold');
         hTPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:10,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
-        ylimpethTemporal = ceil(max(pethconv.(fields{iSensor1})(:))*1.1+0.0001);
+        ylimpethTemporal = ceil(max(pethconv.(fields{iSensor})(:))*1.1+0.0001);
         hold on;
         for iType = 1:3
-            plot(pethtime.(fields{iSensor1}),pethconv.(fields{iSensor1})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
+            plot(pethtime.(fields{iSensor}),pethconv.(fields{iSensor})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
         uistack(rec,'bottom');
     end

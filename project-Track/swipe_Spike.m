@@ -4,6 +4,7 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';
                'D:\Projects\Track_151029-5_Rbp8';
                'D:\Projects\Track_151213-2_Rbp14';
                'D:\Projects\Track_160221-1_Rbp16';
+               'D:\Projects\Track_160417-1_Rbp32ori';
                'D:\Projects\Track_160417-2_Rbp34ori';
                'D:\Projects\Track_160422-14_Rbp36ori';
                'D:\Projects\Track_160726-1_Rbp48ori';
@@ -13,8 +14,7 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';
                'D:\Projects\Track_161130-3_Rbp64ori';
                'D:\Projects\Track_161130-5_Rbp66ori';
                'D:\Projects\Track_161130-7_Rbp68ori'};
-
-% startingDir = {'D:\Projects\Track_160824-2_Rbp58ori'};
+% startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
 
 matFile = [];
 tFile = [];
@@ -54,24 +54,24 @@ for iPath = 1:nPath
     cd(filePath{iPath});
 
 %     event2mat_trackori;
-%     pethSensor;
-%     pethLight;
-%     waveform;
-%     heatMap;
+    pethSensor;
+    pethLight;
+    waveform;
+    heatMap;
     tagstatTrack_Poster; % newest version
-%     mapCorr; % PreStm, PrePost, StmPost
-%     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
-%     sensorMeanFR;
-%     analysis_burst6ms;
-%     analysis_wvformCrosscor;
-%     analysis_spatialRaster;
-%     analysis_CrossCorr1D;
-%     laserIntPlfm;
-%     laserFreqCheck;
-%     laserSpikeProb;
-%     analysis_detoSpike8hz;
-%     analysis_stmzoneSpike;
-%     analysis_laserSpikeChange;
+    mapCorr; % PreStm, PrePost, StmPost
+    mapCorrEvOd; % For Even lap, odd lap of Pre-stm
+    sensorMeanFR;
+    analysis_burst6ms;
+    analysis_wvformCrosscor;
+    analysis_spatialRaster;
+    analysis_CrossCorr1D;
+    laserIntPlfm;
+    laserFreqCheck;
+    laserSpikeProb;
+    analysis_detoSpike8hz;
+    analysis_stmzoneSpike;
+    analysis_laserSpikeChange;
 %     plot_Track_sin_v3;
 
     fclose('all');

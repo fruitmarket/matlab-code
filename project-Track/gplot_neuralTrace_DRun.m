@@ -37,7 +37,7 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 
 cd('D:\Dropbox\SNL\P2_Track');
 % Txls = readtable('neuronList_24-Mar-2017.xlsx');
-load('neuronList_ori_25-Mar-2017.mat');
+load('neuronList_ori_170413.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -55,14 +55,19 @@ DRunIN_act = DRunTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_T
 DRunIN_ina = DRunTN & T.meanFR_task>cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == -1;
 DRunIN_no = DRunTN & T.meanFR_task>cri_meanFR & T.pLR_Track>=alpha;
 
-winSize = [ones(1,4)*5, ones(1,9)*10, ones(1,14)*15];
-mvWinSize = [1:4,1:9,1:14];
-nCycle = length(winSize);
+% winWidth = 15;
+% mvWinStep = 5;
+% baseLine = [-20, 0];
+% [a,b,c] = analysis_neuralTrace(T.xptTrackLight(DRunPN_act),winWidth,mvWinStep,baseLine);
+
+winWidth = [ones(1,4)*5, ones(1,9)*10, ones(1,14)*15];
+mvWinStep = [1:4,1:9,1:14];
+nCycle = length(winWidth);
 baseLine = [-20, 0];
 for iCycle = 1:nCycle
 
-[neuDist_DRunPN_act, tracePCA_DRunPN_act, latentPCA_DRunPN_act] = analysis_neuralTrace(T.xptTrackLight(DRunPN_act),winSize(iCycle),mvWinSize(iCycle),baseLine);
-[neuDist_DRunPN_ina, tracePCA_DRunPN_ina, latentPCA_DRunPN_ina] = analysis_neuralTrace(T.xptTrackLight(DRunPN_ina),winSize(iCycle),mvWinSize(iCycle),baseLine);
+[neuDist_DRunPN_act, tracePCA_DRunPN_act, latentPCA_DRunPN_act] = analysis_neuralTrace(T.xptTrackLight(DRunPN_act),winWidth(iCycle),mvWinStep(iCycle),baseLine);
+[neuDist_DRunPN_ina, tracePCA_DRunPN_ina, latentPCA_DRunPN_ina] = analysis_neuralTrace(T.xptTrackLight(DRunPN_ina),winWidth(iCycle),mvWinStep(iCycle),baseLine);
 % [neuDist_DRunPN_no, tracePCA_DRunPN_no, latentPCA_DRunPN_no] = analysis_neuralTrace(T.xptTrackLight(DRunPN_no),15,3);
 
 %%
@@ -105,7 +110,7 @@ ylabel('PC1','fontSize',fontL);
 
 hNeuDist(1) =  axes('Position',axpt(nCol,nRow,3,1,[0.10, 0.10, 0.85, 0.85],wideInterval));
 plot(neuDist_DRunPN_act,'-o','color',colorBlack,'MarkerFaceColor',colorGray,'LineWidth',lineL);
-xlabel('Time moving step (ms)','fontSize',fontL);
+xlabel('Moving window step','fontSize',fontL);
 ylabel('Neural Distance','fontSize',fontL);
 %%
 hLatent(2) = axes('Position',axpt(nCol,nRow,1,3,[0.10 0.10 0.85 0.85],wideInterval));
@@ -142,7 +147,7 @@ ylabel('PC1','fontSize',fontL);
 
 hNeuDist(2) =  axes('Position',axpt(nCol,nRow,3,3,[0.10, 0.10, 0.85, 0.85],wideInterval));
 plot(neuDist_DRunPN_ina,'-o','color',colorBlack,'MarkerFaceColor',colorGray,'LineWidth',lineL);
-xlabel('Time moving step (ms)','fontSize',fontL);
+xlabel('Moving window step','fontSize',fontL);
 ylabel('Neural Distance','fontSize',fontL);
 
 %%
@@ -189,6 +194,6 @@ set(hNeuDist,'Box','off','TickDir','out');
 % print('-painters','-r300','plot_neuralTrace_DRunPN_15-2.tif','-dtiff');
 % print('-painters','-r300','plot_neuralTrace_DRunPN_15-5.tif','-dtiff');
 % print('-painters','-r300','plot_neuralTrace_DRunPN_15-7.tif','-dtiff');
-print('-painters','-r300',['plot_neuralTrace_DRunPN_',num2str(winSize(iCycle)),'-',num2str(mvWinSize(iCycle)),'.tif'],'-dtiff');
+print('-painters','-r300',['plot_neuralTrace_DRunPN_',num2str(winWidth(iCycle)),'-',num2str(mvWinStep(iCycle)),'.tif'],'-dtiff');
 close('all')
 end

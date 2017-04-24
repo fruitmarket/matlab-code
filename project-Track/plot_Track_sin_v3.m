@@ -42,7 +42,6 @@ for iFile = 1:nFile
     [cellDir, cellName, ~] = fileparts(matFile{iFile});
     cellDirSplit = regexp(cellDir,'\','split');
     cellFigName = strcat(cellDirSplit(end-1),'_',cellDirSplit(end),'_',cellName);
-    sfreq = [30 60];
     
     % Arc property
     if ~isempty(strfind(cellDir,'DRun'));

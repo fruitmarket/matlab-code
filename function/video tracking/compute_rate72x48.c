@@ -94,7 +94,7 @@ double occupancy_sparsity(occ, n_occ)
 double spatial_information(rate, occ, Nx, Ny)
      double	rate[X_SIZE][Y_SIZE];		/* vector of firing rates */
      double	occ[X_SIZE][Y_SIZE];		/* vector of occupancy times */
-     int	Nx, Ny;			/* length of vectors */
+     int	Nx, Ny;				/* length of vectors */
 {
   double	H0, H1, mean_rate;
   double	sum_rate, sum_occ;

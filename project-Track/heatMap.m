@@ -7,15 +7,11 @@ function heatMap()
 % Last modified:
 %%%%%%%%%%%%%%%%%%%%%%
 
-%% Parameters
-% alpha_v = 0.05; % changing alpha will affect visualing field map.
-% fr_threshold = 3;
-% fieldsize_cutoff = 10;
-field_ratio = [72 48];
+field_ratio = [72 48]*2;
 
 %% Loading data
 [tData, tList] = tLoad; % tData: msec
-[vtTime, vtPosition, vtList] = vtLoad; % vtTime: msec
+[vtTime, vtPosition, ~] = vtLoad; % vtTime: msec
 nCell = length(tList);
 load('Events.mat','baseTime','preTime','stmTime','postTime','plfmTime','sensor');
 
@@ -74,23 +70,28 @@ pre_ratemap = pre_fr_map./pre_visit_dur;
 stm_ratemap = stm_fr_map./stm_visit_dur;
 post_ratemap = post_fr_map./post_visit_dur;
 twohz_ratemap = twohz_fr_map./twohz_visit_dur;
-    
-%% field map smoothing by comput_rate72x48
+
+%% field map smoothing by comput_rate144x96
+% Parameters
+alpha_v = 0.001; % changing alpha will affect visualing field map.
+fr_threshold = 3;
+fieldsize_cutoff = 2;
+
 %     if find(base_fr_map)
 %         [base_ratemap, ~, ~] = compute_rate72x48(base_visit_dur,base_fr_map,alpha_v,base_meanrate,fr_threshold,fieldsize_cutoff);
 %     else
 %         base_ratemap = 0;
 %     end
 %     if find(pre_fr_map)
-%         [pre_ratemap,pre_infos,pre_field_info] = compute_rate72x48(pre_visit_dur,pre_fr_map,alpha_v,pre_meanrate,fr_threshold,fieldsize_cutoff);
+%         [pre_ratemap,pre_infos,pre_field_info] = compute_rate144x96(pre_visit_dur,pre_fr_map,alpha_v,pre_meanrate,fr_threshold,fieldsize_cutoff);
 %     else
-%         pre_ratemap = zeros(72,48);
+%         pre_ratemap = zeros(114,96);
 %         [pre_infos,pre_field_info] = deal(NaN);
 %     end
 %     if find(stm_fr_map)
-%         [stm_ratemap,stm_infos,stm_field_info] = compute_rate72x48(stm_visit_dur,stm_fr_map,alpha_v,stm_meanrate,fr_threshold,fieldsize_cutoff);
+%         [stm_ratemap,stm_infos,stm_field_info] = compute_rate144x96(stm_visit_dur,stm_fr_map,alpha_v,stm_meanrate,fr_threshold,fieldsize_cutoff);
 %     else
-%         stm_ratemap = zeros(72,48);
+%         stm_ratemap = zeros(144,96);
 %         [stm_infos,stm_field_info] = deal(NaN);
 %     end
 %     if find(post_fr_map)

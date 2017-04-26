@@ -1,10 +1,13 @@
 clearvars;
 rtPath = 'D:\Dropbox\SNL\P2_Track';
 startingDir = {'D:\Projects\Track_160824-2_Rbp58freq';
-               'D:\Projects\Track_160824-5_Rbp60freq'
+               'D:\Projects\Track_160824-5_Rbp60freq';
                'D:\Projects\Track_161130-3_Rbp64freq';
                'D:\Projects\Track_161130-5_Rbp66freq';
-               'D:\Projects\Track_161130-7_Rbp68freq'};
+               'D:\Projects\Track_161130-7_Rbp68freq';
+               'D:\Projects\Track_170119-1_Rbp70freq';
+               'D:\Projects\Track_170109-2_Rbp72freq';
+               'D:\Projects\Track_170115-4_Rbp74freq'};
 matFile = [];
 nDir = size(startingDir,1);
 for iDir = 1:nDir
@@ -14,7 +17,7 @@ end
 nFile = length(matFile);
 
 T = table();
-for iFile = 31:nFile
+for iFile = 31:nFile % 1hz2hz8hz20hz50hz starts from 31
     load(matFile{iFile});
 
     path = matFile(iFile);

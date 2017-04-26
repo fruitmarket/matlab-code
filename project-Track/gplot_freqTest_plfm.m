@@ -31,14 +31,14 @@ paperSize = {[0 0 21.0 29.7];
              [0 0 21.6 27.9]};
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
-Txls = readtable('neuronList_freq_170410.xlsx');
-load('neuronList_freq_170410.mat');
+Txls = readtable('neuronList_freq_170426.xlsx');
+load('neuronList_freq_170426.mat');
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
 alpha = 0.01/5;
 %% Light responsive population
-lightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & (T.pLR_Plfm1hz<alpha | T.pLR_Plfm2hz<alpha | T.pLR_Plfm8hz<alpha | T.pLR_Plfm20hz<alpha | T.pLR_Plfm50hz<alpha);
-nolightCri = T.total_mFR<10 & ~isnan(T.lightProb1hz) & ~(T.pLR_Plfm2hz<alpha | T.pLR_Plfm8hz<alpha | T.pLR_Plfm20hz<alpha | T.pLR_Plfm50hz<alpha);
+lightCri = T.total_mFR<10 & (T.pLR_Plfm1hz<alpha | T.pLR_Plfm2hz<alpha | T.pLR_Plfm8hz<alpha | T.pLR_Plfm20hz<alpha | T.pLR_Plfm50hz<alpha);
+nolightCri = T.total_mFR<10 & ~(T.pLR_Plfm2hz<alpha | T.pLR_Plfm8hz<alpha | T.pLR_Plfm20hz<alpha | T.pLR_Plfm50hz<alpha);
 
 lightProb1hz = T.lightProb1hz((lightCri));
 lightProb2hz = T.lightProb2hz((lightCri));
@@ -128,11 +128,4 @@ set(hPlot(1:2),'YLim',[-1,70]);
 set(hPlot(3),'YLim',[1,11],'YTick',[5:10]);
 
 formatOut = 'yymmdd';
-print('-painters',['plot_freqTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');
-
-%%
-% fd_neuronFreq = [folder,'plfm_frequency'];
-% fileName = T.path(lightCri);
-% cellID = Txls.cellID(lightCri);
-% plot_Track_multi_v3(fileName, cellID, fd_neuronFreq);
-% cd('D:\Dropbox\SNL\P2_Track');
+% print('-painters',['plot_freqTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');

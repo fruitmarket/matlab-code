@@ -4,7 +4,10 @@ startingDir = {'D:\Projects\Track_160824-2_Rbp58freq';
                'D:\Projects\Track_160824-5_Rbp60freq';
                'D:\Projects\Track_161130-3_Rbp64freq';
                'D:\Projects\Track_161130-5_Rbp66freq';
-               'D:\Projects\Track_161130-7_Rbp68freq'};
+               'D:\Projects\Track_161130-7_Rbp68freq';
+               'D:\Projects\Track_170119-1_Rbp70freq';
+               'D:\Projects\Track_170109-2_Rbp72freq';
+               'D:\Projects\Track_170115-4_Rbp74freq'};
 [matFile, tFile, cscFile] = deal([]);
 nDir = size(startingDir,1);
 for iDir = 1:nDir
@@ -53,7 +56,7 @@ for iPath = 4:nPath
     
 %     event2mat_freq;
 
-    analysis_laserFreqTest;
+%     analysis_laserFreqTest;
     analysis_respstatFreqTest_v2;
 %     analysis_meanFRfreqTest;
     

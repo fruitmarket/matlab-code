@@ -27,19 +27,19 @@ for iCell = 1:nCell
 % create pseudo light events for baseline
     [baseLightTime1hz, baseLightTime2hz, baseLightTime8hz, baseLightTime20hz, baseLightTime50hz] = deal([]);
     for iLap = 1:20
-        temp_baseLightTime1hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*1000;
+        temp_baseLightTime1hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*10000;
         baseLightTime1hz = [baseLightTime1hz; temp_baseLightTime1hz];
         
-        temp_baseLightTime2hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*1000;
+        temp_baseLightTime2hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*10000;
         baseLightTime2hz = [baseLightTime2hz; temp_baseLightTime2hz];
         
-        temp_baseLightTime8hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*1000;
+        temp_baseLightTime8hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*10000;
         baseLightTime8hz = [baseLightTime8hz; temp_baseLightTime8hz];
         
-        temp_baseLightTime20hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*1000;
+        temp_baseLightTime20hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*10000;
         baseLightTime20hz = [baseLightTime20hz; temp_baseLightTime20hz];
         
-        temp_baseLightTime50hz = lightTime.Plfm50hz(15*iLap)+rand([15,1])*1000;
+        temp_baseLightTime50hz = lightTime.Plfm50hz(15*iLap)+rand([15,1])*10000;
         baseLightTime50hz = [baseLightTime50hz; temp_baseLightTime50hz];
     end
     

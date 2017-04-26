@@ -62,7 +62,7 @@ lightAct_track_DRunPN = double(T.pLR_Track(DRunPN)<alpha & T.statDir_Track(DRunP
 lightIna_track_DRunPN = double(T.pLR_Track(DRunPN)<alpha & T.statDir_Track(DRunPN)==-1);
 lightResp_plfm_DRunPN = double(T.pLR_Plfm2hz(DRunPN)<alpha);
 
-normTrackFR_DRunPN(:,2) = num2cell(cellfun(@(x) x(1),temp_peakloci_DRunPN));
+normTrackFR_DRunPN(:,2) = num2cell(cellfun(@(x) x(1),temp_peakloci_DRunPN)); % position of peak firing rate
 normTrackFR_DRunPN(:,3) = num2cell(lightResp_track_DRunPN); % Resp population
 normTrackFR_DRunPN(:,4) = num2cell(lightAct_track_DRunPN); % Act population
 normTrackFR_DRunPN(:,5) = num2cell(lightIna_track_DRunPN); % Ina population

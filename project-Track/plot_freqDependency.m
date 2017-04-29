@@ -25,7 +25,7 @@ tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
 width = 0.7;
 
 paperSizeX = [18.3, 8.00];
-figSize = [0.15 0.15 0.85 0.80];
+figSize = [0.15 0.10 0.85 0.80];
 
 winCri1hz = [0, 15500];
 winCri2hz = [0, 8000];
@@ -51,7 +51,7 @@ nCell = length(tList);
 nTrial = 20;
 nTrial_ori = 300;
 
-for iCell = 1:nCell
+for iCell = 1:1
     disp(['### Analyzing ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);

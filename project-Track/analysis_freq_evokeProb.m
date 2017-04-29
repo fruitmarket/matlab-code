@@ -1,4 +1,4 @@
-function analysis_laserFreqTest
+function analysis_freq_evokeProb
 
 winCri = [0, 20];
 

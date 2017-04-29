@@ -5,12 +5,13 @@ function analysis_respstatFreqTest_v2()
 testRange = 8;
 baseRange = 400;
 
-spkCriPlfm = 10;
+win = [0,20];
+spkCriPlfm = 20; % 60 is 0.5 Hz (20 ms x 300 trial = 6000 ms)
 
 movingWin = (0:2:8)';
 alpha = 0.05/length(movingWin);
 allowance = 0.005; % 0.5% allowance for hazerd function.
-
+timeRand = rand([15,1])*100+((1:15)')*650;
 % Load data
 if nargin == 0; sessionFolder = {}; end;
 [tData, tList] = tLoad(sessionFolder);
@@ -27,33 +28,32 @@ for iCell = 1:nCell
 % create pseudo light events for baseline
     [baseLightTime1hz, baseLightTime2hz, baseLightTime8hz, baseLightTime20hz, baseLightTime50hz] = deal([]);
     for iLap = 1:20
-        temp_baseLightTime1hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*10000;
+        temp_baseLightTime1hz = lightTime.Plfm1hz(15*iLap)+timeRand; % baselines are collected from ITI
         baseLightTime1hz = [baseLightTime1hz; temp_baseLightTime1hz];
         
-        temp_baseLightTime2hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*10000;
+        temp_baseLightTime2hz = lightTime.Plfm2hz(15*iLap)+timeRand;
         baseLightTime2hz = [baseLightTime2hz; temp_baseLightTime2hz];
         
-        temp_baseLightTime8hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*10000;
+        temp_baseLightTime8hz = lightTime.Plfm8hz(15*iLap)+timeRand;
         baseLightTime8hz = [baseLightTime8hz; temp_baseLightTime8hz];
         
-        temp_baseLightTime20hz = lightTime.Plfm1hz(15*iLap)+rand([15,1])*10000;
+        temp_baseLightTime20hz = lightTime.Plfm20hz(15*iLap)+timeRand;
         baseLightTime20hz = [baseLightTime20hz; temp_baseLightTime20hz];
         
-        temp_baseLightTime50hz = lightTime.Plfm50hz(15*iLap)+rand([15,1])*10000;
+        temp_baseLightTime50hz = lightTime.Plfm50hz(15*iLap)+timeRand;
         baseLightTime50hz = [baseLightTime50hz; temp_baseLightTime50hz];
     end
     
     spikeData = tData{iCell};
-    
 % if spikes are noe enough, don't calculate the logrank test
-    spkCriteria_Plfm1hz = spikeWin(spikeData,lightTime.Plfm1hz,[-50,50]);
-    spkCriteria_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz,[-50,50]);
-    spkCriteria_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,[-50,50]);
-    spkCriteria_Plfm20hz = spikeWin(spikeData,lightTime.Plfm20hz,[-50,50]);
-    spkCriteria_Plfm50hz = spikeWin(spikeData,lightTime.Plfm50hz,[-50,50]);
+    spkCriteria_Plfm1hz = spikeWin(spikeData,lightTime.Plfm1hz,win);
+    spkCriteria_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz,win);
+    spkCriteria_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,win);
+    spkCriteria_Plfm20hz = spikeWin(spikeData,lightTime.Plfm20hz,win);
+    spkCriteria_Plfm50hz = spikeWin(spikeData,lightTime.Plfm50hz,win);
 
 %% Plfm1hz
-    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm1hz,'UniformOutput',false)))< spkCriPlfm
+    if sum(cell2mat(cellfun(@length,spkCriteria_Plfm1hz,'UniformOutput',false))) < spkCriPlfm
         pLR_Plfm1hz = 1;
         [statDir_Plfm1hz, latencyPlfm1hz, timeLR_Plfm1hz, H1_Plfm1hz, H2_Plfm1hz, calibPlfm1hz] = deal(NaN);
     else

@@ -12,11 +12,11 @@ startingDir = {'D:\Projects\Track_160824-2_Rbp58freq';
 nDir = size(startingDir,1);
 for iDir = 1:nDir
 %% Mat file
-    tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-    matFile = [matFile; tempmatFile];
+%     tempmatFile = FindFiles('tt*.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+%     matFile = [matFile; tempmatFile];
 %% t-file
-%       temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-%       tFile = [tFile;temptFile];
+      temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
+      tFile = [tFile;temptFile];
 %% Event file
 %     tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
 %     matFile = [matFile;tempEventFile];
@@ -26,18 +26,18 @@ for iDir = 1:nDir
 end
 
 %% matFile
-nFile = length(matFile);
-for ifile = 1:nFile
-    [cellPath, ~, ~] = fileparts(matFile{ifile});
-    filePath{ifile,1} = cellPath;
-end
-
-%% tFile
-% nFile = length(tFile);
+% nFile = length(matFile);
 % for ifile = 1:nFile
-%     [cellPath, ~, ~] = fileparts(tFile{ifile});
+%     [cellPath, ~, ~] = fileparts(matFile{ifile});
 %     filePath{ifile,1} = cellPath;
 % end
+
+%% tFile
+nFile = length(tFile);
+for ifile = 1:nFile
+    [cellPath, ~, ~] = fileparts(tFile{ifile});
+    filePath{ifile,1} = cellPath;
+end
 
 %% cscFile
 % nFile = length(cscFile);
@@ -56,9 +56,10 @@ for iPath = 4:nPath
     
 %     event2mat_freq;
 
-%     analysis_laserFreqTest;
+    analysis_freq_rasterLight;
+    analysis_meanFRfreqTest;
+    analysis_freq_evokeProb;
     analysis_respstatFreqTest_v2;
-%     analysis_meanFRfreqTest;
     
 %     analysis_cscFreqTest;
 %     plot_cscLightStm;

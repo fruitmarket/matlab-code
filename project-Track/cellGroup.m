@@ -1,11 +1,12 @@
 clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
 
-Txls = readtable('neuronList_05-Apr-2017.xlsx');
+Txls = readtable('neuronList_ori_170501.xlsx');
 Txls.taskType = categorical(Txls.taskType);
-load('neuronList_ori_05-Apr-2017.mat');
+
+load('neuronList_ori_170501.mat');
 alpha = 0.01;
-cri_Peak = 7;
+cri_Peak = 9;
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 %% Session compare
 % compareID = ~isnan(T.compCellID); % find non-nan index
@@ -25,7 +26,8 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % list_compPlaceStm = T.cellID(compPlaceinStm);
 % cd('D:\Dropbox\SNL\P2_Track');
 
-%% pc_DRun or DRw
+%% Place field analysis
+%%%%%%%%%%%%%%%%%%%% pc_DRun or DRw %%%%%%%%%%%%%%%%%%%%
 % pc_DRun = ((T.taskType == 'DRun') & (T.placefieldTrack == 1));
 % parentDir = [folder, 'pc_DRun'];
 % fileName = T.path(pc_DRun);
@@ -39,7 +41,7 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % plot_Track_multi_v3(fileName, cellID, parentDir);
 % cd('D:\Dropbox\SNL\P2_Track');
 
-%% pcStm_DRun or DRw
+%%%%%%%%%%%%%%%%%%%% pcStm_DRun or DRw %%%%%%%%%%%%%%%%%%%%
 % pcStm_DRun = ((T.taskType == 'DRun') & (T.placefieldTrack == 1) & (T.placefieldStmZone == 1));
 % parentDir = [folder, 'pcStm_DRun'];
 % fileName = T.path(pcStm_DRun);
@@ -53,7 +55,7 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % plot_Track_multi_v3(fileName, cellID, parentDir);
 % cd('D:\Dropbox\SNL\P2_Track');
 
-%% non-place cell
+%%%%%%%%%%%%%%%%%%%% non-place cell %%%%%%%%%%%%%%%%%%%%
 % npc_DRun = ((T.taskType == 'DRun') & (T.placefieldTrack == 0));
 % parentDir = [folder, 'npc_DRun'];
 % fileName = T.path(npc_DRun);
@@ -68,30 +70,30 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % cd('D:\Dropbox\SNL\P2_Track');
 
 %% Light response
-sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-fd_sigDRun = [folder, 'light_sigDRun'];
-fileName = T.path(sig_DRun);
-cellID = Txls.cellID(sig_DRun);
-plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
-
-nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-fd_nosigDRun = [folder, 'light_nosigDRun'];
-fileName = T.path(nosig_DRun);
-cellID = Txls.cellID(nosig_DRun);
-plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
-
-sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-fd_sigDRw = [folder, 'light_sigDRw'];
-fileName = T.path(sig_DRw);
-cellID = Txls.cellID(sig_DRw);
-plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
-
-nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-fd_nosigDRw = [folder, 'light_nosigDRw'];
-fileName = T.path(nosig_DRw);
-cellID = Txls.cellID(nosig_DRw);
-plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
-cd('D:\Dropbox\SNL\P2_Track');
+% sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+% fd_sigDRun = [folder, 'light_sigDRun'];
+% fileName = T.path(sig_DRun);
+% cellID = Txls.cellID(sig_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
+% 
+% nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+% fd_nosigDRun = [folder, 'light_nosigDRun'];
+% fileName = T.path(nosig_DRun);
+% cellID = Txls.cellID(nosig_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
+% 
+% sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+% fd_sigDRw = [folder, 'light_sigDRw'];
+% fileName = T.path(sig_DRw);
+% cellID = Txls.cellID(sig_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
+% 
+% nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+% fd_nosigDRw = [folder, 'light_nosigDRw'];
+% fileName = T.path(nosig_DRw);
+% cellID = Txls.cellID(nosig_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
+% cd('D:\Dropbox\SNL\P2_Track');
 
 %% platform 2hz, 8hz stimulation population
 % total_2hz8hz = ~isnan(T.pLR_Plfm8hz);
@@ -101,7 +103,8 @@ cd('D:\Dropbox\SNL\P2_Track');
 % plot_Track_multi_v3(fileName, cellID, fd_total2hz8hz);
 % cd('D:\Dropbox\SNL\P2_Track');
 
-%%
+%% Rapid light response population
+%%%%%%%%%%%%%%%%%%%% DRun %%%%%%%%%%%%%%%%%%%%
 % rapid_DRunTrack = (T.taskType == 'DRun') & T.meanFR_task<cri_Peak & (T.latencyTrack1st<10) & (T.pLR_Track<alpha);
 % fd_neuronRapid = [folder,'rapid_track_DRun'];
 % fileName = T.path(rapid_DRunTrack);
@@ -109,7 +112,7 @@ cd('D:\Dropbox\SNL\P2_Track');
 % plot_Track_multi_v3(fileName, cellID, fd_neuronRapid);
 % cd('D:\Dropbox\SNL\P2_Track');
 
-%%
+%%%%%%%%%%%%%%%%%%%% DRw %%%%%%%%%%%%%%%%%%%%
 % rapid_DRwTrack = (T.taskType == 'DRw') & T.meanFR_task<cri_Peak & (T.latencyTrack1st<10) & (T.pLR_Track<alpha);
 % fd_neuronRapid = [folder,'rapid_track_DRw'];
 % fileName = T.path(rapid_DRwTrack);
@@ -142,3 +145,31 @@ cd('D:\Dropbox\SNL\P2_Track');
 % cellID = T.cellID(total_noRw);
 % plot_Track_multi_v3(fileName, cellID, fd_totalnoRw);
 % cd('D:\Dropbox\SNL\P2_Track');
+
+%% ##### State dependent light modulation population #####
+% Only 2hz on platform
+total_DRun2hz = (T.taskType == 'DRun') & isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
+fd_DRun2hz = [folder, 'stateDependency2hz_DRun'];
+fileName = T.path(total_DRun2hz);
+cellID = Txls.cellID(total_DRun2hz);
+plot_Track_multi_v3(fileName, cellID, fd_DRun2hz);
+
+total_DRw2hz = (T.taskType == 'DRw') & isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
+fd_DRw2hz = [folder, 'stateDependency2hz_DRw'];
+fileName = T.path(total_DRun2hz);
+cellID = Txls.cellID(total_DRun2hz);
+plot_Track_multi_v3(fileName, cellID, fd_DRw2hz);
+
+% 2hz and 8hz on platform
+total_DRun2hz8hz = (T.taskType == 'DRun') & ~isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
+fd_DRun2hz8hz = [folder, 'stateDependency2hz8hz_DRun'];
+fileName = T.path(total_DRun2hz);
+cellID = Txls.cellID(total_DRun2hz);
+plot_Track_multi_v3(fileName, cellID, fd_DRun2hz8hz);
+
+total_DRw2hz8hz = (T.taskType == 'DRw') & ~isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
+fd_DRw2hz8hz = [folder, 'stateDependency2hz8hz_DRw'];
+fileName = T.path(total_DRun2hz);
+cellID = Txls.cellID(total_DRun2hz);
+plot_Track_multi_v3(fileName, cellID, fd_DRw2hz8hz);
+

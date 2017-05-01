@@ -1,6 +1,6 @@
 function plot_expCount()
 cd('D:\Dropbox\SNL\P2_Track\analysis_expressCount\ChETA')
-load expChETA_170411.mat
+load expChETA_170501.mat
 
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [33 150 243]./ 255,... % During stimulation

@@ -148,28 +148,43 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
 %% ##### State dependent light modulation population #####
 % Only 2hz on platform
-total_DRun2hz = (T.taskType == 'DRun') & isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
-fd_DRun2hz = [folder, 'stateDependency2hz_DRun'];
-fileName = T.path(total_DRun2hz);
-cellID = Txls.cellID(total_DRun2hz);
-plot_Track_multi_v3(fileName, cellID, fd_DRun2hz);
+% total_DRun2hz = (T.taskType == 'DRun') & isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
+% fd_DRun2hz = [folder, 'stateDependency2hz_DRun'];
+% fileName = T.path(total_DRun2hz);
+% cellID = Txls.cellID(total_DRun2hz);
+% plot_Track_multi_v3(fileName, cellID, fd_DRun2hz);
 
-total_DRw2hz = (T.taskType == 'DRw') & isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
-fd_DRw2hz = [folder, 'stateDependency2hz_DRw'];
-fileName = T.path(total_DRun2hz);
-cellID = Txls.cellID(total_DRun2hz);
-plot_Track_multi_v3(fileName, cellID, fd_DRw2hz);
+% total_DRw2hz = (T.taskType == 'DRw') & isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
+% fd_DRw2hz = [folder, 'stateDependency2hz_DRw'];
+% fileName = T.path(total_DRw2hz);
+% cellID = Txls.cellID(total_DRw2hz);
+% plot_Track_multi_v3(fileName, cellID, fd_DRw2hz);
 
 % 2hz and 8hz on platform
-total_DRun2hz8hz = (T.taskType == 'DRun') & ~isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
-fd_DRun2hz8hz = [folder, 'stateDependency2hz8hz_DRun'];
-fileName = T.path(total_DRun2hz);
-cellID = Txls.cellID(total_DRun2hz);
-plot_Track_multi_v3(fileName, cellID, fd_DRun2hz8hz);
+% total_DRun2hz8hz = (T.taskType == 'DRun') & ~isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
+% fd_DRun2hz8hz = [folder, 'stateDependency2hz8hz_DRun'];
+% fileName = T.path(total_DRun2hz8hz);
+% cellID = Txls.cellID(total_DRun2hz8hz);
+% plot_Track_multi_v3(fileName, cellID, fd_DRun2hz8hz);
 
-total_DRw2hz8hz = (T.taskType == 'DRw') & ~isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
-fd_DRw2hz8hz = [folder, 'stateDependency2hz8hz_DRw'];
-fileName = T.path(total_DRun2hz);
-cellID = Txls.cellID(total_DRun2hz);
-plot_Track_multi_v3(fileName, cellID, fd_DRw2hz8hz);
+% total_DRw2hz8hz = (T.taskType == 'DRw') & ~isnan(T.pLR_Plfm8hz) & ((T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz == 1) | (T.pLR_Track<alpha & T.statDir_Track == 1));
+% fd_DRw2hz8hz = [folder, 'stateDependency2hz8hz_DRw'];
+% fileName = T.path(total_DRw2hz8hz);
+% cellID = Txls.cellID(total_DRw2hz8hz);
+% plot_Track_multi_v3(fileName, cellID, fd_DRw2hz8hz);
 
+% DRun and DRw recorded population
+idDRun = Txls.compCellID(Txls.taskType == 'DRun' & (T.pLR_Track<alpha | T.pLR_Plfm2hz<alpha));
+idDRun = idDRun(~isnan(idDRun));
+idDRw = Txls.compCellID(Txls.taskType == 'DRw' & (T.pLR_Track<alpha | T.pLR_Plfm2hz<alpha));
+idDRw = idDRw(~isnan(idDRw));
+coRecNeuron = intersect(idDRun,idDRw);
+nCoRec = length(coRecNeuron);
+parentDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\stateDependency_DRunDRw';
+for iCell = 1:nCoRec
+   fileName = Txls.path(Txls.compCellID == coRecNeuron(iCell));
+   cellID = Txls.cellID(Txls.compCellID == coRecNeuron(iCell));
+   mkdir(parentDir, ['coRec_',num2str(coRecNeuron(iCell))]);
+   plot_Track_multi_v3(fileName,cellID,[parentDir,'\coRec_',num2str(coRecNeuron(iCell))]);   
+end
+cd('D:\Dropbox\SNL\P2_Track');

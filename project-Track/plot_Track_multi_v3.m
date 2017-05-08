@@ -388,9 +388,9 @@ end
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontM,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        pRw(1) = patch([rewardLoc(1)-2, rewardLoc(1)+2, rewardLoc(1)+2, rewardLoc(1)-2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(1) = patch([rewardLoc(1)+2, rewardLoc(1)+6, rewardLoc(1)+6, rewardLoc(1)+2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
-        pRw(2) = patch([rewardLoc(2)-2, rewardLoc(2)+2, rewardLoc(2)+2, rewardLoc(2)-2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(2) = patch([rewardLoc(2)+2.5, rewardLoc(2)+6.5, rewardLoc(2)+6.5, rewardLoc(2)+2.5],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})

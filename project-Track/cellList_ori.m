@@ -14,6 +14,10 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';
                'D:\Projects\Track_161130-3_Rbp64ori';
                'D:\Projects\Track_161130-5_Rbp66ori';
                'D:\Projects\Track_161130-7_Rbp68ori'};
+%                'D:\Projects\Track_170119-1_Rbp70ori';
+%                'D:\Projects\Track_170109-2_Rbp72ori';
+%                'D:\Projects\Track_170115-4_Rbp74ori'};
+
 % startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
 matFile = [];
 nDir = size(startingDir,1);
@@ -87,7 +91,7 @@ for iFile = 1:nFile
         pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
         rCorr1D_preXstm, pCorr1D_preXstm, rCorr1D_preXpost, pCorr1D_preXpost, rCorr1D_stmXpost, pCorr1D_stmXpost,...% analysis_CrossCorr1D // r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
-        lightPlfmSpk5mw,lightPlfmSpk8mw,lightPlfmSpk10mw,... % laserIntPlfm
+        lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % laserIntPlfm
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
         lightProbTrack_2hz,lightProbTrack_8hz,lightProbPlfm_2hz,lightProbPlfm_8hz,...
         xptPlfm2hz,yptPlfm2hz,pethtimePlfm2hz,pethPlfm2hz,pethPlfm2hzConv,pethPlfm2hzConvZ,...

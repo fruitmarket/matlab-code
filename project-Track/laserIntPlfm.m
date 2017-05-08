@@ -1,12 +1,6 @@
 function laserIntPlfm
 
-% binSize = 10; % Unit: msec
-resolution = 10; % sigma = resoution * binSize = 100 msec
-
-% Tag variables
-winTagBlue = [-25 100]; % unit: msec
-binSizeTagBlue = 2;
-winCri = 30;
+winCri = [0 20]; % unit: msec
 [tData, tList] = tLoad;
 nCell = length(tList);
 
@@ -20,24 +14,18 @@ for iCell = 1:nCell
  % Platform
     nPlfmLight = length(lightTime.Plfm2hz);
     
-    spikeTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winTagBlue);
-    spikeTime5mw = spikeTimePlfm(1:nPlfmLight/3,1);
-    spikeTime8mw = spikeTimePlfm(nPlfmLight/3+1:nPlfmLight*2/3,1);
-    spikeTime10mw = spikeTimePlfm(nPlfmLight*2/3+1:nPlfmLight,1);
+    spkTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winCri);
+    spkTime5mw = spkTimePlfm(1:nPlfmLight/3,1);
+    spkTime8mw = spkTimePlfm(nPlfmLight/3+1:nPlfmLight*2/3,1);
+    spkTime10mw = spkTimePlfm(nPlfmLight*2/3+1:nPlfmLight,1);
     
-    [xptPlfmBlue, ~,~,~,~,~] = rasterPETH(spikeTimePlfm,true(size(lightTime.Plfm2hz)),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_5mw, ~,~,~,~,~] = rasterPETH(spikeTime5mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_8mw, ~,~,~,~,~] = rasterPETH(spikeTime8mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
-    [xptPlfmBlue_10mw, ~,~,~,~,~] = rasterPETH(spikeTime10mw,true(nPlfmLight/3,1),winTagBlue,binSizeTagBlue,resolution,1);
+    lightProbPlfm5mw = sum(double(~cellfun(@isempty,spkTime5mw)))/(nPlfmLight/3)*100;
+    lightProbPlfm8mw = sum(double(~cellfun(@isempty,spkTime8mw)))/(nPlfmLight/3)*100;
+    lightProbPlfm10mw = sum(double(~cellfun(@isempty,spkTime10mw)))/(nPlfmLight/3)*100;
     
-    lightPlfmSpk = sum(0<xptPlfmBlue{1} & xptPlfmBlue{1}<winCri);
-    lightPlfmSpk5mw = sum(0<xptPlfmBlue_5mw{1} & xptPlfmBlue_5mw{1}<winCri);
-    lightPlfmSpk8mw = sum(0<xptPlfmBlue_8mw{1} & xptPlfmBlue_8mw{1}<winCri);
-    lightPlfmSpk10mw = sum(0<xptPlfmBlue_10mw{1} & xptPlfmBlue_10mw{1}<winCri);
-    
-    save([cellName,'.mat'],'lightPlfmSpk5mw','lightPlfmSpk8mw','lightPlfmSpk10mw','-append');
+    save([cellName,'.mat'],'lightProbPlfm5mw','lightProbPlfm8mw','lightProbPlfm10mw','-append');
 end
-disp('### Laser Intensity Check is done!!!');
+disp('### Laser Intensity Check is done!');
 
 function spikeTime = spikeWin(spikeData, eventTime, win)
 % spikeWin makes raw spikeData to eventTime aligned data

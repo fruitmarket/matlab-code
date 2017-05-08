@@ -72,7 +72,7 @@ sem_20hz = std(lightProb20hz)/nCell;
 sem_50hz = std(lightProb50hz)/nCell;
 
 %% No light responsive population
-nolightProb1hz = T.lightProb2hz(nolightCri);
+nolightProb1hz = T.lightProb1hz(nolightCri);
 nolightProb2hz = T.lightProb2hz(nolightCri);
 nolightProb8hz = T.lightProb8hz(nolightCri);
 nolightProb20hz = T.lightProb20hz(nolightCri);
@@ -135,23 +135,23 @@ formatOut = 'yymmdd';
 print('-painters',['plot_freqTest_plfm_',datestr(now,formatOut),'.tif'],'-r300','-dtiff');
 close();
 %% Example file classification
-path1hz = T.path(T.pLR_Plfm1hz < alpha);
-path2hz = T.path(T.pLR_Plfm2hz < alpha);
-path8hz = T.path(T.pLR_Plfm8hz < alpha);
-path20hz = T.path(T.pLR_Plfm20hz < alpha);
-path50hz = T.path(T.pLR_Plfm50hz < alpha);
-
-dir1hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\1hz';
-dir2hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\2hz';
-dir8hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\8hz';
-dir20hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\20hz';
-dir50hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\50hz';
-
-plot_freqDependency_v3(path1hz,dir1hz);
-plot_freqDependency_v3(path2hz,dir2hz);
-plot_freqDependency_v3(path8hz,dir8hz);
-plot_freqDependency_v3(path20hz,dir20hz);
-plot_freqDependency_v3(path50hz,dir50hz);
-
-close('all');
-cd(rtDir);
+% path1hz = T.path(T.pLR_Plfm1hz < alpha);
+% path2hz = T.path(T.pLR_Plfm2hz < alpha);
+% path8hz = T.path(T.pLR_Plfm8hz < alpha);
+% path20hz = T.path(T.pLR_Plfm20hz < alpha);
+% path50hz = T.path(T.pLR_Plfm50hz < alpha);
+% 
+% dir1hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\1hz';
+% dir2hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\2hz';
+% dir8hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\8hz';
+% dir20hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\20hz';
+% dir50hz = 'D:\Dropbox\SNL\P2_Track\analysis_freq\50hz';
+% 
+% plot_freqDependency_v3(path1hz,dir1hz);
+% plot_freqDependency_v3(path2hz,dir2hz);
+% plot_freqDependency_v3(path8hz,dir8hz);
+% plot_freqDependency_v3(path20hz,dir20hz);
+% plot_freqDependency_v3(path50hz,dir50hz);
+% 
+% close('all');
+% cd(rtDir);

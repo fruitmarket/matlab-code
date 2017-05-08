@@ -1,11 +1,11 @@
-function plot_laserIntensity
+function gplot_laserIntensity
 
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [33 150 243]./ 255,... % During stimulation
     [38, 50, 56]./255}; % After stimulation
 
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 5; fontL = 7; % font size large
+fontS = 4; fontM = 6; fontL = 8; fontXL = 10;% font size large
 lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
 
 colorBlue = [33 150 243] ./ 255;
@@ -30,16 +30,21 @@ paperSizeX = [18.3, 8.00];
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
-load('cellList_ori.mat');
+load('neuronList_ori_170508.mat');
 
-criteria_FR = 7;
+cMeanFR = 9;
+cMaxPeakFR = 1;
+cSpkpvr = 1.1;
+condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
+condiIN = ~condiPN;
+alpha = 0.01;
 
-DRunPn = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
-DRunIn = T.taskProb == '100' & T.taskType == 'DRun' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
-DRwPn = T.taskProb == '100' & T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task<criteria_FR;
-DRwIn = T.taskProb == '100' & T.taskType == 'DRw' & T.peakFR_track>1 & T.meanFR_task>criteria_FR;
+DRunPn = T.taskType == 'DRun' & condiPN;
+DRunIn = T.taskType == 'DRun' & condiIN;
+DRwPn = T.taskType == 'DRw' & condiPN;
+DRwIn = T.taskType == 'DRw' & condiIN;
 
-plfmLight = T.statDir_Plfm2hz ~= 0 & T.pLR_Plfm2hz<0.005;
+plfmLight = T.pLR_Plfm2hz<alpha;
 
 % none/either/both : Activated on Platform or Track?
 DRunPn_evoked = DRunPn & plfmLight;
@@ -54,22 +59,21 @@ DRwPn_notevoked = DRwPn & ~plfmLight;
 DRwIn_evoked = DRwIn & plfmLight;
 DRwIn_notevoked = DRwIn & ~plfmLight;
 
-lightPlfm5mw_DRunPn = T.lightPlfmSpk5mw(DRunPn_evoked);
-lightPlfm8mw_DRunPn = T.lightPlfmSpk8mw(DRunPn_evoked);
-lightPlfm10mw_DRunPn = T.lightPlfmSpk10mw(DRunPn_evoked);
+lightPlfm5mw_DRunPn = T.lightProbPlfm5mw(DRunPn_evoked);
+lightPlfm8mw_DRunPn = T.lightProbPlfm8mw(DRunPn_evoked);
+lightPlfm10mw_DRunPn = T.lightProbPlfm10mw(DRunPn_evoked);
 
-lightPlfm5mw_DRunIn = T.lightPlfmSpk5mw(DRunIn_evoked);
-lightPlfm8mw_DRunIn = T.lightPlfmSpk8mw(DRunIn_evoked);
-lightPlfm10mw_DRunIn = T.lightPlfmSpk10mw(DRunIn_evoked);
+lightPlfm5mw_DRunIn = T.lightProbPlfm5mw(DRunIn_evoked);
+lightPlfm8mw_DRunIn = T.lightProbPlfm8mw(DRunIn_evoked);
+lightPlfm10mw_DRunIn = T.lightProbPlfm10mw(DRunIn_evoked);
 
-lightPlfm5mw_DRwPn = T.lightPlfmSpk5mw(DRwPn_evoked);
-lightPlfm8mw_DRwPn = T.lightPlfmSpk8mw(DRwPn_evoked);
-lightPlfm10mw_DRwPn = T.lightPlfmSpk10mw(DRwPn_evoked);
+lightPlfm5mw_DRwPn = T.lightProbPlfm5mw(DRwPn_evoked);
+lightPlfm8mw_DRwPn = T.lightProbPlfm8mw(DRwPn_evoked);
+lightPlfm10mw_DRwPn = T.lightProbPlfm10mw(DRwPn_evoked);
 
-lightPlfm5mw_DRwIn = T.lightPlfmSpk5mw(DRwIn_evoked);
-lightPlfm8mw_DRwIn = T.lightPlfmSpk8mw(DRwIn_evoked);
-lightPlfm10mw_DRwIn = T.lightPlfmSpk10mw(DRwIn_evoked);
-
+lightPlfm5mw_DRwIn = T.lightProbPlfm5mw(DRwIn_evoked);
+lightPlfm8mw_DRwIn = T.lightProbPlfm8mw(DRwIn_evoked);
+lightPlfm10mw_DRwIn = T.lightProbPlfm10mw(DRwIn_evoked);
 
 %% Figure (DRun)
 nCol = 3;
@@ -80,33 +84,37 @@ plot([1,2,3],[lightPlfm5mw_DRunPn, lightPlfm8mw_DRunPn, lightPlfm10mw_DRunPn],'-
 hold on;
 plot([1,2,3],[mean(lightPlfm5mw_DRunPn), mean(lightPlfm8mw_DRunPn), mean(lightPlfm10mw_DRunPn)],'-o','Color','k','MarkerFaceColor','k','LineWidth',2,'MarkerSize',markerM);
 text(3.5, 50,['n = ',num2str(length(lightPlfm5mw_DRunPn))]);
-ylabel('Spike counts');
+ylabel('Spike Probability, P (%)');
+title('DRun PN','fontSize',fontL);
 
 hInten(2) = axes('Position',axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85], tightInterval));
 plot([1,2,3],[lightPlfm5mw_DRunIn, lightPlfm8mw_DRunIn, lightPlfm10mw_DRunIn],'-o','Color',colorGray,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','MarkerSize',markerM);
 hold on;
 plot([1,2,3],[mean(lightPlfm5mw_DRunIn), mean(lightPlfm8mw_DRunIn), mean(lightPlfm10mw_DRunIn)],'-o','Color','k','MarkerFaceColor','k','LineWidth',2,'MarkerSize',markerM);
 text(3.5, 50,['n = ',num2str(length(lightPlfm5mw_DRunIn))]);
-ylabel('Spike counts');
+ylabel('Spike Probability, P (%)');
+title('DRun IN','fontSize',fontL);
 
 hInten(3) = axes('Position',axpt(nCol,nRow,3,1,[0.1 0.1 0.85 0.85], tightInterval));
 plot([1,2,3],[lightPlfm5mw_DRwPn, lightPlfm8mw_DRwPn, lightPlfm10mw_DRwPn],'-o','Color',colorGray,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','MarkerSize',markerM);
 hold on;
 plot([1,2,3],[mean(lightPlfm5mw_DRwPn), mean(lightPlfm8mw_DRwPn), mean(lightPlfm10mw_DRwPn)],'-o','Color','k','MarkerFaceColor','k','LineWidth',2,'MarkerSize',markerM);
 text(3.5, 50,['n = ',num2str(length(lightPlfm5mw_DRwPn))]);
-ylabel('Spike counts');
+ylabel('Spike Probability, P (%)');
+title('DRw PN','fontSize',fontL);
 
 hInten(4) = axes('Position',axpt(nCol,nRow,3,3,[0.1 0.1 0.85 0.85], tightInterval));
 plot([1,2,3],[lightPlfm5mw_DRwIn, lightPlfm8mw_DRwIn, lightPlfm10mw_DRwIn],'-o','Color',colorGray,'MarkerFaceColor',colorBlue,'MarkerEdgeColor','k','MarkerSize',markerM);
 hold on;
 plot([1,2,3],[mean(lightPlfm5mw_DRwIn), mean(lightPlfm8mw_DRwIn), mean(lightPlfm10mw_DRwIn)],'-o','Color','k','MarkerFaceColor','k','LineWidth',2,'MarkerSize',markerM);
 text(3.5, 50,['n = ',num2str(length(lightPlfm5mw_DRwIn))]);
-ylabel('Spike counts');
+ylabel('Spike Probability, P (%)');
+title('DRw IN','fontSize',fontL);
 
 set(hInten,'Box','off','TickDir','out','XLim',[0,4],'XTick',[1:3],'XTickLabel',{'5mW','8mW','10mW'});
-set(hInten(1),'YLim',[0,300]);
-set(hInten(2),'YLim',[0,400]);
-set(hInten(3),'YLim',[0,300]);
-set(hInten(4),'YLim',[0,400]);
+set(hInten(1),'YLim',[0,70]);
+set(hInten(2),'YLim',[0,100]);
+set(hInten(3),'YLim',[0,70]);
+set(hInten(4),'YLim',[0,100]);
 
-print('-painters','plot_laserIntensity2hz.tiff','-r300','-dtiff');
+% print('-painters','plot_laserIntensity2hz.tiff','-r300','-dtiff');

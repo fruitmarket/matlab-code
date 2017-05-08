@@ -39,10 +39,21 @@ for iCell = 1:nCell
     end
 
 % stimulation zone
-    [~,lightOnIdx] = min(abs(lightTime.Track8hz(1)-timeTrack));
-    lightOnLoc = round((theta(lightOnIdx)*20)*10)/10;
-    [~,lightOffIdx] = min(abs(lightTime.Track8hz(end)-timeTrack));
-    lightOffLoc = round((theta(lightOffIdx)*20)*10)/10;
+    lapStartLightIdx = [1;find(diff(lightTime.Track8hz)>1000)+1];
+    temp_lightOnLoci = zeros(30,1);
+    for iIdx = 1:30
+        [~, lightOnIdx] = min(abs(lightTime.Track8hz(lapStartLightIdx(iIdx))-timeTrack));
+        temp_lightOnLoci(iIdx) = theta(lightOnIdx)*20;
+    end
+    lightOnLoc = round(mean(temp_lightOnLoci)*10)/10;
+    
+    lapEndLightIdx = [find(diff(lightTime.Track8hz)>1000);length(lightTime.Track8hz)];
+    temp_lightOffLoci = zeros(30,1);
+    for iIdx = 1:30
+        [~, lightOffIdx] = min(abs(lightTime.Track8hz(lapEndLightIdx(iIdx))-timeTrack));
+        temp_lightOffLoci(iIdx) = theta(lightOffIdx)*20;
+    end
+    lightOffLoc = round(mean(temp_lightOffLoci)*10)/10;
     lightLoc = [lightOnLoc, lightOffLoc];
 
 % Reward zone
@@ -52,14 +63,14 @@ for iCell = 1:nCell
     temp_reward4Loc = zeros(nReward4,1);
     for iReward2 = 1:nReward2
         [~,reward2Idx] = min(abs(reward2(iReward2)-timeTrack));
-        temp_reward2Loc(iReward2) = round((theta(reward2Idx)*20)*10)/10;
+        temp_reward2Loc(iReward2) = theta(reward2Idx)*20;
     end
-    reward2Loc = mean(temp_reward2Loc);
+    reward2Loc = round(mean(temp_reward2Loc)*10)/10;
     for iReward4 = 1:nReward4
         [~,reward4Idx] = min(abs(reward4(iReward4)-timeTrack));
-        temp_reward4Loc(iReward4) = round((theta(reward4Idx)*20)*10)/10;
+        temp_reward4Loc(iReward4) = theta(reward4Idx)*20;
     end
-    reward4Loc = mean(temp_reward4Loc);
+    reward4Loc = round(mean(temp_reward4Loc)*10)/10;
     rewardLoc = [reward2Loc, reward4Loc];
 
 % Spike location

@@ -47,10 +47,12 @@ lightBand = 3;
 cd('D:\Dropbox\SNL\P2_Track');
 load('neuronList_ori_170421.mat');
 
+condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
 condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
 condiIN = ~condiPN;
+
 %% DRun sessions
-DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
+DRunTN = (T.taskType == 'DRun') & condiTN;
 DRunPN = DRunTN & condiPN;
 DRunIN = DRunTN & condiIN;
 
@@ -300,4 +302,4 @@ set(hLine(1:8),'lineStyle','--','color',colorWhite,'lineWidth',lineL);
 set(hLine(9:16),'lineStyle','--','color',colorBlack,'lineWidth',lineL);
 
 formatOut = 'yymmdd';
-% print('-painters','-r300','-dtiff',['gplot_placeField_',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-dtiff',['gplot_placeField_',datestr(now,formatOut),'.tif']);

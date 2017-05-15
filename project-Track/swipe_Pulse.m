@@ -6,7 +6,10 @@ startingDir = {'D:\Projects\Track_160726-1_Rbp48pulse';
                'D:\Projects\Track_160824-5_Rbp60pulse';
                'D:\Projects\Track_161130-3_Rbp64pulse';
                'D:\Projects\Track_161130-5_Rbp66pulse';
-               'D:\Projects\Track_161130-7_Rbp68pulse'};
+               'D:\Projects\Track_161130-7_Rbp68pulse';
+               'D:\Projects\Track_170119-1_Rbp70pulse';
+               'D:\Projects\Track_170109-2_Rbp72pulse';
+               'D:\Projects\Track_170115-4_Rbp74pulse'};
 
 matFile = [];
 tFile = [];
@@ -17,7 +20,7 @@ for iDir = 1:nDir
 %     matFile = [matFile; tempmatFile];
 %% t-file
      temptFile = FindFiles('TT*.t','StartingDirectory',startingDir{iDir},'CheckSubdirs',1);
-      tFile = [tFile;temptFile]; 
+     tFile = [tFile;temptFile]; 
 %% Event file
 %     tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
 %     matFile = [matFile;tempEventFile];
@@ -43,9 +46,11 @@ for iPath = 1:nPath
     cd(filePath{iPath});
     
 %     event2mat_pulse;
+
     analysis_laserWidthTest;
     analysis_respstatWidthTest;
     waveform;
+    
 %     plot_LightPulse;
 
     fclose('all');

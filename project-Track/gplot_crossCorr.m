@@ -1,59 +1,39 @@
 % common part
-lineColor = {[144, 164, 174]./255,... % Before stimulation
-    [33 150 243]./ 255,... % During stimulation
-    [38, 50, 56]./255}; % After stimulation
-
-lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 6; fontL = 8; % font size large
-lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
-
-colorBlue = [33, 150, 243]/255;
-colorLightBlue = [100, 181, 246]/255;
-colorLLightBlue = [187, 222, 251]/255;
-colorRed = [237, 50, 52]/255;
-colorLightRed = [242, 138, 130]/255;
-colorGray = [189, 189, 189]/255;
-colorGreen = [46, 125, 50]/255;
-colorLightGray = [238, 238, 238]/255;
-colorDarkGray = [117, 117, 117]/255;
-colorYellow = [255, 243, 3]/255;
-colorLightYellow = [255, 249, 196]/255;
-colorPurple = [123, 31, 162]/255;
-colorBlack = [0, 0, 0];
-
-markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
-tightInterval = [0.02 0.02]; midInterval = [0.09, 0.09]; wideInterval = [0.14 0.14];
-width = 0.7;
-
-paperSize = {[0 0 21.0 29.7]; % A4_portrait
-             [0 0 29.7 21.0]; % A4_landscape
-             [0 0 15.7 21.0]; % A4_half landscape
-             [0 0 21.6 27.9]}; % Letter
+clearvars;
 
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_28-Feb-2017.mat');
+load('neuronList_ori_170508.mat');
+load myParameters.mat;
 
-criPeak = 10;
-criFR = 7;
+cMeanFR = 9;
+cMaxPeakFR = 1;
+cSpkpvr = 1.1;
 alpha = 0.01;
+
+condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
+condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
+condiIN = ~condiPN;
+
+% TN: track neuron
+DRunTN = (T.taskType == 'DRun') & condiTN;
+DRunPN = DRunTN & condiPN;
+DRunIN = DRunTN & condiIN;
+
+DRwTN = (T.taskType == 'DRw') & condiTN;
+DRwPN = DRwTN & condiPN;
+DRwIN = DRwTN & condiIN;
+
+noRunTN = (T.taskType == 'noRun') & condiTN;
+noRunPN = noRunTN & condiPN;
+noRunIN = noRunTN & condiIN;
+
+noRwTN = (T.taskType == 'noRw') & condiTN;
+noRwPN = noRwTN & condiPN;
+noRwIN = noRwTN & condiIN;
+
 figName = {'gplot_CrossCor_1Dmap_peak10.tif';
             'gplot_CrossCor1Dmap_peak10.tif'};
-% TN: track neuron
-DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > criPeak);
-DRwTN = (T.taskType == 'DRw') & (cellfun(@max, T.peakFR1D_track) > criPeak);
-noRunTN = (T.taskType == 'noRun') & (cellfun(@max, T.peakFR1D_track) > criPeak);
-noRwTN = (T.taskType == 'noRw') & (cellfun(@max, T.peakFR1D_track) > criPeak);
-
-% total population (DRunPN / DRunIN / DRwPN / DRwIN)
-DRunPN = DRunTN & T.meanFR_task <= criFR;
-DRunIN = DRunTN & T.meanFR_task >= criFR;
-DRwPN = DRwTN & T.meanFR_task <= criFR;
-DRwIN = DRwTN & T.meanFR_task >= criFR;
-noRunPN = noRunTN & T.meanFR_task <= criFR;
-noRunIN = noRunTN & T.meanFR_task >= criFR;
-noRwPN = noRwTN & T.meanFR_task <= criFR;
-noRwIN = noRwTN & T.meanFR_task >= criFR;
-
+       
 % Separate light activated inactviated population
 DRunPNact = DRunPN & (T.pLR_Track<alpha & T.statDir_Track == 1);
 DRunPNina = DRunPN & (T.pLR_Track<alpha & T.statDir_Track == -1);
@@ -114,7 +94,6 @@ xpt_DRwPNact = [ones(nDRwPNact,1);ones(nDRwPNact,1)*2;ones(nDRwPNact,1)*3];
 xpt_DRwPNina = [ones(nDRwPNina,1);ones(nDRwPNina,1)*2;ones(nDRwPNina,1)*3];
 xpt_DRwINact = [ones(nDRwINact,1);ones(nDRwINact,1)*2;ones(nDRwINact,1)*3];
 xpt_DRwINina = [ones(nDRwINina,1);ones(nDRwINina,1)*2;ones(nDRwINina,1)*3];
-
 
 %%
 nCol = 4;
@@ -178,7 +157,7 @@ title('noRw control [total IN]','fontSize',fontM,'fontWeight','bold');
 text(3.5,0.5,['n = ',num2str(sum(double(noRwIN)))],'fontSize',fontM);
 
 set(hTotalCorr,'TickDir','out','Box','off','XLim',[0.5,3.5],'YLim',[-0.4 1.2],'XTick',[1,2,3],'XTickLabel',[{'preXstm','preXpost','stmXpost' }],'fontSize',fontM);
-print('-painters','-r300',figName{1},'-dtiff');
+% print('-painters','-r300',figName{1},'-dtiff');
 
 %% Plot
 nCol = 4;
@@ -242,5 +221,5 @@ title('Stimulation during reward zone [light inactivated IN]','fontSize',fontM,'
 text(3.5, 0.5,['n = ',num2str(nDRunINina)],'fontSize',fontM);
 
 set(hCorr,'TickDir','out','Box','off','XLim',[0.5,3.5],'YLim',[-0.4 1.2],'XTick',[1,2,3],'XTickLabel',[{'preXstm','preXpost','stmXpost' }],'fontSize',fontM);
-print('-painters','-r300',figName{2},'-dtiff');
-close('all')
+% print('-painters','-r300',figName{2},'-dtiff');
+% close('all')

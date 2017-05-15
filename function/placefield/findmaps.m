@@ -16,7 +16,7 @@ position(pos_prod==0,:) = 0;
 [dt, newVTflag] = VTRecBreakProcess(time); %dt: [unit: msec]
 
 if newVTflag 
-    original_resol = [720 480];
+    original_resol = field_ratio;
 else
     original_resol = [640 480];
 end

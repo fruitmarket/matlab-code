@@ -65,69 +65,88 @@ for iCell = 1:nCell
     twohz_meanrate = sum(twohz_fr_map(:))/sum(twohz_visit_dur(:));
 
 %% Raw ratemap calculation
-base_ratemap = base_fr_map./base_visit_dur;
-pre_ratemap = pre_fr_map./pre_visit_dur;
-stm_ratemap = stm_fr_map./stm_visit_dur;
-post_ratemap = post_fr_map./post_visit_dur;
-twohz_ratemap = twohz_fr_map./twohz_visit_dur;
+    base_ratemap = base_fr_map./base_visit_dur;
+    pre_ratemap = pre_fr_map./pre_visit_dur;
+    stm_ratemap = stm_fr_map./stm_visit_dur;
+    post_ratemap = post_fr_map./post_visit_dur;
+    twohz_ratemap = twohz_fr_map./twohz_visit_dur;
 
-%% field map smoothing by comput_rate144x96
-% Parameters
-alpha_v = 0.001; % changing alpha will affect visualing field map.
-fr_threshold = 3;
-fieldsize_cutoff = 2;
-
-%     if find(base_fr_map)
-%         [base_ratemap, ~, ~] = compute_rate72x48(base_visit_dur,base_fr_map,alpha_v,base_meanrate,fr_threshold,fieldsize_cutoff);
-%     else
-%         base_ratemap = 0;
-%     end
-%     if find(pre_fr_map)
-%         [pre_ratemap,pre_infos,pre_field_info] = compute_rate144x96(pre_visit_dur,pre_fr_map,alpha_v,pre_meanrate,fr_threshold,fieldsize_cutoff);
-%     else
-%         pre_ratemap = zeros(114,96);
-%         [pre_infos,pre_field_info] = deal(NaN);
-%     end
-%     if find(stm_fr_map)
-%         [stm_ratemap,stm_infos,stm_field_info] = compute_rate144x96(stm_visit_dur,stm_fr_map,alpha_v,stm_meanrate,fr_threshold,fieldsize_cutoff);
-%     else
-%         stm_ratemap = zeros(144,96);
-%         [stm_infos,stm_field_info] = deal(NaN);
-%     end
-%     if find(post_fr_map)
-%         [post_ratemap,post_infos,post_field_info] = compute_rate72x48(post_visit_dur,post_fr_map,alpha_v,post_meanrate,fr_threshold,fieldsize_cutoff);
-%     else
-%         post_ratemap = zeros(72,48);
-%         [post_infos, post_field_info] = deal(NaN);
-%     end
-%     if find(twohz_fr_map)
-%         [twohz_ratemap, ~, ~] = compute_rate72x48(twohz_visit_dur,twohz_fr_map,alpha_v,twohz_meanrate,fr_threshold,fieldsize_cutoff);
-%     else
-%         twohz_ratemap = 0;
-%     end
-
-%%
     % Remove off track points
     base_ratemap(base_visit_map == 0) = NaN;
     pre_ratemap(pre_visit_map == 0) = NaN;
     stm_ratemap(stm_visit_map == 0) = NaN;
     post_ratemap(post_visit_map == 0) = NaN;
     twohz_ratemap(twohz_visit_map == 0) = NaN;
-    
+
     % Position correction (the map should be same as real position data. Compare row data with pcolor(ratemap))
     base_ratemap = flipud(base_ratemap');
     pre_ratemap = flipud(pre_ratemap');
     stm_ratemap = flipud(stm_ratemap');
     post_ratemap = flipud(post_ratemap');
     twohz_ratemap = flipud(twohz_ratemap');
-    
+
     totalmap = [pre_ratemap,stm_ratemap,post_ratemap];
-    
+
     peakFR2D_track = [max(pre_ratemap(:));max(stm_ratemap(:));max(post_ratemap(:))];
     peakFR2D_plfm = max(base_ratemap(:));
     peakFR2D_two = max(twohz_ratemap(:));
+
+%% field map smoothing by comput_rate144x96
+% Parameters
+alpha_v = 0.0001; % changing alpha will affect visualing field map.
+fr_threshold = 3;
+fieldsize_cutoff = 10;
+
+    if find(base_fr_map)
+        [base_SMratemap, ~, ~] = compute_rate144x96(base_visit_dur,base_fr_map,alpha_v,base_meanrate,fr_threshold,fieldsize_cutoff);
+    else
+        base_SMratemap = 0;
+    end
+    if find(pre_fr_map)
+        [pre_SMratemap,pre_SMinfos,pre_SMfield_info] = compute_rate144x96(pre_visit_dur,pre_fr_map,alpha_v,pre_meanrate,fr_threshold,fieldsize_cutoff);
+    else
+        pre_SMratemap = zeros(field_ratio);
+        [pre_SMinfos,pre_SMfield_info] = deal(NaN);
+    end
+    if find(stm_fr_map)
+        [stm_SMratemap,stm_SMinfos,stm_SMfield_info] = compute_rate144x96(stm_visit_dur,stm_fr_map,alpha_v,stm_meanrate,fr_threshold,fieldsize_cutoff);
+    else
+        stm_SMratemap = zeros(field_ratio);
+        [stm_SMinfos,stm_SMfield_info] = deal(NaN);
+    end
+    if find(post_fr_map)
+        [post_SMratemap,post_SMinfos,post_SMfield_info] = compute_rate144x96(post_visit_dur,post_fr_map,alpha_v,post_meanrate,fr_threshold,fieldsize_cutoff);
+    else
+        post_SMratemap = zeros(field_ratio);
+        [post_SMinfos, post_SMfield_info] = deal(NaN);
+    end
+    if find(twohz_fr_map)
+        [twohz_SMratemap, ~, ~] = compute_rate72x48(twohz_visit_dur,twohz_fr_map,alpha_v,twohz_meanrate,fr_threshold,fieldsize_cutoff);
+    else
+        twohz_SMratemap = 0;
+    end
+
+    base_SMratemap(base_visit_map == 0) = NaN;
+    pre_SMratemap(pre_visit_map == 0) = NaN;
+    stm_SMratemap(stm_visit_map == 0) = NaN;
+    post_SMratemap(post_visit_map == 0) = NaN;
+    twohz_SMratemap(twohz_visit_map == 0) = NaN;
     
-    save([cellName,'.mat'],'pre_ratemap','stm_ratemap','post_ratemap','totalmap','base_ratemap','twohz_ratemap','peakFR2D_track','peakFR2D_plfm','peakFR2D_two','-append');
+    base_SMratemap = flipud(base_SMratemap');
+    pre_SMratemap = flipud(pre_SMratemap');
+    stm_SMratemap = flipud(stm_SMratemap');
+    post_SMratemap = flipud(post_SMratemap');
+    twohz_SMratemap = flipud(twohz_SMratemap');
+    
+    total_SMmap = [pre_SMratemap, stm_SMratemap, post_SMratemap];
+    
+    peakFR2D_SMtrack = [max(pre_SMratemap(:));max(stm_SMratemap(:));max(post_SMratemap(:))];
+    peakFR2D_SMplfm = max(base_SMratemap(:));
+    peakFR2D_SMtwo = max(twohz_SMratemap(:));
+%%
+    
+    save([cellName,'.mat'],'pre_ratemap','stm_ratemap','post_ratemap','totalmap','base_ratemap','twohz_ratemap','peakFR2D_track','peakFR2D_plfm','peakFR2D_two',...
+        'pre_SMratemap','stm_SMratemap','post_SMratemap','total_SMmap','base_SMratemap','twohz_SMratemap','peakFR2D_SMtrack','peakFR2D_SMplfm','peakFR2D_SMtwo','-append');
 
 %     save ([cellName, '.mat'],...
 %         'pre_ratemap','pre_infos','pre_field_info','pre_flags',...

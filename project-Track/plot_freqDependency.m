@@ -51,7 +51,7 @@ nCell = length(tList);
 nTrial = 20;
 nTrial_ori = 300;
 
-for iCell = 1:1
+for iCell = 1:nCell
     disp(['### Analyzing ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);

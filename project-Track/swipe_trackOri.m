@@ -13,10 +13,10 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';
                'D:\Projects\Track_160824-5_Rbp60ori';
                'D:\Projects\Track_161130-3_Rbp64ori';
                'D:\Projects\Track_161130-5_Rbp66ori';
-               'D:\Projects\Track_161130-7_Rbp68ori'};
-%                'D:\Projects\Track_170119-1_Rbp70ori';
-%                'D:\Projects\Track_170109-2_Rbp72ori';
-%                'D:\Projects\Track_170115-4_Rbp74ori'};
+               'D:\Projects\Track_161130-7_Rbp68ori';
+               'D:\Projects\Track_170119-1_Rbp70ori';
+               'D:\Projects\Track_170109-2_Rbp72ori';
+               'D:\Projects\Track_170115-4_Rbp74ori'};
 % startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
 
 matFile = [];
@@ -56,13 +56,13 @@ for iPath = 1:nPath
     curPath = iPath;
     cd(filePath{iPath});
 
-    event2mat_trackori;
+%     event2mat_trackori;
     
 %     pethSensor;
 %     pethLight;
 %     waveform;
 %     heatMap;
-%     tagstatTrack_Poster; % newest version
+%     tagstat_trackOri; % newest version
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 %     sensorMeanFR;

@@ -58,4 +58,4 @@ for icell = 1:nCell
 %% Save file    
     save([cellname,'.mat'],'spkwv','spkwth','spkpvr','hfvwth','-append');
 end
-disp('Waveform calculation is done!');
+disp('### Waveform calculation is done! ###');

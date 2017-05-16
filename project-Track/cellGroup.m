@@ -1,10 +1,10 @@
 clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
 
-Txls = readtable('neuronList_ori_170501.xlsx');
+Txls = readtable('neuronList_ori_170516.xlsx');
 Txls.taskType = categorical(Txls.taskType);
 
-load('neuronList_ori_170501.mat');
+load('neuronList_ori_170516.mat');
 alpha = 0.01;
 cri_Peak = 9;
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
@@ -70,24 +70,24 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % cd('D:\Dropbox\SNL\P2_Track');
 
 %% Light response
-% sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-% fd_sigDRun = [folder, 'light_sigDRun'];
-% fileName = T.path(sig_DRun);
-% cellID = Txls.cellID(sig_DRun);
-% plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
-% 
+sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+fd_sigDRun = [folder, 'light_sigDRun'];
+fileName = T.path(sig_DRun);
+cellID = Txls.cellID(sig_DRun);
+plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
+
 % nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
 % fd_nosigDRun = [folder, 'light_nosigDRun'];
 % fileName = T.path(nosig_DRun);
 % cellID = Txls.cellID(nosig_DRun);
 % plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
-% 
-% sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-% fd_sigDRw = [folder, 'light_sigDRw'];
-% fileName = T.path(sig_DRw);
-% cellID = Txls.cellID(sig_DRw);
-% plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
-% 
+
+sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+fd_sigDRw = [folder, 'light_sigDRw'];
+fileName = T.path(sig_DRw);
+cellID = Txls.cellID(sig_DRw);
+plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
+
 % nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
 % fd_nosigDRw = [folder, 'light_nosigDRw'];
 % fileName = T.path(nosig_DRw);
@@ -174,17 +174,17 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % plot_Track_multi_v3(fileName, cellID, fd_DRw2hz8hz);
 
 % DRun and DRw recorded population
-idDRun = Txls.compCellID(Txls.taskType == 'DRun' & (T.pLR_Track<alpha | T.pLR_Plfm2hz<alpha));
-idDRun = idDRun(~isnan(idDRun));
-idDRw = Txls.compCellID(Txls.taskType == 'DRw' & (T.pLR_Track<alpha | T.pLR_Plfm2hz<alpha));
-idDRw = idDRw(~isnan(idDRw));
-coRecNeuron = intersect(idDRun,idDRw);
-nCoRec = length(coRecNeuron);
-parentDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\stateDependency_DRunDRw';
-for iCell = 1:nCoRec
-   fileName = Txls.path(Txls.compCellID == coRecNeuron(iCell));
-   cellID = Txls.cellID(Txls.compCellID == coRecNeuron(iCell));
-   mkdir(parentDir, ['coRec_',num2str(coRecNeuron(iCell))]);
-   plot_Track_multi_v3(fileName,cellID,[parentDir,'\coRec_',num2str(coRecNeuron(iCell))]);   
-end
-cd('D:\Dropbox\SNL\P2_Track');
+% idDRun = Txls.compCellID(Txls.taskType == 'DRun' & (T.pLR_Track<alpha | T.pLR_Plfm2hz<alpha));
+% idDRun = idDRun(~isnan(idDRun));
+% idDRw = Txls.compCellID(Txls.taskType == 'DRw' & (T.pLR_Track<alpha | T.pLR_Plfm2hz<alpha));
+% idDRw = idDRw(~isnan(idDRw));
+% coRecNeuron = intersect(idDRun,idDRw);
+% nCoRec = length(coRecNeuron);
+% parentDir = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\stateDependency_DRunDRw';
+% for iCell = 1:nCoRec
+%    fileName = Txls.path(Txls.compCellID == coRecNeuron(iCell));
+%    cellID = Txls.cellID(Txls.compCellID == coRecNeuron(iCell));
+%    mkdir(parentDir, ['coRec_',num2str(coRecNeuron(iCell))]);
+%    plot_Track_multi_v3(fileName,cellID,[parentDir,'\coRec_',num2str(coRecNeuron(iCell))]);   
+% end
+% cd('D:\Dropbox\SNL\P2_Track');

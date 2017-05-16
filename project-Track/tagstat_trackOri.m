@@ -1,4 +1,4 @@
-function tagstatTrack_Poster()
+function tagstat_trackOri()
 %tagstatCC calculates statistical significance using log-rank test
 % Variables for log-rank test & salt test
 

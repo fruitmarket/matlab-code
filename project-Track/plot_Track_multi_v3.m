@@ -36,7 +36,7 @@ for iFile = 1:nFile
     [cellDir, cellName, ~] = fileparts(matFile{iFile});
     cellDirSplit = regexp(cellDir,'\','split');
     cellFigName = strcat(cellDirSplit(end-1),'_',cellDirSplit(end),'_',cellName);
-    sfreq = [30 60];
+    cscTetrode = str2double(cellName(3)); % find a tetrode for csc analysis
     
     % Arc property
     if ~isempty(strfind(cellDir,'DRun'));
@@ -45,6 +45,10 @@ for iFile = 1:nFile
         arc = linspace(pi/6*5, pi/6*4,170);
     end
     cd(cellDir);
+
+    [cscTime, total_cscSample, cscList] = cscLoad;
+    cscSample = total_cscSample{cscTetrode};
+
     load(matFile{iFile});
     load('Events.mat');
     
@@ -517,7 +521,7 @@ end
         text(xLimCSC(1), yLimCSC_Plfm8hz(2),'LFP (Plfm 8hz)','fontSize',fontM);
         set(hLFP(3),'Xlim',xLimCSC,'XTick',[],'YLim',yLimCSC_Plfm8hz,'fontSize',fontM);
     end
-    set(hLFP,'Box','off','TickDir','out');
+    set(hLFP,'Box','off','TickDir','out','visible','off');
     
 % % Spectrogram (aligned on sensor onset)
 %     load(['CSC','.mat']);

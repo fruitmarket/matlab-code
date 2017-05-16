@@ -76,11 +76,11 @@ fileName = T.path(sig_DRun);
 cellID = Txls.cellID(sig_DRun);
 plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
 
-% nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-% fd_nosigDRun = [folder, 'light_nosigDRun'];
-% fileName = T.path(nosig_DRun);
-% cellID = Txls.cellID(nosig_DRun);
-% plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
+nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+fd_nosigDRun = [folder, 'light_nosigDRun'];
+fileName = T.path(nosig_DRun);
+cellID = Txls.cellID(nosig_DRun);
+plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
 
 sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
 fd_sigDRw = [folder, 'light_sigDRw'];
@@ -88,12 +88,12 @@ fileName = T.path(sig_DRw);
 cellID = Txls.cellID(sig_DRw);
 plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
 
-% nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-% fd_nosigDRw = [folder, 'light_nosigDRw'];
-% fileName = T.path(nosig_DRw);
-% cellID = Txls.cellID(nosig_DRw);
-% plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
-% cd('D:\Dropbox\SNL\P2_Track');
+nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+fd_nosigDRw = [folder, 'light_nosigDRw'];
+fileName = T.path(nosig_DRw);
+cellID = Txls.cellID(nosig_DRw);
+plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
+cd('D:\Dropbox\SNL\P2_Track');
 
 %% platform 2hz, 8hz stimulation population
 % total_2hz8hz = ~isnan(T.pLR_Plfm8hz);

@@ -16,7 +16,7 @@ position(pos_prod==0,:) = 0;
 [dt, newVTflag] = VTRecBreakProcess(time); %dt: [unit: msec]
 
 if newVTflag 
-    original_resol = field_ratio;
+    original_resol = [720 480];
 else
     original_resol = [640 480];
 end
@@ -36,24 +36,23 @@ for iPosi = 1:length(nzPosiIdex)
     visit_time(position(nzPosiIdex(iPosi),1),position(nzPosiIdex(iPosi),2)) = visit_time(position(nzPosiIdex(iPosi),1),position(nzPosiIdex(iPosi),2)) + dt(nzPosiIdex(iPosi));
 end
 nz_num_visit = find(num_visit);
-map_resol = original_resol/field_ratio;
-% new_map_resol = original_resol./map_resol;
 
 %% Reshaping Field
-re_firing_map = zeros(field_ratio);
-re_num_visit = zeros(field_ratio);
-re_visit_time = zeros(field_ratio);
-map_ratio = [720 480]/field_ratio;
+map_resolution = original_resol./field_ratio;
 
-for xpt = 1:field_ratio(1) % Generating 72x48 map
-    for ypt = 1:field_ratio(2)
+re_firing_map = zeros(map_resolution);
+re_num_visit = zeros(map_resolution);
+re_visit_time = zeros(map_resolution);
+
+for xpt = 1:map_resolution(1) % Generating 144x96 map
+    for ypt = 1:map_resolution(2)
 %         re_firing_map(xpt,ypt) = sum(sum(firing_map(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1),map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
 %         re_num_visit(xpt,ypt) = sum(sum(num_visit(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1), map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
 %         re_visit_time(xpt,ypt) = sum(sum(visit_time(map_ratio(1)*(xpt-1)+1:map_ratio(1)*(xpt-1)+map_ratio(1), map_ratio(2)*(ypt-1)+1:map_ratio(2)*(ypt-1)+map_ratio(2))));
         
-        re_firing_map(xpt,ypt) = sum(sum(firing_map(map_ratio*(xpt-1)+1:map_ratio*(xpt-1)+map_ratio,map_ratio*(ypt-1)+1:map_ratio*(ypt-1)+map_ratio)));
-        re_num_visit(xpt,ypt) = sum(sum(num_visit(map_ratio*(xpt-1)+1:map_ratio*(xpt-1)+map_ratio, map_ratio*(ypt-1)+1:map_ratio*(ypt-1)+map_ratio)));
-        re_visit_time(xpt,ypt) = sum(sum(visit_time(map_ratio*(xpt-1)+1:map_ratio*(xpt-1)+map_ratio, map_ratio*(ypt-1)+1:map_ratio*(ypt-1)+map_ratio)));
+        re_firing_map(xpt,ypt) = sum(sum(firing_map(field_ratio*(xpt-1)+1:field_ratio*(xpt-1)+field_ratio,field_ratio*(ypt-1)+1:field_ratio*(ypt-1)+field_ratio)));
+        re_num_visit(xpt,ypt) = sum(sum(num_visit(field_ratio*(xpt-1)+1:field_ratio*(xpt-1)+field_ratio, field_ratio*(ypt-1)+1:field_ratio*(ypt-1)+field_ratio)));
+        re_visit_time(xpt,ypt) = sum(sum(visit_time(field_ratio*(xpt-1)+1:field_ratio*(xpt-1)+field_ratio, field_ratio*(ypt-1)+1:field_ratio*(ypt-1)+field_ratio)));
     end
 end
 

@@ -14,7 +14,7 @@ function mapCorrEvOd()
 alpha_v = 0.0001;
 fr_threshold = 3;
 fieldsize_cutoff = 10;
-field_ratio = [72 48];
+field_ratio = [8, 10, 5]; % Choose one for the map ratio (for smoothing. 8:1, 10:1, 5:1)
 
 % Loading data
 [tData, tList] = tLoad; % tData: msec
@@ -28,11 +28,8 @@ for iCell = 1:nCell
     
     load('Events.mat','sensor');
     sensor1 = sensor.S1;
-    even_ratemap = ones(72,48)*0;
-    odd_ratemap = ones(72,48)*0;
-    even_visit_map = ones(72,48)*0;
-    odd_visit_map = ones(72,48)*0;
-    
+    [even_ratemap, odd_ratemap, even_visit_map, odd_visit_map] = deal(zeros(144,96));
+        
     nLap = 15;
     for iLap = 1:nLap
         evenLap = find(sensor1(iLap*2)<=vtTime{1} & vtTime{1}<sensor1(iLap*2+1));
@@ -44,22 +41,22 @@ for iCell = 1:nCell
         t_odd = vtTime{1}(oddLap);
         p_odd = vtPosition{1}(oddLap,:);
         
-        [even_fr_map, temp_even_visit_map, ~, ~] = findmaps(t_even,p_even,tData{iCell},field_ratio);
+        [even_fr_map, temp_even_visit_map, ~, ~] = findmaps(t_even,p_even,tData{iCell},field_ratio(3));
         if isempty(temp_even_visit_map~=0)
             even_meanrate = 0;
         else
             even_meanrate = sum(even_fr_map)/sum(temp_even_visit_map);
         end
         
-        [odd_fr_map, temp_odd_visit_map, ~, ~] = findmaps(t_odd,p_odd,tData{iCell},field_ratio);
+        [odd_fr_map, temp_odd_visit_map, ~, ~] = findmaps(t_odd,p_odd,tData{iCell},field_ratio(3));
         if isempty(temp_odd_visit_map~=0)
             odd_meanrate = 0;
         else
             odd_meanrate = sum(odd_fr_map)/sum(temp_odd_visit_map);
         end
         
-        [temp_even_ratemap, ~, ~] = compute_rate72x48(temp_even_visit_map,even_fr_map,alpha_v,even_meanrate,fr_threshold,fieldsize_cutoff);
-        [temp_odd_ratemap, ~, ~] = compute_rate72x48(temp_odd_visit_map,odd_fr_map,alpha_v,odd_meanrate,fr_threshold,fieldsize_cutoff);
+        [temp_even_ratemap, ~, ~] = compute_rate144x96(temp_even_visit_map,even_fr_map,alpha_v,even_meanrate,fr_threshold,fieldsize_cutoff);
+        [temp_odd_ratemap, ~, ~] = compute_rate144x96(temp_odd_visit_map,odd_fr_map,alpha_v,odd_meanrate,fr_threshold,fieldsize_cutoff);
         
         even_ratemap = even_ratemap + temp_even_ratemap;
         even_visit_map = even_visit_map + temp_even_visit_map;
@@ -76,7 +73,7 @@ for iCell = 1:nCell
     
     save([cellName, '.mat'],'r_CorrPrePre','p_CorrPrePre','-append');        
 end
-disp('### fieldMap_EvenOdd is done!');
+disp('### fieldMap_EvenOdd is done! ###');
 end
 
 

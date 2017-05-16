@@ -7,7 +7,7 @@ function heatMap()
 % Last modified:
 %%%%%%%%%%%%%%%%%%%%%%
 
-field_ratio = [72 48]*2;
+field_ratio = [8, 10, 5]; % Choose one for the map ratio (for smoothing. 8:1, 10:1, 5:1)
 
 %% Loading data
 [tData, tList] = tLoad; % tData: msec
@@ -46,22 +46,22 @@ for iCell = 1:nCell
     spkdata = tData{iCell}; %unit: msec
     
 %% Field map analysis
-    [base_fr_map, base_visit_map,base_visit_dur,~] = findmaps(t_base,p_base,spkdata,field_ratio);
+    [base_fr_map, base_visit_map,base_visit_dur,~] = findmaps(t_base,p_base,spkdata,field_ratio(3));
 %     if isempty(base_visit_map)
 %         base_meanrate = 0;
 %     else
         base_meanrate = sum(base_fr_map(:))/sum(base_visit_dur(:));
 %     end
-    [pre_fr_map, pre_visit_map, pre_visit_dur, pre_flags] = findmaps(t_pre, p_pre, spkdata, field_ratio);
+    [pre_fr_map, pre_visit_map, pre_visit_dur, pre_flags] = findmaps(t_pre, p_pre, spkdata, field_ratio(3));
     pre_meanrate = sum(pre_fr_map(:))/sum(pre_visit_dur(:));
 
-    [stm_fr_map, stm_visit_map, stm_visit_dur, stm_flags] = findmaps(t_stm, p_stm, spkdata, field_ratio);
+    [stm_fr_map, stm_visit_map, stm_visit_dur, stm_flags] = findmaps(t_stm, p_stm, spkdata, field_ratio(3));
     stm_meanrate = sum(stm_fr_map(:))/sum(stm_visit_dur(:));
 
-    [post_fr_map, post_visit_map, post_visit_dur, post_flags] = findmaps(t_post, p_post, spkdata, field_ratio);
+    [post_fr_map, post_visit_map, post_visit_dur, post_flags] = findmaps(t_post, p_post, spkdata, field_ratio(3));
     post_meanrate = sum(post_fr_map(:))/sum(post_visit_dur(:));
 
-    [twohz_fr_map, twohz_visit_map, twohz_visit_dur, twohz_flags] = findmaps(t_two, p_two, spkdata, field_ratio);
+    [twohz_fr_map, twohz_visit_map, twohz_visit_dur, twohz_flags] = findmaps(t_two, p_two, spkdata, field_ratio(3));
     twohz_meanrate = sum(twohz_fr_map(:))/sum(twohz_visit_dur(:));
 
 %% Raw ratemap calculation
@@ -96,7 +96,7 @@ for iCell = 1:nCell
 alpha_v = 0.0001; % changing alpha will affect visualing field map.
 fr_threshold = 3;
 fieldsize_cutoff = 10;
-
+map_resolution = [144 96];
     if find(base_fr_map)
         [base_SMratemap, ~, ~] = compute_rate144x96(base_visit_dur,base_fr_map,alpha_v,base_meanrate,fr_threshold,fieldsize_cutoff);
     else
@@ -105,23 +105,23 @@ fieldsize_cutoff = 10;
     if find(pre_fr_map)
         [pre_SMratemap,pre_SMinfos,pre_SMfield_info] = compute_rate144x96(pre_visit_dur,pre_fr_map,alpha_v,pre_meanrate,fr_threshold,fieldsize_cutoff);
     else
-        pre_SMratemap = zeros(field_ratio);
+        pre_SMratemap = zeros(map_resolution);
         [pre_SMinfos,pre_SMfield_info] = deal(NaN);
     end
     if find(stm_fr_map)
         [stm_SMratemap,stm_SMinfos,stm_SMfield_info] = compute_rate144x96(stm_visit_dur,stm_fr_map,alpha_v,stm_meanrate,fr_threshold,fieldsize_cutoff);
     else
-        stm_SMratemap = zeros(field_ratio);
+        stm_SMratemap = zeros(map_resolution);
         [stm_SMinfos,stm_SMfield_info] = deal(NaN);
     end
     if find(post_fr_map)
         [post_SMratemap,post_SMinfos,post_SMfield_info] = compute_rate144x96(post_visit_dur,post_fr_map,alpha_v,post_meanrate,fr_threshold,fieldsize_cutoff);
     else
-        post_SMratemap = zeros(field_ratio);
+        post_SMratemap = zeros(map_resolution);
         [post_SMinfos, post_SMfield_info] = deal(NaN);
     end
     if find(twohz_fr_map)
-        [twohz_SMratemap, ~, ~] = compute_rate72x48(twohz_visit_dur,twohz_fr_map,alpha_v,twohz_meanrate,fr_threshold,fieldsize_cutoff);
+        [twohz_SMratemap, ~, ~] = compute_rate144x96(twohz_visit_dur,twohz_fr_map,alpha_v,twohz_meanrate,fr_threshold,fieldsize_cutoff);
     else
         twohz_SMratemap = 0;
     end

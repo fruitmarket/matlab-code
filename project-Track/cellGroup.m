@@ -1,12 +1,26 @@
 clearvars;
-cd('D:\Dropbox\SNL\P2_Track');
-
+rtDir = 'D:\Dropbox\SNL\P2_Track';
+cd(rtDir);
+load('neuronList_ori_170516.mat');
 Txls = readtable('neuronList_ori_170516.xlsx');
 Txls.taskType = categorical(Txls.taskType);
 
-load('neuronList_ori_170516.mat');
+cMeanFR = 9;
+cMaxPeakFR = 1;
+cSpkpvr = 1.1;
 alpha = 0.01;
-cri_Peak = 9;
+areaDRun = [5/6 4/3]*pi*20; % 6-9 o'clock
+areaDRw = [3/2 5/3]*pi*20; % 10-11 o'clock
+areaRw1 = [1/2 2/3]*pi*20; % 4-5 o'clock
+areaRw2 = [3/2 5/3]*pi*20; % 10-11 o'clock
+errorPosi = 5;
+correctY = 0.5;
+lightBand = 3;
+
+condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
+condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
+condiIN = ~condiPN;
+
 folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 %% Session compare
 % compareID = ~isnan(T.compCellID); % find non-nan index
@@ -70,30 +84,30 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % cd('D:\Dropbox\SNL\P2_Track');
 
 %% Light response
-sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-fd_sigDRun = [folder, 'light_sigDRun'];
-fileName = T.path(sig_DRun);
-cellID = Txls.cellID(sig_DRun);
-plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
-
-nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-fd_nosigDRun = [folder, 'light_nosigDRun'];
-fileName = T.path(nosig_DRun);
-cellID = Txls.cellID(nosig_DRun);
-plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
-
-sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
-fd_sigDRw = [folder, 'light_sigDRw'];
-fileName = T.path(sig_DRw);
-cellID = Txls.cellID(sig_DRw);
-plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
-
-nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
-fd_nosigDRw = [folder, 'light_nosigDRw'];
-fileName = T.path(nosig_DRw);
-cellID = Txls.cellID(nosig_DRw);
-plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
-cd('D:\Dropbox\SNL\P2_Track');
+% sig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+% fd_sigDRun = [folder, 'light_sigDRun'];
+% fileName = T.path(sig_DRun);
+% cellID = Txls.cellID(sig_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
+% 
+% nosig_DRun = (T.taskType == 'DRun') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+% fd_nosigDRun = [folder, 'light_nosigDRun'];
+% fileName = T.path(nosig_DRun);
+% cellID = Txls.cellID(nosig_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
+% 
+% sig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz<=alpha) | (T.pLR_Track<=alpha));
+% fd_sigDRw = [folder, 'light_sigDRw'];
+% fileName = T.path(sig_DRw);
+% cellID = Txls.cellID(sig_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
+% 
+% nosig_DRw = (T.taskType == 'DRw') & ((T.pLR_Plfm2hz>alpha) & (T.pLR_Track>alpha));
+% fd_nosigDRw = [folder, 'light_nosigDRw'];
+% fileName = T.path(nosig_DRw);
+% cellID = Txls.cellID(nosig_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
+% cd('D:\Dropbox\SNL\P2_Track');
 
 %% platform 2hz, 8hz stimulation population
 % total_2hz8hz = ~isnan(T.pLR_Plfm8hz);
@@ -188,3 +202,105 @@ cd('D:\Dropbox\SNL\P2_Track');
 %    plot_Track_multi_v3(fileName,cellID,[parentDir,'\coRec_',num2str(coRecNeuron(iCell))]);   
 % end
 % cd('D:\Dropbox\SNL\P2_Track');
+
+%% population bias calibration (based on sensor mean_fr)
+% DRun sessions
+% DRunTN = (T.taskType == 'DRun') & condiTN;
+% DRunPN = DRunTN & condiPN;
+% DRunIN = DRunTN & condiIN;
+% 
+% trackInac_DRunPN = DRunPN & (T.pLR_Track < alpha) & (T.statDir_Track == -1);
+% mfr_zone = T.sensorMeanFR_DRun(trackInac_DRunPN);
+% mean_mfr_zone = min(cellfun(@(x) mean(x(31:60)),mfr_zone));
+% 
+% populPass_DRun = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) > mean_mfr_zone) & (T.pLR_Track<=alpha);
+% populAct_DRun = populPass_DRun & (T.statDir_Track == 1);
+% populIna_DRun = populPass_DRun & (T.statDir_Track == -1);
+% populNorsp_DRun = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) > mean_mfr_zone) & (T.pLR_Track>alpha);
+% 
+% fd_passAct = [folder, 'passAct_DRun'];
+% fileName = T.path(populAct_DRun);
+% cellID = Txls.cellID(populAct_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_passAct);
+% 
+% fd_passIna = [folder, 'passIna_DRun'];
+% fileName = T.path(populIna_DRun);
+% cellID = Txls.cellID(populIna_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_passIna);
+% 
+% fd_passNorsp = [folder, 'passNorsp_DRun'];
+% fileName = T.path(populNorsp_DRun);
+% cellID = Txls.cellID(populNorsp_DRun);
+% plot_Track_multi_v3(fileName, cellID, fd_passNorsp);
+% 
+% % DRw sessions
+% DRwTN = (T.taskType == 'DRw') & condiTN;
+% DRwPN = DRwTN & condiPN;
+% DRwIN = DRwTN & condiIN;
+% 
+% trackInac_DRwPN = DRwPN & (T.pLR_Track < alpha) & (T.statDir_Track == -1);
+% mfr_zone = T.sensorMeanFR_DRw(trackInac_DRwPN);
+% mean_mfr_zone = min(cellfun(@(x) mean(x(31:60)),mfr_zone));
+% 
+% populPass_DRw = DRwPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRw)) > mean_mfr_zone) & (T.pLR_Track<=alpha);
+% populAct_DRw = populPass_DRw & (T.statDir_Track == 1);
+% populIna_DRw = populPass_DRw & (T.statDir_Track == -1);
+% populNorsp_DRw = DRwPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRw)) > mean_mfr_zone) & (T.pLR_Track>alpha);
+% 
+% fd_passAct = [folder, 'passAct_DRw'];
+% fileName = T.path(populAct_DRw);
+% cellID = Txls.cellID(populAct_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_passAct);
+% 
+% fd_passIna = [folder, 'passIna_DRw'];
+% fileName = T.path(populIna_DRw);
+% cellID = Txls.cellID(populIna_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_passIna);
+% 
+% fd_passNorsp = [folder, 'passNorsp_DRw'];
+% fileName = T.path(populNorsp_DRw);
+% cellID = Txls.cellID(populNorsp_DRw);
+% plot_Track_multi_v3(fileName, cellID, fd_passNorsp);
+% 
+% cd(rtDir);
+
+%% First session analysis
+load('neuronList_1stSess_170517.mat');
+Txls1ss = readtable('neuronList_1stSess_170517.xlsx');
+Txls1ss.taskType = categorical(Txls1ss.taskType);
+
+% condiTN_1sess = (cellfun(@max, T_1stSess.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T_1stSess.peakloci_total));
+% condiPN_1sess = T_1stSess.spkpvr>cSpkpvr & T_1stSess.meanFR_task<cMeanFR;
+% condiIN_1sess = ~condiPN_1sess;
+
+% DRunTN_1sess = (T_1stSess.taskType == 'DRun') & condiTN_1sess;
+% DRunPN_1sess = DRunTN_1sess & condiPN_1sess;
+% DRunIN_1sess = DRunTN_1sess & condiIN_1sess;
+% DRwTN_1sess = (T_1stSess.taskType == 'DRw') & condiTN_1sess;
+% DRwPN_1sess = DRwTN_1sess & condiPN_1sess;
+% DRwIN_1sess = DRwTN_1sess & condiIN_1sess;
+
+sig_DRun = (T1ss.taskType == 'DRun') & ((T1ss.pLR_Plfm2hz<=alpha) | (T1ss.pLR_Track<=alpha));
+fd_sigDRun = [folder, '1sess_light_sigDRun'];
+fileName = T1ss.path(sig_DRun);
+cellID = Txls1ss.cellID(sig_DRun);
+plot_Track_multi_v3(fileName, cellID, fd_sigDRun);
+
+nosig_DRun = (T1ss.taskType == 'DRun') & ((T1ss.pLR_Plfm2hz>alpha) & (T1ss.pLR_Track>alpha));
+fd_nosigDRun = [folder, '1sess_light_nosigDRun'];
+fileName = T1ss.path(nosig_DRun);
+cellID = Txls1ss.cellID(nosig_DRun);
+plot_Track_multi_v3(fileName, cellID, fd_nosigDRun);
+
+sig_DRw = (T1ss.taskType == 'DRw') & ((T1ss.pLR_Plfm2hz<=alpha) | (T1ss.pLR_Track<=alpha));
+fd_sigDRw = [folder, '1sess_light_sigDRw'];
+fileName = T1ss.path(sig_DRw);
+cellID = Txls1ss.cellID(sig_DRw);
+plot_Track_multi_v3(fileName, cellID, fd_sigDRw);
+
+nosig_DRw = (T1ss.taskType == 'DRw') & ((T1ss.pLR_Plfm2hz>alpha) & (T1ss.pLR_Track>alpha));
+fd_nosigDRw = [folder, '1sess_light_nosigDRw'];
+fileName = T1ss.path(nosig_DRw);
+cellID = Txls1ss.cellID(nosig_DRw);
+plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
+cd('D:\Dropbox\SNL\P2_Track');

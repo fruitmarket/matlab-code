@@ -469,10 +469,10 @@ end
     
     hLFP(1) = axes('Position',axpt(6,6,1:6,1:2,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
     for iLight = 1:nLabLightPlfm2hz
-        hLpatch(1) = patch([500*(iLight-1), 500*(iLight-1)+10, 500*(iLight-1)+10, 500*(iLight-1)],[yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(2), yLimCSC_Plfm2hz(2)],colorBlue,'EdgeColor','none');
+        hLpatch(1) = patch([500*(iLight-1), 500*(iLight-1)+10, 500*(iLight-1)+10, 500*(iLight-1)],[yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(2), yLimCSC_Plfm2hz(2)],colorLightBlue,'EdgeColor','none');
         hold on;
     end
-    plot(xpt_csc2hz,m_cscPlfm2hz,'color',colorBlack,'lineWidth',1);
+    plot(xpt_csc2hz,m_cscPlfm2hz,'color',colorBlack,'lineWidth',0.8);
     line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Plfm2hz(2)*0.7, yLimCSC_Plfm2hz(2)*0.7],'color',colorBlack);
     line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Plfm2hz(2)*0.7, yLimCSC_Plfm2hz(2)*0.7+0.2],'color',colorBlack);
     ylabel('LFP (Plfm2hz)','fontSize',fontM);
@@ -482,10 +482,10 @@ end
         
     hLFP(2) = axes('Position',axpt(6,6,1:6,5:6,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
     for iLight = 1:nLabLightTrack8hz
-        hLpatch(2) = patch([125*(iLight-1), 125*(iLight-1)+10, 125*(iLight-1)+10, 125*(iLight-1)],[yLimCSC_Track8hz(1)*0.8, yLimCSC_Track8hz(1)*0.8, yLimCSC_Track8hz(2), yLimCSC_Track8hz(2)],colorBlue,'EdgeColor','none');
+        hLpatch(2) = patch([125*(iLight-1), 125*(iLight-1)+10, 125*(iLight-1)+10, 125*(iLight-1)],[yLimCSC_Track8hz(1)*0.8, yLimCSC_Track8hz(1)*0.8, yLimCSC_Track8hz(2), yLimCSC_Track8hz(2)],colorLightBlue,'EdgeColor','none');
         hold on;
     end
-    plot(xpt_csc8hz,m_cscTrack8hz,'color',colorBlack,'lineWidth',1);
+    plot(xpt_csc8hz,m_cscTrack8hz,'color',colorBlack,'lineWidth',0.8);
     line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Track8hz(2)*0.7, yLimCSC_Track8hz(2)*0.7],'color',colorBlack);
     line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Track8hz(2)*0.7, yLimCSC_Track8hz(2)*0.7+0.2],'color',colorBlack);
     ylabel('LFP (Track8hz)','fontSize',fontM);
@@ -511,10 +511,10 @@ end
 
         hLFP(3) = axes('Position',axpt(6,6,1:6,3:4,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
         for iLight = 1:nLabLightPlfm8hz
-            hLpatch(3) = patch([125*(iLight-1), 125*(iLight-1)+10, 125*(iLight-1)+10, 125*(iLight-1)],[yLimCSC_Plfm8hz(1)*0.8 yLimCSC_Plfm8hz(1)*0.8 yLimCSC_Plfm8hz(2), yLimCSC_Plfm8hz(2)],colorBlue,'EdgeColor','none');
+            hLpatch(3) = patch([125*(iLight-1), 125*(iLight-1)+10, 125*(iLight-1)+10, 125*(iLight-1)],[yLimCSC_Plfm8hz(1)*0.8 yLimCSC_Plfm8hz(1)*0.8 yLimCSC_Plfm8hz(2), yLimCSC_Plfm8hz(2)],colorLightBlue,'EdgeColor','none');
             hold on;
         end
-        plot(xpt_csc8hz,m_cscPlfm8hz,'color',colorBlack,'lineWidth',1);
+        plot(xpt_csc8hz,m_cscPlfm8hz,'color',colorBlack,'lineWidth',0.8);
         line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Plfm8hz(2)*0.7, yLimCSC_Plfm8hz(2)*0.7],'color',colorBlack);
         line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Plfm8hz(2)*0.7, yLimCSC_Plfm8hz(2)*0.7+0.2],'color',colorBlack);
         ylabel('LFP (Plfm8hz)','fontSize',fontM);

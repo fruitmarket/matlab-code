@@ -36,16 +36,16 @@ cMeanFR = 9;
 cMaxPeakFR = 1;
 cSpkpvr = 1.1;
 alpha = 0.01;
-areaDRun = [5/6 4/3]*pi*20;
-areaDRw = [3/2 5/3]*pi*20;
-areaRw1 = [1/2 2/3]*pi*20;
-areaRw2 = [3/2 5/3]*pi*20;
+areaDRun = [5/6 4/3]*pi*20; % 6-9 o'clock
+areaDRw = [3/2 5/3]*pi*20; % 10-11 o'clock
+areaRw1 = [1/2 2/3]*pi*20; % 4-5 o'clock
+areaRw2 = [3/2 5/3]*pi*20; % 10-11 o'clock
 errorPosi = 5;
 correctY = 0.5;
 lightBand = 3;
 
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170421.mat');
+load('neuronList_ori_170516.mat');
 
 condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
 condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;

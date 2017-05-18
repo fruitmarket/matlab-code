@@ -60,7 +60,7 @@ ylabel('Rate (Hz)', 'FontSize',fontL);
 % align_ylabel(hPlfmBlue)
 formatOut = 'yymmdd';
 set(hPlfmBlue,'Box','off','TickDir','out','FontSize',fontL);
-print('-painters','-r300','-depsc',['fig1_PETH_Raster_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-depsc',['fig1_PETH_Raster_',datestr(now,formatOut),'.ai']);
 close;
 
 %% figure 2: waveform [Platform]
@@ -82,12 +82,13 @@ plot(m_evoked_wv{4},'color',colorBlue,'lineWidth',1.5);
 hold on;
 plot(m_spont_wv{4},'color',colorBlack,'lineWidth',1.5);
 set(hWaveform,'Box','off','TickDir','out','XTick',[],'YTick',[])
-print('-painters','-r300','-depsc',['fig1_waveform_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-depsc',['fig1_waveform_',datestr(now,formatOut),'.ai']);
 close;
 %% figure 3: EEG [Platform]
 lightPlfm8hz = lightTime.Plfm8hz;
 lapLightIdx = [1;(find(diff(lightPlfm8hz)>1000)+1)]; % find start light of each lap
 nLabLight = min(diff(lapLightIdx));
+% win = [-500,3000];
 win = [-500,3000];
 binSize = 2;
 resolution = 10;
@@ -113,7 +114,7 @@ m_cscLight8hz = mean(cscLight8hz,2);
 f_cscLight = bandpassFilter(m_cscLight8hz,sFreq,1,20);
 xptCSC = [win(1):0.5:win(2)];
 
-fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 7, 10]);
+fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 90, 10]);
 hFreq8hz(1) = axes('Position',axpt(1,2,1,1,axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wideInterval),wideInterval));
 for iLight = 1:nLabLight
 %     hLBar(1) = rectangle('Position',[125*iLight-125,0,10,30],'LineStyle','none','FaceColor',colorLLightBlue);
@@ -128,7 +129,7 @@ hFreq8hz(2) = axes('Position',axpt(1,2,1,2,axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wi
 for iLight = 1:nLabLight
 %     hLBar(1) = rectangle('Position',[125*iLight-125,0,10,30],'LineStyle','none','FaceColor',colorLLightBlue);
 %     hold on;
-    hLpatch(2) = patch([125*(iLight-1) 125*(iLight-1)+10 125*(iLight-1)+10 125*(iLight-1)],[yLimCSC(2)-0.1 yLimCSC(2)-0.1 yLimCSC(2) yLimCSC(2)],colorBlue,'EdgeColor','none');
+    hLpatch(2) = patch([125*(iLight-1) 125*(iLight-1)+10 125*(iLight-1)+10 125*(iLight-1)],[yLimCSC(1) yLimCSC(1) yLimCSC(2) yLimCSC(2)],colorLightBlue,'EdgeColor','none');
     hold on;
 end
 plot(xptCSC,m_cscLight8hz,'color',colorBlack,'lineWidth',1);
@@ -137,7 +138,8 @@ set(hFreq8hz(1),'YLim',yLimSpike,'YTick',[0:5:30]);
 set(hFreq8hz(2),'YLim',yLimCSC,'YTick',[]);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('LFP','fontSize',fontL);
-print('-painters','-r300','-depsc',['fig1_EEG_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-depsc',['fig1_EEG_',datestr(now,formatOut),'.ai']);
+print('-painters','-r300','-dtiff',['fig1_EEG_',datestr(now,formatOut),'.tif']);
 close;
 
 %% sub-functions

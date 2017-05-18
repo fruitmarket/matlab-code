@@ -32,12 +32,12 @@ DRunPN_total = DRunPN;
 DRunPN_light = DRunPN & T.pLR_Track<alpha;
 DRunPN_act = DRunPN & T.pLR_Track<alpha & T.statDir_Track == 1;
 DRunPN_ina = DRunPN & T.pLR_Track<alpha & T.statDir_Track == -1;
-DRunPN_no = DRunPN & T.pLR_Track>=alpha;
+DRunPN_no = DRunPN & T.pLR_Track>alpha;
 
 winSize = [ones(1,4)*5, ones(1,9)*10, ones(1,14)*15];
 mvWinSize = [1:4,1:9,1:14];
 nCycle = length(winSize);
-baseLine = [-20, 0];
+baseLine = [-20, -10];
 
 [m_neuDist_DRunPN_total, ~, tracePCA_DRunPN_total, scorePCA_DRunPN_total, latentPCA_DRunPN_total] = analysis_neuralTrace(T.xptTrackLight(DRunPN_total),5,1,baseLine);    
 [m_neuDist_DRunPN_light, ~, tracePCA_DRunPN_light, scorePCA_DRunPN_light, latentPCA_DRunPN_light] = analysis_neuralTrace(T.xptTrackLight(DRunPN_light),5,1,baseLine);    
@@ -131,8 +131,8 @@ ylabel('PC1','fontSize',fontL);
 set(hLatent,'Box','off','TickDir','out','YLim',[0,110]);
 set(hTrace,'Box','off','TickDir','out');
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',['fig3_pcaDist_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['fig3_pcaDist_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-dtiff',['fig3_pcaDist_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['fig3_pcaDist_',datestr(now,formatOut),'.ai']);
 
 %%
 fHandle(2) = figure('PaperUnits','centimeters','PaperPosition',paperSize{1},'Name','DRun_NeuDist');
@@ -158,5 +158,5 @@ title('Neural Distance [DRun sessions]','fontSize',fontXL);
 set(hNeuDist,'Box','off','TickDir','out','XLim',[0,size(m_neuDist_DRunPN_act,1)*1.01],'XTick',[0,20/1,30/1,40/1,size(m_neuDist_DRunPN_act,1)],'XTickLabel',[-20,0,10,20,100],'fontSize',fontXL);
 
 print('-painters','-r300','-dtiff',['fig3_neuralDist_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['fig3_neuralDist_',datestr(now,formatOut),'.ai']);
-close('all')
+% print('-painters','-r300','-depsc',['fig3_neuralDist_',datestr(now,formatOut),'.ai']);
+% close('all')

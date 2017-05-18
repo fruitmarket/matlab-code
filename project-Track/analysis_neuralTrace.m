@@ -32,7 +32,7 @@ temp_spike = cellfun(@(x) histc(x,-20:100),neuronList,'UniformOutput',false);
 emptyIdx = find(cellfun(@isempty,temp_spike));
 
 for iIdx = 1:length(emptyIdx)
-    temp_spike{emptyIdx(iIdx)} = zeros(1,121);
+    temp_spike{emptyIdx(iIdx)} = zeros(1,length(bin));
 end
 
 spike = cell2mat(temp_spike);

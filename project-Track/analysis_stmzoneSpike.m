@@ -1,7 +1,7 @@
 % Variables for PETH & raster
 winLinear = [1,125]; % 1 to 125 cm / since the radius is 20 cm (ID: 17.5cm)
-winStm = {[2*pi*20*150/360,2*pi*20*240/360];  % DRun
-            [2*pi*20*270/360,2*pi*20*300/360]}; % DRw
+winStm = {[5/6, 8/6];  % DRun
+          [10/6, 11/6]}*pi*20; % DRw
 binSize = 1; % 1 [unit: cm]
 resolution = 2;
 dot = 1;

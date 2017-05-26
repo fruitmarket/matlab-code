@@ -1,4 +1,5 @@
 function h=errorbarJun(xData,yData,sem,barLength,lineWidth,lineColor)
+% h=errorbarJun(xData,yData,sem,barLength,lineWidth,lineColor)
 % inputs
 % xData: data points of x
 % yData: data points of y

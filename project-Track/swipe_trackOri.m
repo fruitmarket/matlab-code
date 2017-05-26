@@ -70,10 +70,10 @@ for iPath = 1:nPath
 %     analysis_wvformCrosscor;
 %     analysis_spatialRaster;
 %     analysis_CrossCorr1D;
-%     laserIntPlfm;
+    analysis_plfm_laserIntTest;
 %     laserFreqCheck;
 %     laserSpikeProb;
-%     analysis_detoSpike8hz;
+    analysis_detoSpike8hz;
 %     analysis_stmzoneSpike;
 %     analysis_laserSpikeChange;
 %     analysis_findPeakLoci;

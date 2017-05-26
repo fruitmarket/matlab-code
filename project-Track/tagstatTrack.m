@@ -9,7 +9,7 @@ testRangeModu = 20; % 8Hz: 10 // 20Hz: 20
 baseRangeModu = 100; % 8Hz: 110 // 20Hz: 15
 
 % variables for latency calculation
-winTagChETA = [0, 30]; % unit: msec
+winTagChETA = [0, 20]; % unit: msec
 % winTagiC = [-500, 2000];
 testRangeTag_lat = winTagChETA(2); % unit: ms
 baseRangeTag_lat = 450; % baseline 
@@ -30,7 +30,7 @@ for iCell = 1:nCell
     load('Events.mat','lightTime');
     spikeData = tData{iCell};
     
-% Spike latency of test
+% Spike latency test
 % Baseline spontaneous latency
     [timeTag_lat, ~] = tagDataLoad(spikeData, lightTime.Tag, testRangeTag_lat, baseRangeTag_lat);
     baseLatTag = min(timeTag_lat);

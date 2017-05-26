@@ -4,6 +4,8 @@ function analysis_respstatFreqTest_v2()
 % Variables for log-rank test & salt test
 testRange = 8;
 baseRange = 400;
+binSize = 2;
+resolution = 10;
 
 win = [0,20];
 spkCriPlfm = 20; % 60 is 0.5 Hz (20 ms x 300 trial = 6000 ms)
@@ -47,15 +49,20 @@ for iCell = 1:nCell
     spikeData = tData{iCell};
 % if spikes are noe enough, don't calculate the logrank test
     spkCriteria_Plfm1hz = spikeWin(spikeData,lightTime.Plfm1hz,win);
+    [~, ~, ~, peth1hz, ~, ~] = rasterPSTH(spkCriteria_Plfm1hz,true(size(lightTime.Plfm1hz)),win,binSize,resolution,1);
     spkCriteria_Plfm2hz = spikeWin(spikeData,lightTime.Plfm2hz,win);
+    [~, ~, ~, peth2hz, ~, ~] = rasterPSTH(spkCriteria_Plfm2hz,true(size(lightTime.Plfm2hz)),win,binSize,resolution,1);
     spkCriteria_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,win);
+    [~, ~, ~, peth8hz, ~, ~] = rasterPSTH(spkCriteria_Plfm8hz,true(size(lightTime.Plfm8hz)),win,binSize,resolution,1);    
     spkCriteria_Plfm20hz = spikeWin(spikeData,lightTime.Plfm20hz,win);
+    [~, ~, ~, peth20hz, ~, ~] = rasterPSTH(spkCriteria_Plfm20hz,true(size(lightTime.Plfm20hz)),win,binSize,resolution,1);    
     spkCriteria_Plfm50hz = spikeWin(spikeData,lightTime.Plfm50hz,win);
+    [~, ~, ~, peth50hz, ~, ~] = rasterPSTH(spkCriteria_Plfm50hz,true(size(lightTime.Plfm50hz)),win,binSize,resolution,1);    
 
 %% Plfm1hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm1hz,'UniformOutput',false))) < spkCriPlfm
         pLR_Plfm1hz = 1;
-        [statDir_Plfm1hz, latencyPlfm1hz, timeLR_Plfm1hz, H1_Plfm1hz, H2_Plfm1hz, calibPlfm1hz] = deal(NaN);
+        [H1_Plfm1hz, H2_Plfm1hz, calibPlfm1hz] = deal(NaN);
     else
         [base_timePlfm1hz,base_censorPlfm1hz] = tagDataLoad(spikeData, baseLightTime1hz, testRange, baseRange);
         base = [reshape(base_timePlfm1hz(1:(end-1),:),1,[]);reshape(base_censorPlfm1hz(1:(end-1),:),1,[])]';
@@ -96,11 +103,53 @@ for iCell = 1:nCell
             calibPlfm1hz = movingWin(idxH_Plfm1hz);
         end
     end
+
+    % light modulation direction (act, ina, no)
+    if H1_Plfm1hz(end) > H2_Plfm1hz(end);
+        statDir1hz = 1;
+    elseif H1_Plfm1hz(end) < H2_Plfm1hz(end);
+        statDir1hz = -1;
+    else
+        statDir1hz = 0;
+    end
+    
+    % latency
+    if pLR_Plfm1hz < alpha;
+        [~, loc1hz] = findpeaks(peth1hz,'minpeakheight',10);
+        switch (statDir1hz)
+            case 1
+                if length(loc1hz) == 2
+                    spkLatency1hz1st = spikeWin(spikeData,lightTime.Plfm1hz,[0,9]);
+                    latency1hz1st = cellfun(@min,spkLatency1hz1st,'UniformOutput',false);
+                    latency1hz1st = nanmedian(cell2mat(latency1hz1st));
+
+                    spkLatency1hz2nd = spikeWin(spikeData,lightTime.Plfm1hz,[11,20]);
+                    latency1hz2nd = cellfun(@min,spkLatency1hz2nd,'UniformOutput',false);
+                    latency1hz2nd = nanmedian(cell2mat(latency1hz2nd));
+                else
+                    spkLatency1hz1st = spikeWin(spikeData,lightTime.Plfm1hz,[0,20]);
+                    latency1hz1st = cellfun(@min,spkLatency1hz1st,'UniformOutput',false);
+                    latency1hz1st = nanmedian(cell2mat(latency1hz1st));
+                    latency1hz2nd = NaN;
+                end
+            case -1
+                    spkLatency1hz1st = spikeWin(spikeData,lightTime.Plfm1hz,[0,20]);
+                    latency1hz1st = cellfun(@max,spkLatency1hz1st,'UniformOutput',false);
+                    latency1hz1st = nanmedian(cell2mat(latency1hz1st));
+                    latency1hz2nd = NaN;
+            case 0
+                latency1hz1st = NaN;
+                latency1hz2nd = NaN;
+        end
+    else
+        latency1hz1st = NaN;
+        latency1hz2nd = NaN;
+    end
     
 %% Plfm2hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm2hz,'UniformOutput',false)))< spkCriPlfm
         pLR_Plfm2hz = 1;
-        [statDir_Plfm2hz, latencyPlfm2hz, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(NaN);
+        [H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(NaN);
     else
         [base_timePlfm2hz,base_censorPlfm2hz] = tagDataLoad(spikeData, baseLightTime2hz, testRange, baseRange);
         base = [reshape(base_timePlfm2hz(1:(end-1),:),1,[]);reshape(base_censorPlfm2hz(1:(end-1),:),1,[])]';
@@ -142,10 +191,50 @@ for iCell = 1:nCell
         end
     end
     
+    if H1_Plfm2hz(end) > H2_Plfm2hz(end);
+        statDir2hz = 1;
+    elseif H1_Plfm2hz(end) < H2_Plfm2hz(end);
+        statDir2hz = -1;
+    else
+        statDir2hz = 0;
+    end
+
+    % latency
+    if pLR_Plfm2hz < alpha;
+        [~, loc2hz] = findpeaks(peth2hz,'minpeakheight',10);
+        switch (statDir2hz)
+            case 1
+                if length(loc2hz) == 2
+                    spkLatency2hz1st = spikeWin(spikeData,lightTime.Plfm2hz,[0,9]);
+                    latency2hz1st = cellfun(@min,spkLatency2hz1st,'UniformOutput',false);
+                    latency2hz1st = nanmedian(cell2mat(latency2hz1st));
+
+                    spkLatency2hz2nd = spikeWin(spikeData,lightTime.Plfm2hz,[11,20]);
+                    latency2hz2nd = cellfun(@min,spkLatency2hz2nd,'UniformOutput',false);
+                    latency2hz2nd = nanmedian(cell2mat(latency2hz2nd));
+                else
+                    spkLatency2hz1st = spikeWin(spikeData,lightTime.Plfm2hz,[0,20]);
+                    latency2hz1st = cellfun(@min,spkLatency2hz1st,'UniformOutput',false);
+                    latency2hz1st = nanmedian(cell2mat(latency2hz1st));
+                    latency2hz2nd = NaN;
+                end
+            case -1
+                    spkLatency2hz1st = spikeWin(spikeData,lightTime.Plfm2hz,[0,20]);
+                    latency2hz1st = cellfun(@max,spkLatency2hz1st,'UniformOutput',false);
+                    latency2hz1st = nanmedian(cell2mat(latency2hz1st));
+                    latency2hz2nd = NaN;
+            case 0
+                latency2hz1st = NaN;
+                latency2hz2nd = NaN;
+        end
+    else
+        latency2hz1st = NaN;
+        latency2hz2nd = NaN;
+    end
     %% Plfm8hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm8hz,'UniformOutput',false)))< spkCriPlfm
         pLR_Plfm8hz = 1;
-        [statDir_Plfm8hz, latencyPlfm8hz, timeLR_Plfm8hz, H1_Plfm8hz, H2_Plfm8hz, calibPlfm8hz] = deal(NaN);
+        [H1_Plfm8hz, H2_Plfm8hz, calibPlfm8hz] = deal(NaN);
     else
         [base_timePlfm8hz,base_censorPlfm8hz] = tagDataLoad(spikeData, baseLightTime8hz, testRange, baseRange);
         base = [reshape(base_timePlfm8hz(1:(end-1),:),1,[]);reshape(base_censorPlfm8hz(1:(end-1),:),1,[])]';
@@ -187,10 +276,51 @@ for iCell = 1:nCell
         end
     end
     
+    % light modulation direction (act, ina, no)
+    if H1_Plfm8hz(end) > H2_Plfm8hz(end);
+        statDir8hz = 1;
+    elseif H1_Plfm8hz(end) < H2_Plfm8hz(end);
+        statDir8hz = -1;
+    else
+        statDir8hz = 0;
+    end
+    
+    % latency
+    if pLR_Plfm8hz < alpha;
+        [~, loc8hz] = findpeaks(peth8hz,'minpeakheight',10);
+        switch (statDir8hz)
+            case 1
+                if length(loc8hz) == 2
+                    spkLatency8hz1st = spikeWin(spikeData,lightTime.Plfm8hz,[0,9]);
+                    latency8hz1st = cellfun(@min,spkLatency8hz1st,'UniformOutput',false);
+                    latency8hz1st = nanmedian(cell2mat(latency8hz1st));
+
+                    spkLatency8hz2nd = spikeWin(spikeData,lightTime.Plfm8hz,[11,20]);
+                    latency8hz2nd = cellfun(@min,spkLatency8hz2nd,'UniformOutput',false);
+                    latency8hz2nd = nanmedian(cell2mat(latency8hz2nd));
+                else
+                    spkLatency8hz1st = spikeWin(spikeData,lightTime.Plfm8hz,[0,20]);
+                    latency8hz1st = cellfun(@min,spkLatency8hz1st,'UniformOutput',false);
+                    latency8hz1st = nanmedian(cell2mat(latency8hz1st));
+                    latency8hz2nd = NaN;
+                end
+            case -1
+                    spkLatency8hz1st = spikeWin(spikeData,lightTime.Plfm8hz,[0,20]);
+                    latency8hz1st = cellfun(@max,spkLatency8hz1st,'UniformOutput',false);
+                    latency8hz1st = nanmedian(cell2mat(latency8hz1st));
+                    latency8hz2nd = NaN;
+            case 0
+                latency8hz1st = NaN;
+                latency8hz2nd = NaN;
+        end
+    else
+        latency8hz1st = NaN;
+        latency8hz2nd = NaN;
+    end
     %% Plfm20hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm20hz,'UniformOutput',false)))< spkCriPlfm
         pLR_Plfm20hz = 1;
-        [statDir_Plfm20hz, latencyPlfm20hz, timeLR_Plfm20hz, H1_Plfm20hz, H2_Plfm20hz, calibPlfm20hz] = deal(NaN);
+        [H1_Plfm20hz, H2_Plfm20hz, calibPlfm20hz] = deal(NaN);
     else
         [base_timePlfm20hz,base_censorPlfm20hz] = tagDataLoad(spikeData, baseLightTime20hz, testRange, baseRange);
         base = [reshape(base_timePlfm20hz(1:(end-1),:),1,[]);reshape(base_censorPlfm20hz(1:(end-1),:),1,[])]';
@@ -231,11 +361,52 @@ for iCell = 1:nCell
             calibPlfm20hz = movingWin(idxH_Plfm20hz);
         end
     end
+
+    % light modulation direction (act, ina, no)
+    if H1_Plfm20hz(end) > H2_Plfm20hz(end);
+        statDir20hz = 1;
+    elseif H1_Plfm20hz(end) < H2_Plfm20hz(end);
+        statDir20hz = -1;
+    else
+        statDir20hz = 0;
+    end
     
+    % latency
+    if pLR_Plfm20hz < alpha;
+        [~, loc20hz] = findpeaks(peth20hz,'minpeakheight',10);
+        switch (statDir20hz)
+            case 1
+                if length(loc20hz) == 2
+                    spkLatency20hz1st = spikeWin(spikeData,lightTime.Plfm20hz,[0,9]);
+                    latency20hz1st = cellfun(@min,spkLatency20hz1st,'UniformOutput',false);
+                    latency20hz1st = nanmedian(cell2mat(latency20hz1st));
+
+                    spkLatency20hz2nd = spikeWin(spikeData,lightTime.Plfm20hz,[11,20]);
+                    latency20hz2nd = cellfun(@min,spkLatency20hz2nd,'UniformOutput',false);
+                    latency20hz2nd = nanmedian(cell2mat(latency20hz2nd));
+                else
+                    spkLatency20hz1st = spikeWin(spikeData,lightTime.Plfm20hz,[0,20]);
+                    latency20hz1st = cellfun(@min,spkLatency20hz1st,'UniformOutput',false);
+                    latency20hz1st = nanmedian(cell2mat(latency20hz1st));
+                    latency20hz2nd = NaN;
+                end
+            case -1
+                    spkLatency20hz1st = spikeWin(spikeData,lightTime.Plfm20hz,[0,20]);
+                    latency20hz1st = cellfun(@max,spkLatency20hz1st,'UniformOutput',false);
+                    latency20hz1st = nanmedian(cell2mat(latency20hz1st));
+                    latency20hz2nd = NaN;
+            case 0
+                latency20hz1st = NaN;
+                latency20hz2nd = NaN;
+        end
+    else
+        latency20hz1st = NaN;
+        latency20hz2nd = NaN;
+    end
     %% Plfm50hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm50hz,'UniformOutput',false)))< spkCriPlfm
         pLR_Plfm50hz = 1;
-        [statDir_Plfm50hz, latencyPlfm50hz, timeLR_Plfm50hz, H1_Plfm50hz, H2_Plfm50hz, calibPlfm50hz] = deal(NaN);
+        [H1_Plfm50hz, H2_Plfm50hz, calibPlfm50hz] = deal(NaN);
     else
         [base_timePlfm50hz,base_censorPlfm50hz] = tagDataLoad(spikeData, baseLightTime50hz, testRange, baseRange);
         base = [reshape(base_timePlfm50hz(1:(end-1),:),1,[]);reshape(base_censorPlfm50hz(1:(end-1),:),1,[])]';
@@ -276,7 +447,50 @@ for iCell = 1:nCell
             calibPlfm50hz = movingWin(idxH_Plfm50hz);
         end
     end
-    save([cellName,'.mat'],'pLR_Plfm1hz','pLR_Plfm2hz','pLR_Plfm8hz','pLR_Plfm20hz','pLR_Plfm50hz','-append')
+
+    % light modulation direction (act, ina, no)
+    if H1_Plfm50hz(end) > H2_Plfm50hz(end);
+        statDir50hz = 1;
+    elseif H1_Plfm50hz(end) < H2_Plfm50hz(end);
+        statDir50hz = -1;
+    else
+        statDir50hz = 0;
+    end
+    
+    % latency
+    if pLR_Plfm50hz < alpha;
+        [~, loc50hz] = findpeaks(peth50hz,'minpeakheight',10);
+        switch (statDir50hz)
+            case 1
+                if length(loc50hz) == 2
+                    spkLatency50hz1st = spikeWin(spikeData,lightTime.Plfm50hz,[0,9]);
+                    latency50hz1st = cellfun(@min,spkLatency50hz1st,'UniformOutput',false);
+                    latency50hz1st = nanmedian(cell2mat(latency50hz1st));
+
+                    spkLatency50hz2nd = spikeWin(spikeData,lightTime.Plfm50hz,[11,20]);
+                    latency50hz2nd = cellfun(@min,spkLatency50hz2nd,'UniformOutput',false);
+                    latency50hz2nd = nanmedian(cell2mat(latency50hz2nd));
+                else
+                    spkLatency50hz1st = spikeWin(spikeData,lightTime.Plfm50hz,[0,20]);
+                    latency50hz1st = cellfun(@min,spkLatency50hz1st,'UniformOutput',false);
+                    latency50hz1st = nanmedian(cell2mat(latency50hz1st));
+                    latency50hz2nd = NaN;
+                end
+            case -1
+                    spkLatency50hz1st = spikeWin(spikeData,lightTime.Plfm50hz,[0,20]);
+                    latency50hz1st = cellfun(@max,spkLatency50hz1st,'UniformOutput',false);
+                    latency50hz1st = nanmedian(cell2mat(latency50hz1st));
+                    latency50hz2nd = NaN;
+            case 0
+                latency50hz1st = NaN;
+                latency50hz2nd = NaN;
+        end
+    else
+        latency50hz1st = NaN;
+        latency50hz2nd = NaN;
+    end
+    save([cellName,'.mat'],'pLR_Plfm1hz','pLR_Plfm2hz','pLR_Plfm8hz','pLR_Plfm20hz','pLR_Plfm50hz',...
+        'latency1hz1st','latency1hz2nd','latency2hz1st','latency2hz2nd','latency8hz1st','latency8hz2nd','latency20hz1st','latency20hz2nd','latency50hz1st','latency50hz2nd','-append')
 end
 disp('### RespStatTest calculation is done!');
 

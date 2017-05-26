@@ -2,7 +2,6 @@ function analysis_detoSpike8hz()
 % m_deto_spkTrack8hz or Plfm8hz: mean number of spikes activated by each light
 %
 %
-
 winCri = [0, 20]; % time duration which are interested in
 [tData, tList] = tLoad;
 nCell = length(tList);
@@ -48,15 +47,18 @@ for iCell = 1:nCell
     
     spkTimeTrack8hz = spikeWin(tData{iCell},lightTrack8hz(lightIdxTrack8hz),winCri);
     deto_spkTrack8hz = cellfun(@length, spkTimeTrack8hz);
-    m_deto_spkTrack8hz = mean(reshape(deto_spkTrack8hz,[minPulseTrack8hz,nLap]),2)';
+    m_deto_spkTrack8hz = mean(reshape(deto_spkTrack8hz,[minPulseTrack8hz,nLap]),2)'; % fidelity (probability, %)
+    evoSpkTrack8hz = sum(reshape(deto_spkTrack8hz,[minPulseTrack8hz,nLap]),2)'; % number of spikes
      
     if ~isempty(lightTime.Plfm8hz)
         spkTimePlfm8hz = spikeWin(tData{iCell},lightPlfm8hz,winCri);
         deto_spkPlfm8hz = cellfun(@length, spkTimePlfm8hz);
         m_deto_spkPlfm8hz = mean(reshape(deto_spkPlfm8hz,[minPulsePlfm8hz,nLap]),2)';
+        evoSpkPlfm8hz = sum(reshape(deto_spkPlfm8hz,[minPulsePlfm8hz,nLap]),2)';
     else
         deto_spkPlfm8hz = NaN;
         m_deto_spkPlfm8hz = NaN;
+        evoSpkPlfm8hz = NaN;
     end
 
 %     if ~isempty(lightTime.Track2hz)
@@ -67,11 +69,9 @@ for iCell = 1:nCell
 %         deto_spkTrack2hz = NaN;
 %         m_deto_spkTrack2hz = NaN;
 %     end
-    
-    save([cellName,'.mat'],'m_deto_spkTrack8hz','m_deto_spkPlfm8hz','-append');
+    save([cellName,'.mat'],'m_deto_spkTrack8hz','m_deto_spkPlfm8hz','evoSpkTrack8hz','evoSpkPlfm8hz','-append');
 end
 disp('### detonate spike calculation is done! ###')
-
 function spikeTime = spikeWin(spikeData, eventTime, win)
 % spikeWin makes raw spikeData to eventTime aligned data
 %   spikeData: raw data from MClust. Unit must be ms.

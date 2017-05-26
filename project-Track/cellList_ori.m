@@ -72,6 +72,8 @@ for iFile = 1:nFile
     
     m_deto_spkPlfm8hz = {m_deto_spkPlfm8hz};
     m_deto_spkTrack8hz = {m_deto_spkTrack8hz};
+    evoSpkTrack8hz = {evoSpkTrack8hz};
+    evoSpkPlfm8hz = {evoSpkPlfm8hz};
     
     stmzoneSpike = {stmzoneSpike};
     
@@ -91,7 +93,8 @@ for iFile = 1:nFile
         pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
         rCorr1D_preXstm, pCorr1D_preXstm, rCorr1D_preXpost, pCorr1D_preXpost, rCorr1D_stmXpost, pCorr1D_stmXpost,...% analysis_CrossCorr1D // r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
-        lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % laserIntPlfm
+        lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % analysis_plfm_laserIntTest
+        evoSpike5mw,evoSpike8mw,evoSpike10mw,...
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
         lightProbTrack_2hz,lightProbTrack_8hz,lightProbPlfm_2hz,lightProbPlfm_8hz,...
         xptPlfm2hz,yptPlfm2hz,pethtimePlfm2hz,pethPlfm2hz,pethPlfm2hzConv,pethPlfm2hzConvZ,...
@@ -100,7 +103,7 @@ for iFile = 1:nFile
         r_wv,m_spont_wv,m_evoked_wv,...
         stmzoneSpike,...
         peakloci_total,normTrackFR_total,... % analysis_findPeakLoci
-        m_deto_spkPlfm8hz,m_deto_spkTrack8hz,...
+        m_deto_spkPlfm8hz,m_deto_spkTrack8hz,evoSpkTrack8hz,evoSpkPlfm8hz,...%analysis_detoSpike8hz
         evoSpike_preEarly, evoSpike_preLate, evoSpike_stmEarly, evoSpike_stmLate, evoSpike_postEarly, evoSpike_postLate,...
         evoXptTrackLight,evoXptPsdPre,evoXptPsdPost);
 

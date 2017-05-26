@@ -33,10 +33,15 @@ mfr_zone = T.sensorMeanFR_DRun(trackInac_DRunPN);
 mean_mfr_zone = min(cellfun(@(x) mean(x(31:60)),mfr_zone));
 
 %% mean based neural population (act, inact, noresp)
-populPass = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) > mean_mfr_zone) & (T.pLR_Track<=alpha);
+populPass = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) >= mean_mfr_zone) & (T.pLR_Track < alpha);
 populAct = populPass & (T.statDir_Track == 1);
 populIna = populPass & (T.statDir_Track == -1);
-populNorsp = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) > mean_mfr_zone) & (T.pLR_Track>alpha);
+populNorsp = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) >= mean_mfr_zone) & (T.pLR_Track >= alpha);
+
+npopulPass = sum(double(populPass));
+npopulAct = sum(double(populAct));
+npopulIna = sum(double(populIna));
+npopulNorsp = sum(double(populNorsp));
 
 % folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 % fd_passAct = [folder, 'passAct_DRun'];
@@ -50,10 +55,10 @@ populNorsp = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) >
 % cellID = Txls.cellID(populIna);
 % plot_Track_multi_v3(fileName, cellID, fd_passIna);
 
-folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
-fd_passNorsp = [folder, 'passNorsp_DRun'];
-fileName = T.path(populNorsp);
-cellID = Txls.cellID(populNorsp);
-plot_Track_multi_v3(fileName, cellID, fd_passNorsp);
+% folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
+% fd_passNorsp = [folder, 'passNorsp_DRun'];
+% fileName = T.path(populNorsp);
+% cellID = Txls.cellID(populNorsp);
+% plot_Track_multi_v3(fileName, cellID, fd_passNorsp);
 
 cd('D:\Dropbox\SNL\P2_Track');

@@ -1,4 +1,4 @@
-function [m_neuralDist, neuralDist, tracePCA, scorePCA, latentPCA] = analysis_neuralTrace(neuronList,winWidth,mvWinStep,baseLine)
+function [m_neuralDist, sem_neuralDist, neuralDist, tracePCA, scorePCA, latentPCA] = analysis_neuralTrace(neuronList,winWidth,mvWinStep,baseLine)
 % function analysis_neural Track calculates neural response distance and
 % spike trace (by using PCA)
 %   input: neuronList 1 x n cell array that each row represents spike times of each neuron 
@@ -40,18 +40,19 @@ spike(:,end) = [];
 for iCell = 1:nCell
    smth_spike(iCell,:) = smooth(spike(iCell,:),winWidth);
 end
-spikeBase = cellfun(@(x) sum(double(baseLine(1)<x & x<baseLine(2)))/abs(diff(baseLine)),neuronList);
+spikeBase = cellfun(@(x) sum(double(baseLine(1)<x & x<baseLine(2)))/abs(diff(baseLine)),neuronList); % firing rate (spikes/msec)
 
-
-for iCell = 1:nCell
-    for iBin = 1:nBin
-    neuralDist(iCell,iBin) = norm(smth_spike(iCell,iBin)-spikeBase(iCell));
+for iBin = 1:nBin
     m_neuralDist(iBin,1) = norm(smth_spike(:,iBin)-spikeBase);
+    for iCell = 1:nCell
+        neuralDist(iCell,iBin) = norm(smth_spike(iCell,iBin)-spikeBase(iCell));
     end
 end
+
+% since five bins were averaged, first two and last two bins should be excluded.
 neuralDist = neuralDist(:,3:end-2);
 m_neuralDist = m_neuralDist(3:end-2)/nCell;
-
+sem_neuralDist = std(neuralDist,0,1)/sqrt(nCell);
 % for iWin = 1:nBin
 %     spike(:,iWin) = cellfun(@(x) sum(double(win(1)+movingWin(iWin)<x & x<win(2)+movingWin(iWin)))/winWidth,neuronList);     % spikes/ms
 % end

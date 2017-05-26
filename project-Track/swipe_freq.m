@@ -56,9 +56,9 @@ for iPath = 4:nPath
     
 %     event2mat_freq;
 
-    analysis_freq_rasterLight;
-    analysis_meanFRfreqTest;
-    analysis_freq_evokeProb;
+%     analysis_freq_rasterLight;
+%     analysis_meanFRfreqTest;
+%     analysis_freq_evokeProb;
     analysis_respstatFreqTest_v2;
     
 %     analysis_cscFreqTest;

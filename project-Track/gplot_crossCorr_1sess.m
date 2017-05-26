@@ -105,31 +105,31 @@ hTotalCorr(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInter
 plot([1,2,3],[T.rCorr1D_preXstm(DRunPN), T.rCorr1D_preXpost(DRunPN), T.rCorr1D_stmXpost(DRunPN)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRunPN,xpt_DRunPN,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during running zone [total PN]','fontSize',fontM,'fontWeight','bold');
-text(3.5,0.5,['n = ',num2str(sum(double(DRunPN)))],'fontSize',fontM);
+title('Stimulation during running zone [total PN]','fontSize',fontL,'fontWeight','bold');
+text(3.5,0.5,['n = ',num2str(sum(double(DRunPN)))],'fontSize',fontL);
 
 hTotalCorr(2) = axes('Position',axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[T.rCorr1D_preXstm(DRunIN), T.rCorr1D_preXpost(DRunIN), T.rCorr1D_stmXpost(DRunIN)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRunIN,xpt_DRunIN,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during running zone [total IN]','fontSize',fontM,'fontWeight','bold');
-text(3.5,0.5,['n = ',num2str(sum(double(DRunIN)))],'fontSize',fontM);
+title('Stimulation during running zone [total IN]','fontSize',fontL,'fontWeight','bold');
+text(3.5,0.5,['n = ',num2str(sum(double(DRunIN)))],'fontSize',fontL);
 
 hTotalCorr(3) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[T.rCorr1D_preXstm(DRwPN), T.rCorr1D_preXpost(DRwPN), T.rCorr1D_stmXpost(DRwPN)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRwPN,xpt_DRwPN,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during reward zone [total PN]','fontSize',fontM,'fontWeight','bold');
-text(3.5,0.5,['n = ',num2str(sum(double(DRwPN)))],'fontSize',fontM);
+title('Stimulation during reward zone [total PN]','fontSize',fontL,'fontWeight','bold');
+text(3.5,0.5,['n = ',num2str(sum(double(DRwPN)))],'fontSize',fontL);
 
 hTotalCorr(4) = axes('Position',axpt(nCol,nRow,2,2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[T.rCorr1D_preXstm(DRwIN), T.rCorr1D_preXpost(DRwIN), T.rCorr1D_stmXpost(DRwIN)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRwIN,xpt_DRwIN,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during reward zone [total IN]','fontSize',fontM,'fontWeight','bold');
-text(3.5,0.5,['n = ',num2str(sum(double(DRwIN)))],'fontSize',fontM);
+title('Stimulation during reward zone [total IN]','fontSize',fontL,'fontWeight','bold');
+text(3.5,0.5,['n = ',num2str(sum(double(DRwIN)))],'fontSize',fontL);
 
-set(hTotalCorr,'TickDir','out','Box','off','XLim',[0.5,3.5],'YLim',[-0.4 1.2],'XTick',[1,2,3],'XTickLabel',[{'preXstm','preXpost','stmXpost' }],'fontSize',fontM);
+set(hTotalCorr,'TickDir','out','Box','off','XLim',[0.5,3.5],'YLim',[-0.4 1.2],'XTick',[1,2,3],'XTickLabel',[{'preXstm','preXpost','stmXpost' }],'fontSize',fontL);
 print('-painters','-r300',figName{1},'-dtiff');
 
 %% Plot
@@ -141,58 +141,58 @@ hCorr(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval))
 plot([1,2,3],[T.rCorr1D_preXstm(DRunPNact), T.rCorr1D_preXpost(DRunPNact), T.rCorr1D_stmXpost(DRunPNact)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRunPNact,xpt_DRunPNact,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during running zone [light activated PN]','fontSize',fontM,'fontWeight','bold');
-text(3.5, 0.5,['n = ',num2str(nDRunPNact)],'fontSize',fontM);
+title('Stimulation during running zone [light activated PN]','fontSize',fontL,'fontWeight','bold');
+text(3.5, 0.5,['n = ',num2str(nDRunPNact)],'fontSize',fontL);
 
 % hCorr(2) = axes('Position',axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],wideInterval));
 % plot([1,2,3],[T.rCorr1D_preXstm(DRunPNina), T.rCorr1D_preXpost(DRunPNina), T.rCorr1D_stmXpost(DRunPNina)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 % hold on;
 % MyScatterBarPlot(corr_DRunPNina,xpt_DRunPNina,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-% title('Stimulation during running zone [light inactivated PN]','fontSize',fontM,'fontWeight','bold');
-% text(3.5, 0.5,['n = ',num2str(nDRunPNina)],'fontSize',fontM);
+% title('Stimulation during running zone [light inactivated PN]','fontSize',fontL,'fontWeight','bold');
+% text(3.5, 0.5,['n = ',num2str(nDRunPNina)],'fontSize',fontL);
 
 hCorr(2) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[T.rCorr1D_preXstm(DRunINact), T.rCorr1D_preXpost(DRunINact), T.rCorr1D_stmXpost(DRunINact)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRunINact,xpt_DRunINact,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during running zone [light activated IN]','fontSize',fontM,'fontWeight','bold');
-text(3.5, 0.5,['n = ',num2str(nDRunINact)],'fontSize',fontM);
+title('Stimulation during running zone [light activated IN]','fontSize',fontL,'fontWeight','bold');
+text(3.5, 0.5,['n = ',num2str(nDRunINact)],'fontSize',fontL);
 
 % hCorr(4) = axes('Position',axpt(nCol,nRow,2,2,[0.1 0.1 0.85 0.85],wideInterval));
 % plot([1,2,3],[T.rCorr1D_preXstm(DRunINina), T.rCorr1D_preXpost(DRunINina), T.rCorr1D_stmXpost(DRunINina)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 % hold on;
 % MyScatterBarPlot(corr_DRunINina,xpt_DRunINina,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-% title('Stimulation during running zone [light inactivated IN]','fontSize',fontM,'fontWeight','bold');
-% text(3.5, 0.5,['n = ',num2str(nDRunINina)],'fontSize',fontM);
+% title('Stimulation during running zone [light inactivated IN]','fontSize',fontL,'fontWeight','bold');
+% text(3.5, 0.5,['n = ',num2str(nDRunINina)],'fontSize',fontL);
 
 hCorr(3) = axes('Position',axpt(nCol,nRow,3,1,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[T.rCorr1D_preXstm(DRwPNact), T.rCorr1D_preXpost(DRwPNact), T.rCorr1D_stmXpost(DRwPNact)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRwPNact,xpt_DRwPNact,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during reward zone [light activated PN]','fontSize',fontM,'fontWeight','bold');
-text(3.5, 0.5,['n = ',num2str(nDRwPNact)],'fontSize',fontM);
+title('Stimulation during reward zone [light activated PN]','fontSize',fontL,'fontWeight','bold');
+text(3.5, 0.5,['n = ',num2str(nDRwPNact)],'fontSize',fontL);
 
 hCorr(4) = axes('Position',axpt(nCol,nRow,3,2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[T.rCorr1D_preXstm(DRwPNina), T.rCorr1D_preXpost(DRwPNina), T.rCorr1D_stmXpost(DRwPNina)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRwPNina,xpt_DRwPNina,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during reward zone [light inactivated PN]','fontSize',fontM,'fontWeight','bold');
-text(3.5, 0.5,['n = ',num2str(nDRwPNina)],'fontSize',fontM);
+title('Stimulation during reward zone [light inactivated PN]','fontSize',fontL,'fontWeight','bold');
+text(3.5, 0.5,['n = ',num2str(nDRwPNina)],'fontSize',fontL);
 
 hCorr(5) = axes('Position',axpt(nCol,nRow,4,1,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[T.rCorr1D_preXstm(DRwINact), T.rCorr1D_preXpost(DRwINact), T.rCorr1D_stmXpost(DRwINact)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRwINact,xpt_DRwINact,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during reward zone [light activated IN]','fontSize',fontM,'fontWeight','bold');
-text(3.5, 0.5,['n = ',num2str(nDRwINact)],'fontSize',fontM);
+title('Stimulation during reward zone [light activated IN]','fontSize',fontL,'fontWeight','bold');
+text(3.5, 0.5,['n = ',num2str(nDRwINact)],'fontSize',fontL);
 
 hCorr(6) = axes('Position',axpt(nCol,nRow,4,2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[T.rCorr1D_preXstm(DRwINina), T.rCorr1D_preXpost(DRwINina), T.rCorr1D_stmXpost(DRwINina)],'lineStyle','-','lineWidth',0.5,'color',colorGray);
 hold on;
 MyScatterBarPlot(corr_DRwINina,xpt_DRwINina,0.35,{colorPurple,colorGreen,colorBlue,colorBlack},[]);
-title('Stimulation during reward zone [light inactivated IN]','fontSize',fontM,'fontWeight','bold');
-text(3.5, 0.5,['n = ',num2str(nDRwINina)],'fontSize',fontM);
+title('Stimulation during reward zone [light inactivated IN]','fontSize',fontL,'fontWeight','bold');
+text(3.5, 0.5,['n = ',num2str(nDRwINina)],'fontSize',fontL);
 
-set(hCorr,'TickDir','out','Box','off','XLim',[0.5,3.5],'YLim',[-0.4 1.2],'XTick',[1,2,3],'XTickLabel',[{'preXstm','preXpost','stmXpost' }],'fontSize',fontM);
+set(hCorr,'TickDir','out','Box','off','XLim',[0.5,3.5],'YLim',[-0.4 1.2],'XTick',[1,2,3],'XTickLabel',[{'preXstm','preXpost','stmXpost' }],'fontSize',fontL);
 print('-painters','-r300',figName{2},'-dtiff');
 % close('all')

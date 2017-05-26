@@ -13,9 +13,10 @@ areaRw2 = [3/2 5/3]*pi*20;
 errorPosi = 5;
 correctY = 0.5;
 lightBand = 3;
+calib = [-2, 2];
 
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170508.mat');
+load('neuronList_ori_170516.mat');
 load myParameters.mat;
 
 condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
@@ -40,12 +41,15 @@ normTrackFR_DRunPN(:,2) = num2cell(cellfun(@(x) x(1),temp_peakloci_DRunPN)); % p
 normTrackFR_DRunPN(:,3) = num2cell(lightResp_track_DRunPN); % Resp population
 normTrackFR_DRunPN(:,4) = num2cell(lightAct_track_DRunPN); % Act population
 normTrackFR_DRunPN(:,5) = num2cell(lightIna_track_DRunPN); % Ina population
+normTrackFR_DRunPN(:,6) = num2cell(double(areaDRun(1)+calib(1)<=cell2mat(normTrackFR_DRunPN(:,2)) & cell2mat(normTrackFR_DRunPN(:,2))<=areaDRun(2)+calib(2)));
 
 normTrackFR_DRunPN = sortrows(normTrackFR_DRunPN,-2);
 normTrackFR_DRunPN = cell2mat(normTrackFR_DRunPN);
 lightResp_idx_DRunPN = find(normTrackFR_DRunPN(:,126));
 lightAct_idx_DRunPN = find(normTrackFR_DRunPN(:,127));
 lightIna_idx_DRunPN = find(normTrackFR_DRunPN(:,128));
+lightInPosiDRun = find(normTrackFR_DRunPN(:,129)); % inField position
+
 lightResp_plfm_idx_DRunPN = find(lightResp_plfm_DRunPN);
 
 % DRunIN
@@ -121,7 +125,7 @@ nCol = 4;
 nRow = 9;
 barH = 1;
 
-fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 7, 30]);
+fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 10, 30]);
 % Figure PN
 hHeatmap(1) = axes('Position',axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wideInterval));
 hField(1) = pcolor(normTrackFR_DRunPN(:,1:124));
@@ -134,15 +138,19 @@ hLine(3) = line([areaRw2(1)-errorPosi, areaRw2(1)-errorPosi],[0 nCell_DRunPN]);
 hold on;
 hLine(4) = line([areaRw2(2)-errorPosi, areaRw2(2)-errorPosi],[0 nCell_DRunPN]);
 
+for iMark = 1:length(lightInPosiDRun)
+    fill([126, 131, 131, 126],[lightInPosiDRun(iMark), lightInPosiDRun(iMark), lightInPosiDRun(iMark)+1, lightInPosiDRun(iMark)+1],colorGray,'EdgeColor','none');
+end
 for iMark = 1:length(lightResp_idx_DRunPN)
-    fill([126, 127, 127, 126],[lightResp_idx_DRunPN(iMark)-1, lightResp_idx_DRunPN(iMark)-1, lightResp_idx_DRunPN(iMark), lightResp_idx_DRunPN(iMark)],colorGreen,'EdgeColor','none');
+    fill([126, 127, 127, 126],[lightResp_idx_DRunPN(iMark), lightResp_idx_DRunPN(iMark), lightResp_idx_DRunPN(iMark)+1, lightResp_idx_DRunPN(iMark)+1],colorGreen,'EdgeColor','none');
 end
 for iMark = 1:length(lightAct_idx_DRunPN)
-    fill([128, 129, 129, 128],[lightAct_idx_DRunPN(iMark)-1, lightAct_idx_DRunPN(iMark)-1, lightAct_idx_DRunPN(iMark), lightAct_idx_DRunPN(iMark)],colorBlue,'EdgeColor','none');
+    fill([128, 129, 129, 128],[lightAct_idx_DRunPN(iMark), lightAct_idx_DRunPN(iMark), lightAct_idx_DRunPN(iMark)+1, lightAct_idx_DRunPN(iMark)+1],colorBlue,'EdgeColor','none');
 end
 for iMark = 1:length(lightIna_idx_DRunPN)
-    fill([130, 131, 131, 130],[lightIna_idx_DRunPN(iMark)-1, lightIna_idx_DRunPN(iMark)-1, lightIna_idx_DRunPN(iMark), lightIna_idx_DRunPN(iMark)],colorRed,'EdgeColor','none');
+    fill([130, 131, 131, 130],[lightIna_idx_DRunPN(iMark), lightIna_idx_DRunPN(iMark), lightIna_idx_DRunPN(iMark)+1, lightIna_idx_DRunPN(iMark)+1],colorRed,'EdgeColor','none');
 end
+
 % for iMark = 1:length(lightResp_plfm_idx_DRunPN)
 %     fill([132 133 133 132],[lightResp_plfm_idx_DRunPN(iMark)-1, lightResp_plfm_idx_DRunPN(iMark)-1, lightResp_plfm_idx_DRunPN(iMark), lightResp_plfm_idx_DRunPN(iMark)],colorBlack,'EdgeColor','none');
 % end
@@ -152,7 +160,7 @@ ylabel('Cell ID','fontSize',fontL);
 text(0,-20,['Green: Light Resp (n = ',num2str(length(lightResp_idx_DRunPN)),')'],'color',colorGreen,'fontSize',fontL);
 text(65,-20,['Blue: Light Act (n = ',num2str(length(lightAct_idx_DRunPN)),')'],'color',colorBlue,'fontSize',fontL);
 text(0,-25,['Red: Light Ina (n = ',num2str(length(lightIna_idx_DRunPN)),')'],'color',colorRed,'fontSize',fontL);
-text(65,-25,['Yellow: Light Resp (Plfm 2hz) (n = ',num2str(length(lightResp_plfm_idx_DRunPN)),')'],'color',colorBlack,'fontSize',fontL);
+% text(65,-25,['Yellow: Light Resp (Plfm 2hz) (n = ',num2str(length(lightResp_plfm_idx_DRunPN)),')'],'color',colorBlack,'fontSize',fontL);
 text(28,250,'Reward','color',colorWhite,'fontSize',fontL);
 text(92,250,'Reward','color',colorWhite,'fontSize',fontL);
 title('DRun sessions (PN)','fontSize',fontXL,'fontWeight','bold');
@@ -273,6 +281,6 @@ set(hLine,'lineStyle','--','color',colorWhite,'lineWidth',lineL);
 % set(hLine(9:16),'lineStyle','--','color',colorBlack,'lineWidth',lineL);
 
 formatOut = 'yymmdd';
-% print('-painters','-r300','-dtiff',['fig4_totalPC_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['fig4_totalPC_',datestr(now,formatOut),'.ai']);
+print('-painters','-r300','-dtiff',['fig4_totalPC_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['fig4_totalPC_',datestr(now,formatOut),'.ai']);
 close;

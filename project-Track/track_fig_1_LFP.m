@@ -1,4 +1,5 @@
-function track_fig_1
+function track_fig_1_LFP
+
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 load myParameters.mat;
@@ -10,6 +11,7 @@ matFile = mLoad;
 [tData, tList] = tLoad;
 [cscTime, cscSample, cscList] = cscLoad;
 tetrode = 2;
+formatOut = 'yymmdd';
 
 [cellDir, cellName, ~] = fileparts(matFile{1});
 cellDirSplit = regexp(cellDir,'\','split');
@@ -19,71 +21,7 @@ load(matFile{1});
 load Events.mat;
 
 cd(rtDir);
-%% figure 1: raster & PETH [Platform]
-fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 7, 10]);
 
-nBlue = length(lightTime.Plfm8hz);
-winBlue = [min(pethtimePlfm8hz) max(pethtimePlfm8hz)];
-% Raster
-hPlfmBlue(1) = axes('Position',axpt(1,2,1,1,axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wideInterval),wideInterval));
-plot(xptPlfm8hz{1},yptPlfm8hz{1},'LineStyle','none','Marker','.','MarkerSize',markerM,'Color','k');
-set(hPlfmBlue(1),'XLim',winBlue,'XTick',[],'YLim',[0 nBlue], 'YTick', [0 nBlue], 'YTickLabel', {0, nBlue});
-ylabel('Trials','FontSize',fontL);
-% Psth
-hPlfmBlue(2) = axes('Position',axpt(1,2,1,2,axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wideInterval),wideInterval));
-hold on;
-yLimBarBlue = ceil(max(pethPlfm8hz(:))*1.1);
-bar(5, yLimBarBlue, 'BarWidth', 10, 'LineStyle','none', 'FaceColor', colorLLightBlue);
-rectangle('Position', [0 yLimBarBlue*0.925, 10, yLimBarBlue*0.075], 'LineStyle', 'none', 'FaceColor', colorBlue);
-hBarBlue = bar(pethtimePlfm8hz, pethPlfm8hz, 'histc');
-if statDir_Plfm8hz == 1
-    text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(latencyPlfm8hz1st,3)],'FontSize',fontL,'interpreter','none');
-else
-end
-set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
-set(hPlfmBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1) 0, 10, winBlue(2)],'XTickLabel',{winBlue(1),0,10,num2str(winBlue(2))},'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
-xlabel('Time (ms)','FontSize',fontL);
-ylabel('Rate (Hz)', 'FontSize',fontL);
-% Hazard function
-%     hPlfmBlue(3) = axes('Position',axpt(2,8,2,7:8,axpt(nCol,nRow,1:4,2:5,[0.17 0.17 0.85 0.75],tightInterval),wideInterval));
-%     hold on;
-%     ylimH = min([ceil(max([H1_Plfm8hz;H2_Plfm8hz])*1100+0.0001)/1000 1]);
-%     winHTag = [0 testRangeChETA];
-%     stairs(timeLR_Plfm8hz, H2_Plfm8hz, 'LineStyle',':','LineWidth',lineL,'Color','k');
-%     stairs(timeLR_Plfm8hz, H1_Plfm8hz,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
-%     text(diff(winHTag)*0.1,ylimH*0.9,['p = ',num2str(pLR_Plfm8hz,3)],'FontSize',fontL,'Interpreter','none');
-%     text(diff(winHTag)*0.1,ylimH*0.7,['calib: ',num2str(calibPlfm8hz,3),' ms'],'FontSize',fontL,'Interpreter','none');
-%     set(hPlfmBlue(3),'XLim',winHTag,'XTick',winHTag,'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
-%     xlabel('Time (ms)','FontSize',fontL);
-%     ylabel('H(t)','FontSize',fontL);
-%     title('LR test (platform 8Hz)','FontSize',fontL,'FontWeight','bold');
-% align_ylabel(hPlfmBlue)
-formatOut = 'yymmdd';
-set(hPlfmBlue,'Box','off','TickDir','out','FontSize',fontL);
-% print('-painters','-r300','-depsc',['fig1_PETH_Raster_',datestr(now,formatOut),'.ai']);
-close;
-
-%% figure 2: waveform [Platform]
-fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 16, 4]);
-hWaveform(1) = axes('Position',axpt(4,1,1,1,axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wideInterval),wideInterval));
-plot(m_evoked_wv{1},'color',colorBlue,'lineWidth',1.5);
-hold on;
-plot(m_spont_wv{1},'color',colorBlack,'lineWidth',1.5);
-hWaveform(2) = axes('Position',axpt(4,1,2,1,axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wideInterval),wideInterval));
-plot(m_evoked_wv{2},'color',colorBlue,'lineWidth',1.5);
-hold on;
-plot(m_spont_wv{2},'color',colorBlack,'lineWidth',1.5);
-hWaveform(3) = axes('Position',axpt(4,1,3,1,axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wideInterval),wideInterval));
-plot(m_evoked_wv{3},'color',colorBlue,'lineWidth',1.5);
-hold on;
-plot(m_spont_wv{3},'color',colorBlack,'lineWidth',1.5);
-hWaveform(4) = axes('Position',axpt(4,1,4,1,axpt(1,1,1,1,[0.15 0.15 0.80 0.80],wideInterval),wideInterval));
-plot(m_evoked_wv{4},'color',colorBlue,'lineWidth',1.5);
-hold on;
-plot(m_spont_wv{4},'color',colorBlack,'lineWidth',1.5);
-set(hWaveform,'Box','off','TickDir','out','XTick',[],'YTick',[])
-% print('-painters','-r300','-depsc',['fig1_waveform_',datestr(now,formatOut),'.ai']);
-close;
 %% figure 3: EEG [Platform]
 lightPlfm8hz = lightTime.Plfm8hz;
 lapLightIdx = [1;(find(diff(lightPlfm8hz)>1000)+1)]; % find start light of each lap
@@ -109,14 +47,14 @@ for iCycle = 1:30
 end
 temp_cscSample = cscSample{tetrode};
 for iCycle = 1:30
-    cscLight8hz(:,iCycle) = temp_cscSample((idxLight8hz(iCycle)+winCsc(1)):(idxLight8hz(iCycle)+winCsc(2)));
+    cscLight8hz(iCycle,:) = temp_cscSample((idxLight8hz(iCycle)+winCsc(1)):(idxLight8hz(iCycle)+winCsc(2)));
 end
-m_cscLight8hz = mean(cscLight8hz,2);
+m_cscLight8hz = mean(cscLight8hz,1);
 f_cscLight = bandpassFilter(m_cscLight8hz,sFreq,1,20);
 xptCSC = [win(1):0.5:win(2)];
 
-fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 6, 3]*4);
-hFreq8hz(1) = axes('Position',axpt(1,2,1,1,axpt(1,1,1,1,[0.15 0.10 0.80 0.80],wideInterval),wideInterval));
+fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 12, 6]*2);
+hFreq8hz(1) = axes('Position',axpt(1,2,1,1,axpt(1,1,1,1,[0.1 0.05 0.80 0.80],wideInterval),wideInterval));
 for iLight = 1:nLabLight
 %     hLBar(1) = rectangle('Position',[125*iLight-125,0,10,30],'LineStyle','none','FaceColor',colorLLightBlue);
 %     hold on;
@@ -127,7 +65,7 @@ plot(xpt8hz{1},ypt8hz{1},'LineStyle','none','Marker','o','MarkerSize',markerS,'C
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Cycle','fontSize',fontL);
 
-hFreq8hz(2) = axes('Position',axpt(1,2,1,2,axpt(1,1,1,1,[0.15 0.10 0.80 0.80],wideInterval),wideInterval));
+hFreq8hz(2) = axes('Position',axpt(1,2,1,2,axpt(1,1,1,1,[0.1 0.05 0.80 0.80],wideInterval),wideInterval));
 for iLight = 1:nLabLight
 %     hLBar(1) = rectangle('Position',[125*iLight-125,0,10,30],'LineStyle','none','FaceColor',colorLLightBlue);
 %     hold on;
@@ -142,7 +80,7 @@ set(hFreq8hz(1),'YLim',yLimSpike,'YTick',[0:5:30]);
 set(hFreq8hz(2),'Box','off','visible','off','YLim',yLimCSC,'YTick',[]);
 ylabel('LFP','fontSize',fontL);
 print('-painters','-r300','-depsc',['fig1_EEG_',datestr(now,formatOut),'.ai']);
-% print('-painters','-r300','-dtiff',['fig1_EEG_',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-dtiff',['fig1_EEG_',datestr(now,formatOut),'.tif']);
 % close;
 
 %% sub-functions
@@ -228,4 +166,4 @@ end
 totalHist = histc(cell2mat(spikeTime),spikeBin)/(binSize/10^3*nTrial);
 fireMean = mean(totalHist);
 fireStd = std(totalHist);
-spikeConvZ = (spikeConv-fireMean)/fireStd;    
+spikeConvZ = (spikeConv-fireMean)/fireStd;

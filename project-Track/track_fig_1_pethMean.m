@@ -6,8 +6,16 @@ load('neuronList_pulse_170510.mat');
 
 alpha = 0.01;
 %% Population separation
-cri_meanFR = 9;
-listPN = T.meanFR10<cri_meanFR;
+cri_MeanFR = 9;
+cMaxPeakFR = 1;
+cSpkpvr = 1.1;
+alpha = 0.01;
+
+condiPN = T.spkpvr>cSpkpvr &T.meanFR10<cri_MeanFR;
+condiIN = ~condiPN;
+
+% listPN = T.meanFR10<cri_meanFR;
+listPN = condiPN;
 cri_lightAct = T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1;
 cri_lightInAct = T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==-1;
 cri_lightNo = ~(T.pLR_Plfm2hz<alpha);

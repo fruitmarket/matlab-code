@@ -6,7 +6,7 @@
 clearvars;
 
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170508.mat');
+load('neuronList_ori_170516.mat');
 load myParameters.mat;
 
 cMeanFR = 9;
@@ -37,13 +37,13 @@ DRunPN_no = DRunPN & T.pLR_Track>alpha;
 winSize = [ones(1,4)*5, ones(1,9)*10, ones(1,14)*15];
 mvWinSize = [1:4,1:9,1:14];
 nCycle = length(winSize);
-baseLine = [-20, -10];
+baseLine = [-20, 0];
 
-[m_neuDist_DRunPN_total, ~, tracePCA_DRunPN_total, scorePCA_DRunPN_total, latentPCA_DRunPN_total] = analysis_neuralTrace(T.xptTrackLight(DRunPN_total),5,1,baseLine);    
-[m_neuDist_DRunPN_light, ~, tracePCA_DRunPN_light, scorePCA_DRunPN_light, latentPCA_DRunPN_light] = analysis_neuralTrace(T.xptTrackLight(DRunPN_light),5,1,baseLine);    
-[m_neuDist_DRunPN_act, ~, tracePCA_DRunPN_act, scorePCA_DRunPN_act, latentPCA_DRunPN_act] = analysis_neuralTrace(T.xptTrackLight(DRunPN_act),5,1,baseLine);
-[m_neuDist_DRunPN_ina, ~, tracePCA_DRunPN_ina, scorePCA_DRunPN_ina, latentPCA_DRunPN_ina] = analysis_neuralTrace(T.xptTrackLight(DRunPN_ina),5,1,baseLine);
-[m_neuDist_DRunPN_no, ~, tracePCA_DRunPN_no, scorePCA_DRunPN_no, latentPCA_DRunPN_no] = analysis_neuralTrace(T.xptTrackLight(DRunPN_no),5,1,baseLine);
+[m_neuDist_DRunPN_total, sem_neuDist_DRunPN_total, ~, tracePCA_DRunPN_total, scorePCA_DRunPN_total, latentPCA_DRunPN_total] = analysis_neuralTrace(T.xptTrackLight(DRunPN_total),5,1,baseLine);    
+[m_neuDist_DRunPN_light, sem_neuDist_DRunPN_light, ~, tracePCA_DRunPN_light, scorePCA_DRunPN_light, latentPCA_DRunPN_light] = analysis_neuralTrace(T.xptTrackLight(DRunPN_light),5,1,baseLine);    
+[m_neuDist_DRunPN_act, sem_neuDist_DRunPN_act, ~, tracePCA_DRunPN_act, scorePCA_DRunPN_act, latentPCA_DRunPN_act] = analysis_neuralTrace(T.xptTrackLight(DRunPN_act),5,1,baseLine);
+[m_neuDist_DRunPN_ina, sem_neuDist_DRunPN_ina, ~, tracePCA_DRunPN_ina, scorePCA_DRunPN_ina, latentPCA_DRunPN_ina] = analysis_neuralTrace(T.xptTrackLight(DRunPN_ina),5,1,baseLine);
+[m_neuDist_DRunPN_no, sem_neuDist_DRunPN_no, ~, tracePCA_DRunPN_no, scorePCA_DRunPN_no, latentPCA_DRunPN_no] = analysis_neuralTrace(T.xptTrackLight(DRunPN_no),5,1,baseLine);
 
 %%
 nCol = 2;
@@ -135,15 +135,29 @@ formatOut = 'yymmdd';
 % print('-painters','-r300','-depsc',['fig3_pcaDist_',datestr(now,formatOut),'.ai']);
 
 %%
-fHandle(2) = figure('PaperUnits','centimeters','PaperPosition',paperSize{1},'Name','DRun_NeuDist');
+fHandle(2) = figure('PaperUnits','centimeters','PaperPosition',[0 0 15 15],'Name','DRun_NeuDist');
 hNeuDist = axes('Position',axpt(1,1,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+errorbarJun(1:length(m_neuDist_DRunPN_total),m_neuDist_DRunPN_total,sem_neuDist_DRunPN_total,0.5,0.8,colorLightGray);
+hold on;
 plot(m_neuDist_DRunPN_total,'-o','color',colorLightGray,'MarkerFaceColor',colorDarkGray,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+
+errorbarJun(1:length(m_neuDist_DRunPN_light),m_neuDist_DRunPN_light,sem_neuDist_DRunPN_light,0.5,0.8,colorLightGreen);
 hold on;
 plot(m_neuDist_DRunPN_light,'-o','color',colorLightGreen,'MarkerFaceColor',colorDarkGreen,'MarkerSize',markerL,'LineWidth',lineL);
 hold on;
+
+errorbarJun(1:length(m_neuDist_DRunPN_act),m_neuDist_DRunPN_act,sem_neuDist_DRunPN_act,0.5,0.8,colorLightBlue);
+hold on;
 plot(m_neuDist_DRunPN_act,'-o','color',colorLightBlue,'MarkerFaceColor',colorDarkBlue,'MarkerSize',markerL,'LineWidth',lineL);
 hold on;
+
+errorbarJun(1:length(m_neuDist_DRunPN_ina),m_neuDist_DRunPN_ina,sem_neuDist_DRunPN_ina,0.5,0.8,colorLightRed);
+hold on;
 plot(m_neuDist_DRunPN_ina,'-o','color',colorLightRed,'MarkerFaceColor',colorDarkRed,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+
+errorbarJun(1:length(m_neuDist_DRunPN_no),m_neuDist_DRunPN_no,sem_neuDist_DRunPN_no,0.5,0.8,colorGray);
 hold on;
 plot(m_neuDist_DRunPN_no,'-o','color',colorGray,'MarkerFaceColor',colorBlack,'MarkerSize',markerL,'LineWidth',lineL);
 
@@ -155,7 +169,7 @@ text(size(m_neuDist_DRunPN_act,1)*0.6,max(m_neuDist_DRunPN_act)*0.70,['No resp. 
 xlabel('Time (ms)','fontSize',fontXL);
 ylabel('Neural distance','fontSize',fontXL);
 title('Neural Distance [DRun sessions]','fontSize',fontXL);
-set(hNeuDist,'Box','off','TickDir','out','XLim',[0,size(m_neuDist_DRunPN_act,1)*1.01],'XTick',[0,20/1,30/1,40/1,size(m_neuDist_DRunPN_act,1)],'XTickLabel',[-20,0,10,20,100],'fontSize',fontXL);
+set(hNeuDist,'Box','off','TickDir','out','XLim',[0,size(m_neuDist_DRunPN_act,1)*1.01],'XTick',[0, 20, 30, 40, 50, 60, size(m_neuDist_DRunPN_act,1)],'XTickLabel',[-20, 0, 10, 20, 30, 40, 100],'fontSize',fontXL);
 
 print('-painters','-r300','-dtiff',['fig3_neuralDist_',datestr(now,formatOut),'.tif']);
 % print('-painters','-r300','-depsc',['fig3_neuralDist_',datestr(now,formatOut),'.ai']);

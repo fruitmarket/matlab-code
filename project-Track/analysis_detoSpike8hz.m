@@ -46,15 +46,17 @@ for iCell = 1:nCell
     cd(cellPath);
     
     spkTimeTrack8hz = spikeWin(tData{iCell},lightTrack8hz(lightIdxTrack8hz),winCri);
-    deto_spkTrack8hz = cellfun(@length, spkTimeTrack8hz);
-    m_deto_spkTrack8hz = mean(reshape(deto_spkTrack8hz,[minPulseTrack8hz,nLap]),2)'; % fidelity (probability, %)
-    evoSpkTrack8hz = sum(reshape(deto_spkTrack8hz,[minPulseTrack8hz,nLap]),2)'; % number of spikes
+    deto_spkTrack8hz = ~cellfun(@isempty, spkTimeTrack8hz); % even though the light evoked severalspikes count as one spike
+    evo_spkTrack8hz = cellfun(@length, spkTimeTrack8hz); % count all spikes
+    m_deto_spkTrack8hz = mean(reshape(deto_spkTrack8hz,[minPulseTrack8hz,nLap]),2)'; % fidelity
+    evoSpkTrack8hz = sum(reshape(evo_spkTrack8hz,[minPulseTrack8hz,nLap]),2)'; % number of spikes
      
     if ~isempty(lightTime.Plfm8hz)
         spkTimePlfm8hz = spikeWin(tData{iCell},lightPlfm8hz,winCri);
-        deto_spkPlfm8hz = cellfun(@length, spkTimePlfm8hz);
+        deto_spkPlfm8hz = ~cellfun(@isempty, spkTimePlfm8hz);
+        evo_spkPlfm8hz = cellfun(@length, spkTimePlfm8hz);
         m_deto_spkPlfm8hz = mean(reshape(deto_spkPlfm8hz,[minPulsePlfm8hz,nLap]),2)';
-        evoSpkPlfm8hz = sum(reshape(deto_spkPlfm8hz,[minPulsePlfm8hz,nLap]),2)';
+        evoSpkPlfm8hz = sum(reshape(evo_spkPlfm8hz,[minPulsePlfm8hz,nLap]),2)';
     else
         deto_spkPlfm8hz = NaN;
         m_deto_spkPlfm8hz = NaN;

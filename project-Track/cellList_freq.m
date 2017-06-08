@@ -23,13 +23,16 @@ for iFile = 31:nFile % 1hz2hz8hz20hz50hz starts from 31
     path = matFile(iFile);
     fileSeg = strsplit(matFile{iFile},{'\','_'});
     mouseLine = categorical(cellstr(fileSeg{5}));
+    
+    spkwv = {spkwv};
        
     temT = table(mouseLine,path,...
         pLR_Plfm1hz, pLR_Plfm2hz, pLR_Plfm8hz, pLR_Plfm20hz,pLR_Plfm50hz,...
         latency1hz1st, latency1hz2nd, latency2hz1st, latency2hz2nd, latency8hz1st, latency8hz2nd, latency20hz1st, latency20hz2nd, latency50hz1st, latency50hz2nd,...
         lightProb1hz,lightProb2hz,lightProb8hz,lightProb20hz,lightProb50hz,...
         evoSpike1hz,evoSpike2hz,evoSpike8hz,evoSpike20hz,evoSpike50hz,...
-        total_mFR);
+        evoSpk1hz,detoSpk1hz,evoSpk2hz,detoSpk2hz,evoSpk8hz,detoSpk8hz,evoSpk20hz,detoSpk20hz,evoSpk50hz,detoSpk50hz,... % analysis_freq_detoSpike
+        spkwv,spkwth,spkpvr,hfvwth,total_mFR);
                 
     T = [T; temT];
     fclose('all');
@@ -38,3 +41,4 @@ cd(rtPath);
 formatOut = 'yymmdd';
 save(['neuronList_freq_',datestr(now,formatOut),'.mat'],'T');
 writetable(T,['neuronList_freq_',datestr(now,formatOut),'.xlsx']);
+disp('##### Done! #####');

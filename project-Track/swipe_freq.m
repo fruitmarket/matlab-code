@@ -59,7 +59,9 @@ for iPath = 4:nPath
 %     analysis_freq_rasterLight;
 %     analysis_meanFRfreqTest;
 %     analysis_freq_evokeProb;
-    analysis_respstatFreqTest_v2;
+%     analysis_respstatFreqTest_v2;
+%     analysis_freq_detoSpike;
+%     waveform;
     
 %     analysis_cscFreqTest;
 %     plot_cscLightStm;

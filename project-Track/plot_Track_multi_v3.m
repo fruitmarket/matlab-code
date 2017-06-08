@@ -291,18 +291,18 @@ for iFile = 1:nFile
     text(95,90,'Track heat map','FontSize',fontL,'FontWeight','bold');
     
      hPlfmMap(1) = axes('Position',axpt(1,4,1,1:2,axpt(nCol,nRow,5,6:7,[0.12 0.15 0.85 0.75],tightInterval),wideInterval));
-     hFieldBase = pcolor(base_ratemap);
+     hFieldBase = pcolor(base_ratemap(30:70,50:110));
      text(45,38,[num2str(floor(peakFR2D_plfm*10)/10),' Hz'],'fontSize',fontM);
      text(33,10,'baseline','fontSize',fontM);
      
      hPlfmMap(2) = axes('Position',axpt(1,4,1,3:4,axpt(nCol,nRow,5,6:7,[0.12 0.15 0.85 0.75],tightInterval),wideInterval));
-     hFieldTwo = pcolor(twohz_ratemap);
+     hFieldTwo = pcolor(twohz_ratemap(30:70,50:110));
      text(45,38,[num2str(floor(peakFR2D_two*10)/10),' Hz'],'fontSize',fontM);
      text(34,10,'2hz stm','fontSize',fontM);
 
      set(hFieldBase,'linestyle','none');
      set(hFieldTwo,'linestyle','none');
-     set(hPlfmMap,'Box','off','visible','off','XLim',[30,60],'YLim',[10,40]);
+     set(hPlfmMap,'Box','off','visible','off','XLim',[0, 75],'YLim',[0,50]);
     
 % Track light response raster plot (aligned on pseudo light - light - pseudo light)
     hTrackLight(1) = axes('Position',axpt(1,8,1,5:6,axpt(nCol,nRow,7:10,5:7,[0.10 0.11 0.85 0.85],tightInterval),wideInterval));

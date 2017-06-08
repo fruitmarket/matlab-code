@@ -45,11 +45,11 @@ nPath = length(filePath);
 for iPath = 1:nPath
     cd(filePath{iPath});
     
-%     event2mat_pulse;
+    event2mat_pulse;
 
-    analysis_laserWidthTest;
-    analysis_respstatWidthTest;
-    waveform;
+%     analysis_laserWidthTest;
+%     analysis_respstatWidthTest;
+%     waveform;
     
 %     plot_LightPulse;
 
@@ -57,5 +57,5 @@ for iPath = 1:nPath
     close all;
 end
 
-% cd(rtPath);
+cd(rtPath);
 disp('### Done! ###');

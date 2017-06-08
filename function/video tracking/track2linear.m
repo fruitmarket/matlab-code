@@ -9,7 +9,7 @@ function [thetaDist, theta, timeTrack, refPosition, numOccu] = track2linear(vtPo
 %
 % Inputs
 % vtPositionX, vtPositionY, vtTime should be same size arrays
-% refSensor should be one sensor from sensor (ex. sensor.S1)
+% refSensor should be one sensor from 12 sensors (ex. sensor.S1)
 % timeOnTrack should contain two elements [startTime, endTime]
 %
 

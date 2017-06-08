@@ -45,7 +45,7 @@ for iCell = 1:nCell
         [~, lightOnIdx] = min(abs(lightTime.Track8hz(lapStartLightIdx(iIdx))-timeTrack));
         temp_lightOnLoci(iIdx) = theta(lightOnIdx)*20;
     end
-    lightOnLoc = round(mean(temp_lightOnLoci)*10)/10;
+    lightOnLoc = floor(mean(temp_lightOnLoci)*10)/10;
     
     lapEndLightIdx = [find(diff(lightTime.Track8hz)>1000);length(lightTime.Track8hz)];
     temp_lightOffLoci = zeros(30,1);
@@ -53,7 +53,7 @@ for iCell = 1:nCell
         [~, lightOffIdx] = min(abs(lightTime.Track8hz(lapEndLightIdx(iIdx))-timeTrack));
         temp_lightOffLoci(iIdx) = theta(lightOffIdx)*20;
     end
-    lightOffLoc = round(mean(temp_lightOffLoci)*10)/10;
+    lightOffLoc = ceil(mean(temp_lightOffLoci)*10)/10;
     lightLoc = [lightOnLoc, lightOffLoc];
 
 % Reward zone

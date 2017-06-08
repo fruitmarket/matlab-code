@@ -45,6 +45,8 @@ alpha2 = alpha/5;
 lightCri = T.total_mFR<9 & (T.pLR_Plfm1hz<alpha2 | T.pLR_Plfm2hz<alpha2 | T.pLR_Plfm8hz<alpha2 | T.pLR_Plfm20hz<alpha2 | T.pLR_Plfm50hz<alpha2);
 nolightCri = T.total_mFR<9 & ~(T.pLR_Plfm1hz<alpha2 | T.pLR_Plfm2hz<alpha2 | T.pLR_Plfm8hz<alpha2 | T.pLR_Plfm20hz<alpha2 | T.pLR_Plfm50hz<alpha2);
 
+plot_freqDependency_v3(T.path(lightCri),'C:\Users\Jun\Desktop\freqTest');
+
 lightProb1hz = T.lightProb1hz((lightCri));
 lightProb2hz = T.lightProb2hz((lightCri));
 lightProb8hz = T.lightProb8hz((lightCri));

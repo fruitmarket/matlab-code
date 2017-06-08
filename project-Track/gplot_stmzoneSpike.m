@@ -3,7 +3,7 @@
 %
 % common part
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170516.mat');
+load('neuronList_ori_170602.mat');
 load myParameters.mat;
 
 cMeanFR = 9;
@@ -163,7 +163,7 @@ title('DRunIN & inactivated','fontSize',fontL,'fontWeight','bold');
 
 hStmspkDRun(8) = axes('Position',axpt(nCol,nRow,2,4,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],stmspk_DRunIN_no,'-o','color',colorBlack,'MarkerFaceColor',colorBlue);
-text(3.5,max(stmspk_DRunIN_no(:))*0.8,['n = ',num2str(nDRunIN_lightno)],'fontSize',fontL);
+text(3.5,max(stmspk_DRunIN_no(:))*0.8,['n = ',num2str(nDRunIN_lightNo)],'fontSize',fontL);
 title('DRunIN & no','fontSize',fontL,'fontWeight','bold');
 
 set(hStmspkDRun,'TickDir','out','Box','off','XLim',[0,4],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
@@ -205,12 +205,12 @@ title('DRwIN & inactivated','fontSize',fontL,'fontWeight','bold');
 
 hStmspkDRw(8) = axes('Position',axpt(nCol,nRow,4,4,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],stmspk_DRwIN_no,'-o','color',colorBlack,'MarkerFaceColor',colorBlue);
-text(3.5,max(stmspk_DRwIN_no(:))*0.8,['n = ',num2str(nDRwIN_lightno)],'fontSize',fontL);
+text(3.5,max(stmspk_DRwIN_no(:))*0.8,['n = ',num2str(nDRwIN_lightNo)],'fontSize',fontL);
 title('DRwIN & no','fontSize',fontL,'fontWeight','bold');
 
 formatOut = 'yymmdd';
 set(hStmspkDRw,'TickDir','out','Box','off','XLim',[0,4],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
-print('-painters','-r300','-dtiff',['gplot_stmzoneSpike_',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-dtiff',['plot_stmzoneSpike_',datestr(now,formatOut),'.tif']);
 
 fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{2},'Name','stmzoneSpike total');
 
@@ -258,4 +258,4 @@ text(3.5,max(stmspk_DRwIN_no(:))*0.8,['n = ',num2str(nDRwIN)],'fontSize',fontL);
 title('DRwIN total','fontSize',fontL,'fontWeight','bold');
 
 set(hStmspkTotal,'TickDir','out','Box','off','XLim',[0,4],'XTick',[1,2,3],'XTickLabel',{'Pre','Stm','Post'});
-% print('-painters','-r300','-dtiff',['plot_stmzoneSpike_totalNeuron_',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-dtiff',['plot_stmzoneSpike_totalNeuron_',datestr(now,formatOut),'.tif']);

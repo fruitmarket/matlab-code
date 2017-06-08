@@ -5,8 +5,8 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load myParameters.mat;
-Txls = readtable('neuronList_ori_170516.xlsx');
-load('neuronList_ori_170516.mat');
+Txls = readtable('neuronList_ori_170602.xlsx');
+load('neuronList_ori_170602.mat');
 
 cMeanFR = 9;
 cMaxPeakFR = 1;
@@ -133,7 +133,7 @@ fHandle = figure('PaperUnits','centimeters','PaperPosition',[0, 0, 6, 6]*2);
 hdetoDRun(1) = axes('Position',axpt(nCol,nRow,1,1,[0.10 0.10 0.80 0.85],wideInterval));
 plot(1:length(m_deto_DRunPN_plfm),deto_DRunPN_plfm,'-o','color',colorDarkGray,'markerEdgeColor',colorDarkGray,'MarkerFaceColor',colorLightGray,'markerSize',markerL);
 hold on;
-plot(1:length(m_deto_DRunPN_plfm),m_deto_DRunPN_plfm,'-o','color',colorBlack,'MarkerFaceColor',colorBlack,'markerSize',markerL);
+plot(1:length(m_deto_DRunPN_plfm),m_deto_DRunPN_plfm,'o','color',colorBlack,'MarkerFaceColor',colorBlack,'markerSize',markerL);
 hold on;
 errorbarJun(1:length(m_deto_DRunPN_plfm),m_deto_DRunPN_plfm,sem_deto_DRunPN_plfm,eBarLength,barWidth,colorBlack);
 text(5,30,['n = ',num2str(size(deto_DRunPN_plfm,1))],'fontSize',fontL);
@@ -175,6 +175,6 @@ set(hdetoDRun(1),'Box','off','TickDir','out','XLim',[0,6],'XTick',1:5,'YLim',[-1
 % set(hdetoDRw(2),'TickDir','out','Box','off','YLim',[0,50],'XLim',[0,23]);
 
 formatOut = 'yymmdd';
-% print('-painters','-r300','-dtiff',['fig1_detonateSpike_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['fig1_detonateSpike_',datestr(now,formatOut),'.ai']);
+print('-painters','-r300','-dtiff',['fig1_detonateSpike_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['fig1_detonateSpike_',datestr(now,formatOut),'.ai']);
 close;

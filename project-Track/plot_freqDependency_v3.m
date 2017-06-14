@@ -23,7 +23,10 @@ markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
 tightInterval = [0.02 0.02]; midInterval = [0.03 0.03]; wideInterval = [0.07 0.07];
 width = 0.7;
 
-paperSizeX = [18.3, 8.00];
+paperSize = {[0 0 21 29.7];
+             [0 0 29.7 21];
+             [0 0 15.7 21];
+             [0 0 21.6 27.9]};
 figSize = [0.15 0.10 0.85 0.90];
 
 winCri1hz = [0, 15500];
@@ -32,14 +35,12 @@ winCri8hz = [0, 2500];
 winCri20hz = [0 1000];
 winCri50hz = [0 1000];
 winCri_ori = [-5, 20];
-winCri_ori2 = [-5, 20];
-winCri_ori3 = [-5, 20];
 
-win1hz = [-500, 14500];
-win2hz = [-500, 7500];
-win8hz = [-250, 2000];
-win20hz = [-100 1000];
-win50hz = [-100 500];
+win1hzPlot = [-500, 14500];
+win2hzPlot = [-500, 7500];
+win8hzPlot = [-250, 2000];
+win20hzPlot = [-100 1000];
+win50hzPlot = [-100 500];
 
 binSize = 2;
 resolution = 10;
@@ -59,132 +60,148 @@ for iFile = 1:nFile
     load(matFile{iFile});
     load('Events.mat');
 
-    %% Original 1Hz
-    nRow = 15;
-    nCol = 6;
     
-    fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 10.5 16]); % A4: 210 x 297 mm
-    
-    hLight1hzOri(1) = axes('Position',axpt(nCol,nRow,1:5,1,figSize,midInterval));
-    text(posiTitle(1),posiTitle(2),['1hz Stimulation (p = ',num2str(pLR_Plfm1hz,4),')'],'fontSize',fontL,'fontWeight','bold');
-    hLight1hzOri(2) = axes('Position',axpt(nCol,nRow,1,2,figSize,midInterval));
+    fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});
+    nRow = 6;
+    nCol = 5;
+
+%% waveform
+    yLimWaveform = [min(spkwv(:)), max(spkwv(:))];
+    for iCh = 1:4
+        hWaveform(iCh) = axes('Position',axpt(4,2,iCh,1,axpt(nCol,nRow,1:2,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+        plot(spkwv(iCh,:), 'LineWidth', lineL, 'Color','k');
+        if iCh == 4
+            line([24 32], [yLimWaveform(2)-50 yLimWaveform(2)-50], 'Color','k', 'LineWidth', lineM);
+            line([24 24],[yLimWaveform(2)-50 yLimWaveform(2)], 'Color','k', 'LineWidth',lineM);
+        end
+    end
+    set(hWaveform, 'Visible', 'off','XLim',[1 32], 'YLim',yLimWaveform*1.05);
+
+%% text information
+    hText = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,3:4,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+    text(0,1,['mean FR: ',num2str(meanFR,3),' Hz'],'fontSize',fontL);
+    text(0,0.8,['half with: ',num2str(hfvwth,3),' ms'],'fontSize',fontL);
+    text(0,0.6,['pv ratio: ',num2str(spkpvr,3)],'fontSize',fontL);
+    set(hText,'visible','off');
+
+    hPvalue(1) = axes('Position',axpt(nCol,nRow,5,2,[0.1 0.1 0.85 0.85],midInterval));
+    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm1hz,3)],'fontSize',fontL);
+    hPvalue(2) = axes('Position',axpt(nCol,nRow,5,3,[0.1 0.1 0.85 0.85],midInterval));
+    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm2hz,3)],'fontSize',fontL);
+    hPvalue(3) = axes('Position',axpt(nCol,nRow,5,4,[0.1 0.1 0.85 0.85],midInterval));
+    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm8hz,3)],'fontSize',fontL);
+    hPvalue(4) = axes('Position',axpt(nCol,nRow,5,5,[0.1 0.1 0.85 0.85],midInterval));
+    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm20hz,3)],'fontSize',fontL);
+    hPvalue(5) = axes('Position',axpt(nCol,nRow,5,6,[0.1 0.1 0.85 0.85],midInterval));
+    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm50hz,3)],'fontSize',fontL);
+    set(hPvalue,'visible','off');
+
+%% Original 1Hz
+    hLight1hzOri(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     hLBar(1) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
     hold on;
     hLBar(2) = rectangle('Position',[0,270,10,nTrial_ori/10],'LineStyle','none','FaceColor',colorBlue);
     hold on;
     plot(xpt1hz_ori{1},ypt1hz_ori{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
-    ylabel('Trials','FontSize',fontM);
-    hLight1hzOri(3) = axes('Position',axpt(nCol,nRow,1,3,figSize,midInterval));
+    ylabel('Trials','FontSize',fontL);
+
+    hLight1hzOri(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim1hzOri = ceil(max(peth1hzConv_ori*1.1)+0.001);
     plot(pethtime1hz_ori,peth1hzConv_ori,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
 
-    xlabel('Time (ms)','FontSize',fontM);
-    ylabel('Rate (Hz)', 'FontSize', fontM);
+    xlabel('Time (ms)','FontSize',fontL);
+    ylabel('Rate (Hz)', 'FontSize', fontL);
     align_ylabel(hLight1hzOri);
 
-    set(hLight1hzOri(1),'visible','off');
-    set(hLight1hzOri(2),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
-    set(hLight1hzOri(3), 'XLim', winCri_ori, 'XTick', [0,10,winCri_ori(2)],'YLim', [0 yLim1hzOri], 'YTick', [0 yLim1hzOri], 'YTickLabel', {[], yLim1hzOri});
-    set(hLight1hzOri,'Box','off','TickDir','out','fontSize',fontM);            
+    set(hLight1hzOri(1),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
+    set(hLight1hzOri(2), 'XLim', winCri_ori, 'XTick', [0,winCri_ori(2)],'YLim', [0 yLim1hzOri], 'YTick', [0 yLim1hzOri], 'YTickLabel', {[], yLim1hzOri});
+    set(hLight1hzOri,'Box','off','TickDir','out','fontSize',fontL);            
 
 %% Original 2Hz
-    hLight2hzOri(1) = axes('Position',axpt(nCol,nRow,1:5,4,figSize,midInterval));
-    text(posiTitle(1),posiTitle(2),['2hz Stimulation (p = ',num2str(pLR_Plfm2hz,4),')'],'fontSize',fontL,'fontWeight','bold');
-    hLight2hzOri(2) = axes('Position',axpt(nCol,nRow,1,5,figSize,midInterval));    
+    hLight2hzOri(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     hLBar(1) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
     hold on;
     hLBar(2) = rectangle('Position',[0,270,10,nTrial_ori/10],'LineStyle','none','FaceColor',colorBlue);
     hold on;
     plot(xpt2hz_ori{1},ypt2hz_ori{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
-    ylabel('Trials','FontSize',fontM);
+    ylabel('Trials','FontSize',fontL);
 
-    hLight2hzOri(3) = axes('Position',axpt(nCol,nRow,1,6,figSize,midInterval));
+    hLight2hzOri(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim2hzOri = ceil(max(peth2hzConv_ori*1.1)+0.001);
     plot(pethtime2hz_ori,peth2hzConv_ori,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
 
-    xlabel('Time (ms)','FontSize',fontM);
-    ylabel('Rate (Hz)', 'FontSize', fontM);
+    xlabel('Time (ms)','FontSize',fontL);
+    ylabel('Rate (Hz)', 'FontSize', fontL);
     align_ylabel(hLight2hzOri);
 
-    set(hLight2hzOri(1),'visible','off');
-    set(hLight2hzOri(2),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
-    set(hLight2hzOri(3), 'XLim', winCri_ori, 'XTick', [0,10,winCri_ori(2)],'YLim', [0 yLim2hzOri], 'YTick', [0 yLim2hzOri], 'YTickLabel', {[], yLim2hzOri});
-    set(hLight2hzOri,'Box','off','TickDir','out','fontSize',fontM);
+    set(hLight2hzOri(1),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
+    set(hLight2hzOri(2), 'XLim', winCri_ori, 'XTick', [0,winCri_ori(2)],'YLim', [0 yLim2hzOri], 'YTick', [0 yLim2hzOri], 'YTickLabel', {[], yLim2hzOri});
+    set(hLight2hzOri,'Box','off','TickDir','out','fontSize',fontL);
 
 %% Original 8Hz
-    hLight8hzOri(1) = axes('Position',axpt(nCol,nRow,1:5,7,figSize,midInterval));
-    text(posiTitle(1),posiTitle(2),['8hz Stimulation (p = ',num2str(pLR_Plfm8hz,4),')'],'fontSize',fontL,'fontWeight','bold');
-    hLight8hzOri(2) = axes('Position',axpt(nCol,nRow,1,8,figSize,midInterval));
+    hLight8hzOri(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1,4,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     hLBar(1) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
     hold on;
     hLBar(2) = rectangle('Position',[0,270,10,nTrial_ori/10],'LineStyle','none','FaceColor',colorBlue);
     hold on;
     plot(xpt8hz_ori{1},ypt8hz_ori{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
-    ylabel('Trials','FontSize',fontM);
+    ylabel('Trials','FontSize',fontL);
 
-    hLight8hzOri(3) = axes('Position',axpt(nCol,nRow,1,9,figSize,midInterval));
+    hLight8hzOri(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1,4,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim8hzOri = ceil(max(peth8hzConv_ori*1.1)+0.001);
     plot(pethtime8hz_ori,peth8hzConv_ori,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
 
-    xlabel('Time (ms)','FontSize',fontM);
-    ylabel('Rate (Hz)','FontSize',fontM);
+    xlabel('Time (ms)','FontSize',fontL);
+    ylabel('Rate (Hz)','FontSize',fontL);
     align_ylabel(hLight8hzOri);
 
-    set(hLight8hzOri(1),'visible','off');
-    set(hLight8hzOri(2),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
-    set(hLight8hzOri(3), 'XLim', winCri_ori, 'XTick', [0,10,winCri_ori(2)],'YLim', [0 yLim8hzOri], 'YTick', [0 yLim8hzOri], 'YTickLabel', {[], yLim8hzOri});
-    set(hLight8hzOri,'Box','off','TickDir','out','fontSize',fontM);
+    set(hLight8hzOri(1),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
+    set(hLight8hzOri(2), 'XLim', winCri_ori, 'XTick', [0,winCri_ori(2)],'YLim', [0 yLim8hzOri], 'YTick', [0 yLim8hzOri], 'YTickLabel', {[], yLim8hzOri});
+    set(hLight8hzOri,'Box','off','TickDir','out','fontSize',fontL);
 
 %% Original 20Hz
-    hLight20hzOri(1) = axes('Position',axpt(nCol,nRow,1:5,10,figSize,midInterval));
-    text(posiTitle(1),posiTitle(2),['20hz Stimulation (p = ',num2str(pLR_Plfm20hz,4),')'],'fontSize',fontL,'fontWeight','bold');
-    hLight20hzOri(2) = axes('Position',axpt(nCol,nRow,1,11,figSize,midInterval));
+    hLight20hzOri(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1,5,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     hLBar(1) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
     hold on;
     hLBar(2) = rectangle('Position',[0,270,10,nTrial_ori/10],'LineStyle','none','FaceColor',colorBlue);
     hold on;
     plot(xpt20hz_ori{1},ypt20hz_ori{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
-    ylabel('Trials','FontSize',fontM);
+    ylabel('Trials','FontSize',fontL);
 
-    hLight20hzOri(3) = axes('Position',axpt(nCol,nRow,1,12,figSize,midInterval));
+    hLight20hzOri(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1,5,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim20hzOri = ceil(max(peth20hzConv_ori*1.1)+0.001);
     plot(pethtime20hz_ori,peth20hzConv_ori,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
 
-    xlabel('Time (ms)','FontSize',fontM);
-    ylabel('Rate (Hz)','FontSize',fontM);
+    xlabel('Time (ms)','FontSize',fontL);
+    ylabel('Rate (Hz)','FontSize',fontL);
     align_ylabel(hLight20hzOri);
 
-    set(hLight20hzOri(1),'visible','off');
-    set(hLight20hzOri(2),'XLim',winCri_ori2,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
-    set(hLight20hzOri(3), 'XLim', winCri_ori2, 'XTick', [0,10,winCri_ori2(2)],'YLim', [0 yLim20hzOri], 'YTick', [0 yLim20hzOri], 'YTickLabel', {[], yLim20hzOri});
-    set(hLight20hzOri,'Box','off','TickDir','out','fontSize',fontM);
+    set(hLight20hzOri(1),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
+    set(hLight20hzOri(2), 'XLim', winCri_ori, 'XTick', [0,10,winCri_ori(2)],'YLim', [0 yLim20hzOri], 'YTick', [0 yLim20hzOri], 'YTickLabel', {[], yLim20hzOri});
+    set(hLight20hzOri,'Box','off','TickDir','out','fontSize',fontL);
 
 %% Original 50Hz
-    hLight50hzOri(1) = axes('Position',axpt(nCol,nRow,1:5,13,figSize,midInterval));
-    text(posiTitle(1),posiTitle(2),['50hz Stimulation (p = ',num2str(pLR_Plfm50hz,4),')'],'fontSize',fontL,'fontWeight','bold');
-    hLight50hzOri(2) = axes('Position',axpt(nCol,nRow,1,14,figSize,midInterval));
+    hLight50hzOri(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1,6,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     hLBar(1) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
     hold on;
     hLBar(2) = rectangle('Position',[0,270,10,nTrial_ori/10],'LineStyle','none','FaceColor',colorBlue);
     hold on;
     plot(xpt50hz_ori{1},ypt50hz_ori{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
-    ylabel('Trials','FontSize',fontM);
+    ylabel('Trials','FontSize',fontL);
 
-    hLight50hzOri(3) = axes('Position',axpt(nCol,nRow,1,15,figSize,midInterval));
+    hLight50hzOri(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1,6,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim50hzOri = ceil(max(peth50hzConv_ori*1.1)+0.001);
     plot(pethtime50hz_ori,peth50hzConv_ori,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
 
-    xlabel('Time (ms)','FontSize',fontM);
-    ylabel('Rate (Hz)','FontSize',fontM);
+    xlabel('Time (ms)','FontSize',fontL);
+    ylabel('Rate (Hz)','FontSize',fontL);
     align_ylabel(hLight50hzOri);
 
-    set(hLight50hzOri(1),'visible','off');
-    set(hLight50hzOri(2),'XLim',winCri_ori3,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
-    set(hLight50hzOri(3), 'XLim', winCri_ori3, 'XTick', [0,10,winCri_ori3(2)],'YLim', [0 yLim50hzOri], 'YTick', [0 yLim50hzOri], 'YTickLabel', {[], yLim50hzOri});
-    set(hLight50hzOri,'Box','off','TickDir','out','fontSize',fontM);
-    
+    set(hLight50hzOri(1),'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[0, nTrial_ori],'YTickLabel',{0, nTrial_ori});
+    set(hLight50hzOri(2), 'XLim', winCri_ori, 'XTick', [0,10,winCri_ori(2)],'YLim', [0 yLim50hzOri], 'YTick', [0 yLim50hzOri], 'YTickLabel', {[], yLim50hzOri});
+    set(hLight50hzOri,'Box','off','TickDir','out','fontSize',fontL);
 %% Each light (1hz)
-    hFreq1hz(1) = axes('Position',axpt(nCol,nRow,3:5,2,figSize,midInterval));
+    hFreq1hz(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2:4,2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     for iLight = 1:15
         hLBar(1) = rectangle('Position',[1000*iLight-1000, 0, 10, nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
         hold on;
@@ -193,17 +210,17 @@ for iFile = 1:nFile
     end
     plot(xpt1hz{1},ypt1hz{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
 
-    hFreq1hz(2) = axes('Position',axpt(nCol,nRow,3:5,3,figSize,midInterval));
+    hFreq1hz(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2:4,2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim1hz = ceil(max(peth1hzConv)*1.1+0.001);
     plot(pethtime1hz, peth1hzConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
-    xlabel('Time (ms)','FontSize',fontM);
+    xlabel('Time (ms)','FontSize',fontL);
 
-    set(hFreq1hz(1),'XLim',win1hz,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
-    set(hFreq1hz(2), 'XLim', win1hz, 'XTick', [0:3000:win1hz(2)],'YLim', [0 yLim1hz], 'YTick', [0 yLim1hz], 'YTickLabel', {[], yLim1hz});
-    set(hFreq1hz,'Box','off','TickDir','out','fontSize',fontM);
+    set(hFreq1hz(1),'XLim',win1hzPlot,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
+    set(hFreq1hz(2), 'XLim', win1hzPlot, 'XTick', [0:3000:win1hzPlot(2)],'YLim', [0 yLim1hz], 'YTick', [0 yLim1hz], 'YTickLabel', {[], yLim1hz});
+    set(hFreq1hz,'Box','off','TickDir','out','fontSize',fontL);
 
 %% Each light (2hz)
-    hFreq2hz(1) = axes('Position',axpt(nCol,nRow,3:5,5,figSize,midInterval));
+    hFreq2hz(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2:4,3,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     for iLight = 1:15
         hLBar(1) = rectangle('Position',[500*iLight-500, 0, 10, nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
         hold on;
@@ -212,17 +229,17 @@ for iFile = 1:nFile
     end
     plot(xpt2hz{1},ypt2hz{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
 
-    hFreq2hz(2) = axes('Position',axpt(nCol,nRow,3:5,6,figSize,midInterval));
+    hFreq2hz(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2:4,3,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim2hz = ceil(max(peth2hzConv)*1.1+0.001);
     plot(pethtime2hz, peth2hzConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
-    xlabel('Time (ms)','FontSize',fontM);
+    xlabel('Time (ms)','FontSize',fontL);
 
-    set(hFreq2hz(1),'XLim',win2hz,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
-    set(hFreq2hz(2), 'XLim', win2hz, 'XTick', [0:2000:win2hz(2)],'YLim', [0 yLim2hz], 'YTick', [0 yLim2hz], 'YTickLabel', {[], yLim2hz});
-    set(hFreq2hz,'Box','off','TickDir','out','fontSize',fontM);
+    set(hFreq2hz(1),'XLim',win2hzPlot,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
+    set(hFreq2hz(2), 'XLim', win2hzPlot, 'XTick', [0:2000:win2hzPlot(2)],'YLim', [0 yLim2hz], 'YTick', [0 yLim2hz], 'YTickLabel', {[], yLim2hz});
+    set(hFreq2hz,'Box','off','TickDir','out','fontSize',fontL);
 
 %% Each light (8Hz)
-    hFreq8hz(1) = axes('Position',axpt(nCol,nRow,3:5,8,figSize,midInterval));
+    hFreq8hz(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2:4,4,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     for iLight = 1:15
         hold on;
         hLBar(1) = rectangle('Position',[125*iLight-125, 0, 10, 20],'LineStyle','none','FaceColor',colorLLightBlue);
@@ -231,17 +248,17 @@ for iFile = 1:nFile
     end
     plot(xpt8hz{1},ypt8hz{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
 
-    hFreq8hz(2) = axes('Position',axpt(nCol,nRow,3:5,9,figSize,midInterval));
+    hFreq8hz(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2:4,4,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim8hz = ceil(max(peth8hzConv)*1.1+0.001);
     plot(pethtime8hz,peth8hzConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
-    xlabel('Time (ms)','FontSize',fontM);
+    xlabel('Time (ms)','FontSize',fontL);
 
-    set(hFreq8hz(1),'XLim',win8hz,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
-    set(hFreq8hz(2), 'XLim', win8hz, 'XTick', [0:500:win8hz(2)],'YLim',[0, yLim8hz],'YTick',[0 yLim8hz],'YTickLabel',{[], yLim8hz});
-    set(hFreq8hz,'Box','off','TickDir','out','fontSize',fontM);
+    set(hFreq8hz(1),'XLim',win8hzPlot,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
+    set(hFreq8hz(2), 'XLim', win8hzPlot, 'XTick', [0:500:win8hzPlot(2)],'YLim',[0, yLim8hz],'YTick',[0 yLim8hz],'YTickLabel',{[], yLim8hz});
+    set(hFreq8hz,'Box','off','TickDir','out','fontSize',fontL);
 
 %% Each light (20Hz)
-    hFreq20hz(1) = axes('Position',axpt(nCol,nRow,3:5,11,figSize,midInterval));
+    hFreq20hz(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2:4,5,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     for iLight = 1:15
         hold on;
         hLBar(1) = rectangle('Position',[50*iLight-50, 0, 10, 20],'LineStyle','none','FaceColor',colorLLightBlue);
@@ -250,17 +267,17 @@ for iFile = 1:nFile
     end
     plot(xpt20hz{1},ypt20hz{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
 
-    hFreq20hz(2) = axes('Position',axpt(nCol,nRow,3:5,12,figSize,midInterval));
+    hFreq20hz(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2:4,5,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim20hz = ceil(max(peth20hzConv)*1.1+0.001);
     plot(pethtime20hz,peth20hzConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
-    xlabel('Time (ms)','FontSize',fontM);
+    xlabel('Time (ms)','FontSize',fontL);
 
-    set(hFreq20hz(1),'XLim',win20hz,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
-    set(hFreq20hz(2), 'XLim', win20hz, 'XTick', [0:500:win20hz(2)],'YLim',[0, yLim20hz],'YTick',[0 yLim20hz],'YTickLabel',{[], yLim20hz});
-    set(hFreq20hz,'Box','off','TickDir','out','fontSize',fontM);
+    set(hFreq20hz(1),'XLim',win20hzPlot,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
+    set(hFreq20hz(2), 'XLim', win20hzPlot, 'XTick', [0:500:win20hzPlot(2)],'YLim',[0, yLim20hz],'YTick',[0 yLim20hz],'YTickLabel',{[], yLim20hz});
+    set(hFreq20hz,'Box','off','TickDir','out','fontSize',fontL);
 
 %% Each light (50Hz)
-    hFreq50hz(1) = axes('Position',axpt(nCol,nRow,3:5,14,figSize,midInterval));
+    hFreq50hz(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,2:4,6,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     for iLight = 1:15
         hold on;
         hLBar(1) = rectangle('Position',[20*iLight-20, 0, 10, 20],'LineStyle','none','FaceColor',colorLLightBlue);
@@ -269,18 +286,18 @@ for iFile = 1:nFile
     end
     plot(xpt50hz{1},ypt50hz{1},'LineStyle','none','Marker','.','MarkerSize',markerL,'Color','k');
 
-    hFreq50hz(2) = axes('Position',axpt(nCol,nRow,3:5,15,figSize,midInterval));
+    hFreq50hz(2) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,2:4,6,[0.1 0.1 0.85 0.85],midInterval),midInterval));
     yLim50hz = ceil(max(peth50hzConv)*1.1+0.001);
     plot(pethtime50hz,peth50hzConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
-    xlabel('Time (ms)','FontSize',fontM);
+    xlabel('Time (ms)','FontSize',fontL);
 
-    set(hFreq50hz(1),'XLim',win50hz,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
-    set(hFreq50hz(2), 'XLim', win50hz, 'XTick', [0:500:win50hz(2)],'YLim',[0, yLim50hz],'YTick',[0 yLim50hz],'YTickLabel',{[], yLim50hz});
-    set(hFreq50hz,'Box','off','TickDir','out','fontSize',fontM);
+    set(hFreq50hz(1),'XLim',win50hzPlot,'XTick',[],'YLim',[0, nTrial],'YTick',[0, nTrial],'YTickLabel',{0, nTrial});
+    set(hFreq50hz(2), 'XLim', win50hzPlot, 'XTick', [0:500:win50hzPlot(2)],'YLim',[0, yLim50hz],'YTick',[0 yLim50hz],'YTickLabel',{[], yLim50hz});
+    set(hFreq50hz,'Box','off','TickDir','out','fontSize',fontL);
 
     cd(saveDir);
 %     print('-painters','-r300','-dtiff',[cellFigName{1},'.tif']);
-    print('-painters','-r300','-dtiff',['cellID_',num2str(cellID),'.tif']);
+    print('-painters','-r300','-dtiff',['cellID_',num2str(cellID(iFile)),'.tif']);
     close;
 end
 

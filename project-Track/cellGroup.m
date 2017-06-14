@@ -1,9 +1,6 @@
 clearvars;
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
-load('neuronList_ori_170606.mat');
-Txls = readtable('neuronList_ori_170606.xlsx');
-Txls.taskType = categorical(Txls.taskType);
 
 cMeanFR = 9;
 cMaxPeakFR = 1;
@@ -16,6 +13,11 @@ areaRw2 = [3/2 5/3]*pi*20; % 10-11 o'clock
 errorPosi = 5;
 correctY = 0.5;
 lightBand = 3;
+
+%% Loading cell information
+load('neuronList_ori_170606.mat');
+Txls = readtable('neuronList_ori_170606.xlsx');
+Txls.taskType = categorical(Txls.taskType);
 
 condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
 condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
@@ -266,44 +268,45 @@ folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
 %% population bias calibration (based on sensor mean_fr) with latency
 % DRun sessions
-DRunTN = (T.taskType == 'DRw') & condiTN;
-DRunPN = DRunTN & condiPN;
-DRunIN = DRunTN & condiIN;
+% DRunTN = (T.taskType == 'DRw') & condiTN;
+% DRunPN = DRunTN & condiPN;
+% DRunIN = DRunTN & condiIN;
+% 
+% trackInac_DRunPN = DRunPN & (T.pLR_Track < alpha) & (T.statDir_Track == -1);
+% mfr_zone = T.sensorMeanFR_DRw(trackInac_DRunPN);
+% mean_mfr_zone = min(cellfun(@(x) mean(x(31:60)),mfr_zone));
+% 
+% populPass_DRun = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) > mean_mfr_zone);
+% populAct_DRunR = populPass_DRun & (T.pLR_Track<alpha) & (T.statDir_Track == 1) & T.latencyTrack1st<10;
+% populAct_DRunD = populPass_DRun & (T.pLR_Track<alpha) & (T.statDir_Track == 1) & T.latencyTrack1st>=10;
+% 
+% fd_passActR = [folder, 'passAct_DRun_rapid'];
+% fileName = T.path(populAct_DRunR);
+% cellID = Txls.cellID(populAct_DRunR);
+% % plot_Track_multi_v3(fileName, cellID, fd_passActR);
+% 
+% fd_passActD = [folder, 'passAct_DRun_delay'];
+% fileName = T.path(populAct_DRunD);
+% cellID = Txls.cellID(populAct_DRunD);
+% % plot_Track_multi_v3(fileName, cellID, fd_passActD);
+% 
+% 
+% populNopass_DRun = DRunPN & ~((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRw)) > mean_mfr_zone);
+% populNopassAct_DRunR = populNopass_DRun & (T.pLR_Track < alpha) & (T.statDir_Track == 1) & T.latencyTrack1st<10;
+% populNopassAct_DRunD = populNopass_DRun & (T.pLR_Track < alpha) & (T.statDir_Track == 1) & T.latencyTrack1st>=10;
+% 
+% fd_nopassActR = [folder, 'nopassAct_DRw_rapid'];
+% fileName = T.path(populNopassAct_DRunR);
+% cellID = Txls.cellID(populNopassAct_DRunR);
+% plot_Track_multi_v3(fileName, cellID, fd_nopassActR);
+% 
+% fd_nopassActD = [folder, 'nopassAct_DRw_delay'];
+% fileName = T.path(populNopassAct_DRunD);
+% cellID = Txls.cellID(populNopassAct_DRunD);
+% plot_Track_multi_v3(fileName, cellID, fd_nopassActD);
+% 
+% cd(rtDir);
 
-trackInac_DRunPN = DRunPN & (T.pLR_Track < alpha) & (T.statDir_Track == -1);
-mfr_zone = T.sensorMeanFR_DRw(trackInac_DRunPN);
-mean_mfr_zone = min(cellfun(@(x) mean(x(31:60)),mfr_zone));
-
-populPass_DRun = DRunPN & ((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRun)) > mean_mfr_zone);
-populAct_DRunR = populPass_DRun & (T.pLR_Track<alpha) & (T.statDir_Track == 1) & T.latencyTrack1st<10;
-populAct_DRunD = populPass_DRun & (T.pLR_Track<alpha) & (T.statDir_Track == 1) & T.latencyTrack1st>=10;
-
-fd_passActR = [folder, 'passAct_DRun_rapid'];
-fileName = T.path(populAct_DRunR);
-cellID = Txls.cellID(populAct_DRunR);
-% plot_Track_multi_v3(fileName, cellID, fd_passActR);
-
-fd_passActD = [folder, 'passAct_DRun_delay'];
-fileName = T.path(populAct_DRunD);
-cellID = Txls.cellID(populAct_DRunD);
-% plot_Track_multi_v3(fileName, cellID, fd_passActD);
-
-
-populNopass_DRun = DRunPN & ~((cellfun(@(x) min(mean(x(31:60))),T.sensorMeanFR_DRw)) > mean_mfr_zone);
-populNopassAct_DRunR = populNopass_DRun & (T.pLR_Track < alpha) & (T.statDir_Track == 1) & T.latencyTrack1st<10;
-populNopassAct_DRunD = populNopass_DRun & (T.pLR_Track < alpha) & (T.statDir_Track == 1) & T.latencyTrack1st>=10;
-
-fd_nopassActR = [folder, 'nopassAct_DRw_rapid'];
-fileName = T.path(populNopassAct_DRunR);
-cellID = Txls.cellID(populNopassAct_DRunR);
-plot_Track_multi_v3(fileName, cellID, fd_nopassActR);
-
-fd_nopassActD = [folder, 'nopassAct_DRw_delay'];
-fileName = T.path(populNopassAct_DRunD);
-cellID = Txls.cellID(populNopassAct_DRunD);
-plot_Track_multi_v3(fileName, cellID, fd_nopassActD);
-
-cd(rtDir);
 %% First session analysis
 % load('neuronList_1stSess_170517.mat');
 % Txls1ss = readtable('neuronList_1stSess_170517.xlsx');
@@ -345,3 +348,35 @@ cd(rtDir);
 % cellID = Txls1ss.cellID(nosig_DRw);
 % plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
 % cd('D:\Dropbox\SNL\P2_Track');
+
+%% 50hz sessions
+load('neuronList_ori50hz_170612.mat');
+condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
+condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
+condiIN = ~condiPN;
+alpha = 0.01;
+fd_parent = 'D:\Dropbox\SNL\P2_Track\analysis_50hz\';
+fd_child = {'DRunPN';
+            'DRunIN';
+            'DRwPN';
+            'DRwIN';};
+        
+DRunPN = (T.taskType == 'DRun') & condiPN;
+fileName = T.path(DRunPN);
+cellID = T.cellID(DRunPN);
+plot_Track_multi_v50hz(fileName, cellID, [fd_parent,fd_child{1}]);
+
+DRwPN = (T.taskType == 'DRw') & condiPN;
+fileName = T.path(DRwPN);
+cellID = T.cellID(DRwPN);
+plot_Track_multi_v50hz(fileName, cellID, [fd_parent,fd_child{2}]);
+
+DRunIN = (T.taskType == 'DRun') & condiIN;
+fileName = T.path(DRunIN);
+cellID = T.cellID(DRunIN);
+plot_Track_multi_v50hz(fileName, cellID, [fd_parent,fd_child{3}]);
+
+DRwIN = (T.taskType == 'DRw') & condiIN;
+fileName = T.path(DRwIN);
+cellID = T.cellID(DRwIN);
+plot_Track_multi_v50hz(fileName, cellID, [fd_parent,fd_child{4}]);

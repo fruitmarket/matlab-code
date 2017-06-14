@@ -105,10 +105,12 @@ for iCell = 1:nCell
     end
 
     % light modulation direction (act, ina, no)
-    if H1_Plfm1hz(end) > H2_Plfm1hz(end);
-        statDir1hz = 1;
-    elseif H1_Plfm1hz(end) < H2_Plfm1hz(end);
-        statDir1hz = -1;
+    if pLR_Plfm1hz < alpha
+        if H1_Plfm1hz(end) > H2_Plfm1hz(end);
+            statDir1hz = 1;
+        else
+            statDir1hz = -1;
+        end
     else
         statDir1hz = 0;
     end
@@ -190,11 +192,12 @@ for iCell = 1:nCell
             calibPlfm2hz = movingWin(idxH_Plfm2hz);
         end
     end
-    
-    if H1_Plfm2hz(end) > H2_Plfm2hz(end);
-        statDir2hz = 1;
-    elseif H1_Plfm2hz(end) < H2_Plfm2hz(end);
-        statDir2hz = -1;
+    if pLR_Plfm2hz < alpha
+        if H1_Plfm2hz(end) > H2_Plfm2hz(end)
+            statDir2hz = 1;
+        else
+            statDir2hz = -1;
+        end
     else
         statDir2hz = 0;
     end
@@ -277,10 +280,12 @@ for iCell = 1:nCell
     end
     
     % light modulation direction (act, ina, no)
-    if H1_Plfm8hz(end) > H2_Plfm8hz(end);
-        statDir8hz = 1;
-    elseif H1_Plfm8hz(end) < H2_Plfm8hz(end);
-        statDir8hz = -1;
+    if pLR_Plfm8hz < alpha
+        if H1_Plfm8hz(end) > H2_Plfm8hz(end)
+            statDir8hz = 1;
+        else
+            statDir8hz = -1;
+        end
     else
         statDir8hz = 0;
     end
@@ -363,10 +368,12 @@ for iCell = 1:nCell
     end
 
     % light modulation direction (act, ina, no)
-    if H1_Plfm20hz(end) > H2_Plfm20hz(end);
-        statDir20hz = 1;
-    elseif H1_Plfm20hz(end) < H2_Plfm20hz(end);
-        statDir20hz = -1;
+    if pLR_Plfm20hz < alpha
+        if H1_Plfm20hz(end) > H2_Plfm20hz(end)
+            statDir20hz = 1;
+        else
+            statDir20hz = -1;
+        end
     else
         statDir20hz = 0;
     end
@@ -449,10 +456,12 @@ for iCell = 1:nCell
     end
 
     % light modulation direction (act, ina, no)
-    if H1_Plfm50hz(end) > H2_Plfm50hz(end);
-        statDir50hz = 1;
-    elseif H1_Plfm50hz(end) < H2_Plfm50hz(end);
-        statDir50hz = -1;
+    if pLR_Plfm50hz < alpha
+        if H1_Plfm50hz(end) > H2_Plfm50hz(end);
+            statDir50hz = 1;
+        else
+            statDir50hz = -1;
+        end
     else
         statDir50hz = 0;
     end
@@ -489,7 +498,9 @@ for iCell = 1:nCell
         latency50hz1st = NaN;
         latency50hz2nd = NaN;
     end
-    save([cellName,'.mat'],'pLR_Plfm1hz','pLR_Plfm2hz','pLR_Plfm8hz','pLR_Plfm20hz','pLR_Plfm50hz',...
+    save([cellName,'.mat'],...
+        'pLR_Plfm1hz','pLR_Plfm2hz','pLR_Plfm8hz','pLR_Plfm20hz','pLR_Plfm50hz',...
+        'statDir1hz','statDir2hz','statDir8hz','statDir20hz','statDir50hz',...
         'latency1hz1st','latency1hz2nd','latency2hz1st','latency2hz2nd','latency8hz1st','latency8hz2nd','latency20hz1st','latency20hz2nd','latency50hz1st','latency50hz2nd','-append')
 end
 disp('### RespStatTest calculation is done!');

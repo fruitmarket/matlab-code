@@ -340,8 +340,8 @@ for iFile = 1:nFile
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Time (ms)','FontSize',fontM);
         align_ylabel(hTrackLight);
-    set(hTrackLight(1),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-25 100],'XTick',[],'YLim',[0, sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])],'YTick',[0,length(psdlightPre),sum([length(psdlightPre),length(lightTime.Track8hz)]),sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])]);
-    set(hTrackLight(2),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-25, 100],'XTick',[-25,0,10,30,50,100],'YLim',[0, max(ylimpeth)]);
+    set(hTrackLight(1),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0 125],'XTick',[],'YLim',[0, sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])],'YTick',[0,length(psdlightPre),sum([length(psdlightPre),length(lightTime.Track8hz)]),sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])]);
+    set(hTrackLight(2),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0, 125],'XTick',[0,10,30,50,100,125],'YLim',[0, max(ylimpeth)]);
     
 if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'))
     iSensor = 6; % Light on sensor

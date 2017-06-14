@@ -56,11 +56,12 @@ for iPath = 4:nPath
     
 %     event2mat_freq;
 
-%     analysis_freq_rasterLight;
+%     analysis_freq_rasterLight; % calculate raster for each frequency
+%     analysis_freq_pethLight; % calculate based on all lights
 %     analysis_meanFRfreqTest;
 %     analysis_freq_evokeProb;
 %     analysis_respstatFreqTest_v2;
-%     analysis_freq_detoSpike;
+    analysis_freq_detoSpike;
 %     waveform;
     
 %     analysis_cscFreqTest;
@@ -69,5 +70,7 @@ for iPath = 4:nPath
     fclose('all');
     close all;
 end
+
 cd(rtPath);
 disp('### Done! ###');
+clearvars;

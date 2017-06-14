@@ -4,14 +4,13 @@
 %
 %
 clearvars;
-
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load('myParameters.mat');
-Txls = readtable('neuronList_freq_170602.xlsx');
+Txls = readtable('neuronList_freq_170608.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
-load('neuronList_freq_170602.mat');
+load('neuronList_freq_170608.mat');
 
 folder = {'C:\Users\Jun\Desktop\platform_resp';
           'C:\Users\Jun\Desktop\platform_noresp'};
@@ -22,7 +21,7 @@ c_latency = 10;
 cMeanFR = 9;
 
 lightResp = T.pLR_Plfm1hz < alpha | T.pLR_Plfm2hz < alpha | T.pLR_Plfm8hz < alpha | T.pLR_Plfm20hz < alpha | T.pLR_Plfm50hz < alpha;
-lightResp = ~lightResp; % this is for no light responsive population
+% lightResp = ~lightResp; % this is for no light responsive population
 
 nLightResp = sum(double(lightResp));
 nLightNoResp = sum(double(lightResp));
@@ -33,7 +32,7 @@ detoSpike8hz = T.detoSpk8hz(lightResp,:);
 detoSpike20hz = T.detoSpk20hz(lightResp,:);
 detoSpike50hz = T.detoSpk50hz(lightResp,:);
 
-total_mFR = T.total_mFR(lightResp);
+total_mFR = T.meanFR(lightResp);
 spkwth = T.spkwth(lightResp);
 hfvwth = T.hfvwth(lightResp);
 spkpvr = T.spkpvr(lightResp);
@@ -42,7 +41,7 @@ latencyIndex = str2mat(Txls.latencyIndex(lightResp));
 cellID = Txls.cellID(lightResp);
 
 %%
-cd(folder{2});
+cd(folder{1});
 matFile = T.path(lightResp);
 nFile = length(matFile);
 nameSplit = regexp(matFile,'\','split');
@@ -101,6 +100,7 @@ for iFile = 1:nFile
     print('-painters','-r300','-dtiff',['cellID_',num2str(cellID(iFile)),'.tif']);
     close;
     
-    plot_freqDependency_v3(matFile(iFile),'C:\Users\Jun\Desktop\platform_noresp\individualExample',cellID(iFile));
+    plot_freqDependency_v3(matFile(iFile),'C:\Users\Jun\Desktop\platform_resp\individualExample',cellID(iFile));
+    cd(folder{1});
 end
 cd(rtDir);

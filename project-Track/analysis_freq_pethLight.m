@@ -1,56 +1,41 @@
-function laserFreqCheck
+function analysis_freq_pethLight
+% analysis_freq_pethLight calcultes PETH for platform frequency tests (1hz, 2hz, 8hz, 20hz, 50hz).
+% It will save values for drawing PETH. All lights were aligned.
 
-% binSize = 10; % Unit: msec
 resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
-winCri = [0, 20]; % unit: msec
-binSizeBlue = 2;
+winSpike = [0 20]; % unit: msec
+binSize = 2;
+winLight = 20;
 
 [tData, tList] = tLoad;
 nCell = length(tList);
 
 for iCell = 1:nCell
-    disp(['### laserFreqCheck analysis: ',tList{iCell},'...']);
+    disp(['### Analyzing ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     
-    % Load Events variables
-    load('Events.mat','lightTime');
+% Load Events variables
+    load('Events.mat');
     
- %% Platform 2hz & 8hz
-    if isempty(lightTime.Plfm2hz) | isempty(lightTime.Plfm8hz)
-     [lightPlfmSpk2hz8mw,lightPlfmSpk50hz] = deal(NaN);
-    else
-     nPlfmLight2hz = length(lightTime.Plfm2hz);
-     spikeTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winCri);
-     spikeTime2hz8mw = spikeTimePlfm(nPlfmLight2hz/3+1:nPlfmLight2hz*2/3,1);
-     lightPlfmSpk2hz8mw = sum(cellfun(@length,spikeTime2hz8mw))/(nPlfmLight2hz/3);
-
-     nPlfmLight8hz = length(lightTime.Plfm8hz);
-     spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winCri);
-     lightPlfmSpk50hz = sum(cellfun(@length,spikeTimePlfm8hz))/nPlfmLight8hz;    
-    end
-
-%% Track 'Modi session' only
-    if isempty(lightTime.Track2hz) | isemtpy(lightTime.Track8hz)
-        [lightTrackSpk2hz8mw,lightTrackSpk50hz] = deal(NaN);
-    else
-        nTrackLight2hz = length(lightTime.Track2hz);
-        spikeTimeTrack = spikeWin(tData{iCell},lightTime.Track2hz,winCri);
-        spikeTimeTrack2hz8mw = spikeTimeTrack(nTrackLight2hz/3+1:nTrackLight2hz*2/3,1);
-        lightTrackSpk2hz8mw = sum(cellfun(@length, spikeTimeTrack2hz8mw))/200; % spike fidelity. divided by the # of light
-
-        nTrackLight8hz = length(lightTime.Track8hz);
-        spikeTimeTrack8hz = spikeWin(tData{iCell},lightTime.Track8hz,winCri);
-        lightTrackSpk50hz = sum(cellfun(@length, spikeTimeTrack8hz))/nTrackLight8hz;
-    end
-
-%%
-save([cellName,'.mat'],'lightPlfmSpk2hz8mw','lightPlfmSpk8hz','lightTrackSpk2hz8mw','lightTrackSpk8hz','-append');
+% Mean FR
+    meanFR = mean([sum(histc(tData{iCell},time1hz))/(diff(time1hz)/1000),sum(histc(tData{iCell},time2hz))/(diff(time2hz)/1000),sum(histc(tData{iCell},time8hz))/(diff(time8hz)/1000),sum(histc(tData{iCell},time20hz))/(diff(time20hz)/1000),sum(histc(tData{iCell},time50hz))/(diff(time50hz)/1000)]);
+    
+% Light
+    lightTime = [lightTime.Plfm1hz; lightTime.Plfm2hz; lightTime.Plfm8hz; lightTime.Plfm20hz; lightTime.Plfm50hz];
+    nLight = length(lightTime);
+        
+    spikeTime = spikeWin(tData{iCell},lightTime,winSpike);
+    [xptLight, yptLight, pethtimeLight, pethLight, pethConvLight, pethConvZLight] = rasterPETH(spikeTime,true(size(lightTime)),winSpike,binSize,resolution,1);
+    
+    lightSpk = sum(0<xptLight{1} & xptLight{1}<winLight);
+    
+    save([cellName,'.mat'],'meanFR','xptLight','yptLight','pethtimeLight','pethLight','pethConvLight','pethConvZLight','nLight','lightSpk','-append');
+    
 end
-
-disp('### Laser Frequency Check is done!!!');
+disp('### freq_Laser PETH calculation is done!!!');
 
 function spikeTime = spikeWin(spikeData, eventTime, win)
 % spikeWin makes raw spikeData to eventTime aligned data
@@ -71,7 +56,6 @@ for iEvent = 1:nEvent(1)
         spikeTime{iEvent,jEvent} = spikeData(logical(timeIndex))-eventTime(iEvent,jEvent);
     end
 end
-
 function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = rasterPETH(spikeTime, trialIndex, win, binSize, resolution, dot)
 % raterPSTH converts spike time into raster plot
 %   spikeTime: cell array. Each cell contains vector array of spike times per each trial unit is ms.

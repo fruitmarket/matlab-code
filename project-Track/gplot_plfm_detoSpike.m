@@ -7,11 +7,10 @@ clearvars;
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
-
 load('myParameters.mat');
-Txls = readtable('neuronList_freq_170601.xlsx');
+Txls = readtable('neuronList_freq_170608.xlsx');
 % Txls.latencyIndex = categorical(Txls.latencyIndex);
-load('neuronList_freq_170601.mat');
+load('neuronList_freq_170608.mat');
 
 alpha = 0.01;
 alpha2 = alpha/5;
@@ -165,6 +164,6 @@ set(hPlot_mean,'TickDir','out','Box','off');
 set(hPlot_mean,'XLim',[0,16],'XTick',1:15,'fontSize',fontL,'YLim',[0 50],'YTick',0:10:50);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',['gplot_plfm_freqTest_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-dtiff',['gplot_plfm_freqTest_',datestr(now,formatOut),'.tif']);
 % print('-painters','-r300','-depsc',['fig1_frequencyTest_',datestr(now,formatOut),'.ai']);
 % close();

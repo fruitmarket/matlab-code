@@ -9,11 +9,11 @@ function pethLight()
 
 % Task variables
 resolution = 10; % sigma = resoution * binSize = 100 msec
-winTrack = [-25 100];
+winTrack = [0 125];
 
-% Tag variables
+% Plfm variables
 winPlfm2hz = [-25 475]; % unit: msec
-winPlfm8hz = [-25 100];
+winPlfm8hz = [0 125];
 binSizeBlue = 2;
 
 winCri = 20; % light effect criteria: 20ms
@@ -27,12 +27,10 @@ for iCell = 1:nCell
     cd(cellPath);
     
     % Load Events variables
-    load('Events.mat');
-    win = [-1, 1]*1000; % unit:msec, window for binning
-    
+    load('Events.mat');    
     % Load spike data
     % tData{iCell} unit: msec
-    
+
 % Light - ontrack
     if ~isempty(lightTime.Track8hz); % ChETA
         spikeTimeTrackLight = spikeWin(tData{iCell},lightTime.Track8hz,winTrack);

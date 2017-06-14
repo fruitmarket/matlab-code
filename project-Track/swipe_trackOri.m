@@ -72,10 +72,9 @@ for iPath = 1:nPath
 %     analysis_CrossCorr1D;
 %     analysis_plfm_laserIntTest;
 %     laserFreqCheck;
-%     laserSpikeProb;
 %     analysis_detoSpike8hz;
-    analysis_stmzoneSpike;
-%     analysis_laserSpikeChange;
+%     analysis_stmzoneSpike;
+    analysis_laserSpikeChange;
 %     analysis_findPeakLoci;
 %     plot_Track_sin_v3;
 
@@ -85,3 +84,4 @@ end
 
 cd(rtPath);
 disp('### Done! ###');
+clearvars;

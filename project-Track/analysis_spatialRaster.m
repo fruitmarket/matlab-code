@@ -39,18 +39,18 @@ for iCell = 1:nCell
     end
 
 % stimulation zone
-    lapStartLightIdx = [1;find(diff(lightTime.Track8hz)>1000)+1];
+    lapStartLightIdx = [1;find(diff(lightTime.Track50hz)>1000)+1];
     temp_lightOnLoci = zeros(30,1);
     for iIdx = 1:30
-        [~, lightOnIdx] = min(abs(lightTime.Track8hz(lapStartLightIdx(iIdx))-timeTrack));
+        [~, lightOnIdx] = min(abs(lightTime.Track50hz(lapStartLightIdx(iIdx))-timeTrack));
         temp_lightOnLoci(iIdx) = theta(lightOnIdx)*20;
     end
     lightOnLoc = floor(mean(temp_lightOnLoci)*10)/10;
     
-    lapEndLightIdx = [find(diff(lightTime.Track8hz)>1000);length(lightTime.Track8hz)];
+    lapEndLightIdx = [find(diff(lightTime.Track50hz)>1000);length(lightTime.Track50hz)];
     temp_lightOffLoci = zeros(30,1);
     for iIdx = 1:30
-        [~, lightOffIdx] = min(abs(lightTime.Track8hz(lapEndLightIdx(iIdx))-timeTrack));
+        [~, lightOffIdx] = min(abs(lightTime.Track50hz(lapEndLightIdx(iIdx))-timeTrack));
         temp_lightOffLoci(iIdx) = theta(lightOffIdx)*20;
     end
     lightOffLoc = ceil(mean(temp_lightOffLoci)*10)/10;

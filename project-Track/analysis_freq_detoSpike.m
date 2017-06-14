@@ -29,35 +29,35 @@ for iCell = 1:nCell
     
     spkTime1hz = spikeWin(tData{iCell},light1hz,winCri);
     spkTime1hz = reshape(spkTime1hz,[15,20])';
-    evoSpk1hz = sum(cellfun(@length,spkTime1hz),1);
-    detoSpk1hz = sum(~cellfun(@isempty,spkTime1hz),1); % sum of 'first spike numbers' at n-th light train
-    detoSpk1hz = detoSpk1hz/nLap*100; % fidelity (probability, %)
+    evoDetoSpk1hz = sum(cellfun(@length,spkTime1hz),1);
+    detoProb1hz = sum(~cellfun(@isempty,spkTime1hz),1); % sum of 'first spike numbers' at n-th light train
+    detoProb1hz = detoProb1hz/nLap*100; % fidelity (probability, %)
 
     spkTime2hz = spikeWin(tData{iCell},light2hz,winCri);
     spkTime2hz = reshape(spkTime2hz,[15,20])';
-    evoSpk2hz = sum(cellfun(@length,spkTime2hz),1);
-    detoSpk2hz = sum(~cellfun(@isempty,spkTime2hz),1); % sum of 'first spike numbers' at n-th light train
-    detoSpk2hz = detoSpk2hz/nLap*100; % fidelity (probability, %)
+    evoDetoSpk2hz = sum(cellfun(@length,spkTime2hz),1);
+    detoProb2hz = sum(~cellfun(@isempty,spkTime2hz),1); % sum of 'first spike numbers' at n-th light train
+    detoProb2hz = detoProb2hz/nLap*100; % fidelity (probability, %)
     
     spkTime8hz = spikeWin(tData{iCell},light8hz,winCri);
     spkTime8hz = reshape(spkTime8hz,[15,20])';
-    evoSpk8hz = sum(cellfun(@length,spkTime8hz),1);
-    detoSpk8hz = sum(~cellfun(@isempty,spkTime8hz),1); % sum of 'first spike numbers' at n-th light train
-    detoSpk8hz = detoSpk8hz/nLap*100; % fidelity (probability, %)
+    evoDetoSpk8hz = sum(cellfun(@length,spkTime8hz),1);
+    detoProb8hz = sum(~cellfun(@isempty,spkTime8hz),1); % sum of 'first spike numbers' at n-th light train
+    detoProb8hz = detoProb8hz/nLap*100; % fidelity (probability, %)
     
     spkTime20hz = spikeWin(tData{iCell},light20hz,winCri);
     spkTime20hz = reshape(spkTime20hz,[15,20])';
-    evoSpk20hz = sum(cellfun(@length,spkTime20hz),1);
-    detoSpk20hz = sum(~cellfun(@isempty,spkTime20hz),1); % sum of 'first spike numbers' at n-th light train
-    detoSpk20hz = detoSpk20hz/nLap*100; % fidelity (probability, %)
+    evoDetoSpk20hz = sum(cellfun(@length,spkTime20hz),1);
+    detoProb20hz = sum(~cellfun(@isempty,spkTime20hz),1); % sum of 'first spike numbers' at n-th light train
+    detoProb20hz = detoProb20hz/nLap*100; % fidelity (probability, %)
     
     spkTime50hz = spikeWin(tData{iCell},light50hz,winCri);
     spkTime50hz = reshape(spkTime50hz,[15,20])';
-    evoSpk50hz = sum(cellfun(@length,spkTime50hz),1);
-    detoSpk50hz = sum(~cellfun(@isempty,spkTime50hz),1); % sum of 'first spike numbers' at n-th light train
-    detoSpk50hz = detoSpk50hz/nLap*100; % fidelity (probability, %)
+    evoDetoSpk50hz = sum(cellfun(@length,spkTime50hz),1);
+    detoProb50hz = sum(~cellfun(@isempty,spkTime50hz),1); % sum of 'first spike numbers' at n-th light train
+    detoProb50hz = detoProb50hz/nLap*100; % fidelity (probability, %)
 
-    save([cellName,'.mat'],'evoSpk1hz','detoSpk1hz','evoSpk2hz','detoSpk2hz','evoSpk8hz','detoSpk8hz','evoSpk20hz','detoSpk20hz','evoSpk50hz','detoSpk50hz','-append');
+    save([cellName,'.mat'],'evoDetoSpk1hz','detoProb1hz','evoDetoSpk2hz','detoProb2hz','evoDetoSpk8hz','detoProb8hz','evoDetoSpk20hz','detoProb20hz','evoDetoSpk50hz','detoProb50hz','-append');
 end
 disp('### detonate spike calculation is done! ###')
 function spikeTime = spikeWin(spikeData, eventTime, win)

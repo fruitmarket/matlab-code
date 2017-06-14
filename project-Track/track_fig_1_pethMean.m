@@ -11,7 +11,7 @@ cMaxPeakFR = 1;
 cSpkpvr = 1.1;
 alpha = 0.01;
 
-condiPN = T.spkpvr>cSpkpvr &T.meanFR10<cri_MeanFR;
+condiPN = T.spkpvr>cSpkpvr & T.meanFR10<cri_MeanFR;
 condiIN = ~condiPN;
 
 % listPN = T.meanFR10<cri_meanFR;

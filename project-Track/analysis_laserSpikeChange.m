@@ -1,13 +1,17 @@
 function analysis_laserSpikeChange()
 % function analysis_laserSpikeChange calculates number of spikes in each
 % period (preEarly, preLate, stmEarly, stmLate, postEarly, postLate). 
-%   
+% Also the function calculates spike probability (fidelity) .
+%
 %   Author: Joonyeup Lee
 %   Version 1.0 (3/23/2017)
 
 % Task variables
 resolution = 10; % sigma = resoution * binSize = 100 msec
 winTrack = [0 125];
+winCriProb = [0, 20];
+winCri1 = [0 20];
+winCri2 = [30 125];
 binSizeBlue = 2;
 
 [tData, tList] = tLoad;
@@ -18,25 +22,64 @@ for iCell = 1:nCell
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
 
-    % Load Events variables
+% Load Events variables
     load('Events.mat');
 
+%% On Track    
+    if ~isempty(lightTime.Track8hz)
+        spkTimeTrack8hz = spikeWin(tData{iCell},lightTime.Track8hz,winCriProb);
+        lightProbTrack_8hz = sum(double(~cellfun(@isempty,spkTimeTrack8hz)))/length(lightTime.Track8hz)*100;
+    else
+        lightProbTrack_8hz = NaN;            
+    end
+    
+    if isfield(lightTime,'Track2hz')
+        if ~isempty(lightTime.Track2hz)
+            spkTimeTrack2hz = spikeWin(tData{iCell},lightTime.Track2hz,winCriProb);
+            lightProbTrack_2hz = sum(double(~cellfun(@isempty,spkTimeTrack2hz)))/length(lightTime.Track2hz)*100;
+        else
+            lightProbTrack_2hz = NaN;
+        end
+    end
+    save([cellName,'.mat'],'lightProbTrack_2hz','lightProbTrack_8hz','-append');
+
+%% On Platform
+    if isfield(lightTime,'Plfm2hz')
+        if ~isempty(lightTime.Plfm2hz)
+            spkTime2hz = spikeWin(tData{iCell},lightTime.Plfm2hz(201:400),winCriProb);
+            lightProbPlfm_2hz = sum(double(~cellfun(@isempty,spkTime2hz)))/length(lightTime.Plfm2hz(201:400))*100;        
+        else
+            lightProbPlfm_2hz = NaN;
+        end
+    end
+    
+    if isfield(lightTime,'Plfm8hz')
+        if ~isempty(lightTime.Plfm8hz)
+            spkTime8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winCriProb);
+            lightProbPlfm_8hz = sum(double(~cellfun(@isempty,spkTime8hz)))/length(lightTime.Plfm8hz)*100;
+        else
+            lightProbPlfm_8hz = NaN;            
+        end
+    end
+    save([cellName,'.mat'],'lightProbPlfm_2hz','lightProbPlfm_8hz','-append');
+    
+%% evoked spike number 
 % Light - ontrack
     evoSpikeTimeTrack = spikeWin(tData{iCell},lightTime.Track8hz,winTrack);
     [evoXptTrackLight, ~, ~, ~, ~, ~] = rasterPETH(evoSpikeTimeTrack,true(size(lightTime.Track8hz)),winTrack,binSizeBlue,resolution,1);     
-    evoSpike_stmEarly = sum(0<evoXptTrackLight{1} & evoXptTrackLight{1}<60);
-    evoSpike_stmLate = sum(65<evoXptTrackLight{1} & evoXptTrackLight{1}<125);
+    evoSpike_stmEarly = sum(winCri1(1)<evoXptTrackLight{1} & evoXptTrackLight{1}<winCri1(2));
+    evoSpike_stmLate = sum(winCri2(1)<evoXptTrackLight{1} & evoXptTrackLight{1}<winCri2(2));
 
 % Pseudo light (On track)
     evoSpikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTrack); % Pseudo light Pre
     [evoXptPsdPre, ~, ~, ~, ~, ~] = rasterPETH(evoSpikeTime_psdPre,true(size(psdlightPre)),winTrack,binSizeBlue,resolution,1);
-    evoSpike_preEarly = sum(0<evoXptPsdPre{1} & evoXptPsdPre{1}<60);
-    evoSpike_preLate = sum(65<evoXptPsdPre{1} & evoXptPsdPre{1}<125);
+    evoSpike_preEarly = sum(winCri1(1)<evoXptPsdPre{1} & evoXptPsdPre{1}<winCri1(2));
+    evoSpike_preLate = sum(winCri2(1)<evoXptPsdPre{1} & evoXptPsdPre{1}<winCri2(2));
 
     evoSpikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTrack); % Pseudo light Post
     [evoXptPsdPost, ~, ~, ~, ~, ~] = rasterPETH(evoSpikeTime_psdPost,true(size(psdlightPost)),winTrack,binSizeBlue,resolution,1);
-    evoSpike_postEarly = sum(0<evoXptPsdPost{1} & evoXptPsdPost{1}<60);
-    evoSpike_postLate = sum(65<evoXptPsdPost{1} & evoXptPsdPost{1}<125);
+    evoSpike_postEarly = sum(winCri1(1)<evoXptPsdPost{1} & evoXptPsdPost{1}<winCri1(2));
+    evoSpike_postLate = sum(winCri2(1)<evoXptPsdPost{1} & evoXptPsdPost{1}<winCri2(2));
 
     save([cellName,'.mat'],'evoXptTrackLight','evoXptPsdPre','evoXptPsdPost','evoSpike_stmEarly','evoSpike_stmLate','evoSpike_preEarly','evoSpike_preLate','evoSpike_postEarly','evoSpike_postLate','-append');
 end
@@ -61,7 +104,6 @@ for iEvent = 1:nEvent(1)
         spikeTime{iEvent,jEvent} = spikeData(logical(timeIndex))-eventTime(iEvent,jEvent);
     end
 end
-
 function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = rasterPETH(spikeTime, trialIndex, win, binSize, resolution, dot)
 % raterPSTH converts spike time into raster plot
 %   spikeTime: cell array. Each cell contains vector array of spike times per each trial unit is ms.

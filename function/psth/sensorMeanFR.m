@@ -12,8 +12,8 @@ for iCell = 1:nCell
     cd(cellPath);
     
     spikeData = tData{iCell};
-    sensorMeanFR_DRun = meanFR(sensor.S6, sensor.S9, spikeData);
-    sensorMeanFR_DRw = meanFR(sensor.S10, sensor.S11, spikeData);
+    sensorMeanFR_DRun = meanFiringRate(sensor.S6, sensor.S9, spikeData);
+    sensorMeanFR_DRw = meanFiringRate(sensor.S10, sensor.S11, spikeData);
     
     save([cellName,'.mat'],'sensorMeanFR_DRun','sensorMeanFR_DRw','-append');
 end

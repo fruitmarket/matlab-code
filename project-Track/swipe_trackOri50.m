@@ -1,22 +1,7 @@
 %% Directory setup
 rtPath = 'D:\Dropbox\SNL\P2_Track';
-startingDir = {'D:\Projects\Track_151029-4_Rbp6';
-               'D:\Projects\Track_151029-5_Rbp8';
-               'D:\Projects\Track_151213-2_Rbp14';
-               'D:\Projects\Track_160221-1_Rbp16';
-               'D:\Projects\Track_160417-1_Rbp32ori';
-               'D:\Projects\Track_160417-2_Rbp34ori';
-               'D:\Projects\Track_160422-14_Rbp36ori';
-               'D:\Projects\Track_160726-1_Rbp48ori';
-               'D:\Projects\Track_160726-2_Rbp50ori';
-               'D:\Projects\Track_160824-2_Rbp58ori';
-               'D:\Projects\Track_160824-5_Rbp60ori';
-               'D:\Projects\Track_161130-3_Rbp64ori';
-               'D:\Projects\Track_161130-5_Rbp66ori';
-               'D:\Projects\Track_161130-7_Rbp68ori';
-               'D:\Projects\Track_170119-1_Rbp70ori';
-               'D:\Projects\Track_170109-2_Rbp72ori';
-               'D:\Projects\Track_170115-4_Rbp74ori'};
+startingDir = {'D:\Projects\Track_170119-1_Rbp70ori50';
+               'D:\Projects\Track_170109-2_Rbp72ori50'};
 % startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
 
 matFile = [];
@@ -56,28 +41,29 @@ for iPath = 1:nPath
     curPath = iPath;
     cd(filePath{iPath});
 
-%     event2mat_trackori;
+%     event2mat_trackori50;
     
 %     pethSensor;
-%     pethLight;
+%     pethLight50hz;
 %     waveform;
 %     heatMap;
-%     tagstat_trackOri; % newest version
+%     tagstat_trackOri50hz; % newest version
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 %     sensorMeanFR;
 %     analysis_burst6ms;
-%     analysis_wvformCrosscor;
-%     analysis_spatialRaster;
+%     analysis_wvformCrosscor50hz;
+%     analysis_spatialRaster50hz;
 %     analysis_CrossCorr1D;
 %     analysis_plfm_laserIntTest;
-%     laserFreqCheck;
-%     laserSpikeProb;
-%     analysis_detoSpike8hz;
-    analysis_stmzoneSpike;
-%     analysis_laserSpikeChange;
+%     laserFreqCheck50hz;
+%     laserSpikeProb50hz;
+%     analysis_detoSpike50hz;
+%     analysis_stmzoneSpike;
+%     analysis_laserSpikeChange; % Not sure whether the code is useful or not
 %     analysis_findPeakLoci;
-%     plot_Track_sin_v3;
+
+    plot_Track_sin_v50hz;
 
     fclose('all');
     close all;
@@ -85,3 +71,4 @@ end
 
 cd(rtPath);
 disp('### Done! ###');
+clearvars;

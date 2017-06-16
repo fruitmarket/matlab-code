@@ -1,7 +1,8 @@
 %
 %
 clearvars;
-rtDir = 'D:\Dropbox\SNL\P2_Track';
+% rtDir = 'D:\Dropbox\SNL\P2_Track'; % window version
+rtDir = '/Users/Jun/Dropbox/SNL/P2_Track'; % mac version
 cd(rtDir);
 
 load myParameters.mat;

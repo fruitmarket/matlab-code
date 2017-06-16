@@ -2,7 +2,8 @@
 % It draws rapid light activated neurons & delayed activated neurons
 clearvars;
 
-rtDir = 'D:\Dropbox\SNL\P2_Track';
+% rtDir = 'D:\Dropbox\SNL\P2_Track'; % Win version
+rtDir = '/Users/Jun/Dropbox/SNL/P2_Track'; % Mac version
 cd(rtDir);
 
 load('myParameters.mat');
@@ -37,6 +38,7 @@ nLight_20hz = sum(double(T.meanFR<9 & T.pLR_Plfm20hz<alpha));
 nLight_50hz = sum(double(T.meanFR<9 & T.pLR_Plfm50hz<alpha));
 nlight_all = sum(double(T.meanFR<9 & (T.pLR_Plfm1hz<alpha & T.pLR_Plfm2hz<alpha & T.pLR_Plfm8hz<alpha & T.pLR_Plfm20hz<alpha & T.pLR_Plfm50hz<alpha)));
 
+<<<<<<< Updated upstream
 m_1hz = mean(evoSpike1hz_dr);
 m_2hz = mean(evoSpike2hz_dr);
 m_8hz = mean(evoSpike8hz_dr);
@@ -44,12 +46,69 @@ m_20hz = mean(evoSpike20hz_dr);
 m_50hz = mean(evoSpike50hz_dr);
 m_norm_totalSpk = mean(norm_totalSpk);
 
+=======
+<<<<<<< HEAD
+m_1hz = mean(evoSpike1hz);
+m_2hz = mean(evoSpike2hz);
+m_8hz = mean(evoSpike8hz);
+m_20hz = mean(evoSpike20hz);
+m_50hz = mean(evoSpike50hz);
+m_norm_totalSpk = mean(norm_totalSpk,1);
+
+sem_1hz = std(evoSpike1hz)/sqrt(nCell);
+sem_2hz = std(evoSpike2hz)/sqrt(nCell);
+sem_8hz = std(evoSpike8hz)/sqrt(nCell);
+sem_20hz = std(evoSpike20hz)/sqrt(nCell);
+sem_50hz = std(evoSpike50hz)/sqrt(nCell);
+sem_norm_totalSpk = std(norm_totalSpk,0,1)/sqrt(nCell);
+=======
+m_1hz = mean(evoSpike1hz_dr);
+m_2hz = mean(evoSpike2hz_dr);
+m_8hz = mean(evoSpike8hz_dr);
+m_20hz = mean(evoSpike20hz_dr);
+m_50hz = mean(evoSpike50hz_dr);
+m_norm_totalSpk = mean(norm_totalSpk);
+
+>>>>>>> Stashed changes
 sem_1hz = std(evoSpike1hz_dr)/sqrt(nCell);
 sem_2hz = std(evoSpike2hz_dr)/sqrt(nCell);
 sem_8hz = std(evoSpike8hz_dr)/sqrt(nCell);
 sem_20hz = std(evoSpike20hz_dr)/sqrt(nCell);
 sem_50hz = std(evoSpike50hz_dr)/sqrt(nCell);
 sem_norm_totalSpk = std(norm_totalSpk)/sqrt(nCell);
+>>>>>>> origin/master
+
+%% Long delay
+evoSpike1hzLong_idr = T.evoSpike1hz_idr((lightLong));
+evoSpike2hzLong_idr = T.evoSpike2hz_idr((lightLong));
+evoSpike8hzLong_idr = T.evoSpike8hz_idr((lightLong));
+evoSpike20hzLong_idr = T.evoSpike20hz_idr((lightLong));
+evoSpike50hzLong_idr = T.evoSpike50hz_idr((lightLong));
+totalSpkLong = [evoSpike1hzLong_idr,evoSpike2hzLong_idr,evoSpike8hzLong_idr,evoSpike20hzLong_idr,evoSpike50hzLong_idr];
+norm_totalSpkLong = totalSpkLong ./ repmat(max(totalSpkLong,[],2),1,5);
+
+nCellLong = sum(double(lightLong));
+
+nLight_1hzLong = sum(double(T.meanFR<9 & T.pLR_Plfm1hz<alpha));
+nLight_2hzLong = sum(double(T.meanFR<9 & T.pLR_Plfm2hz<alpha));
+nLight_8hzLong = sum(double(T.meanFR<9 & T.pLR_Plfm8hz<alpha));
+nLight_20hzLong = sum(double(T.meanFR<9 & T.pLR_Plfm20hz<alpha));
+nLight_50hzLong = sum(double(T.meanFR<9 & T.pLR_Plfm50hz<alpha));
+nlight_allLong = sum(double(T.meanFR<9 & (T.pLR_Plfm1hz<alpha & T.pLR_Plfm2hz<alpha & T.pLR_Plfm8hz<alpha & T.pLR_Plfm20hz<alpha & T.pLR_Plfm50hz<alpha)));
+
+m_1hzLong = mean(evoSpike1hzLong_idr);
+m_2hzLong = mean(evoSpike2hzLong_idr);
+m_8hzLong = mean(evoSpike8hzLong_idr);
+m_20hzLong = mean(evoSpike20hzLong_idr);
+m_50hzLong = mean(evoSpike50hzLong_idr);
+m_norm_totalSpkLong = mean(norm_totalSpkLong);
+
+sem_1hzLong = std(evoSpike1hzLong_idr)/sqrt(nCellLong);
+sem_2hzLong = std(evoSpike2hzLong_idr)/sqrt(nCellLong);
+sem_8hzLong = std(evoSpike8hzLong_idr)/sqrt(nCellLong);
+sem_20hzLong = std(evoSpike20hzLong_idr)/sqrt(nCellLong);
+sem_50hzLong = std(evoSpike50hzLong_idr)/sqrt(nCellLong);
+sem_norm_totalSpkLong = std(norm_totalSpkLong)/sqrt(nCellLong);
 
 %% Long delay
 evoSpike1hzLong_idr = T.evoSpike1hz_idr((lightLong));
@@ -111,7 +170,15 @@ nRow = 2;
 hHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 6 6]*2);
 % light response population
 hPlot(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.80 0.85],wideInterval));
+<<<<<<< Updated upstream
 plot([1,2,3,4,5],[evoSpike1hz_dr, evoSpike2hz_dr, evoSpike8hz_dr, evoSpike20hz_dr, evoSpike50hz_dr]','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
+=======
+<<<<<<< HEAD
+plot([1,2,3,4,5],[evoSpike1hz, evoSpike2hz, evoSpike8hz, evoSpike20hz, evoSpike50hz]','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
+=======
+plot([1,2,3,4,5],[evoSpike1hz_dr, evoSpike2hz_dr, evoSpike8hz_dr, evoSpike20hz_dr, evoSpike50hz_dr]','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 hold on;
 plot([1,2,3,4,5],[m_1hz, m_2hz, m_8hz, m_20hz, m_50hz],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;

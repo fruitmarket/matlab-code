@@ -8,6 +8,8 @@ startingDir = {'D:\Projects\Track_160824-2_Rbp58freq';
                'D:\Projects\Track_170119-1_Rbp70freq';
                'D:\Projects\Track_170109-2_Rbp72freq';
                'D:\Projects\Track_170115-4_Rbp74freq'};
+
+formatOut = 'yymmdd';
 matFile = [];
 nDir = size(startingDir,1);
 for iDir = 1:nDir
@@ -15,7 +17,7 @@ for iDir = 1:nDir
     matFile = [matFile; tempmatFile];
 end
 nFile = length(matFile);
-
+%% matfile output
 T = table();
 for iFile = 31:nFile % 1hz2hz8hz20hz50hz starts from 31
     load(matFile{iFile});
@@ -41,7 +43,7 @@ for iFile = 31:nFile % 1hz2hz8hz20hz50hz starts from 31
         evoSpike1hz_dr,evoSpike2hz_dr,evoSpike8hz_dr,evoSpike20hz_dr,evoSpike50hz_dr,...
         lightProb1hz_idr,lightProb2hz_idr,lightProb8hz_idr,lightProb20hz_idr,lightProb50hz_idr,...
         evoSpike1hz_idr,evoSpike2hz_idr,evoSpike8hz_idr,evoSpike20hz_idr,evoSpike50hz_idr,...
-        evoDetoSpk1hz,detoProb1hz,evoDetoSpk2hz,detoSpk2hz,evoDetoSpk8hz,detoProb8hz,evoDetoSpk20hz,detoProb20hz,evoDetoSpk50hz,detoProb50hz,... % analysis_freq_detoSpike
+        evoDetoSpk1hz,detoProb1hz,evoDetoSpk2hz,detoProb2hz,evoDetoSpk8hz,detoProb8hz,evoDetoSpk20hz,detoProb20hz,evoDetoSpk50hz,detoProb50hz,... % analysis_freq_detoSpike
         xptLight, yptLight, pethtimeLight, pethLight, pethConvLight, pethConvZLight, nLight, lightSpk,meanFR,... % analysis_freq_pethLight
         spkwv,spkwth,spkpvr,hfvwth);
                 
@@ -49,8 +51,23 @@ for iFile = 31:nFile % 1hz2hz8hz20hz50hz starts from 31
     fclose('all');
 end
 cd(rtPath);
-formatOut = 'yymmdd';
 save(['neuronList_freq_',datestr(now,formatOut),'.mat'],'T');
+
+%% Excel output
+T = table();
+for iFile = 31:nFile
+    load(matFile{iFile});
+    
+    path = matFile(iFile);
+    fileSeg = strsplit(matFile{iFile},{'\','_'});
+    mouseLine = categorical(cellstr(fileSeg{5}));
+    cellID = (iFile-30)';
+    
+    temT = table(mouseLine, path, cellID);
+
+    T = [T; temT];
+    fclose('all');
+end
 writetable(T,['neuronList_freq_',datestr(now,formatOut),'.xlsx']);
 disp('##### Done! #####');
 clearvars;

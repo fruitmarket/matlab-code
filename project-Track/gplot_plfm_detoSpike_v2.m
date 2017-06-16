@@ -8,9 +8,9 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load('myParameters.mat');
-Txls = readtable('neuronList_freq_170608.xlsx');
+Txls = readtable('neuronList_freq_170613.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
-load('neuronList_freq_170608.mat');
+load('neuronList_freq_170613.mat');
 
 folder = {'C:\Users\Jun\Desktop\platform_resp';
           'C:\Users\Jun\Desktop\platform_noresp'};

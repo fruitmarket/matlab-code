@@ -15,7 +15,7 @@ Txls.latencyIndex = categorical(Txls.latencyIndex);
 
 alpha = 0.01;
 alpha2 = alpha/5;
-cSpkpvr = 1.4;
+cSpkpvr = 1.2;
 %% Light responsive population
 lightCri = T.spkpvr>cSpkpvr & (T.pLR_Plfm1hz<alpha2 | T.pLR_Plfm2hz<alpha2 | T.pLR_Plfm8hz<alpha2 | T.pLR_Plfm20hz<alpha2 | T.pLR_Plfm50hz<alpha2);
 lightShort = T.spkpvr>cSpkpvr & Txls.latencyIndex == 'rapid';
@@ -136,7 +136,7 @@ set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontS
 set(hPlot,'YLim',[-1,50]);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig1_frequencyTest_','.tif']);
+print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig1_frequencyTest','.tif']);
 % print('-painters','-r300','-depsc',['fig1_frequencyTest_',datestr(now,formatOut),'.ai']);
 % close();
 

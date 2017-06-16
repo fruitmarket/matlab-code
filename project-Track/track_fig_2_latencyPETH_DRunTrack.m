@@ -4,15 +4,15 @@
 % common part
 clearvars;
 
-cd('D:\Dropbox\SNL\P2_Track');
-Txls = readtable('neuronList_ori_170526.xlsx');
-% load('neuronList_ori_21-Mar-2017.mat');
-load('neuronList_ori_170526.mat');
+% cd('D:\Dropbox\SNL\P2_Track'); % win version
+cd('/Users/Jun/Dropbox/SNL/P2_Track'); % mac version
+Txls = readtable('neuronList_ori_170606.xlsx');
+load('neuronList_ori_170606.mat');
 load myParameters.mat;
 
 cMeanFR = 9;
 cMaxPeakFR = 1;
-cSpkpvr = 1.1;
+cSpkpvr = 1.2;
 alpha = 0.01;
 
 condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
@@ -41,9 +41,9 @@ IN_actDelay = DRunIN & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTrack
 IN_ina = DRunIN & T.pLR_Track<alpha & T.statDir_Track == -1;
 IN_no = DRunIN & T.pLR_Track>alpha;
 
-% fileName = T.path(PN_actDelay);
-% cellID = Txls.cellID(PN_actDelay);
-% plot_Track_multi_v3(fileName, cellID, 'C:\Users\Jun\Desktop\DRw_delay');
+fileName = T.path(PN_actDelay);
+cellID = Txls.cellID(PN_actDelay);
+plot_Track_multi_v3(fileName, cellID, 'C:\Users\Jun\Desktop\DRw_delay');
 %% PETH
 DRunPN_act_pethTrack = cell2mat(T.pethTrack8hz(PN_act));
 DRunPN_actRapid_pethTrack = cell2mat(T.pethTrack8hz(PN_actRapid));

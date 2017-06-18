@@ -1,6 +1,5 @@
 % Frequency dependency on platform
 % the function plot Frequency Vs. spike probability
-%
 clearvars;
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
@@ -10,13 +9,16 @@ load('myParameters.mat');
 Txls = readtable('neuronList_freq_170613.xlsx');
 load('neuronList_freq_170613.mat');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
-
 % folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
 alpha = 0.01;
 alpha2 = alpha/5;
 cSpkpvr = 1.2;
+
 %% Light responsive population
+listPN = T.spkpvr > cSpkpvr;
+listIN = ~listPN;
+
 lightCri = T.spkpvr>cSpkpvr & (T.pLR_Plfm1hz<alpha2 | T.pLR_Plfm2hz<alpha2 | T.pLR_Plfm8hz<alpha2 | T.pLR_Plfm20hz<alpha2 | T.pLR_Plfm50hz<alpha2);
 lightShort = T.spkpvr>cSpkpvr & Txls.latencyIndex == 'rapid';
 lightLong = T.spkpvr>cSpkpvr & Txls.latencyIndex == 'delay';
@@ -33,12 +35,12 @@ lightProb50hz_dr = T.lightProb50hz_dr((lightShort));
 
 nCell_dr = sum(double(lightShort));
 
-nLight_1hz = sum(double(T.spkpvr>cSpkpvr & T.pLR_Plfm1hz<alpha));
-nLight_2hz = sum(double(T.spkpvr>cSpkpvr & T.pLR_Plfm2hz<alpha));
-nLight_8hz = sum(double(T.spkpvr>cSpkpvr & T.pLR_Plfm8hz<alpha));
-nLight_20hz = sum(double(T.spkpvr>cSpkpvr & T.pLR_Plfm20hz<alpha));
-nLight_50hz = sum(double(T.spkpvr>cSpkpvr & T.pLR_Plfm50hz<alpha));
-nlight_all = sum(double(T.spkpvr>cSpkpvr & (T.pLR_Plfm1hz<alpha & T.pLR_Plfm2hz<alpha & T.pLR_Plfm8hz<alpha & T.pLR_Plfm20hz<alpha & T.pLR_Plfm50hz<alpha)));
+nLight_1hz = sum(double(listPN & T.pLR_Plfm1hz<alpha));
+nLight_2hz = sum(double(listPN & T.pLR_Plfm2hz<alpha));
+nLight_8hz = sum(double(listPN & T.pLR_Plfm8hz<alpha));
+nLight_20hz = sum(double(listPN & T.pLR_Plfm20hz<alpha));
+nLight_50hz = sum(double(listPN & T.pLR_Plfm50hz<alpha));
+nlight_all = sum(double(listPN & (T.pLR_Plfm1hz<alpha & T.pLR_Plfm2hz<alpha & T.pLR_Plfm8hz<alpha & T.pLR_Plfm20hz<alpha & T.pLR_Plfm50hz<alpha)));
 
 m_1hz_dr = mean(lightProb1hz_dr);
 m_2hz_dr = mean(lightProb2hz_dr);

@@ -123,7 +123,15 @@ T = table();
 for iFile = 1:nFile
     load(matFile{iFile});
     
+    path = matFile(iFile);
+    dateSession = strsplit(matFile{iFile},{'\'});
+    tetLocation = strsplit(dateSession{4},'_');
+    tetLocation = categorical(cellstr(tetLocation{2}));
+    fileSeg = strsplit(matFile{iFile},{'\','_'});
     cellID = iFile;
+%     mouseLine = categorical(cellstr(fileSeg{5}));
+    taskType = categorical(cellstr(fileSeg{9}));
+    
     temT = table(path,cellID,taskType,tetLocation);
 
     T = [T; temT];

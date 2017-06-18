@@ -50,48 +50,48 @@ noIN_peth = cell2mat(T.pethLight(lightNoIN));
 %% Mean & SEM
 nactPN = size(actPN_peth,1);
 m_actPN_peth = mean(actPN_peth,1);
-sem_actPN_peth = std(actPN_peth,1)/sqrt(nactPN);
+sem_actPN_peth = std(actPN_peth,0,1)/sqrt(nactPN);
 
 nactRPN = size(actRPN_peth,1);
 m_actRPN_peth = mean(actRPN_peth,1);
-sem_actRPN_peth = std(actRPN_peth,1)/sqrt(nactRPN);
+sem_actRPN_peth = std(actRPN_peth,0,1)/sqrt(nactRPN);
 
 nactDPN = size(actDPN_peth,1);
 m_actDPN_peth = mean(actDPN_peth,1);
-sem_actDPN_peth = std(actDPN_peth,1)/sqrt(nactDPN);
+sem_actDPN_peth = std(actDPN_peth,0,1)/sqrt(nactDPN);
 
 nactDBPN = size(actDBPN_peth,1); % double activated (both direct, indirect)
 m_actDBPN_peth = mean(actDBPN_peth,1);
-sem_actDBPN_peth = std(actDBPN_peth,1)/sqrt(nactDBPN);
+sem_actDBPN_peth = std(actDBPN_peth,0,1)/sqrt(nactDBPN);
 
 ninactPN = size(inactPN_peth,1);
 m_inactPN_peth = mean(inactPN_peth,1);
-sem_inactPN_peth = std(inactPN_peth,1)/sqrt(ninactPN);
+sem_inactPN_peth = std(inactPN_peth,0,1)/sqrt(ninactPN);
 
 nnoPN = size(noPN_peth,1);
 m_noPN_peth = mean(noPN_peth,1);
-sem_noPN_peth = std(noPN_peth,1)/sqrt(nnoPN);
+sem_noPN_peth = std(noPN_peth,0,1)/sqrt(nnoPN);
 
 % Interneuron
 nactIN = size(actIN_peth,1);
 m_actIN_peth = mean(actIN_peth,1);
-sem_actIN_peth = std(actIN_peth,1)/sqrt(nactIN);
+sem_actIN_peth = std(actIN_peth,0,1)/sqrt(nactIN);
 
 nactRIN = size(actRIN_peth,1);
 m_actRIN_peth = mean(actRIN_peth,1);
-sem_actRIN_peth = std(actRIN_peth,1)/sqrt(nactRIN);
+sem_actRIN_peth = std(actRIN_peth,0,1)/sqrt(nactRIN);
 
 nactDIN = size(actDIN_peth,1);
 m_actDIN_peth = mean(actDIN_peth,1);
-sem_actDIN_peth = std(actDIN_peth,1)/sqrt(nactDIN);
+sem_actDIN_peth = std(actDIN_peth,0,1)/sqrt(nactDIN);
 
 ninactIN = size(inactIN_peth,1);
 m_inactIN_peth = mean(inactIN_peth,1);
-sem_inactIN_peth = std(inactIN_peth,1)/sqrt(ninactIN);
+sem_inactIN_peth = std(inactIN_peth,0,1)/sqrt(ninactIN);
 
 nnoIN = size(noIN_peth,1);
 m_noIN_peth = mean(noIN_peth,1);
-sem_noIN_peth = std(noIN_peth,1)/sqrt(nnoIN);
+sem_noIN_peth = std(noIN_peth,0,1)/sqrt(nnoIN);
 
 %% Plot
 % Pyramidal neuron

@@ -9,12 +9,15 @@ function pethLight()
 
 % Task variables
 resolution = 10; % sigma = resoution * binSize = 100 msec
-winTrack = [0 125];
+resolution_psd = 2;
+binSizeBlue = 2;
+
+winTrack = [-25 100];
+winTrackPsd = [0 125];
 
 % Plfm variables
 winPlfm2hz = [-25 475]; % unit: msec
-winPlfm8hz = [0 125];
-binSizeBlue = 2;
+winPlfm8hz = [-25 100];
 
 winCri = 20; % light effect criteria: 20ms
 
@@ -44,14 +47,19 @@ for iCell = 1:nCell
     
 % Pseudo light (On track)
     if exist('psdlightPre','var') && exist('psdlightPost','var')
-        spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTrack); % Pseudo light Pre
-        [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTrack,binSizeBlue,resolution,1);
-        spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTrack); % Pseudo light Post
-        [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTrack,binSizeBlue,resolution,1);
+        spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTrackPsd); % Pseudo light Pre
+        [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTrackPsd,binSizeBlue,resolution_psd,1);
+        spikeTime_psdStm = spikeWin(tData{iCell},lightTime.Track8hz,winTrackPsd); % Pseudo light Pre
+        [xptPsdStm, yptPsdStm, pethtimePsdStm, pethPsdStm,pethPsdStmConv,pethPsdStmConvZ] = rasterPETH(spikeTime_psdStm,true(size(lightTime.Track8hz)),winTrackPsd,binSizeBlue,resolution_psd,1);
+        spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTrackPsd); % Pseudo light Post
+        [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTrackPsd,binSizeBlue,resolution_psd,1);
         psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<winCri);
+        psdStmSpk = sum(0<xptPsdStm{1} & xptPsdStm{1}<winCri);
         psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<winCri);
         
-        save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','psdPreSpk','pethPsdPreConv','pethPsdPreConvZ','xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
+        save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','psdPreSpk','pethPsdPreConv','pethPsdPreConvZ',...
+            'xptPsdStm', 'yptPsdStm', 'pethtimePsdStm', 'pethPsdStm', 'pethPsdStmConv', 'pethPsdStmConvZ',...
+            'xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
     end
     
 % Light (Plfm) 8mw analysis [201:400]

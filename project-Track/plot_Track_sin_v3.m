@@ -102,7 +102,7 @@ for iFile = 1:nFile
     if isfield(lightTime,'Plfm2hz') && exist('xptPlfm2hz','var');
         lightDuration = 10;
         lightDurationColor = {colorLLightBlue, colorLightGray};
-        testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
+        testRangeChETA = 8; % ChETA light response test range (ex. 10ms)       
     end
     if isfield(lightTime,'Plfm2hz') && exist('xptPlfm2hz','var') && ~isempty(xptPlfm2hz)
         nBlue = length(lightTime.Plfm2hz)/3;
@@ -147,7 +147,7 @@ for iFile = 1:nFile
     if isfield(lightTime,'Plfm8hz') && ~isempty(lightTime.Plfm8hz) && exist('xptPlfm8hz','var')
         lightDuration = 10;
         lightDurationColor = {colorLLightBlue, colorLightGray};
-        testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
+        testRangeChETA = 8; % ChETA light response test range (ex. 10ms)       
     end
     if isfield(lightTime,'Plfm8hz') && ~isempty(lightTime.Plfm8hz)&& exist('xptPlfm8hz','var')
         nBlue = length(lightTime.Plfm8hz);
@@ -332,10 +332,10 @@ for iFile = 1:nFile
         ylabel('Light trial','FontSize',fontM);
         title('Track light response (Psd-L-Psd)','FontSize',fontL,'FontWeight','bold');  
     hTrackLight(2) = axes('Position',axpt(1,8,1,7:8,axpt(nCol,nRow,7:10,5:7,[0.10 0.11 0.85 0.85],tightInterval),wideInterval));
-        ylimpeth = ceil(max([pethPsdPreConv,pethTrackLightConv,pethPsdPostConv])*1.1+0.0001);
+        ylimpeth = ceil(max([pethPsdPreConv,pethPsdStmConv,pethPsdPostConv])*1.1+0.0001);
         hold on;
         plot(pethtimePsdPre,pethPsdPreConv,'LineStyle','-','LineWidth',lineM,'Color',colorGray);
-        plot(pethtimeTrackLight,pethTrackLightConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlue);
+        plot(pethtimePsdStm,pethPsdStmConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlue);
         plot(pethtimePsdPost,pethPsdPostConv,'LineStyle','-','LineWidth',lineM,'Color',colorBlack);
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Time (ms)','FontSize',fontM);
@@ -527,7 +527,7 @@ end
         text(xLimCSC(1), yLimCSC_Plfm8hz(2),'LFP (Plfm 8hz)','fontSize',fontM);
         set(hLFP(3),'Xlim',xLimCSC,'XTick',[],'YLim',yLimCSC_Plfm8hz,'fontSize',fontM);
     end
-    set(hLFP,'Box','off','TickDir','out');
+    set(hLFP,'Box','off','TickDir','out','visible','off');
 
 % Spectrogram (aligned on sensor onset)
 %     load(['CSC','.mat']);

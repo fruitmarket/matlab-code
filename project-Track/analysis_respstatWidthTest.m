@@ -35,7 +35,7 @@ for iCell = 1:nCell
 % pLR_Plfm2hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm2hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than spkCri, do not calculate pLR
         pLR_Plfm2hz = 1;
-        [statDir_Plfm2hz, latencyPlfm2hz, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(0);
+        [statDir_Plfm2hz, latency1st, latency2nd, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(NaN);
     else
         for iWin = 1:length(movingWin)
             [timePlfm2hz, censorPlfm2hz] = tagDataLoad(spikeData, lightTime.width10+movingWin(iWin), testRange2hz, baseRange2hz);
@@ -75,29 +75,56 @@ for iCell = 1:nCell
         end
         
 % Modulation direction (Platform)
-        if H1_Plfm2hz(end)>H2_Plfm2hz(end)
-            statDir_Plfm2hz = 1;
-        elseif H1_Plfm2hz(end)<H2_Plfm2hz(end)
-            statDir_Plfm2hz = -1;            
+        if pLR_Plfm2hz < alpha
+            if H1_Plfm2hz(end)>H2_Plfm2hz(end)
+                statDir_Plfm2hz = 1;
+            else
+                statDir_Plfm2hz = -1;            
+            end
         else
             statDir_Plfm2hz = 0;
         end
         
 % Latency (Platform) 
-        switch (statDir_Plfm2hz)
-            case 1 % activation
-                temp_latencyPlfm2hz = cellfun(@min,spkLatency_Plfm2hz,'UniformOutput',false);
-                temp_latencyPlfm2hz = nanmedian(cell2mat(temp_latencyPlfm2hz));
-            case -1 % inactivation
-                temp_latencyPlfm2hz = cellfun(@max,spkLatency_Plfm2hz,'UniformOutput',false);
-                temp_latencyPlfm2hz = nanmedian(cell2mat(temp_latencyPlfm2hz));
-            case 0
-                temp_latencyPlfm2hz = 0;
-        end
-        latencyPlfm2hz = temp_latencyPlfm2hz;
+        spkCriteria_Plfm2hz = spikeWin(spikeData,lightTime.width10,[0,20]);
+        win = [0 20];
+        binSize = 2;
+        resolution = 10; 
+        [~,~,~,peth2hz,~,~] = rasterPSTH(spkCriteria_Plfm2hz,true(size(lightTime.width10)),win,binSize,resolution,1);
+        if pLR_Plfm2hz < alpha;
+            [~, loc1hz] = findpeaks(peth2hz,'minpeakheight',10);
+            switch (statDir_Plfm2hz)
+                case 1
+                    if length(loc1hz) == 2
+                        spkLatency1st = spikeWin(spikeData,lightTime.width10,[0,9]);
+                        latency1st = cellfun(@min,spkLatency1st,'UniformOutput',false);
+                        latency1st = nanmedian(cell2mat(latency1st));
+
+                        spkLatency2nd = spikeWin(spikeData,lightTime.width10,[11,20]);
+                        latency2nd = cellfun(@min,spkLatency2nd,'UniformOutput',false);
+                        latency2nd = nanmedian(cell2mat(latency2nd));
+                    else
+                        spkLatency1st = spikeWin(spikeData,lightTime.width10,[0,20]);
+                        latency1st = cellfun(@min,spkLatency1st,'UniformOutput',false);
+                        latency1st = nanmedian(cell2mat(latency1st));
+                        latency2nd = NaN;
+                    end
+                case -1
+                        spkLatency1st = spikeWin(spikeData,lightTime.width10,[0,20]);
+                        latency1st = cellfun(@max,spkLatency1st,'UniformOutput',false);
+                        latency1st = nanmedian(cell2mat(latency1st));
+                        latency2nd = NaN;
+                case 0
+                    latency1st = NaN;
+                    latency2nd = NaN;
+            end
+        else
+            latency1st = NaN;
+            latency2nd = NaN;
+        end 
     end
     
-    save([cellName,'.mat'],'pLR_Plfm2hz','timeLR_Plfm2hz','H1_Plfm2hz','H2_Plfm2hz','calibPlfm2hz','statDir_Plfm2hz','latencyPlfm2hz','-append')
+    save([cellName,'.mat'],'pLR_Plfm2hz','timeLR_Plfm2hz','H1_Plfm2hz','H2_Plfm2hz','calibPlfm2hz','statDir_Plfm2hz','latency1st','latency2nd','-append')
         
 end
 disp('### RespStatTest & Latency calculation are done!');

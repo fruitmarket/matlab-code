@@ -45,7 +45,7 @@ nPath = length(filePath);
 for iPath = 1:nPath
     cd(filePath{iPath});
     
-    event2mat_pulse;
+%     event2mat_pulse;
 
 %     analysis_laserWidthTest;
 %     analysis_respstatWidthTest;

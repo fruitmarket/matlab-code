@@ -97,7 +97,7 @@ for iFile = 1:nFile
     if isfield(lightTime,'Plfm2hz') && exist('xptPlfm2hz','var');
         lightDuration = 10;
         lightDurationColor = {colorLLightBlue, colorLightGray};
-        testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
+        testRangeChETA = 8; % ChETA light response test range (ex. 10ms)       
     end
     if isfield(lightTime,'Plfm2hz') && exist('xptPlfm2hz','var') && ~isempty(xptPlfm2hz)
         nBlue = length(lightTime.Plfm2hz)/3;
@@ -143,7 +143,7 @@ for iFile = 1:nFile
     if isfield(lightTime,'Plfm8hz') && ~isempty(lightTime.Plfm8hz)
         lightDuration = 10;
         lightDurationColor = {colorLLightBlue, colorLightGray};
-        testRangeChETA = 10; % ChETA light response test range (ex. 10ms)       
+        testRangeChETA = 8; % ChETA light response test range (ex. 10ms)       
     end
     if isfield(lightTime,'Plfm8hz') && ~isempty(lightTime.Plfm8hz)
         nBlue = length(lightTime.Plfm8hz);
@@ -189,7 +189,7 @@ for iFile = 1:nFile
 % Response check: Track
     if isfield(lightTime,'Track8hz') && exist('xptTrackLight','var') && ~isempty(xptTrackLight)
         nBlue = length(lightTime.Track8hz);
-        winBlue = [min(pethtimeTrackLight) max(pethtimeTrackLight)];
+        winBlue = [-25 100];
     % Raster
         hTrackBlue(1) = axes('Position',axpt(2,8,1,1:2,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.82 0.75],tightInterval),wideInterval));
         plot(xptTrackLight{1},yptTrackLight{1},'LineStyle','none','Marker','.','MarkerSize',markerS,'Color','k');
@@ -211,7 +211,7 @@ for iFile = 1:nFile
         text(sum(winBlue)*0.3,yLimBarBlue*0.9,['latency = ', num2str(latencyTrack1st,3)],'FontSize',fontM,'interpreter','none');
 %         text(sum(winBlue)*0.85,yLimBarBlue*0.9,['p_lat = ',num2str(pLatencyModu_first,3)],'FontSize',fontM,'interpreter','none');
         set(hBarBlue, 'FaceColor','k', 'EdgeAlpha',0);
-        set(hTrackBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1), 0, winBlue(2)],'XTickLabel',{winBlue(1);0;num2str(winBlue(2))},...
+        set(hTrackBlue(2), 'XLim', winBlue, 'XTick', [winBlue(1), 0, winBlue(2)],'XTickLabel',{winBlue(1); 0; num2str(winBlue(2))},...
             'YLim', [0 yLimBarBlue], 'YTick', [0 yLimBarBlue], 'YTickLabel', {[], yLimBarBlue});
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Time (ms)','FontSize',fontM);
@@ -306,7 +306,7 @@ for iFile = 1:nFile
     
 % Track light response raster plot (aligned on pseudo light - light - pseudo light)
     hTrackLight(1) = axes('Position',axpt(1,8,1,5:6,axpt(nCol,nRow,7:10,5:7,[0.10 0.11 0.85 0.85],tightInterval),wideInterval));
-        plot([xptPsdPre{1}, xptTrackLight{1}, xptPsdPost{1}],[yptPsdPre{1}, (length(psdlightPre)+yptTrackLight{1}), (sum([length(psdlightPre),length(lightTime.Track8hz)])+yptPsdPost{1})],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
+        plot([xptPsdPre{1}, xptPsdStm{1}, xptPsdPost{1}],[yptPsdPre{1}, (length(psdlightPre)+yptPsdStm{1}), (sum([length(psdlightPre),length(lightTime.Track8hz)])+yptPsdPost{1})],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
         if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw'))
             rec = rectangle('Position',[0.5 length(psdlightPre)+1, 10, length(lightTime.Track8hz)], 'LineStyle','none','FaceColor',lightDurationColor{1});
         end
@@ -334,8 +334,8 @@ for iFile = 1:nFile
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Time (ms)','FontSize',fontM);
         align_ylabel(hTrackLight);
-    set(hTrackLight(1),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-25 100],'XTick',[],'YLim',[0, sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])],'YTick',[0,length(psdlightPre),sum([length(psdlightPre),length(lightTime.Track8hz)]),sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])]);
-    set(hTrackLight(2),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-25, 100],'XTick',[-25,0,10,30,50,100],'YLim',[0, max(ylimpeth)]);
+    set(hTrackLight(1),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0 125],'XTick',[],'YLim',[0, sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])],'YTick',[0,length(psdlightPre),sum([length(psdlightPre),length(lightTime.Track8hz)]),sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])]);
+    set(hTrackLight(2),'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0,125],'XTick',[0,10,30,50,100,125],'YLim',[0, max(ylimpeth)]);
     
 if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'))
     iSensor1 = 6; % Light on sensor

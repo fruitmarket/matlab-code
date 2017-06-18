@@ -23,7 +23,7 @@ condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(is
 condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
 condiIN = ~condiPN;
 
-folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
+% folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 %% Session compare
 % compareID = ~isnan(T.compCellID); % find non-nan index
 % nComp = max(T.compCellID(compareID));

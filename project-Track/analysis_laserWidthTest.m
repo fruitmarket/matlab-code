@@ -4,11 +4,11 @@ resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
 % winSpike = [-25 200]; % unit: msec
-winSpike = [-200 300]; % unit: msec
+winSpike = [-100 400]; % unit: msec
 binSize = 2;
-winLight_10ms = 30;
-winLight_20ms = 40;
-winLight_50ms = 70;
+winLight_10ms = 20;
+winLight_20ms = 30;
+winLight_50ms = 60;
 
 [tData, tList] = tLoad;
 nCell = length(tList);

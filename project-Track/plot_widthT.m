@@ -1,4 +1,4 @@
-function plot_LightPulse()
+function plot_widthT()
 lineColor = {[144, 164, 174]./255,... % Before stimulation
     [33 150 243]./ 255,... % During stimulation
     [38, 50, 56]./255}; % After stimulation

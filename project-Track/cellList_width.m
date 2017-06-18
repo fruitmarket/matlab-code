@@ -11,6 +11,7 @@ startingDir = {'D:\Projects\Track_160726-1_Rbp48pulse';
                'D:\Projects\Track_170109-2_Rbp72pulse';
                'D:\Projects\Track_170115-4_Rbp74pulse'};
 
+formatOut = 'yymmdd';
 matFile = [];
 nDir = size(startingDir,1);
 for iDir = 1:nDir
@@ -26,6 +27,7 @@ for iFile = 1:nFile
     path = matFile(iFile);
     fileSeg = strsplit(matFile{iFile},{'\','_'});
     mouseLine = categorical(cellstr(fileSeg{5}));
+    cellID = (iFile)';
     
     xpt10ms = {xpt10ms};
     ypt10ms = {ypt10ms};
@@ -50,18 +52,35 @@ for iFile = 1:nFile
     
     spkwv = {spkwv};
     
-    temT = table(mouseLine,path,...
+    temT = table(mouseLine,path,cellID,...
         meanFR10,meanFR20,meanFR50,...
         xpt10ms,ypt10ms,pethtime10ms,peth10ms,pethConv10ms,pethConvZ10ms,nlight10ms,lightspk10ms,...
         xpt20ms,ypt20ms,pethtime20ms,peth20ms,pethConv20ms,pethConvZ20ms,nlight20ms,lightspk20ms,...
         xpt50ms,ypt50ms,pethtime50ms,peth50ms,pethConv50ms,pethConvZ50ms,nlight50ms,lightspk50ms,...
-        pLR_Plfm2hz,statDir_Plfm2hz,latencyPlfm2hz,...  % tagstatTrack_poster
+        pLR_Plfm2hz,statDir_Plfm2hz,latency1st,latency2nd,...  % tagstatTrack_poster
         spkwv,spkwth,spkpvr,hfvwth);
                 
     T = [T; temT];
     fclose('all');
 end
 cd(rtPath);
+save(['neuronList_width_',datestr(now,formatOut),'.mat'],'T');
 
-formatOut = 'yymmdd';
-save(['neuronList_pulse_',datestr(now,formatOut),'.mat'],'T');
+%% Excel output
+T = table();
+for iFile = 1:nFile
+    load(matFile{iFile});
+    
+    path = matFile(iFile);
+    fileSeg = strsplit(matFile{iFile},{'\','_'});
+    mouseLine = categorical(cellstr(fileSeg{5}));
+    cellID = (iFile)';
+    
+    temT = table(mouseLine, path, cellID);
+
+    T = [T; temT];
+    fclose('all');
+end
+writetable(T,['neuronList_width_',datestr(now,formatOut),'.xlsx']);
+disp('##### Done! #####');
+clearvars;

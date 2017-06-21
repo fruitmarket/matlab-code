@@ -2,7 +2,7 @@ function analysis_detoSpike8hz()
 % m_deto_spkTrack8hz or Plfm8hz: mean number of spikes activated by each light
 %
 %
-winCri = [0, 20]; % time duration which are interested in
+winCri = [0, 10]; % time duration which are interested in
 [tData, tList] = tLoad;
 nCell = length(tList);
 nLap = 30;

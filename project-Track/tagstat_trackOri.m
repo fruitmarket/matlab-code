@@ -6,7 +6,7 @@ testRange8hz = 8;
 testRange2hz = 8;
 
 baseRange8hz = 100;
-baseRange2hz = 480;
+baseRange2hz = 400;
 
 spkCriPlfm = 10;
 spkCriTrack = 10; % spikes should be more than 10

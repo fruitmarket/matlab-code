@@ -46,21 +46,6 @@ IN_actIndirect = DRunIN & T.pLR_Track<alpha & T.statDir_Track == 1 & T.latencyTr
 IN_ina = DRunIN & T.pLR_Track<alpha & T.statDir_Track == -1;
 IN_no = DRunIN & T.pLR_Track>alpha;
 
-fileName = T.path(DRunPN);
-cellID = Txls.cellID(DRunPN);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRun\PN');
-
-fileName = T.path(DRunIN);
-cellID = Txls.cellID(DRunIN);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRun\IN');
-
-fileName = T.path(DRwPN);
-cellID = Txls.cellID(DRwPN);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRw\PN');
-
-fileName = T.path(DRwIN);
-cellID = Txls.cellID(DRwIN);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRw\IN');
 %% PETH
 DRunPN_act_pethTrack = cell2mat(T.pethTrack8hz(PN_act));
 DRunPN_actRapid_pethTrack = cell2mat(T.pethTrack8hz(PN_actDirect));

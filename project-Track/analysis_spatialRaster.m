@@ -17,7 +17,7 @@ load('Events.mat','sensor','trialIndex','lightTime','reward2','reward4');
 % Linearize position data
 [realDist, theta, timeTrack, eventPosition, numOccu] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
 numOccu = numOccu';
-    
+
 % align spike time to position time
 for iCell = 1:nCell
     disp(['### Spatial raster analysis: ',tList{iCell},'...']);

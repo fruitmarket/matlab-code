@@ -30,7 +30,7 @@ for iCell = 1:nCell
     cd(cellPath);
     
     % Load Events variables
-    load('Events.mat');    
+    load('Events.mat');
     % Load spike data
     % tData{iCell} unit: msec
 
@@ -106,7 +106,6 @@ for iEvent = 1:nEvent(1)
         spikeTime{iEvent,jEvent} = spikeData(logical(timeIndex))-eventTime(iEvent,jEvent);
     end
 end
-
 function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = rasterPETH(spikeTime, trialIndex, win, binSize, resolution, dot)
 % raterPSTH converts spike time into raster plot
 %   spikeTime: cell array. Each cell contains vector array of spike times per each trial unit is ms.

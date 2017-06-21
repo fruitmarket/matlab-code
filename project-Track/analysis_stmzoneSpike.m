@@ -32,7 +32,12 @@ for iCell = 1:nCell
     std_stmzoneSpike(1,1) = std(spikeNum(1:30));
     std_stmzoneSpike(2,1) = std(spikeNum(31:60));
     std_stmzoneSpike(3,1) = std(spikeNum(61:90));
+
+% stay time in stm zone
+    temp_dTime = sensorOff-sensorOn;
+    diffTime = [mean(temp_dTime(1:30)), mean(temp_dTime(31:60)), mean(temp_dTime(61:90))]/mean(temp_dTime(1:30)); % normalized by PRE time
+    timeIn_stmZone = round(diffTime*100)/100;
     
-    save([cellName,'.mat'],'stmzoneSpike','m_stmzoneSpike','std_stmzoneSpike','-append');
+    save([cellName,'.mat'],'stmzoneSpike','m_stmzoneSpike','std_stmzoneSpike','timeIn_stmZone','-append');
 end
 disp('### Calculating stmzone total spike is done!')

@@ -57,17 +57,18 @@ for iCell = 1:nCell
             [timePlfm2hz, censorPlfm2hz] = tagDataLoad(spikeData, lightTime.Plfm2hz(201:400)+movingWin(iWin), testRange2hz, baseRange2hz);
             [pLR_Plfm2hzTemp,timeLR_Plfm2hzT{iWin,1},H1_Plfm2hzT{iWin,1},H2_Plfm2hzT{iWin,1}] = logRankTest(timePlfm2hz, censorPlfm2hz); % H1: light induced firing H2: baseline
             if isempty(pLR_Plfm2hzTemp)
-                pLR_Plfm2hzTemp = 1;
+                pLR_Plfm2hzTemp = NaN;
             end
             pLR_Plfm2hzT(iWin,1) = pLR_Plfm2hzTemp;
         end
         idxPlfm2hz = find(pLR_Plfm2hzT<alpha,1,'first');
         if isempty(idxPlfm2hz)
             idxPlfm2hz = 1;
+        else
+            idxH1_Plfm2hz = find(~cellfun(@isempty,H1_Plfm2hzT));
+            idxH2_Plfm2hz = find(~cellfun(@isempty,H2_Plfm2hzT));
+            idxcom_Plfm2hz = idxH1_Plfm2hz(idxH1_Plfm2hz == idxH2_Plfm2hz);
         end
-        idxH1_Plfm2hz = find(~cellfun(@isempty,H1_Plfm2hzT));
-        idxH2_Plfm2hz = find(~cellfun(@isempty,H2_Plfm2hzT));
-        idxcom_Plfm2hz = idxH1_Plfm2hz(idxH1_Plfm2hz == idxH2_Plfm2hz);
         for iTest = 1:length(idxcom_Plfm2hz)
             testPlfm(iTest) = all((H1_Plfm2hzT{iTest,:}-H2_Plfm2hzT{iTest,:}) >= -max(H1_Plfm2hzT{iTest,:})*allowance) | all((H2_Plfm2hzT{iTest,:}-H1_Plfm2hzT{iTest,:}) >= -max(H2_Plfm2hzT{iTest,:})*allowance); % H1 should all bigger or smaller than H2 (0.1% allowance)
         end
@@ -167,7 +168,7 @@ for iCell = 1:nCell
                 [timePlfm8hz, censorPlfm8hz] = tagDataLoad(spikeData, lightTime.Plfm8hz+movingWin(iWin), testRange8hz, baseRange8hz);
                 [pLR_Plfm8hzTemp,timeLR_Plfm8hzT{iWin,1},H1_Plfm8hzT{iWin,1},H2_Plfm8hzT{iWin,1}] = logRankTest(timePlfm8hz, censorPlfm8hz); % H1: light induced firing H2: baseline
                 if isempty(pLR_Plfm8hzTemp)
-                    pLR_Plfm8hzTemp = 1;
+                    pLR_Plfm8hzTemp = NaN;
                 end
                 pLR_Plfm8hzT(iWin,1) = pLR_Plfm8hzTemp;
             end
@@ -273,7 +274,7 @@ for iCell = 1:nCell
             [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Track8hz+movingWin(iWin),testRange8hz,baseRange8hz);
             [pLR_TrackTemp,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
             if isempty(pLR_TrackTemp)
-                pLR_TrackTemp = 1;
+                pLR_TrackTemp = NaN;
             end
             pLR_TrackT(iWin,1) = pLR_TrackTemp;
         end

@@ -39,16 +39,15 @@ for iCell = 1:nCell
     if sum(cell2mat(cellfun(@length,spkCriteria_Track8hz,'UniformOutput',false))) < spkCri
         [pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd, timeLR_Track, H1_Track, H2_Track, calibTrack] = deal(NaN);
     else
-        [baseTime, baseCensor] = tagDataLoad(spikeData, psdlightPre, testRange8hz, baseRange8hz);
-        base = [reshape(baseTime(1:(end-1),:),1,[]);reshape(baseCensor(1:(end-1),:),1,[])]';
         for iWin = 1:length(movingWin)
-            [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Track8hz+movingWin(iWin),testRange8hz,baseRange8hz);
 %             [pLR_TrackTemp,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
+            [baseTime, baseCensor] = tagDataLoad(spikeData, psdlightPre+movingWin(iWin), testRange8hz, baseRange8hz);
+            base = [reshape(baseTime(1:(end-1),:),1,[]);reshape(baseCensor(1:(end-1),:),1,[])]';
+            [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Track8hz+movingWin(iWin), testRange8hz, baseRange8hz);
             test = [timeTrack(end,:);censorTrack(end,:)]';
             [pLR_TrackTemp,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logrank(test,base);
-
             if isempty(pLR_TrackTemp)
-                pLR_TrackTemp = 1;
+                pLR_TrackTemp = NaN;
             end
             pLR_TrackT(iWin,1) = pLR_TrackTemp;
         end

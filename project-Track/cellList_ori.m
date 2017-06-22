@@ -27,7 +27,7 @@ for iDir = 1:nDir
 end
 nFile = length(matFile);
 
-T = table();
+[T, Txls] = deal(table());
 for iFile = 1:nFile
     load(matFile{iFile});
 
@@ -85,6 +85,8 @@ for iFile = 1:nFile
     pethconvSpatial = {pethconvSpatial};
     normTrackFR_total = {normTrackFR_total};
     
+    idxNeurontype = categorical({idxNeurontype});
+    
     temT = table(path,cellID,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
         lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
         spkwv,spkwth,hfvwth,spkpvr,...  % waveform
@@ -110,75 +112,21 @@ for iFile = 1:nFile
         peakloci_total,normTrackFR_total,... % analysis_findPeakLoci
         m_deto_spkPlfm8hz,m_deto_spkTrack8hz,evoSpkTrack8hz,evoSpkPlfm8hz,...%analysis_detoSpike8hz
         evoSpike_preEarly, evoSpike_preLate, evoSpike_stmEarly, evoSpike_stmLate, evoSpike_postEarly, evoSpike_postLate,...
-        evoXptTrackLight,evoXptPsdPre,evoXptPsdPost);
-
+        evoXptTrackLight,evoXptPsdPre,evoXptPsdPost,...
+        idxNeurontype,idxPeakFR,idxPlaceField,idxpLR_Track);
     T = [T; temT];
+    
+    temp_Txls = table(path,cellID,taskType,tetLocation,...
+        pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd,...
+        pLR_Plfm8hz, statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd,...
+        pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...
+        pLR_TrackN,statDir_TrackN, latencyTrack1stN, latencyTrack2ndN,...
+        idxNeurontype,idxPeakFR,idxPlaceField,idxpLR_Track);
+    Txls = [Txls; temp_Txls];
+    
     fclose('all');
 end
 cd(rtPath);
 formatOut = 'yymmdd';
 save(['neuronList_ori_',datestr(now,formatOut),'.mat'],'T');
-% writetable(T,['neuronList_',datestr(date),'.xlsx']);
-
-%% excel file format (simple)
-T = table();
-for iFile = 1:nFile
-    load(matFile{iFile});
-    
-    path = matFile(iFile);
-    dateSession = strsplit(matFile{iFile},{'\'});
-    tetLocation = strsplit(dateSession{4},'_');
-    tetLocation = categorical(cellstr(tetLocation{2}));
-    fileSeg = strsplit(matFile{iFile},{'\','_'});
-    cellID = iFile;
-%     mouseLine = categorical(cellstr(fileSeg{5}));
-    taskType = categorical(cellstr(fileSeg{9}));
-
-    
-    temT = table(path,cellID,taskType,tetLocation,...
-        pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd,...
-        pLR_Plfm8hz, statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd,...
-        pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...
-        pLR_TrackN,statDir_TrackN, latencyTrack1stN, latencyTrack2ndN); % analysis_respstatTrack);
-
-    T = [T; temT];
-    fclose('all');
-end
-cd(rtPath);
-writetable(T,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);
-
-%% excel file format
-% T = table();
-% for iFile = 1:nFile
-%     load(matFile{iFile});
-% 
-%     path = matFile(iFile);
-%     dateSession = strsplit(matFile{iFile},{'\'});
-%     tetLocation = strsplit(dateSession{4},'_');
-%     tetLocation = categorical(cellstr(tetLocation{2}));
-%     fileSeg = strsplit(matFile{iFile},{'\','_'});
-%     mouseLine = categorical(cellstr(fileSeg{5}));
-%     taskType = categorical(cellstr(fileSeg{9}));
-%     taskProb = categorical(cellstr(fileSeg{10}));
-%     peakFR2D_track = {peakFR2D_track}; % pre/stm/post
-%     peakFR1D_track = {peakFR1D_track}; % pre/stm/post
-%     m_deto_spkPlfm8hz = {m_deto_spkPlfm8hz};
-%     m_deto_spkTrack8hz = {m_deto_spkTrack8hz}; 
-% 
-%     temT = table(path,mouseLine,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
-%         lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
-%         spkwth,hfvwth,spkpvr,...  % waveform
-%         peakFR2D_track,peakFR2D_plfm,...    % heatMap
-%         peakFR1D_track,... % analysis_spatialRaster
-%         pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd,...
-%         pLR_Plfm8hz,statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd,...
-%         pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...  % tagstatTrack_poster
-%         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
-%         rCorr1D_preXstm, pCorr1D_preXstm, rCorr1D_preXpost, pCorr1D_preXpost, rCorr1D_stmXpost, pCorr1D_stmXpost,...% analysis_CrossCorr1D // r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
-%         r_wv); % laserSpikeProb
-% 
-%     T = [T; temT];
-%     fclose('all');
-% end
-% cd(rtPath);
-% writetable(T,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);
+writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);

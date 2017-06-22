@@ -63,7 +63,7 @@ for iPath = 1:nPath
 %     waveform;
 %     heatMap;
 %     tagstat_trackOri; %
-%     analysis_respstatTrack; % log-rank test 8hz has been changed
+    analysis_respstatTrack; % log-rank test 8hz has been changed
 %     mapCorr; % PreStm, PrePost, StmPost
 %     mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 %     sensorMeanFR;
@@ -77,7 +77,8 @@ for iPath = 1:nPath
 %     analysis_detoSpike8hz;
 %     analysis_stmzoneSpike;
 %     analysis_laserSpikeChange;
-    analysis_findPeakLoci;
+%     analysis_findPeakLoci;
+%     analysis_indexTrack;
 %     plot_Track_sin_v3;
 
     fclose('all');

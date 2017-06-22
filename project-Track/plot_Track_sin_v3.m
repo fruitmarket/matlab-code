@@ -97,6 +97,24 @@ for iFile = 1:nFile
     title('Platform laser intensity','FontSize',fontL,'FontWeight','bold');
     set(hIntensity,'XLim',[0,4],'YLim',[-5,yLimlightBase],'Box','off','TickDir','out','XTick',[1:3],'XTickLabel',{'5','8','10'},'FontSize',fontM);
 
+% Light response spike probability
+    hTextSpkProb = axes('Position',axpt(1,4,1,1:2,axpt(nCol,nRow,8:10,1:2,[0.1 0.10 0.80 0.87],tightInterval),wideInterval));
+    text(0.3,0.9,'Spike probability (%)','fontSize',fontL,'fontWeight','bold');
+    text(0.5,0.6,['Plfm 2Hz spike Prob. (%): ',num2str(round(lightProbPlfm_2hz*10)/10)],'fontSize',fontM);
+    if ~isnan(lightProbPlfm_8hz)
+        text(0.5,0.4,['Plfm 8Hz spike Prob. (%): ',num2str(round(lightProbPlfm_8hz*10)/10)],'fontSize',fontM);
+    end
+    text(0.5,0.2,['Track 8Hz spike Prob. (%): ',num2str(round(lightProbTrack_8hz*10)/10)],'fontSize',fontM);
+    set(hTextSpkProb,'Box','off','visible','off');
+
+% Light response spike probability 
+    hStmzoneSpike = axes('Position',axpt(1,5,1,3:4,axpt(nCol,nRow,8:10,1:2,[0.1 0.10 0.80 0.87],tightInterval),wideInterval));
+    text(0.3,0.9,'Stm zone spike number','fontSize',fontL,'fontWeight','bold');
+    text(0.5,0.6,['Pre: ',num2str(stmzoneSpike(1))],'fontSize',fontM);
+    text(0.5,0.4,['Stm: ',num2str(stmzoneSpike(2))],'fontSize',fontM);
+    text(0.5,0.2,['Post: ',num2str(stmzoneSpike(3))],'fontSize',fontM);
+    set(hStmzoneSpike,'Box','off','visible','off');
+    
 % Response check: Platform
       % Activation or Inactivation?
     if isfield(lightTime,'Plfm2hz') && exist('xptPlfm2hz','var');
@@ -224,7 +242,6 @@ for iFile = 1:nFile
         xlabel('Time (ms)','FontSize',fontM);
     % Hazard function    
         hTrackBlue(3) = axes('Position',axpt(2,8,1,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.17 0.82 0.75],tightInterval),wideInterval));
-        hold on;
         ylimH = min([ceil(max([H1_Track;H2_Track])*1100+0.0001)/1000 1]);
         winHModu = [0 testRangeChETA];
         stairs(timeLR_Track, H2_Track, 'LineStyle',':','LineWidth',lineL,'Color','k');
@@ -238,6 +255,20 @@ for iFile = 1:nFile
         set(hTrackBlue,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM);
     end
     align_ylabel(hTrackBlue)
+    
+    % New respstat
+        hTrackrespN = axes('Position',axpt(2,8,2,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.17 0.82 0.75],tightInterval),wideInterval));
+        ylimH = min([ceil(max([H1_TrackN;H2_TrackN])*1100+0.0001)/1000 1]);
+        winHModu = [0 testRangeChETA];
+        stairs(timeLR_TrackN, H2_TrackN, 'LineStyle',':','LineWidth',lineL,'Color','k');
+        stairs(timeLR_TrackN, H1_TrackN,'LineStyle','-','LineWidth',lineL,'Color',colorBlue);
+        text(diff(winHModu)*0.1,ylimH*0.9,['p = ',num2str(pLR_TrackN,3)],'FontSize',fontM,'Interpreter','none');
+        text(diff(winHModu)*0.1,ylimH*0.7,['calib: ',num2str(calibTrackN,3),' ms'],'FontSize',fontM,'Interpreter','none');
+        xlabel('Time (ms)','FontSize',fontM);
+        ylabel('H(t)','FontSize',fontM);
+        title('Log-rank test (Track)','FontSize',fontL,'FontWeight','bold');
+        set(hTrackrespN,'XLim',winHModu,'XTick',winHModu,'XTickLabel',{winHModu(1);num2str(winHModu(2))},'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
+        set(hTrackrespN,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM);
 
 % detonate spike plot
     hDetoSpk = axes('Position',axpt(4,8,3:4,1:4,axpt(nCol,nRow,7:10, 2:5,[0.16 0.15 0.80 0.75],tightInterval),wideInterval));
@@ -246,24 +277,6 @@ for iFile = 1:nFile
     ylabel('Spike probability, P (%)','fontSize',fontM);
     title('Detonate spike (Track 8hz)','fontSize',fontL,'fontWeight','bold');
     set(hDetoSpk,'Box','off','TickDir','out','XLim',[0,length(m_deto_spkTrack8hz)+1],'YLim',[0, max(m_deto_spkTrack8hz*100)*1.1+5],'fontSize',fontM);
-
-% Light response spike probability
-    hTextSpkProb = axes('Position',axpt(2,8,2,6:7,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
-    text(0.2,0.9,'Spike probability (%)','fontSize',fontL,'fontWeight','bold');
-    text(0.4,0.7,['Plfm 2Hz spike Prob. (%): ',num2str(round(lightProbPlfm_2hz*10)/10)],'fontSize',fontM);
-    if ~isnan(lightProbPlfm_8hz)
-        text(0.4,0.5,['Plfm 8Hz spike Prob. (%): ',num2str(round(lightProbPlfm_8hz*10)/10)],'fontSize',fontM);
-    end
-    text(0.4,0.3,['Track 8Hz spike Prob. (%): ',num2str(round(lightProbTrack_8hz*10)/10)],'fontSize',fontM);
-    set(hTextSpkProb,'Box','off','visible','off');
-
-% Light response spike probability 
-    hStmzoneSpike = axes('Position',axpt(2,8,2,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
-    text(0.2,0.7,'Stm zone spike number','fontSize',fontL,'fontWeight','bold');
-    text(0.4,0.5,['Pre: ',num2str(stmzoneSpike(1))],'fontSize',fontM);
-    text(0.4,0.3,['Stm: ',num2str(stmzoneSpike(2))],'fontSize',fontM);
-    text(0.4,0.1,['Post: ',num2str(stmzoneSpike(3))],'fontSize',fontM);
-    set(hStmzoneSpike,'Box','off','visible','off');
 
 % Heat map
     totalmap = [pre_ratemap(1:90,40:130),stm_ratemap(1:90,40:130),post_ratemap(1:90,40:130)];
@@ -366,7 +379,7 @@ end
         pRw(2) = patch([rewardLoc(2)+2.5, rewardLoc(2)+6.5, rewardLoc(2)+6.5, rewardLoc(2)+2.5],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
         for iType = 1:3
-            plot(pethSpatial(1:(end-1)),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
+            plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Position (cm)','FontSize',fontM);

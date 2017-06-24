@@ -408,7 +408,7 @@ end
 %             plot(pethtime.(fields{iSensor1}),pethconv.(fields{iSensor1})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
 %         end
         ylabel('Rate (Hz)','FontSize',fontM);
-        xlabel('Time (sec)','FontSize',fontM);
+        xlabel('Time (ms)','FontSize',fontM);
         uistack(rec,'bottom');
     end
 
@@ -455,6 +455,8 @@ end
 %         for iType = 1:3
 %             plot(pethtime.(fields{iSensor1}),pethconv.(fields{iSensor1})(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
 %         end
+        ylabel('Rate (Hz)','FontSize',fontM);
+        xlabel('Time (ms)','FontSize',fontM);
         uistack(rec,'bottom');
     end
     align_ylabel([hSRaster,hSPsth]);
@@ -472,6 +474,25 @@ end
         text(0.1,0.25,' : Reward','FontSize',fontL,'Color',colorLightRed,'fontWeight','Bold');
     set(hLine,'Box','off','visible','off');
 
+% Zone spike analysis
+    yLimTotal = max([totalSpike(1,1), totalSpike(2,1), totalSpike(3,1)])*1.1;
+    yLimInzone = max([stmzoneSpike(1,1), stmzoneSpike(2,1), stmzoneSpike(3,1)])*1.1;
+    yLimOutzone = max([outzoneSpike(1,1), outzoneSpike(2,1), outzoneSpike(3,1)])*1.1;
+    hSpike(1) = axes('Position',axpt(6,2,1:2,1:2,axpt(nCol,nRow,1:5,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+        plot([1,2,3],[totalSpike(1,1), totalSpike(2,1), totalSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        title('Total spike','fontSize',fontM);
+        ylabel('Normalized by PRE','fontSize',fontS);
+    hSpike(2) = axes('Position',axpt(6,2,3:4,1:2,axpt(nCol,nRow,1:5,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+        plot([1,2,3],[stmzoneSpike(1,1), stmzoneSpike(2,1), stmzoneSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        title('In-zone spike','fontSize',fontM);
+    hSpike(3) = axes('Position',axpt(6,2,5:6,1:2,axpt(nCol,nRow,1:5,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+        plot([1,2,3],[outzoneSpike(1,1), outzoneSpike(2,1), outzoneSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        title('Out-zone spike','fontSize',fontM);
+    set(hSpike,'Box','off','TickDir','out','XLim',[0,4],'XTick',1:3,'XTickLabel',{'PRE';'STM';'POST'},'fontSize',fontS);
+    set(hSpike(1),'YLim',[0 yLimTotal]);
+    set(hSpike(2),'YLim',[0 yLimInzone]);
+    set(hSpike(3),'YLim',[0 yLimOutzone]);
+    
 % LFP analysis (Plfm 2hz)
     lightPlfm2hz = lightTime.Plfm2hz(201:400);
     lapPlfm2hzIdx = 1:10:200; % find start light of each lap
@@ -507,7 +528,7 @@ end
     m_cscTrack8hz = mean(cscTrack8hz,2);
     yLimCSC_Track8hz = [min(m_cscTrack8hz(find(xpt_csc8hz==xLimCSC(1)):find(xpt_csc8hz==xLimCSC(2)))), max(m_cscTrack8hz(find(xpt_csc8hz==xLimCSC(1)):find(xpt_csc8hz==xLimCSC(2))))]*1.1;
     
-    hLFP(1) = axes('Position',axpt(6,6,1:6,1:2,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+    hLFP(1) = axes('Position',axpt(6,6,1:6,1:2,axpt(nCol,nRow,6:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
     for iLight = 1:nLabLightPlfm2hz
         hLpatch(1) = patch([500*(iLight-1), 500*(iLight-1)+10, 500*(iLight-1)+10, 500*(iLight-1)],[yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(2), yLimCSC_Plfm2hz(2)],colorLightBlue,'EdgeColor','none');
         hold on;
@@ -520,7 +541,7 @@ end
     text(xLimCSC(2)*0.91,yLimCSC_Plfm2hz(2)*0.7+0.1,'0.2 mVolt','fontSize',fontS);
     text(xLimCSC(2)*0.97,yLimCSC_Plfm2hz(2)*0.60,'20 ms','fontSize',fontS);
         
-    hLFP(2) = axes('Position',axpt(6,6,1:6,5:6,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+    hLFP(2) = axes('Position',axpt(6,6,1:6,5:6,axpt(nCol,nRow,6:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
     for iLight = 1:nLabLightTrack8hz
         hLpatch(2) = patch([125*(iLight-1), 125*(iLight-1)+10, 125*(iLight-1)+10, 125*(iLight-1)],[yLimCSC_Track8hz(1)*0.8, yLimCSC_Track8hz(1)*0.8, yLimCSC_Track8hz(2), yLimCSC_Track8hz(2)],colorLightBlue,'EdgeColor','none');
         hold on;
@@ -549,7 +570,7 @@ end
         yLimCSC_Plfm8hz = [min(m_cscPlfm8hz(find(xpt_csc8hz==xLimCSC(1)):find(xpt_csc8hz==xLimCSC(2)))), max(m_cscPlfm8hz(find(xpt_csc8hz==xLimCSC(1)):find(xpt_csc8hz==xLimCSC(2))))]*1.1;
         xpt_csc8hz = winTrack8hz(1):0.5:winTrack8hz(2);
 
-        hLFP(3) = axes('Position',axpt(6,6,1:6,3:4,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+        hLFP(3) = axes('Position',axpt(6,6,1:6,3:4,axpt(nCol,nRow,6:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
         for iLight = 1:nLabLightPlfm8hz
             hLpatch(3) = patch([125*(iLight-1), 125*(iLight-1)+10, 125*(iLight-1)+10, 125*(iLight-1)],[yLimCSC_Plfm8hz(1)*0.8 yLimCSC_Plfm8hz(1)*0.8 yLimCSC_Plfm8hz(2), yLimCSC_Plfm8hz(2)],colorLightBlue,'EdgeColor','none');
             hold on;

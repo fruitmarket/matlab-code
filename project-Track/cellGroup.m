@@ -15,7 +15,7 @@ correctY = 0.5;
 lightBand = 3;
 
 %% Loading cell information
-load('neuronList_ori_170622.mat');
+load('neuronList_ori_170623.mat');
 Txls = readtable('neuronList_ori_170606.xlsx');
 Txls.taskType = categorical(Txls.taskType);
 
@@ -44,36 +44,36 @@ noRwIN = noRwTN & condiIN;
 %%
 fileName = T.path(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField);
 cellID = T.cellID(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_PF\DRun');
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_placefield\analysis_PF\DRun');
 
 fileName = T.path(T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField);
 cellID = T.cellID(T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_PF\noRun');
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_placefield\analysis_PF\noRun');
 
 fileName = T.path(T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField);
 cellID = T.cellID(T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_PF\DRw');
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_placefield\analysis_PF\DRw');
 
 fileName = T.path(T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField);
 cellID = T.cellID(T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_PF\noRw');
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_placefield\analysis_PF\noRw');
 
 % nonPF
 fileName = T.path(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField));
 cellID = T.cellID(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField));
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_nPF\DRun');
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_placefield\analysis_nPF\DRun');
 
 fileName = T.path(T.taskType == 'noRun' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField));
 cellID = T.cellID(T.taskType == 'noRun' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField));
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_nPF\noRun');
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_placefield\analysis_nPF\noRun');
 
 fileName = T.path(T.taskType == 'DRw' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField));
 cellID = T.cellID(T.taskType == 'DRw' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField));
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_nPF\DRw');
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_placefield\analysis_nPF\DRw');
 
 fileName = T.path(T.taskType == 'noRw' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField));
 cellID = T.cellID(T.taskType == 'noRw' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField));
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_nPF\noRw');
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_placefield\analysis_nPF\noRw');
 %% All neurons separated by sessions (DRun, DRw, noRun, noRw)
 % fileName = T.path(DRunPN);
 % cellID = Txls.cellID(DRunPN);

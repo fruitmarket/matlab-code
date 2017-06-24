@@ -2,7 +2,7 @@
 clearvars;
 
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170508.mat');
+load('neuronList_ori_170620.mat');
 load myParameters.mat;
 
 cMeanFR = 9;
@@ -128,5 +128,5 @@ set(hBar,'FaceColor',colorLightGray);
 
 formatOut = 'yymmdd';
 % print('-painters','-r300','-dtiff',['fig4_fieldCrossCorr_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['fig4_fieldCrossCorr_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-depsc',['fig4_fieldCrossCorr_',datestr(now,formatOut),'.ai']);
 % close('all')

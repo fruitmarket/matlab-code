@@ -7,27 +7,34 @@ clearvars;
 cd('D:\Dropbox\SNL\P2_Track'); % win version
 % cd('/Users/Jun/Dropbox/SNL/P2_Track'); % mac version
 Txls = readtable('neuronList_ori_170606.xlsx');
-load('neuronList_ori_170606.mat');
+load('neuronList_ori_170626.mat');
 load myParameters.mat;
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 
-cMeanFR = 9;
-cMaxPeakFR = 1;
-cSpkpvr = 1.2;
-alpha = 0.01;
-
-condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
-condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
-condiIN = ~condiPN;
+% cMeanFR = 9;
+% cMaxPeakFR = 1;
+% cSpkpvr = 1.2;
+% alpha = 0.01;
+% condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
+% condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
+% condiIN = ~condiPN;
 
 % TN: track neuron
-DRunTN = (T.taskType == 'DRun') & condiTN;
-DRunPN = DRunTN & condiPN;
-DRunIN = DRunTN & condiIN;
+% DRunTN = (T.taskType == 'DRun') & condiTN;
+% DRunPN = DRunTN & condiPN;
+% DRunIN = DRunTN & condiIN;
+% 
+% DRwTN = (T.taskType == 'DRw') & condiTN;
+% DRwPN = DRwTN & condiPN;
+% DRwIN = DRwTN & condiIN;
 
-DRwTN = (T.taskType == 'DRw') & condiTN;
-DRwPN = DRwTN & condiPN;
-DRwIN = DRwTN & condiIN;
+DRunPN = T.taskType == 'DRun' & T.idxNeurontype == 'PN';
+DRunIN = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
+DRun_UNC = T.taskType == 'DRun' & T.idxNeurontype == 'UNC';
+
+DRwPN = T.taskType == 'DRw' & T.idxNeurontype == 'PN';
+DRwIN = T.taskType == 'DRw' & T.idxNeurontype == 'IN';
+DRw_UNC = T.taskType == 'DRw' & T.idxNeurontype == 'UNC';
 
 % total population (DRwPN / DRwIN / DRwPN / DRwIN) with light responsiveness (light activated)
 PN_act = DRunPN & T.pLR_Track<alpha & T.statDir_Track == 1;
@@ -107,18 +114,18 @@ m_DRunIN_no_pethTrack = mean(DRunIN_no_pethTrack,1);
 sem_DRunIN_no_pethTrack = std(DRunIN_no_pethTrack,1)/sqrt(n_DRunIN_no_pethTrack);
 
 %%
-nCol = 2;
-nRow = 6;
+nCol = 3;
+nRow = 4;
 xpt = T.pethtimeTrack8hz{end};
 yMaxDRunPN = max([m_DRunPN_act_pethTrack, m_DRunPN_ina_pethTrack, m_DRunPN_no_pethTrack])*2;
 yMaxDRunIN = max([m_DRunIN_act_pethTrack, m_DRunIN_ina_pethTrack, m_DRunIN_no_pethTrack])*1.5;
 
 yLimPN = [30 40 55 60 25 10];
-
-fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1},'Name','latDistribution');
+yLimIN = [100, 50];
+fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 40 20],'Name','latDistribution');
 
 % activated total
-hPlotDRunPN(1) = axes('Position',axpt(nCol,nRow,1,1,[0.10 0.10 0.85 0.8],wideInterval));
+hPlotDRunPN(1) = axes('Position',axpt(nCol,nRow,1,1,[0.10 0.10 0.85 0.85],wideInterval));
 bar(5,yLimPN(1),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 rectangle('Position',[0,yLimPN(1)*0.925,10,yLimPN(1)*0.075],'LineStyle','none','FaceColor',colorBlue);
@@ -131,7 +138,7 @@ ylabel('Spikes/bin','fontSize',fontL);
 title('PN: Total activated','fontSize',fontL,'fontWeight','bold');
 
 % direct activated
-hPlotDRunPN(2) = axes('Position',axpt(nCol,nRow,1,2,[0.10 0.10 0.85 0.8],wideInterval));
+hPlotDRunPN(2) = axes('Position',axpt(nCol,nRow,1,2,[0.10 0.10 0.85 0.85],wideInterval));
 bar(5,yLimPN(2),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 rectangle('Position',[0,yLimPN(2)*0.925,10,yLimPN(2)*0.075],'LineStyle','none','FaceColor',colorBlue);
@@ -144,7 +151,7 @@ ylabel('Spikes/bin','fontSize',fontL);
 title('PN: Rapid activated','fontSize',fontL,'fontWeight','bold');
 
 % indirect activated
-hPlotDRunPN(3) = axes('Position',axpt(nCol,nRow,1,3,[0.10 0.10 0.85 0.8],wideInterval));
+hPlotDRunPN(3) = axes('Position',axpt(nCol,nRow,2,2,[0.10 0.10 0.85 0.85],wideInterval));
 bar(5,yLimPN(3),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 rectangle('Position',[0,yLimPN(3)*0.925,10,yLimPN(3)*0.075],'LineStyle','none','FaceColor',colorBlue);
@@ -157,7 +164,7 @@ ylabel('Spikes/bin','fontSize',fontL);
 title('PN: Delay activated','fontSize',fontL,'fontWeight','bold');
 
 % double
-hPlotDRunPN(4) = axes('Position',axpt(nCol,nRow,1,4,[0.10 0.10 0.85 0.8],wideInterval));
+hPlotDRunPN(4) = axes('Position',axpt(nCol,nRow,3,2,[0.10 0.10 0.85 0.85],wideInterval));
 bar(5,yLimPN(4),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 rectangle('Position',[0,yLimPN(4)*0.925,10,yLimPN(4)*0.075],'LineStyle','none','FaceColor',colorBlue);
@@ -167,10 +174,10 @@ errorbarJun(xpt+1,m_DRunPN_actDouble_pethTrack,sem_DRunPN_actDouble_pethTrack,1,
 text(80, yLimPN(4)*0.8,['n = ',num2str(n_DRunPN_actDouble_pethTrack)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
-title('PN: Delay activated','fontSize',fontL,'fontWeight','bold');
+title('PN: Double activated','fontSize',fontL,'fontWeight','bold');
 
 % inactivated
-hPlotDRunPN(5) = axes('Position',axpt(nCol,nRow,1,5,[0.10 0.10 0.85 0.8],wideInterval));
+hPlotDRunPN(5) = axes('Position',axpt(nCol,nRow,2,1,[0.10 0.10 0.85 0.85],wideInterval));
 bar(5,yLimPN(5),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 rectangle('Position',[0,yLimPN(5)*0.925,10,yLimPN(5)*0.075],'LineStyle','none','FaceColor',colorBlue);
@@ -183,7 +190,7 @@ ylabel('Spikes/bin','fontSize',fontL);
 title('PN: inactivated','fontSize',fontL,'fontWeight','bold');
 
 % no response
-hPlotDRunPN(6) = axes('Position',axpt(nCol,nRow,1,6,[0.10 0.10 0.85 0.8],wideInterval));
+hPlotDRunPN(6) = axes('Position',axpt(nCol,nRow,3,1,[0.10 0.10 0.85 0.85],wideInterval));
 bar(5,yLimPN(6),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 rectangle('Position',[0,yLimPN(6)*0.925,10,yLimPN(6)*0.075],'LineStyle','none','FaceColor',colorBlue);
@@ -195,31 +202,32 @@ xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 title('PN: no response','fontSize',fontL,'fontWeight','bold');
 
-hPlotDRunIN(1) = axes('Position',axpt(nCol,nRow,2,1,[0.10 0.10 0.85 0.8],wideInterval));
-bar(5,yMaxDRunIN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
+%% Interneuron
+hPlotDRunIN(1) = axes('Position',axpt(nCol,nRow,1,3,[0.10 0.10 0.85 0.85],wideInterval));
+bar(5,yLimIN(1),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
-rectangle('Position',[0,yMaxDRunIN*0.925,10,yMaxDRunIN*0.075],'LineStyle','none','FaceColor',colorBlue);
+rectangle('Position',[0,yLimIN(1)*0.925,10,yLimIN(1)*0.075],'LineStyle','none','FaceColor',colorBlue);
 hold on;
 hBarDRunIN(1) = bar(xpt,m_DRunIN_act_pethTrack,'histc');
 errorbarJun(xpt+1,m_DRunIN_act_pethTrack,sem_DRunIN_act_pethTrack,1,0.4,colorDarkGray);
-text(80, yMaxDRunIN*0.8,['n = ',num2str(n_DRunIN_act_pethTrack)],'fontSize',fontL);
+text(80, yLimIN(1)*0.8,['n = ',num2str(n_DRunIN_act_pethTrack)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 title('IN: Total activated','fontSize',fontL,'fontWeight','bold');
 
-hPlotDRunIN(2) = axes('Position',axpt(nCol,nRow,2,2,[0.10 0.10 0.85 0.8],wideInterval));
-bar(5,yMaxDRunIN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
+hPlotDRunIN(2) = axes('Position',axpt(nCol,nRow,1,4,[0.10 0.10 0.85 0.85],wideInterval));
+bar(5,yLimIN(1),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
-rectangle('Position',[0,yMaxDRunIN*0.925,10,yMaxDRunIN*0.075],'LineStyle','none','FaceColor',colorBlue);
+rectangle('Position',[0,yLimIN(1)*0.925,10,yLimIN(1)*0.075],'LineStyle','none','FaceColor',colorBlue);
 hold on;
 hBarDRunIN(2) = bar(xpt,m_DRunIN_actRapid_pethTrack,'histc');
 errorbarJun(xpt+1,m_DRunIN_actRapid_pethTrack,sem_DRunIN_actRapid_pethTrack,1,0.4,colorDarkGray);
-text(80, yMaxDRunIN*0.8,['n = ',num2str(n_DRunIN_actRapid_pethTrack)],'fontSize',fontL);
+text(80, yLimIN(1)*0.8,['n = ',num2str(n_DRunIN_actRapid_pethTrack)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 title('IN: Rapid activated','fontSize',fontL,'fontWeight','bold');
 
-% hPlotDRunIN(3) = axes('Position',axpt(nCol,nRow,2,3,[0.10 0.10 0.85 0.8],wideInterval));
+% hPlotDRunIN(3) = axes('Position',axpt(nCol,nRow,2,3,[0.10 0.10 0.85 0.85],wideInterval));
 % bar(5,yMaxDRunIN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 % hold on;
 % rectangle('Position',[0,yMaxDRunIN*0.925,10,yMaxDRunIN*0.075],'LineStyle','none','FaceColor',colorBlue);
@@ -231,26 +239,26 @@ title('IN: Rapid activated','fontSize',fontL,'fontWeight','bold');
 % ylabel('Spikes/bin','fontSize',fontL);
 % title('IN: Delay activated','fontSize',fontL,'fontWeight','bold');
 
-hPlotDRunIN(3) = axes('Position',axpt(nCol,nRow,2,4,[0.10 0.10 0.85 0.8],wideInterval));
-bar(5,yMaxDRunIN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
+hPlotDRunIN(3) = axes('Position',axpt(nCol,nRow,2,3,[0.10 0.10 0.85 0.85],wideInterval));
+bar(5,yLimIN(2),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
-rectangle('Position',[0,yMaxDRunIN*0.925,10,yMaxDRunIN*0.075],'LineStyle','none','FaceColor',colorBlue);
+rectangle('Position',[0,yLimIN(2)*0.925,10,yLimIN(2)*0.075],'LineStyle','none','FaceColor',colorBlue);
 hold on;
 hBarDRunIN(3) = bar(xpt,m_DRunIN_ina_pethTrack,'histc');
 errorbarJun(xpt+1,m_DRunIN_ina_pethTrack,sem_DRunIN_ina_pethTrack,1,0.4,colorDarkGray);
-text(80, yMaxDRunIN*0.8,['n = ',num2str(n_DRunIN_ina_pethTrack)],'fontSize',fontL);
+text(80, yLimIN(2)*0.8,['n = ',num2str(n_DRunIN_ina_pethTrack)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 title('IN: inactivated','fontSize',fontL,'fontWeight','bold');
 
-hPlotDRunIN(4) = axes('Position',axpt(nCol,nRow,2,5,[0.10 0.10 0.85 0.8],wideInterval));
-bar(5,yMaxDRunIN,'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
+hPlotDRunIN(4) = axes('Position',axpt(nCol,nRow,3,3,[0.10 0.10 0.85 0.85],wideInterval));
+bar(5,yLimIN(2),'BarWidth',10,'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
-rectangle('Position',[0,yMaxDRunIN*0.925,10,yMaxDRunIN*0.075],'LineStyle','none','FaceColor',colorBlue);
+rectangle('Position',[0,yLimIN(2)*0.925,10,yLimIN(2)*0.075],'LineStyle','none','FaceColor',colorBlue);
 hold on;
 hBarDRunIN(4) = bar(xpt,m_DRunIN_no_pethTrack,'histc');
 errorbarJun(xpt+1,m_DRunIN_no_pethTrack,sem_DRunIN_no_pethTrack,1,0.4,colorDarkGray);
-text(80, yMaxDRunIN*0.8,['n = ',num2str(n_DRunIN_no_pethTrack)],'fontSize',fontL);
+text(80, yLimIN(2)*0.8,['n = ',num2str(n_DRunIN_no_pethTrack)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 title('IN: no response','fontSize',fontL,'fontWeight','bold');
@@ -265,10 +273,10 @@ set(hPlotDRunPN(4),'YLim',[0, yLimPN(4)]);
 set(hPlotDRunPN(5),'YLim',[0, yLimPN(5)]);
 set(hPlotDRunPN(6),'YLim',[0, yLimPN(6)]);
 
-set(hPlotDRunIN(1:3),'Box','off','TickDir','out','XLim',[-20 100],'XTick',[-20,0:5:40,100],'YLim',[0, yMaxDRunIN],'fontSize',fontM);
-set(hPlotDRunIN(4),'Box','off','TickDir','out','XLim',[-20 100],'XTick',[-20,0:5:40,100],'YLim',[0, yMaxDRunIN],'fontSize',fontM);
+set(hPlotDRunIN(1:2),'Box','off','TickDir','out','XLim',[-20 100],'XTick',[-20,0:5:40,100],'YLim',[0, yLimIN(1)],'fontSize',fontM);
+set(hPlotDRunIN(3:4),'Box','off','TickDir','out','XLim',[-20 100],'XTick',[-20,0:5:40,100],'YLim',[0, yLimIN(2)],'fontSize',fontM);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig2_pethDRwTrack','.tif']);
-% print('-painters','-r300','-depsc',['fig2_pethDRunTrack_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig2_pethDRwTrack','.tif']);
+% print('-painters','-r300','-depsc',[datestr(now,formatOut),'_fig2_pethDRunTrack','.ai']);
 % close;

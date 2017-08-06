@@ -5,30 +5,7 @@ function plot_Track_sin_v3
 % Version 3.0 (12/14/2016)
 
 % Plot properties
-lineColor = {[144, 164, 174]./255,... % Before stimulation
-    [33 150 243]./ 255,... % During stimulation
-    [38, 50, 56]./255}; % After stimulation
-
-lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 5; fontL = 7; % font size large
-lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
-
-colorBlue = [33 150 243] ./ 255;
-colorLightBlue = [100 181 246] ./ 255;
-colorLLightBlue = [187, 222, 251]./255;
-colorRed = [237 50 52] ./ 255;
-colorLightRed = [242 138 130] ./ 255;
-colorLLightRed = [239 154 154] ./ 255;
-colorGray = [189 189 189] ./ 255;
-colorLightGray = [238, 238, 238] ./255;
-colorDarkGray = [117, 117, 117] ./255;
-colorYellow = [255 243 3] ./ 255;
-colorLightYellow = [255 249 196] ./ 255;
-colorBlack = [0, 0, 0];
-
-markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
-tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
-width = 0.7;
+load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 
 paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 29.7 21.0]; % A4_landscape
@@ -266,7 +243,7 @@ for iFile = 1:nFile
         text(diff(winHModu)*0.1,ylimH*0.7,['calib: ',num2str(calibTrackN,3),' ms'],'FontSize',fontM,'Interpreter','none');
         xlabel('Time (ms)','FontSize',fontM);
         ylabel('H(t)','FontSize',fontM);
-        title('Log-rank test (Track)','FontSize',fontL,'FontWeight','bold');
+        title('New Log-rank test (Track)','FontSize',fontL,'FontWeight','bold');
         set(hTrackrespN,'XLim',winHModu,'XTick',winHModu,'XTickLabel',{winHModu(1);num2str(winHModu(2))},'YLim',[0 ylimH], 'YTick', [0 ylimH], 'YTickLabel', {[], ylimH});
         set(hTrackrespN,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM);
 
@@ -331,15 +308,6 @@ for iFile = 1:nFile
         end
         if ~isempty(strfind(cellDir,'noRun')) | ~isempty(strfind(cellDir,'noRw'))
             rec = rectangle('Position',[0.5 length(psdlightPre)+1, 10, length(lightTime.Track8hz)], 'LineStyle','none','FaceColor',lightDurationColor{2});
-        end
-        if pLR_Track_pre < 0.005
-            text(105, sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])/8, '*','Color',colorRed,'fontSize',fontL);
-        end
-        if pLR_Track < 0.005
-            text(105, sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])*3/8, '*','Color',colorRed,'fontSize',fontL);
-        end
-        if pLR_Track_post < 0.005
-            text(105, sum([length(psdlightPre),length(lightTime.Track8hz),length(psdlightPost)])*6/8, '*','Color',colorRed,'fontSize',fontL);
         end
         uistack(rec,'bottom');
         ylabel('Light trial','FontSize',fontM);
@@ -477,31 +445,84 @@ end
         text(0.1,0.25,' : Reward','FontSize',fontL,'Color',colorLightRed,'fontWeight','Bold');
     set(hLine,'visible','off');
     
-    hTimeIN = axes('Position',axpt(1,2,1,1:2,axpt(nCol,nRow,5:6,9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
-        text(0,1,'In Zone Time','fontSize',fontL,'color',colorBlack,'fontWeight','Bold');
-        text(0.1,0.75,['PRE: ',num2str(timeIn_stmZone(1))],'fontSize',fontL,'color',lineColor{1});
-        text(0.1,0.50,['STM: ',num2str(timeIn_stmZone(2))],'fontSize',fontL,'color',lineColor{2});
-        text(0.1,0.25,['POST: ',num2str(timeIn_stmZone(3))],'fontSize',fontL,'color',lineColor{3});
-    set(hTimeIN,'visible','off');
+%     hTimeIN = axes('Position',axpt(1,2,1,1:2,axpt(nCol,nRow,5:6,9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
+%         text(0,1,'In Zone Time','fontSize',fontL,'color',colorBlack,'fontWeight','Bold');
+%         text(0.1,0.75,['PRE: ',num2str(timeIn_stmZone(1))],'fontSize',fontL,'color',lineColor{1});
+%         text(0.1,0.50,['STM: ',num2str(timeIn_stmZone(2))],'fontSize',fontL,'color',lineColor{2});
+%         text(0.1,0.25,['POST: ',num2str(timeIn_stmZone(3))],'fontSize',fontL,'color',lineColor{3});
+%     set(hTimeIN,'visible','off');
 
 % Zone spike analysis
-    yLimTotal = max([totalSpike(1,1), totalSpike(2,1), totalSpike(3,1)]/totalSpike(1,1))*1.1;
-    yLimInzone = max([stmzoneSpike(1,1), stmzoneSpike(2,1), stmzoneSpike(3,1)]/stmzoneSpike(1,1))*1.1;
-    yLimOutzone = max([outzoneSpike(1,1), outzoneSpike(2,1), outzoneSpike(3,1)]/outzoneSpike(1,1))*1.1;
-    hSpike(1) = axes('Position',axpt(6,2,1:2,1:2,axpt(nCol,nRow,1:5,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
-        plot([1,2,3],[totalSpike(1,1), totalSpike(2,1), totalSpike(3,1)]/totalSpike(1,1),'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+    yLimTotal = max([totalSpikeNum(1,1), totalSpikeNum(2,1), totalSpikeNum(3,1)])*1.2+0.01;
+    yLimInzone = max([inzoneSpikeNum(1,1), inzoneSpikeNum(2,1), inzoneSpikeNum(3,1)])*1.2+0.01;
+    yLimOutzone = max([outzoneSpikeNum(1,1), outzoneSpikeNum(2,1), outzoneSpikeNum(3,1)])*1.2+0.01;
+    hSpike(1) = axes('Position',axpt(6,2,1:2,1,axpt(nCol,nRow,1:5,10:11,[0.10 0.08 0.85 0.85],midInterval),midInterval));
+        plot([1,2,3],[totalSpike(1,1), totalSpike(2,1), totalSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        if p_ttest(1,3) < 0.05
+            line([1.1,1.9],[yLimTotal yLimTotal]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(1.5,yLimTotal/1.2*1.05,'*','fontSize',fontL,'color',colorRed);
+        end
+        if p_ttest(2,3) < 0.05
+            line([1,3],[yLimTotal yLimTotal]/1.2*1.1,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(2,yLimTotal/1.2*1.1,'*','fontSize',fontL,'color',colorRed);
+        end
+        if p_ttest(3,3) < 0.05
+            line([2.1,2.9],[yLimTotal yLimTotal]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(2.5,yLimTotal/1.2*1.05,'*','fontSize',fontL,'color',colorRed);
+        end
         title('Total spike','fontSize',fontM);
-        ylabel('Normalized by PRE','fontSize',fontS);
-    hSpike(2) = axes('Position',axpt(6,2,3:4,1:2,axpt(nCol,nRow,1:5,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
-        plot([1,2,3],[stmzoneSpike(1,1), stmzoneSpike(2,1), stmzoneSpike(3,1)]/stmzoneSpike(1,1),'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        ylabel('Spike number','fontSize',fontS);
+    hSpike(2) = axes('Position',axpt(6,2,3:4,1,axpt(nCol,nRow,1:5,10:11,[0.10 0.08 0.85 0.85],midInterval),midInterval));
+        plot([1,2,3],[stmzoneSpike(1,1), stmzoneSpike(2,1), stmzoneSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        if p_ttest(1,1) < 0.05
+            line([1.1,1.9],[yLimInzone yLimInzone]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(1.5,yLimInzone/1.2*1.05,'*','fontSize',fontL,'color',colorRed);
+        end
+        if p_ttest(2,1) < 0.05
+            line([1,3],[yLimInzone yLimInzone]/1.2*1.1,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(2,yLimInzone/1.2*1.1,'*','fontSize',fontL,'color',colorRed);
+        end
+        if p_ttest(3,1) < 0.05
+            line([2.1,2.9],[yLimInzone yLimInzone]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(2.5,yLimInzone/1.2*1.05,'*','fontSize',fontL,'color',colorRed);
+        end
         title('In-zone spike','fontSize',fontM);
-    hSpike(3) = axes('Position',axpt(6,2,5:6,1:2,axpt(nCol,nRow,1:5,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
-        plot([1,2,3],[outzoneSpike(1,1), outzoneSpike(2,1), outzoneSpike(3,1)]/outzoneSpike(1,1),'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+    hSpike(3) = axes('Position',axpt(6,2,5:6,1,axpt(nCol,nRow,1:5,10:11,[0.10 0.08 0.85 0.85],midInterval),midInterval));
+        plot([1,2,3],[outzoneSpike(1,1), outzoneSpike(2,1), outzoneSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        if p_ttest(1,2) < 0.05
+            line([1.1,1.9],[yLimOutzone yLimOutzone]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(1.5,yLimOutzone/1.2*1.05,'*','fontSize',fontL,'color',colorRed);
+        end
+        if p_ttest(2,2) < 0.05
+            line([1,3],[yLimOutzone yLimOutzone]/1.2*1.1,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(2,yLimOutzone/1.2*1.1,'*','fontSize',fontL,'color',colorRed);
+        end
+        if p_ttest(3,2) < 0.05
+            line([2.1,2.9],[yLimOutzone yLimOutzone]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
+            text(2.5,yLimOutzone/1.2*1.05,'*','fontSize',fontL,'color',colorRed);
+        end
         title('Out-zone spike','fontSize',fontM);
     set(hSpike,'Box','off','TickDir','out','XLim',[0,4],'XTick',1:3,'XTickLabel',{'PRE';'STM';'POST'},'fontSize',fontS);
     set(hSpike(1),'YLim',[0 yLimTotal]);
     set(hSpike(2),'YLim',[0 yLimInzone]);
     set(hSpike(3),'YLim',[0 yLimOutzone]);
+
+% spatial information analysis
+    yLimInfoSpike = max([infoSpikePRE, infoSpikeSTM, infoSpikePOST, infoSpikeTotal])*1.2;
+    yLimInfoSecond = max([infoSecondPRE, infoSecondSTM, infoSecondPOST, infoSecondTotal])*1.2;
+    hInfo(1) = axes('Position',axpt(6,2,1:3,2,axpt(nCol,nRow,1:5,10:11,[0.10 0.05 0.85 0.85],midInterval),wideInterval));
+    bar([1,2,3,4],[infoSpikePRE, infoSpikeSTM, infoSpikePOST, infoSpikeTotal],0.6,'faceColor',colorGray,'edgeColor',colorBlack);
+    ylabel('bits/spike','fontSize',fontM);
+    title('Information per spike','fontSize',fontM);
+    hInfo(2) = axes('Position',axpt(6,2,4:6,2,axpt(nCol,nRow,1:5,10:11,[0.10 0.05 0.85 0.85],midInterval),wideInterval));
+    bar([1,2,3,4],[infoSecondPRE, infoSecondSTM, infoSecondPOST, infoSecondTotal],0.6,'faceColor',colorGray,'edgeColor',colorBlack);
+    ylabel('bits/second','fontSize',fontM);
+    title('Information per second','fontSize',fontM);
+    
+    set(hInfo,'Box','off','TickDir','out','XLim',[0,5],'XTick',1:4,'XTickLabel',{'PRE';'STM';'POST';'Total'},'fontSize',fontS);
+    set(hInfo(1),'YLim',[0, yLimInfoSpike]);
+    set(hInfo(2),'YLim',[0, yLimInfoSecond]);
+
 % LFP analysis (Plfm 2hz)
     lightPlfm2hz = lightTime.Plfm2hz(201:400);
     lapPlfm2hzIdx = 1:10:200; % find start light of each lap

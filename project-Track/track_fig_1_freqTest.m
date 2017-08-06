@@ -6,8 +6,8 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load('myParameters.mat');
-Txls = readtable('neuronList_freq_170613.xlsx');
-load('neuronList_freq_170613.mat');
+Txls = readtable('neuronList_freq_170616.xlsx');
+load('neuronList_freq_170616.mat');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 % folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 
@@ -103,44 +103,75 @@ sem_no_8hz = std(nolightProb8hz)/sqrt(nNoLCell);
 sem_no_20hz = std(nolightProb20hz)/sqrt(nNoLCell);
 sem_no_50hz = std(nolightProb50hz)/sqrt(nNoLCell);
 
-%% Plot
-nCol = 2;
-nRow = 1;
+%% light prob of (short and long)
+lightProb1hzT = [lightProb1hz_dr; lightProb1hz_idr];
+lightProb2hzT = [lightProb2hz_dr; lightProb2hz_idr];
+lightProb8hzT = [lightProb8hz_dr; lightProb8hz_idr];
+lightProb20hzT = [lightProb20hz_dr; lightProb20hz_idr];
+lightProb50hzT = [lightProb50hz_dr; lightProb50hz_idr];
+nCellT = length([lightProb1hz_dr; lightProb1hz_idr]);
 
-hHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 12 6]*2);
+m_1hz_T = mean(lightProb1hzT);
+m_2hz_T = mean(lightProb2hzT);
+m_8hz_T = mean(lightProb8hzT);
+m_20hz_T = mean(lightProb20hzT);
+m_50hz_T = mean(lightProb50hzT);
+
+sem_1hz_T = std(lightProb1hzT)/sqrt(nCellT);
+sem_2hz_T = std(lightProb2hzT)/sqrt(nCellT);
+sem_8hz_T = std(lightProb8hzT)/sqrt(nCellT);
+sem_20hz_T = std(lightProb20hzT)/sqrt(nCellT);
+sem_50hz_T = std(lightProb50hzT)/sqrt(nCellT);
+
+%% Plot
+nCol = 3;
+nRow = 2;
+
+hHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 40 20]);
 % light response population
-hPlot(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.80 0.85],wideInterval));
+hPlot(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3,4,5],[lightProb1hz_dr, lightProb2hz_dr, lightProb8hz_dr, lightProb20hz_dr, lightProb50hz_dr],'-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
 hold on;
 plot([1,2,3,4,5],[m_1hz_dr, m_2hz_dr, m_8hz_dr, m_20hz_dr, m_50hz_dr],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hz_dr, m_2hz_dr, m_8hz_dr, m_20hz_dr, m_50hz_dr],[sem_1hz_dr,sem_2hz_dr,sem_8hz_dr,sem_20hz_dr,sem_50hz_dr],0.2, 0.8, colorBlack);
 
-text(1,40,['n = ',num2str(nCell_dr)],'fontSize',fontL);
+text(1,30,['n = ',num2str(nCell_dr)],'fontSize',fontL);
 xlabel('Frequency, Hz','fontSize',fontL);
 ylabel('Spike fidelity (%)','fontSize',fontL);
 title('Short latency','fontSize',fontL);
 
-hPlot(2) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.80 0.85],wideInterval));
+hPlot(2) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3,4,5],[lightProb1hz_idr, lightProb2hz_idr, lightProb8hz_idr, lightProb20hz_idr, lightProb50hz_idr],'-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
 hold on;
 plot([1,2,3,4,5],[m_1hz_idr, m_2hz_idr, m_8hz_idr, m_20hz_idr, m_50hz_idr],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hz_idr, m_2hz_idr, m_8hz_idr, m_20hz_idr, m_50hz_idr],[sem_1hz_idr,sem_2hz_idr,sem_8hz_idr,sem_20hz_idr,sem_50hz_idr],0.2, 0.8, colorBlack);
 
-text(1,40,['n = ',num2str(nCell_idr)],'fontSize',fontL);
+text(1,30,['n = ',num2str(nCell_idr)],'fontSize',fontL);
 xlabel('Frequency, Hz','fontSize',fontL);
 ylabel('Spike fidelity (%)','fontSize',fontL);
 title('Long latency','fontSize',fontL);
 
+hPlot(3) = axes('Position',axpt(nCol,nRow,3,1,[0.1 0.1 0.85 0.85],wideInterval));
+plot([1,2,3,4,5],[lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],'-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
+hold on;
+plot([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
+hold on;
+errorbarJun([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],[sem_1hz_T,sem_2hz_T,sem_8hz_T,sem_20hz_T,sem_50hz_T],0.2, 0.8, colorBlack);
+text(1,30,['n = ',num2str(nCellT)],'fontSize',fontL);
+xlabel('Frequency, Hz','fontSize',fontL);
+ylabel('Spike fidelity (%)','fontSize',fontL);
+title('Total neuron','fontSize',fontL);
+
 set(hPlot,'TickDir','out','Box','off');
 set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontL);
-set(hPlot,'YLim',[-1,50]);
+set(hPlot,'YLim',[-1,35]);
 
 formatOut = 'yymmdd';
 print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig1_frequencyTest','.tif']);
-% print('-painters','-r300','-depsc',['fig1_frequencyTest_',datestr(now,formatOut),'.ai']);
-% close();
+% print('-painters','-r300','-depsc',[datestr(now,formatOut),'_fig1_frequencyTest','.ai']);
+% close;
 
 %%
 % hPlot(1) = axes('Position',axpt(nCol,nRow,1:2,1:2,[0.1 0.1 0.85 0.85],wideInterval));

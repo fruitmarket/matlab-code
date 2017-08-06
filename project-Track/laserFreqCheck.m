@@ -20,7 +20,7 @@ for iCell = 1:nCell
     
  %% Platform 2hz & 8hz
     if isempty(lightTime.Plfm2hz) | isempty(lightTime.Plfm8hz)
-     [lightPlfmSpk2hz8mw,lightPlfmSpk50hz] = deal(NaN);
+     [lightPlfmSpk2hz8mw,lightPlfmSpk8hz] = deal(NaN);
     else
      nPlfmLight2hz = length(lightTime.Plfm2hz);
      spikeTimePlfm = spikeWin(tData{iCell},lightTime.Plfm2hz,winCri);
@@ -29,12 +29,12 @@ for iCell = 1:nCell
 
      nPlfmLight8hz = length(lightTime.Plfm8hz);
      spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winCri);
-     lightPlfmSpk50hz = sum(cellfun(@length,spikeTimePlfm8hz))/nPlfmLight8hz;    
+     lightPlfmSpk8hz = sum(cellfun(@length,spikeTimePlfm8hz))/nPlfmLight8hz;    
     end
 
 %% Track 'Modi session' only
     if isempty(lightTime.Track2hz) | isemtpy(lightTime.Track8hz)
-        [lightTrackSpk2hz8mw,lightTrackSpk50hz] = deal(NaN);
+        [lightTrackSpk2hz8mw,lightTrackSpk8hz] = deal(NaN);
     else
         nTrackLight2hz = length(lightTime.Track2hz);
         spikeTimeTrack = spikeWin(tData{iCell},lightTime.Track2hz,winCri);
@@ -43,7 +43,7 @@ for iCell = 1:nCell
 
         nTrackLight8hz = length(lightTime.Track8hz);
         spikeTimeTrack8hz = spikeWin(tData{iCell},lightTime.Track8hz,winCri);
-        lightTrackSpk50hz = sum(cellfun(@length, spikeTimeTrack8hz))/nTrackLight8hz;
+        lightTrackSpk8hz = sum(cellfun(@length, spikeTimeTrack8hz))/nTrackLight8hz;
     end
 
 %%

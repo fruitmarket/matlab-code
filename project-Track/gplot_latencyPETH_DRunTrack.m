@@ -79,44 +79,44 @@ DRunIN_no_pethTrack = cell2mat(T.pethTrack8hz(DRunIN_no));
 %% Mean & Sem
 n_DRunPN_act_pethTrack = size(DRunPN_act_pethTrack,1);
 m_DRunPN_act_pethTrack = mean(DRunPN_act_pethTrack,1);
-sem_DRunPN_act_pethTrack = std(DRunPN_act_pethTrack,1)/n_DRunPN_act_pethTrack;
+sem_DRunPN_act_pethTrack = std(DRunPN_act_pethTrack,1)/sqrt(n_DRunPN_act_pethTrack);
 
 n_DRunPN_actRapid_pethTrack = size(DRunPN_actRapid_pethTrack,1);
 m_DRunPN_actRapid_pethTrack = mean(DRunPN_actRapid_pethTrack,1);
-sem_DRunPN_actRapid_pethTrack = std(DRunPN_actRapid_pethTrack,1)/n_DRunPN_actRapid_pethTrack;
+sem_DRunPN_actRapid_pethTrack = std(DRunPN_actRapid_pethTrack,1)/sqrt(n_DRunPN_actRapid_pethTrack);
 
 n_DRunPN_actDelay_pethTrack = size(DRunPN_actDelay_pethTrack,1);
 m_DRunPN_actDelay_pethTrack = mean(DRunPN_actDelay_pethTrack,1);
-sem_DRunPN_actDelay_pethTrack = std(DRunPN_actDelay_pethTrack,1)/n_DRunPN_actDelay_pethTrack;
+sem_DRunPN_actDelay_pethTrack = std(DRunPN_actDelay_pethTrack,1)/sqrt(n_DRunPN_actDelay_pethTrack);
 
 n_DRunPN_ina_pethTrack = size(DRunPN_ina_pethTrack,1);
 m_DRunPN_ina_pethTrack = mean(DRunPN_ina_pethTrack,1);
-sem_DRunPN_ina_pethTrack = std(DRunPN_ina_pethTrack,1)/n_DRunPN_ina_pethTrack;
+sem_DRunPN_ina_pethTrack = std(DRunPN_ina_pethTrack,1)/sqrt(n_DRunPN_ina_pethTrack);
 
 n_DRunPN_no_pethTrack = size(DRunPN_no_pethTrack,1);
 m_DRunPN_no_pethTrack = mean(DRunPN_no_pethTrack,1);
-sem_DRunPN_no_pethTrack = std(DRunPN_no_pethTrack,1)/n_DRunPN_no_pethTrack;
+sem_DRunPN_no_pethTrack = std(DRunPN_no_pethTrack,1)/sqrt(n_DRunPN_no_pethTrack);
 
 
 n_DRunIN_act_pethTrack = size(DRunIN_act_pethTrack,1);
 m_DRunIN_act_pethTrack = mean(DRunIN_act_pethTrack,1);
-sem_DRunIN_act_pethTrack = std(DRunIN_act_pethTrack,1)/n_DRunIN_act_pethTrack;
+sem_DRunIN_act_pethTrack = std(DRunIN_act_pethTrack,1)/sqrt(n_DRunIN_act_pethTrack);
 
 n_DRunIN_actRapid_pethTrack = size(DRunIN_actRapid_pethTrack,1);
 m_DRunIN_actRapid_pethTrack = mean(DRunIN_actRapid_pethTrack,1);
-sem_DRunIN_actRapid_pethTrack = std(DRunIN_actRapid_pethTrack,1)/n_DRunIN_actRapid_pethTrack;
+sem_DRunIN_actRapid_pethTrack = std(DRunIN_actRapid_pethTrack,1)/sqrt(n_DRunIN_actRapid_pethTrack);
 
 n_DRunIN_actDelay_pethTrack = size(DRunIN_actDelay_pethTrack,1);
 m_DRunIN_actDelay_pethTrack = mean(DRunIN_actDelay_pethTrack,1);
-sem_DRunIN_actDelay_pethTrack = std(DRunIN_actDelay_pethTrack,1)/n_DRunIN_actDelay_pethTrack;
+sem_DRunIN_actDelay_pethTrack = std(DRunIN_actDelay_pethTrack,1)/sqrt(n_DRunIN_actDelay_pethTrack);
 
 n_DRunIN_ina_pethTrack = size(DRunIN_ina_pethTrack,1);
 m_DRunIN_ina_pethTrack = mean(DRunIN_ina_pethTrack,1);
-sem_DRunIN_ina_pethTrack = std(DRunIN_ina_pethTrack,1)/n_DRunIN_ina_pethTrack;
+sem_DRunIN_ina_pethTrack = std(DRunIN_ina_pethTrack,1)/sqrt(n_DRunIN_ina_pethTrack);
 
 n_DRunIN_no_pethTrack = size(DRunIN_no_pethTrack,1);
 m_DRunIN_no_pethTrack = mean(DRunIN_no_pethTrack,1);
-sem_DRunIN_no_pethTrack = std(DRunIN_no_pethTrack,1)/n_DRunIN_no_pethTrack;
+sem_DRunIN_no_pethTrack = std(DRunIN_no_pethTrack,1)/sqrt(n_DRunIN_no_pethTrack);
 
 %%
 nCol = 2;

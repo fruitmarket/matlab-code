@@ -4,22 +4,33 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load('myParameters.mat');
-load('neuronList_ori_170516.mat');
+load('neuronList_ori_170626.mat');
 
 cMeanFR = 9;
 cMaxPeakFR = 1;
 cSpkpvr = 1.1;
+%%%%%
 
+DRunPn = T.taskType == 'DRun' & T.idxNeurontype == 'PN';
+DRunIn = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
+DRunUNC = T.taskType == 'DRun' & T.idxNeurontype == 'UNC';
+
+DRwPn = T.taskType == 'DRw' & T.idxNeurontype == 'PN';
+DRwIn = T.taskType == 'DRw' & T.idxNeurontype == 'IN';
+DRwUNC = T.taskType == 'DRw' & T.idxNeurontype == 'UNC';
+
+
+%%%%%
 condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
 condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
 condiIN = ~condiPN;
 
 alpha = 0.01;
 
-DRunPn = T.taskType == 'DRun' & condiTN & condiPN;
-DRunIn = T.taskType == 'DRun' & condiTN & condiIN;
-DRwPn = T.taskType == 'DRw' & condiTN & condiPN;
-DRwIn = T.taskType == 'DRw' & condiTN & condiIN;
+% DRunPn = T.taskType == 'DRun' & condiTN & condiPN;
+% DRunIn = T.taskType == 'DRun' & condiTN & condiIN;
+% DRwPn = T.taskType == 'DRw' & condiTN & condiPN;
+% DRwIn = T.taskType == 'DRw' & condiTN & condiIN;
 
 plfmLight = T.pLR_Plfm2hz<alpha;
 
@@ -81,10 +92,10 @@ sem_DRwIN_8mw = std(lightPlfm8mw_DRwIn)/sqrt(nDRwIN);
 sem_DRwIN_10mw = std(lightPlfm10mw_DRwIn)/sqrt(nDRwIN);
 
 %% Figure (DRun)
-nCol = 1;
-nRow = 1;
+nCol = 3;
+nRow = 2;
 
-fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 6 6]*2);
+fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 40 20]);
 
 hInten(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3],[lightPlfm5mw_DRunPn, lightPlfm8mw_DRunPn, lightPlfm10mw_DRunPn],'-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
@@ -98,11 +109,11 @@ ylabel('Spike fidelity (%)','fontSize',fontL);
 xlabel('Laser power (mW)','fontSize',fontL);
 
 set(hInten,'Box','off','TickDir','out','XLim',[0,4],'XTick',[1:3],'XTickLabel',{'5mW','8mW','10mW'},'fontSize',fontL);
-set(hInten(1),'YLim',[-1,60]);
+set(hInten(1),'YLim',[-1,50]);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',['fig1_intensityTest_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['fig1_intensityTest_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig1_intensityTest','.tif']);
+print('-painters','-r300','-depsc',[datestr(now,formatOut),'_fig1_intensityTest','.ai']);
 close;
 %%
 % hInten(2) = axes('Position',axpt(nCol,nRow,3:4,1:2,[0.1 0.1 0.85 0.85], wideInterval));

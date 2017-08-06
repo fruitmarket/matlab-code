@@ -11,7 +11,7 @@ for iCell = 1:nCell
     load('Events.mat');
     spikeData = tData{iCell};
     
-    meanFR_plfm = meanFR(time_recStart, time_recEnd, spikeData);
+    meanFR_plfm = meanFiringRate(time_recStart, time_recEnd, spikeData);
     total_mFR = mean(meanFR_plfm);
     
     save([cellName,'.mat'],'total_mFR','-append');   

@@ -50,8 +50,7 @@ for iCell = 1:nCell
     [timeLR_Plfm2hzT,H1_Plfm2hzT,H2_Plfm2hzT,timeLR_Plfm8hzT,H1_Plfm8hzT,H2_Plfm8hzT,timeLR_TrackT,H1_TrackT,H2_TrackT] = deal(cell(5,1));
 %% pLR_Plfm2hz
     if sum(cell2mat(cellfun(@length,spkCriteria_Plfm2hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than spkCri, do not calculate pLR
-        pLR_Plfm2hz = 1;
-        [statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(NaN);
+        [pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd, timeLR_Plfm2hz, H1_Plfm2hz, H2_Plfm2hz, calibPlfm2hz] = deal(NaN);
     else
         for iWin = 1:length(movingWin)
             [timePlfm2hz, censorPlfm2hz] = tagDataLoad(spikeData, lightTime.Plfm2hz(201:400)+movingWin(iWin), testRange2hz, baseRange2hz);
@@ -64,24 +63,23 @@ for iCell = 1:nCell
         idxPlfm2hz = find(pLR_Plfm2hzT<alpha,1,'first');
         if isempty(idxPlfm2hz)
             idxPlfm2hz = 1;
-        else
-            idxH1_Plfm2hz = find(~cellfun(@isempty,H1_Plfm2hzT));
-            idxH2_Plfm2hz = find(~cellfun(@isempty,H2_Plfm2hzT));
-            idxcom_Plfm2hz = idxH1_Plfm2hz(idxH1_Plfm2hz == idxH2_Plfm2hz);
         end
+        idxH1_Plfm2hz = find(~cellfun(@isempty,H1_Plfm2hzT));
+        idxH2_Plfm2hz = find(~cellfun(@isempty,H2_Plfm2hzT));
+        idxcom_Plfm2hz = idxH1_Plfm2hz(idxH1_Plfm2hz == idxH2_Plfm2hz);
         for iTest = 1:length(idxcom_Plfm2hz)
             testPlfm(iTest) = all((H1_Plfm2hzT{iTest,:}-H2_Plfm2hzT{iTest,:}) >= -max(H1_Plfm2hzT{iTest,:})*allowance) | all((H2_Plfm2hzT{iTest,:}-H1_Plfm2hzT{iTest,:}) >= -max(H2_Plfm2hzT{iTest,:})*allowance); % H1 should all bigger or smaller than H2 (0.1% allowance)
         end
         idxH_Plfm2hz = idxcom_Plfm2hz(find(testPlfm==1,1,'first'));
+        if isempty(idxH_Plfm2hz)
+            idxH_Plfm2hz = 1;
+        end        
 %         H1Start = cellfun(@(x) x(1), H1_PlfmT(idxH1_Plfm,1));
 %         H1End = cellfun(@(x) x(end), H1_PlfmT(idxH1_Plfm,1));
 %         H2Start = cellfun(@(x) x(1), H2_PlfmT(idxH2_Plfm,1));
 %         H2End = cellfun(@(x) x(end), H2_PlfmT(idxH2_Plfm,1));
 %         HproductPlfm = (H1Start-H1End).*(H2Start-H2End);
 %         idxHPlfm = find(HproductPlfm~=-1,1,'first');
-        if isempty(idxH_Plfm2hz)
-            idxH_Plfm2hz = 1;
-        end
         if idxPlfm2hz >= idxH_Plfm2hz
             pLR_Plfm2hz = pLR_Plfm2hzT(idxPlfm2hz);
             timeLR_Plfm2hz = timeLR_Plfm2hzT{idxPlfm2hz};        
@@ -161,8 +159,7 @@ for iCell = 1:nCell
     if ~isnan(lightTime.Plfm8hz)
         spkCriteria_Plfm8hz = spikeWin(spikeData,lightTime.Plfm8hz,[-50,50]);
         if sum(cell2mat(cellfun(@length,spkCriteria_Plfm8hz,'UniformOutput',false))) < spkCriPlfm % if the # of spikes are less than 10, do not calculate pLR
-            pLR_Plfm8hz = 1; 
-            [statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd, timeLR_Plfm8hz, H1_Plfm8hz, H2_Plfm8hz, calibPlfm8hz] = deal(NaN);
+            [pLR_Plfm8hz, statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd, timeLR_Plfm8hz, H1_Plfm8hz, H2_Plfm8hz, calibPlfm8hz] = deal(NaN);
         else
             for iWin = 1:length(movingWin)
                 [timePlfm8hz, censorPlfm8hz] = tagDataLoad(spikeData, lightTime.Plfm8hz+movingWin(iWin), testRange8hz, baseRange8hz);
@@ -267,8 +264,7 @@ for iCell = 1:nCell
     end
 %% pLR_Track
     if sum(cell2mat(cellfun(@length,spkCriteria_Track8hz,'UniformOutput',false))) < spkCriTrack
-        pLR_Track = 1;
-        [statDir_Track, latencyTrack1st, latencyTrack2nd, timeLR_Track, H1_Track, H2_Track, calibTrack] = deal(NaN);
+        [pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd, timeLR_Track, H1_Track, H2_Track, calibTrack] = deal(NaN);
     else
         for iWin = 1:length(movingWin)
             [timeTrack, censorTrack] = tagDataLoad(spikeData,lightTime.Track8hz+movingWin(iWin),testRange8hz,baseRange8hz);
@@ -379,8 +375,8 @@ for iCell = 1:nCell
         'pLR_Track','timeLR_Track','H1_Track','H2_Track','calibTrack','statDir_Track','latencyTrack1st','latencyTrack2nd','-append')
 
 %% Pre & Post light stimulation p-value check
-    [timeTrack_pre, censorTrack_pre] = tagDataLoad(spikeData, psdlightPre+calibTrack, 10, 100);
-    [timeTrack_post, censorTrack_post] = tagDataLoad(spikeData, psdlightPost+calibTrack, 10, 100);
+    [timeTrack_pre, censorTrack_pre] = tagDataLoad(spikeData, psdlightPre+calibTrack, 8, 100);
+    [timeTrack_post, censorTrack_post] = tagDataLoad(spikeData, psdlightPost+calibTrack, 8, 100);
     
     [pLR_Track_pre,timeLR_Track_pre,H1_Track_pre,H2_Track_pre] = logRankTest(timeTrack_pre, censorTrack_pre);
     [pLR_Track_post,timeLR_Track_post,H1_Track_post,H2_Track_post] = logRankTest(timeTrack_post, censorTrack_post);

@@ -2,13 +2,13 @@
 % It draws rapid light activated neurons & delayed activated neurons
 clearvars;
 
-% rtDir = 'D:\Dropbox\SNL\P2_Track'; % Win version
-rtDir = '/Users/Jun/Dropbox/SNL/P2_Track'; % Mac version
+rtDir = 'D:\Dropbox\SNL\P2_Track'; % Win version
+% rtDir = '/Users/Jun/Dropbox/SNL/P2_Track'; % Mac version
 cd(rtDir);
 
 load('myParameters.mat');
-Txls = readtable('neuronList_freq_170613.xlsx');
-load('neuronList_freq_170613.mat');
+Txls = readtable('neuronList_freq_170616.xlsx');
+load('neuronList_freq_170616.mat');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 
 alpha = 0.01;
@@ -38,7 +38,6 @@ nLight_20hz = sum(double(T.meanFR<9 & T.pLR_Plfm20hz<alpha));
 nLight_50hz = sum(double(T.meanFR<9 & T.pLR_Plfm50hz<alpha));
 nlight_all = sum(double(T.meanFR<9 & (T.pLR_Plfm1hz<alpha & T.pLR_Plfm2hz<alpha & T.pLR_Plfm8hz<alpha & T.pLR_Plfm20hz<alpha & T.pLR_Plfm50hz<alpha)));
 
-<<<<<<< Updated upstream
 m_1hz = mean(evoSpike1hz_dr);
 m_2hz = mean(evoSpike2hz_dr);
 m_8hz = mean(evoSpike8hz_dr);
@@ -46,37 +45,12 @@ m_20hz = mean(evoSpike20hz_dr);
 m_50hz = mean(evoSpike50hz_dr);
 m_norm_totalSpk = mean(norm_totalSpk);
 
-=======
-<<<<<<< HEAD
-m_1hz = mean(evoSpike1hz);
-m_2hz = mean(evoSpike2hz);
-m_8hz = mean(evoSpike8hz);
-m_20hz = mean(evoSpike20hz);
-m_50hz = mean(evoSpike50hz);
-m_norm_totalSpk = mean(norm_totalSpk,1);
-
-sem_1hz = std(evoSpike1hz)/sqrt(nCell);
-sem_2hz = std(evoSpike2hz)/sqrt(nCell);
-sem_8hz = std(evoSpike8hz)/sqrt(nCell);
-sem_20hz = std(evoSpike20hz)/sqrt(nCell);
-sem_50hz = std(evoSpike50hz)/sqrt(nCell);
-sem_norm_totalSpk = std(norm_totalSpk,0,1)/sqrt(nCell);
-=======
-m_1hz = mean(evoSpike1hz_dr);
-m_2hz = mean(evoSpike2hz_dr);
-m_8hz = mean(evoSpike8hz_dr);
-m_20hz = mean(evoSpike20hz_dr);
-m_50hz = mean(evoSpike50hz_dr);
-m_norm_totalSpk = mean(norm_totalSpk);
-
->>>>>>> Stashed changes
 sem_1hz = std(evoSpike1hz_dr)/sqrt(nCell);
 sem_2hz = std(evoSpike2hz_dr)/sqrt(nCell);
 sem_8hz = std(evoSpike8hz_dr)/sqrt(nCell);
 sem_20hz = std(evoSpike20hz_dr)/sqrt(nCell);
 sem_50hz = std(evoSpike50hz_dr)/sqrt(nCell);
 sem_norm_totalSpk = std(norm_totalSpk)/sqrt(nCell);
->>>>>>> origin/master
 
 %% Long delay
 evoSpike1hzLong_idr = T.evoSpike1hz_idr((lightLong));
@@ -164,56 +138,48 @@ sem_norm_totalSpkLong = std(norm_totalSpkLong)/sqrt(nCellLong);
 % sem_no_50hz = std(noevoSpike50hz)/sqrt(nNoLCell);
 
 %% Plot
-nCol = 2;
+nCol = 3;
 nRow = 2;
 
-hHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 6 6]*2);
+hHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 40 20]);
 % light response population
-hPlot(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.80 0.85],wideInterval));
-<<<<<<< Updated upstream
+hPlot(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+
 plot([1,2,3,4,5],[evoSpike1hz_dr, evoSpike2hz_dr, evoSpike8hz_dr, evoSpike20hz_dr, evoSpike50hz_dr]','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
-=======
-<<<<<<< HEAD
-plot([1,2,3,4,5],[evoSpike1hz, evoSpike2hz, evoSpike8hz, evoSpike20hz, evoSpike50hz]','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
-=======
-plot([1,2,3,4,5],[evoSpike1hz_dr, evoSpike2hz_dr, evoSpike8hz_dr, evoSpike20hz_dr, evoSpike50hz_dr]','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
->>>>>>> origin/master
->>>>>>> Stashed changes
 hold on;
 plot([1,2,3,4,5],[m_1hz, m_2hz, m_8hz, m_20hz, m_50hz],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hz, m_2hz, m_8hz, m_20hz, m_50hz],[sem_1hz,sem_2hz,sem_8hz,sem_20hz,sem_50hz],0.2, 0.8, colorBlack);
 
-text(1,60,['n = ',num2str(nCell)],'fontSize',fontL);
+text(1,80,['n = ',num2str(nCell)],'fontSize',fontL);
 xlabel('Frequency, Hz','fontSize',fontL);
 ylabel('Spike number','fontSize',fontL);
 title('Short delay','fontSize',fontL);
 
-hPlot(2) = axes('Position',axpt(nCol,nRow,1,2,[0.1 0.1 0.80 0.85],wideInterval));
+hPlot(2) = axes('Position',axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3,4,5],norm_totalSpk','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
 hold on;
 plot([1,2,3,4,5],m_norm_totalSpk,'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],m_norm_totalSpk,sem_norm_totalSpk,0.2, 0.8, colorBlack);
 
-text(1,60,['n = ',num2str(nCell)],'fontSize',fontL);
 xlabel('Frequency, Hz','fontSize',fontL);
 ylabel('Normalized spike number','fontSize',fontL);
 title('Short delay','fontSize',fontL);
 
-hPlot(3) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.80 0.85],wideInterval));
+hPlot(3) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3,4,5],[evoSpike1hzLong_idr, evoSpike2hzLong_idr, evoSpike8hzLong_idr, evoSpike20hzLong_idr, evoSpike50hzLong_idr]','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
 hold on;
 plot([1,2,3,4,5],[m_1hzLong, m_2hzLong, m_8hzLong, m_20hzLong, m_50hzLong],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hzLong, m_2hzLong, m_8hzLong, m_20hzLong, m_50hzLong],[sem_1hzLong,sem_2hzLong,sem_8hzLong,sem_20hzLong,sem_50hzLong],0.2, 0.8, colorBlack);
 
-text(1,60,['n = ',num2str(nCellLong)],'fontSize',fontL);
+text(1,80,['n = ',num2str(nCellLong)],'fontSize',fontL);
 xlabel('Frequency, Hz','fontSize',fontL);
 ylabel('Spike number','fontSize',fontL);
 title('Long delay','fontSize',fontL);
 
-hPlot(4) = axes('Position',axpt(nCol,nRow,2,2,[0.1 0.1 0.80 0.85],wideInterval));
+hPlot(4) = axes('Position',axpt(nCol,nRow,2,2,[0.1 0.1 0.85 0.85],wideInterval));
 plot([1,2,3,4,5],norm_totalSpkLong','-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
 hold on;
 plot([1,2,3,4,5],m_norm_totalSpkLong,'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
@@ -226,12 +192,12 @@ title('Long delay','fontSize',fontL);
 
 set(hPlot,'TickDir','out','Box','off');
 set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontL);
-set(hPlot(1),'YLim',[-1,250]);
+set(hPlot(1),'YLim',[-1,100]);
 set(hPlot(2),'YLim',[-0.1,1.2]);
-set(hPlot(3),'YLim',[-1,150]);
+set(hPlot(3),'YLim',[-1,100]);
 set(hPlot(4),'YLim',[-0.1,1.2]);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig1_frequencyTest_ShortLong_spike_','.tif']);
-% print('-painters','-r300','-depsc',['fig1_frequencyTest_spike_',datestr(now,formatOut),'.ai']);
-% close();
+print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig1_frequencyTest_ShortLong_spike','.tif']);
+print('-painters','-r300','-depsc',[datestr(now,formatOut),'_fig1_frequencyTest_ShortLong_spike','.ai']);
+close();

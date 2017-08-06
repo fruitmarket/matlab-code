@@ -31,9 +31,9 @@ end
     end
 
 %% Sensor time
-sensorITIThreshold = 100; % sensor intevals shorter than 100ms are usually artifacts.
+sensorITIThreshold = 1000; % sensor intevals shorter than 100ms are usually artifacts.
 sensor1 = timeStamp((~cellfun('isempty',regexp(eventString,'S1'))) & cellfun('length',eventString)==2);
-sensorOut = [false; (diff(sensor1(:,1)) < sensorITIThreshold)] | (sensor1(:,1) < timeStamp(recStart(1)));
+sensorOut = [false; (diff(sensor1(:,1)) < sensorITIThreshold)] | (sensor1(:,1) < timeStamp(recStart(2)));
 sensor1(sensorOut,:) = [];
 sensor.S1 = sensor1;
 

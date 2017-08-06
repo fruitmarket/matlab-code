@@ -170,6 +170,6 @@ set(hPlot_mean,'TickDir','out','Box','off');
 set(hPlot_mean,'XLim',[0,16],'XTick',1:15,'fontSize',fontL,'YLim',[0 50],'YTick',0:10:50);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_plot_freq_DetoTest','.tif']);
+% print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_plot_freq_DetoTest','.tif']);
 % print('-painters','-r300','-depsc',['fig1_frequencyTest_',datestr(now,formatOut),'.ai']);
 % close();

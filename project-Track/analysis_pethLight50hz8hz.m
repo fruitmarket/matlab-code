@@ -2,7 +2,8 @@ function analysis_pethLight50hz8hz
 
 binSize = 10; % unit: msec
 resolution = 10; % unit: msec, rasterPETH sigma = resoution * binSize (usually 100 ms works fine). Big resolution --> wide distribution
-winPlot = [-25, 99];
+win50hz = [-25, 99];
+win8hz = [-500 2000];
 winFidel = [0 10];
 [tData, tList] = tLoad;
 nCell = length(tList);
@@ -10,19 +11,22 @@ nCell = length(tList);
 for iCell = 1:nCell
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
-    
+    disp(['### pethLight analysis: ',tList{iCell},'...']);
     load('Events.mat');
     
     spikeData = tData{iCell};
     meanFR = meanFiringRate(time_recStart,time_recEnd,spikeData);
     
-    spkTime = spikeWin(spikeData,lightT_50hzLoop1st,winPlot);
-    [xpt, ypt, pethtime, peth, pethConv, pethConvZ] = rasterPETH(spkTime,true(size(lightT_50hzLoop1st)),winPlot,binSize,resolution,1);
+    spkTime50hzL1st = spikeWin(spikeData,lightT_50hzLoop1st,win50hz);
+    [xpt50hzL1st, ypt50hzL1st, pethtime50hzL1st, peth50hzL1st, pethConv50hzL1st, pethConvZ50hzL1st] = rasterPETH(spkTime50hzL1st,true(size(lightT_50hzLoop1st)),win50hz,binSize,resolution,1);
+    
+    spkTime8hz = spikeWin(spikeData,lightT_8hzLoopStart,win8hz);
+    [xpt8hz,ypt8hz,pethtime8hz,pethConv8hz,pethconvZ8hz] = rasterPETH(spkTime8hz,true(size(lightT_8hzLoopStart)),win8hz,binSize,resolution,1);
     
 % Calculating light evoked spike number 10ms window
-    spkLight_1 = sum(double(0<xpt{1} & xpt{1}<10));
-    spkLight_2 = sum(double(20<xpt{1} & xpt{1}<30));
-    spkLight_3 = sum(double(40<xpt{1} & xpt{1}<50));
+    spkLight_1 = sum(double(0<xpt50hzL1st{1} & xpt50hzL1st{1}<10));
+    spkLight_2 = sum(double(20<xpt50hzL1st{1} & xpt50hzL1st{1}<30));
+    spkLight_3 = sum(double(40<xpt50hzL1st{1} & xpt50hzL1st{1}<50));
     
 % Spike fidelity
     spkTime_1 = spikeWin(spikeData,lightT_50hzLoop1st,winFidel);
@@ -34,7 +38,8 @@ for iCell = 1:nCell
     spkTime_3 = spikeWin(spikeData,lightT_50hzLoop3rd,winFidel);
     spkFidel_3 = sum(double(~cellfun(@isempty,spkTime_3)))/length(lightT_50hzLoop3rd)*100;
     
-    save([cellName,'.mat'],'meanFR','xpt','ypt','pethtime','peth','pethConv','pethConvZ',...
+    save([cellName,'.mat'],'meanFR','xpt50hzL1st','ypt50hzL1st','pethtime50hzL1st','peth50hzL1st','pethConv50hzL1st','pethConvZ50hzL1st',...
+        'xpt8hz','ypt8hz','pethtime8hz','pethConv8hz','pethconvZ8hz',...
         'spkLight_1','spkLight_2','spkLight_3','spkFidel_1','spkFidel_2','spkFidel_3');
 end
 disp('### Analyzing: pethLight50hz8hz is complete! ###');

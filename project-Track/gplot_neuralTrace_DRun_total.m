@@ -4,72 +4,51 @@
 
 % common part
 clearvars;
-lineColor = {[144, 164, 174]./255,... % Before stimulation
-    [33 150 243]./ 255,... % During stimulation
-    [38, 50, 56]./255}; % After stimulation
+rtDir = 'D:\Dropbox\SNL\P2_Track';
+cd(rtDir);
 
-lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 6; fontL = 8; fontXL = 10; % font size large
-lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
-
-colorBlue = [33, 150, 243]/255;
-colorLightBlue = [100, 181, 246]/255;
-colorLLightBlue = [187, 222, 251]/255;
-colorDarkBlue = [13, 71, 161]/255;
-colorLightRed = [242, 138, 130]/255;
-colorRed = [237, 50, 52]/255;
-colorDarkRed = [183, 28, 28]/255;
-colorGray = [189, 189, 189]/255;
-colorLightGreen = [67, 160, 71]/255;
-colorGreen = [46, 125, 50]/255;
-colorDarkGreen = [27, 94, 32]/255;
-colorLightGray = [238, 238, 238]/255;
-colorDarkGray = [117, 117, 117]/255;
-colorYellow = [255, 243, 3]/255;
-colorLightYellow = [255, 249, 196]/255;
-colorPurple = [123, 31, 162]/255;
-colorBlack = [0, 0, 0];
-
-markerS = 2; markerM = 4; markerL = 6; markerXL = 8;
-tightInterval = [0.02 0.02]; midInterval = [0.09, 0.09]; wideInterval = [0.14 0.14];
-width = 0.7;
-
-paperSize = {[0 0 21.0 29.7]; % A4_portrait
-             [0 0 29.7 21.0]; % A4_landscape
-             [0 0 15.7 21.0]; % A4_half landscape
-             [0 0 21.6 27.9]}; % Letter
-
-cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170413.mat');
-
-cri_meanFR = 7;
-cri_peakFR = 0;
-alpha = 0.01;
-
-% TN: track neuron
-DRunTN = (T.taskType == 'DRun') & (cellfun(@max, T.peakFR1D_track) > cri_peakFR);
+load myParameters.mat;
+load('neuronList_ori_170701.mat');
+Txls = readtable('neuronList_ori_170701.xlsx');
+Txls.taskType = categorical(Txls.taskType);
+formatOut = 'yymmdd';
 
 % total population (DRunPN / DRunIN / DRwPN / DRwIN) with light responsiveness (light activated)
-DRunPN_total = DRunTN & T.meanFR_task<=cri_meanFR;
-DRunPN_light = DRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha;
-DRunPN_act = DRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == 1;
-DRunPN_ina = DRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Track<alpha & T.statDir_Track == -1;
-DRunPN_no = DRunTN & T.meanFR_task<=cri_meanFR & T.pLR_Track>=alpha;
+DRun_PN = T.taskType == 'DRun' & T.idxNeurontype == 'PN';
+DRun_IN = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
+DRun_UNC = T.taskType == 'DRun' & T.idxNeurontype == 'UNC';
+
+DRun_PN_light = DRun_PN & T.pLR_Track<alpha;
+DRun_PN_act = DRun_PN & T.pLR_Track<alpha & T.statDir_Track == 1;
+DRun_PN_ina = DRun_PN & T.pLR_Track<alpha & T.statDir_Track == -1;
+DRun_PN_no = DRun_PN & T.pLR_Track>=alpha;
 
 winSize = [ones(1,4)*5, ones(1,9)*10, ones(1,14)*15];
 mvWinSize = [1:4,1:9,1:14];
 nCycle = length(winSize);
-baseLine = [-20, 0];
+baseLine = [-22, -3]; %% first 2ms and last 2ms are dropped becaused of smoothing
 
-[m_neuDist_DRunPN_total, ~, tracePCA_DRunPN_total, scorePCA_DRunPN_total, latentPCA_DRunPN_total] = analysis_neuralTrace(T.xptTrackLight(DRunPN_total),5,1,baseLine);    
-[m_neuDist_DRunPN_light, ~, tracePCA_DRunPN_light, scorePCA_DRunPN_light, latentPCA_DRunPN_light] = analysis_neuralTrace(T.xptTrackLight(DRunPN_light),5,1,baseLine);    
-[m_neuDist_DRunPN_act, ~, tracePCA_DRunPN_act, scorePCA_DRunPN_act, latentPCA_DRunPN_act] = analysis_neuralTrace(T.xptTrackLight(DRunPN_act),5,1,baseLine);
-[m_neuDist_DRunPN_ina, ~, tracePCA_DRunPN_ina, scorePCA_DRunPN_ina, latentPCA_DRunPN_ina] = analysis_neuralTrace(T.xptTrackLight(DRunPN_ina),5,1,baseLine);
-[m_neuDist_DRunPN_no, ~, tracePCA_DRunPN_no, scorePCA_DRunPN_no, latentPCA_DRunPN_no] = analysis_neuralTrace(T.xptTrackLight(DRunPN_no),5,1,baseLine);
+% [m_neuDist_DRunPN_total_PRE, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPreD(DRun_PN),5,1,baseLine);    
+% [m_neuDist_DRunPN_light_PRE, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPreD(DRun_PN_light),5,1,baseLine);    
+% [m_neuDist_DRunPN_act_PRE, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPreD(DRun_PN_act),5,1,baseLine);
+% [m_neuDist_DRunPN_ina_PRE, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPreD(DRun_PN_ina),5,1,baseLine);
+% [m_neuDist_DRunPN_no_PRE, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPreD(DRun_PN_no),5,1,baseLine);
 
+[m_neuDist_DRunPN_total_STM, ~, tracePCA_DRunPN_total, ~, scorePCA_DRunPN_total, latentPCA_DRunPN_total] = analysis_neuralTrace(T.xptTrack8hz(DRun_PN),5,1,baseLine);    
+[m_neuDist_DRunPN_light_STM, ~, tracePCA_DRunPN_light, ~, scorePCA_DRunPN_light, latentPCA_DRunPN_light] = analysis_neuralTrace(T.xptTrack8hz(DRun_PN_light),5,1,baseLine);    
+[m_neuDist_DRunPN_act_STM, ~, tracePCA_DRunPN_act, ~, scorePCA_DRunPN_act, latentPCA_DRunPN_act] = analysis_neuralTrace(T.xptTrack8hz(DRun_PN_act),5,1,baseLine);
+[m_neuDist_DRunPN_ina_STM, ~, tracePCA_DRunPN_ina, ~, scorePCA_DRunPN_ina, latentPCA_DRunPN_ina] = analysis_neuralTrace(T.xptTrack8hz(DRun_PN_ina),5,1,baseLine);
+[m_neuDist_DRunPN_no_STM, ~, tracePCA_DRunPN_no, ~, scorePCA_DRunPN_no, latentPCA_DRunPN_no] = analysis_neuralTrace(T.xptTrack8hz(DRun_PN_no),5,1,baseLine);
+
+[m_neuDist_DRunPN_total_POST, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPostD(DRun_PN),5,1,baseLine);    
+[m_neuDist_DRunPN_light_POST, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPostD(DRun_PN_light),5,1,baseLine);    
+[m_neuDist_DRunPN_act_POST, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPostD(DRun_PN_act),5,1,baseLine);
+[m_neuDist_DRunPN_ina_POST, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPostD(DRun_PN_ina),5,1,baseLine);
+[m_neuDist_DRunPN_no_POST, ~, ~, ~, ~, ~] = analysis_neuralTrace(T.xptPsdPostD(DRun_PN_no),5,1,baseLine);
 %%
 nCol = 2;
 nRow = 2;
+xpt = -20:99;
 
 fHandle(1) = figure('PaperUnits','centimeters','PaperPosition',paperSize{1},'Name','DRun_total');
 
@@ -152,30 +131,56 @@ ylabel('PC1','fontSize',fontL);
 
 set(hLatent,'Box','off','TickDir','out','YLim',[0,110]);
 set(hTrace,'Box','off','TickDir','out');
-print('-painters','-r300','plot_neuralTrace_DRunPN_total_PCA_score.tif','-dtiff');
+% print('-painters','-r300',[datestr(now,formatOut),'_plot_neuralTrace_DRunPN_PCA_score.tif'],'-dtiff');
 
 %%
-fHandle(2) = figure('PaperUnits','centimeters','PaperPosition',paperSize{1},'Name','DRun_NeuDist');
-hNeuDist = axes('Position',axpt(1,1,1,1,[0.1 0.1 0.85 0.85],wideInterval));
-plot(m_neuDist_DRunPN_total,'-o','color',colorLightGray,'MarkerFaceColor',colorDarkGray,'MarkerSize',markerL,'LineWidth',lineL);
+fHandle(2) = figure('PaperUnits','centimeters','PaperPosition',paperSize{2},'Name','DRun_NeuDist');
+nCol = 3;
+nRow = 1;
+hNeuDist(1) = axes('Position',axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval));
+plot(xpt,m_neuDist_DRunPN_total_PRE,'-o','color',colorLightGray,'MarkerFaceColor',colorDarkGray,'MarkerSize',markerL,'LineWidth',lineL);
 hold on;
-plot(m_neuDist_DRunPN_light,'-o','color',colorLightGreen,'MarkerFaceColor',colorDarkGreen,'MarkerSize',markerL,'LineWidth',lineL);
+plot(xpt,m_neuDist_DRunPN_light_PRE,'-o','color',colorLightGreen,'MarkerFaceColor',colorDarkGreen,'MarkerSize',markerL,'LineWidth',lineL);
 hold on;
-plot(m_neuDist_DRunPN_act,'-o','color',colorLightBlue,'MarkerFaceColor',colorDarkBlue,'MarkerSize',markerL,'LineWidth',lineL);
+plot(xpt,m_neuDist_DRunPN_act_PRE,'-o','color',colorLightBlue,'MarkerFaceColor',colorDarkBlue,'MarkerSize',markerL,'LineWidth',lineL);
 hold on;
-plot(m_neuDist_DRunPN_ina,'-o','color',colorLightRed,'MarkerFaceColor',colorDarkRed,'MarkerSize',markerL,'LineWidth',lineL);
+plot(xpt,m_neuDist_DRunPN_ina_PRE,'-o','color',colorLightRed,'MarkerFaceColor',colorDarkRed,'MarkerSize',markerL,'LineWidth',lineL);
 hold on;
-plot(m_neuDist_DRunPN_no,'-o','color',colorGray,'MarkerFaceColor',colorBlack,'MarkerSize',markerL,'LineWidth',lineL);
+plot(xpt,m_neuDist_DRunPN_no_PRE,'-o','color',colorGray,'MarkerFaceColor',colorBlack,'MarkerSize',markerL,'LineWidth',lineL);
+title('Neural Distance [PRE]','fontSize',fontL);
 
-text(size(m_neuDist_DRunPN_act,1)*0.6,max(m_neuDist_DRunPN_act)*0.9,['Total (n = ',num2str(sum(double(DRunPN_total))), ')'],'color',colorDarkGray,'fontSize',fontL);
-text(size(m_neuDist_DRunPN_act,1)*0.6,max(m_neuDist_DRunPN_act)*0.85,['Light resp. (n = ',num2str(sum(double(DRunPN_light))), ')'],'color',colorGreen,'fontSize',fontL);
-text(size(m_neuDist_DRunPN_act,1)*0.6,max(m_neuDist_DRunPN_act)*0.80,['Light act. (n = ',num2str(sum(double(DRunPN_act))), ')'],'color',colorBlue,'fontSize',fontL);
-text(size(m_neuDist_DRunPN_act,1)*0.6,max(m_neuDist_DRunPN_act)*0.75,['Light ina. (n = ',num2str(sum(double(DRunPN_ina))), ')'],'color',colorRed,'fontSize',fontL);
-text(size(m_neuDist_DRunPN_act,1)*0.6,max(m_neuDist_DRunPN_act)*0.70,['No resp. (n = ',num2str(sum(double(DRunPN_no))), ')'],'color',colorBlack,'fontSize',fontL);
+hNeuDist(2) = axes('Position',axpt(nCol,nRow,2,1,[0.1 0.1 0.85 0.85],wideInterval));
+plot(xpt,m_neuDist_DRunPN_total_STM,'-o','color',colorLightGray,'MarkerFaceColor',colorDarkGray,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+plot(xpt,m_neuDist_DRunPN_light_STM,'-o','color',colorLightGreen,'MarkerFaceColor',colorDarkGreen,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+plot(xpt,m_neuDist_DRunPN_act_STM,'-o','color',colorLightBlue,'MarkerFaceColor',colorDarkBlue,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+plot(xpt,m_neuDist_DRunPN_ina_STM,'-o','color',colorLightRed,'MarkerFaceColor',colorDarkRed,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+plot(xpt,m_neuDist_DRunPN_no_STM,'-o','color',colorGray,'MarkerFaceColor',colorBlack,'MarkerSize',markerL,'LineWidth',lineL);
+
+text(40,max(m_neuDist_DRunPN_act_STM)*0.9,['Total (n = ',num2str(sum(double(DRun_PN))), ')'],'color',colorDarkGray,'fontSize',fontL);
+text(40,max(m_neuDist_DRunPN_act_STM)*0.85,['Light resp. (n = ',num2str(sum(double(DRun_PN_light))), ')'],'color',colorGreen,'fontSize',fontL);
+text(40,max(m_neuDist_DRunPN_act_STM)*0.80,['Light act. (n = ',num2str(sum(double(DRun_PN_act))), ')'],'color',colorBlue,'fontSize',fontL);
+text(40,max(m_neuDist_DRunPN_act_STM)*0.75,['Light ina. (n = ',num2str(sum(double(DRun_PN_ina))), ')'],'color',colorRed,'fontSize',fontL);
+text(40,max(m_neuDist_DRunPN_act_STM)*0.70,['No resp. (n = ',num2str(sum(double(DRun_PN_no))), ')'],'color',colorBlack,'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontXL);
 ylabel('Neural distance','fontSize',fontXL);
-title('Neural Distance [DRun sessions]','fontSize',fontXL);
-set(hNeuDist,'Box','off','TickDir','out','XLim',[0,size(m_neuDist_DRunPN_act,1)*1.01],'XTick',[0,20/1,30/1,40/1,size(m_neuDist_DRunPN_act,1)],'XTickLabel',[-20,0,10,20,100],'fontSize',fontXL);
+title('Neural Distance [STM]','fontSize',fontL);
 
-print('-painters','-r300','plot_neuralTrace_DRunPN_total_NeuDist_score.tif','-dtiff');
+hNeuDist(3) = axes('Position',axpt(nCol,nRow,3,1,[0.1 0.1 0.85 0.85],wideInterval));
+plot(xpt,m_neuDist_DRunPN_total_POST,'-o','color',colorLightGray,'MarkerFaceColor',colorDarkGray,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+plot(xpt,m_neuDist_DRunPN_light_POST,'-o','color',colorLightGreen,'MarkerFaceColor',colorDarkGreen,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+plot(xpt,m_neuDist_DRunPN_act_POST,'-o','color',colorLightBlue,'MarkerFaceColor',colorDarkBlue,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+plot(xpt,m_neuDist_DRunPN_ina_POST,'-o','color',colorLightRed,'MarkerFaceColor',colorDarkRed,'MarkerSize',markerL,'LineWidth',lineL);
+hold on;
+plot(xpt,m_neuDist_DRunPN_no_POST,'-o','color',colorGray,'MarkerFaceColor',colorBlack,'MarkerSize',markerL,'LineWidth',lineL);
+title('Neural Distance [POST]','fontSize',fontL);
+
+set(hNeuDist,'Box','off','TickDir','out','XLim',[-20,100],'YLim',[0,4],'fontSize',fontXL);
+print('-painters','-r300',[datestr(now,formatOut),'_plot_neuralTrace_DRunPN_NeuDist_score.tif'],'-dtiff');
 close('all')

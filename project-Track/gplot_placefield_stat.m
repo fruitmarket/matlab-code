@@ -33,7 +33,7 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 21.6 27.9]}; % Letter
 
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170421.mat');
+load('neuronList_ori_170819.mat');
 
 cMeanFR = 9;
 cMaxPeakFR = 0.1;
@@ -264,4 +264,4 @@ title('DRw sessions (PN)','fontSize',fontXL,'fontWeight','bold');
 set(hStat,'Box','off','TickDir','out','XLim',[0,9],'YLim',[0,1],'XTick',[1,2,4,5,7,8],'XTickLabel',{'PF in zone','PF out zone','PF in zone','PF out zone','PF in zone','PF out zone'},'fontSize',fontXL,'YTick',0:0.2:1);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',['gplot_placeField_stat_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-dtiff',['gplot_placeField_stat_',datestr(now,formatOut),'.tif']);

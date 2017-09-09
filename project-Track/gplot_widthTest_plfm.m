@@ -4,8 +4,9 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load myParameters.mat         
-load('neuronList_width_170617.mat');
-Txls = readtable('neuronList_width_170617.xlsx');
+load('neuronList_width_170821.mat');
+Txls = readtable('neuronList_width_170821.xlsx');
+formatOut = 'yymmdd';
 
 cMeanFR = 9;
 cMaxPeakFR = 1;
@@ -237,10 +238,9 @@ ylabel('Spikes/bin','fontSize',fontL);
 set(hBarIN,'FaceColor',colorBlack,'EdgeAlpha',0);
 set(hPlotIN,'Box','off','TickDir','out','XLim',[-20,120],'XTick',[-20:20:100],'YLim',[0,yMaxIN],'fontSize',fontL);
 
-formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_plot_plfm_laserWidth','.tif']);
+% print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_plot_plfm_laserWidth','.tif']);
 % print('-painters','-r300','-depsc',['plot_plfm_laserWidth_',datestr(now,formatOut),'.ai']);
-close;
+% close;
 
 %% figure 2
 fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});

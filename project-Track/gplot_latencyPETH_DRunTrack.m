@@ -37,7 +37,7 @@ paperSize = {[0 0 21.0 29.7]; % A4_portrait
 cd('D:\Dropbox\SNL\P2_Track');
 % Txls = readtable('neuronList_21-Mar-2017.xlsx');
 % load('neuronList_ori_21-Mar-2017.mat');
-load('neuronList_ori_170405.mat');
+load('neuronList_ori_170819.mat');
 
 cri_meanFR = 7;
 cri_peakFR = 0;
@@ -64,17 +64,17 @@ DRunIN_no = DRunTN & T.meanFR_task>cri_meanFR & T.pLR_Track>=alpha;
 
 
 %% PETH
-DRunPN_act_pethTrack = cell2mat(T.pethTrack8hz(DRunPN_act));
-DRunPN_actRapid_pethTrack = cell2mat(T.pethTrack8hz(DRunPN_actRapid));
-DRunPN_actDelay_pethTrack = cell2mat(T.pethTrack8hz(DRunPN_actDelay));
-DRunPN_ina_pethTrack = cell2mat(T.pethTrack8hz(DRunPN_ina));
-DRunPN_no_pethTrack = cell2mat(T.pethTrack8hz(DRunPN_no));
+DRunPN_act_pethTrack = T.pethTrackLight(DRunPN_act,:);
+DRunPN_actRapid_pethTrack = T.pethTrackLight(DRunPN_actRapid,:);
+DRunPN_actDelay_pethTrack = T.pethTrackLight(DRunPN_actDelay,:);
+DRunPN_ina_pethTrack = T.pethTrackLight(DRunPN_ina,:);
+DRunPN_no_pethTrack = T.pethTrackLight(DRunPN_no,:);
 
-DRunIN_act_pethTrack = cell2mat(T.pethTrack8hz(DRunIN_act));
-DRunIN_actRapid_pethTrack = cell2mat(T.pethTrack8hz(DRunIN_actRapid));
-DRunIN_actDelay_pethTrack = cell2mat(T.pethTrack8hz(DRunIN_actDelay));
-DRunIN_ina_pethTrack = cell2mat(T.pethTrack8hz(DRunIN_ina));
-DRunIN_no_pethTrack = cell2mat(T.pethTrack8hz(DRunIN_no));
+DRunIN_act_pethTrack = T.pethTrackLight(DRunIN_act,:);
+DRunIN_actRapid_pethTrack = T.pethTrackLight(DRunIN_actRapid,:);
+DRunIN_actDelay_pethTrack = T.pethTrackLight(DRunIN_actDelay,:);
+DRunIN_ina_pethTrack = T.pethTrackLight(DRunIN_ina,:);
+DRunIN_no_pethTrack = T.pethTrackLight(DRunIN_no,:);
 
 %% Mean & Sem
 n_DRunPN_act_pethTrack = size(DRunPN_act_pethTrack,1);
@@ -121,7 +121,7 @@ sem_DRunIN_no_pethTrack = std(DRunIN_no_pethTrack,1)/sqrt(n_DRunIN_no_pethTrack)
 %%
 nCol = 2;
 nRow = 5;
-xpt = T.pethtimeTrack8hz{2};
+xpt = T.pethtimeTrackLight(2,:);
 yMaxDRunPN = max([m_DRunPN_act_pethTrack, m_DRunPN_ina_pethTrack, m_DRunPN_no_pethTrack])*2;
 yMaxDRunIN = max([m_DRunIN_act_pethTrack, m_DRunIN_ina_pethTrack, m_DRunIN_no_pethTrack])*1.5;
 

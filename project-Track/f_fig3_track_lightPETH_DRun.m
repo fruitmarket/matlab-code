@@ -6,8 +6,10 @@ clearvars;
 
 cd('D:\Dropbox\SNL\P2_Track'); % win version
 % cd('/Users/Jun/Dropbox/SNL/P2_Track'); % mac version
-Txls = readtable('neuronList_ori_170819.xlsx');
-load('neuronList_ori_170819.mat');
+Txls = readtable('neuronList_ori_170908.xlsx');
+% Txls = readtable('neuronList_ori_170819.xlsx');
+% load('neuronList_ori_170819.mat');
+load('neuronList_ori_170908.mat');
 load myParameters.mat;
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 

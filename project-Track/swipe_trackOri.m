@@ -1,8 +1,6 @@
 %% Directory setup
 rtPath = 'D:\Dropbox\SNL\P2_Track';
-startingDir = {'D:\Projects\Track_151029-4_Rbp6';
-               'D:\Projects\Track_151029-5_Rbp8';
-               'D:\Projects\Track_151213-2_Rbp14';
+startingDir = {'D:\Projects\Track_151029-5_Rbp8';
                'D:\Projects\Track_160221-1_Rbp16';
                'D:\Projects\Track_160417-1_Rbp32ori';
                'D:\Projects\Track_160417-2_Rbp34ori';
@@ -16,8 +14,13 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';
                'D:\Projects\Track_161130-7_Rbp68ori';
                'D:\Projects\Track_170119-1_Rbp70ori';
                'D:\Projects\Track_170109-2_Rbp72ori';
-               'D:\Projects\Track_170115-4_Rbp74ori'};
-% startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
+               'D:\Projects\Track_170305-1_Rbp76ori';
+               'D:\Projects\Track_170305-2_Rbp78ori'};
+           % 20170907 modifided
+           % 'D:\Projects\Track_151029-4_Rbp6' excluded because of virus expression
+           % 'D:\Projects\Track_151213-2_Rbp14' excluded because of optic fiber location
+           % 'D:\Projects\Track_161130-5_Rbp66ori' excluded because of almost no expression
+           % 'D:\Projects\Track_170115-4_Rbp74ori' excluede because of no expression
 nDir = size(startingDir,1);
 [matFile, tFile, cscFile] = deal([]);
 typeName = input('Enter file type (e, m, t, c): ', 's');
@@ -59,29 +62,30 @@ for iPath = 1:nPath
     switch typeName
         case 'e'
             event2mat_trackori;
-        otherwise
-%             pethSensor;
+        case 't'
+            pethSensor;
             pethLight;
-%             waveform;
-%             heatMap;
-%             analysis_pcInfo1D;
-%             tagstat_trackOri; %
-%             analysis_respstatTrack; % log-rank test 8hz has been changed
-%             mapCorr; % PreStm, PrePost, StmPost
-%             mapCorrEvOd; % For Even lap, odd lap of Pre-stm
-%             sensorMeanFR;
-%             analysis_burst6ms;
-%             analysis_wvformCrosscor;
-%             analysis_spatialRaster;
-%             analysis_plfm_laserIntTest;
-%             analysis_track_peth1stLight;
-%             laserFreqCheck;
-%             analysis_detoSpike8hz;
-%             analysis_stmzoneSpike;
-%             analysis_laserSpikeChange;
-%             analysis_findPeakLoci;
-%             analysis_indexTrack;
-%             analysis_LRatioID;
+            waveform;
+            heatMap;
+            tagstat_trackOri; %
+            analysis_respstatTrack; % log-rank test 8hz has been changed
+            mapCorr; % PreStm, PrePost, StmPost
+            mapCorrEvOd; % For Even lap, odd lap of Pre-stm
+            sensorMeanFR;
+            analysis_burst6ms;
+            analysis_wvformCrosscor;
+            analysis_spatialRaster;
+            analysis_lightPlaceSeparation;
+            analysis_plfm_laserIntTest;
+            analysis_track_peth1stLight;
+            laserFreqCheck;
+            analysis_detoSpike8hz;
+            analysis_stmzoneSpike;
+            analysis_laserSpikeChange;
+            analysis_LRatioID;
+            analysis_findPeakLoci;
+        case 'm'
+            analysis_indexTrack;
 %             plot_Track_sin_v3;
     end
     fclose('all');

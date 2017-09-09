@@ -13,7 +13,7 @@ lightBand = 3;
 
 %% Loading cell information
 load myParameters.mat;
-load('neuronList_ori_170726.mat');
+load('neuronList_ori_170819.mat');
 formatOut = 'yymmdd';
 
 %%
@@ -324,6 +324,5 @@ ylabel('proportion (%)','fontSize',fontL);
 title('Unclassfied neuron','fontSize',fontXL);
 
 set(hBar,'Box','off','TickDir','out','YLim',[0 110],'YTick',0:10:100);
-print('-painters','-dtiff','-r300',[datestr(now,formatOut),'_plot_Rw_table.tif']);
-
-close all;
+% print('-painters','-dtiff','-r300',[datestr(now,formatOut),'_plot_Rw_table.tif']);
+% close all;

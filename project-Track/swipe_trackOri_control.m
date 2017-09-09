@@ -46,7 +46,7 @@ for iPath = 1:nPath
     switch typeName
         case 'e'
             event2mat_trackori;
-        otherwise
+        case 't'
 %             pethSensor;
 %             pethLight;
 %             waveform;
@@ -63,12 +63,14 @@ for iPath = 1:nPath
 %             analysis_track_peth1stLight;
 %             laserFreqCheck;
 %             analysis_detoSpike8hz;
-%             analysis_stmzoneSpike;
+            analysis_stmzoneSpike;
 %             analysis_laserSpikeChange;
 %             analysis_findPeakLoci;
-          analysis_LRatioID;
-%             analysis_indexTrack;
-%             plot_Track_sin_v3;
+%             analysis_LRatioID;
+
+        case 'm'
+            analysis_indexTrack;
+%             plot_Track_sin_v3;            
     end
     fclose('all');
     close all;

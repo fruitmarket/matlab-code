@@ -79,23 +79,22 @@ for iCell = 1:nCell
     spikeLocation = realDist(spkPositionIdx); % position data of each spike
     spikePosition = spikeWin(spikeLocation,eventPosition,winSpace); % spikeLocation is re-organized by each lap
     [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu(:,1:end-1), winSpace, binSize, resolution, dot);
-    peakFR1D_track = max(pethconvSpatial,[],2);
-    
+    peakFR1D_track = max(pethconvSpatial,[],2);   
     save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','peakFR1D_track','lightLoc','rewardLoc','-append');
     
 %% spatial correlation 1D
-    rateMap1D_pre = pethconvSpatial(1,:);
-    rateMap1D_stm = pethconvSpatial(2,:);
-    rateMap1D_post = pethconvSpatial(3,:);
-    idxCompare = min([sum(double(isfinite(rateMap1D_pre))), sum(double(isfinite(rateMap1D_stm))), sum(double(isfinite(rateMap1D_post)))]);
+    rateMap1D_PRE = pethconvSpatial(1,:);
+    rateMap1D_STM = pethconvSpatial(2,:);
+    rateMap1D_POST = pethconvSpatial(3,:);
+    idxCompare = min([sum(double(isfinite(rateMap1D_PRE))), sum(double(isfinite(rateMap1D_STM))), sum(double(isfinite(rateMap1D_POST)))]);
        
-    [rCorr1D_preXstm, pCorr1D_preXstm] = corr(rateMap1D_pre(1:idxCompare)',rateMap1D_stm(1:idxCompare)','type','Pearson'); % corr calculates based on column vectors
-    [rCorr1D_preXpost, pCorr1D_preXpost] = corr(rateMap1D_pre(1:idxCompare)',rateMap1D_post(1:idxCompare)','type','Pearson');
-    [rCorr1D_stmXpost, pCorr1D_stmXpost] = corr(rateMap1D_stm(1:idxCompare)',rateMap1D_post(1:idxCompare)','type','Pearson');
+    [rCorr1D_preXstm, pCorr1D_preXstm] = corr(rateMap1D_PRE(1:idxCompare)',rateMap1D_STM(1:idxCompare)','type','Pearson'); % corr calculates based on column vectors
+    [rCorr1D_preXpost, pCorr1D_preXpost] = corr(rateMap1D_PRE(1:idxCompare)',rateMap1D_POST(1:idxCompare)','type','Pearson');
+    [rCorr1D_stmXpost, pCorr1D_stmXpost] = corr(rateMap1D_STM(1:idxCompare)',rateMap1D_POST(1:idxCompare)','type','Pearson');
     fCorr1D_preXstm = fisherZ(rCorr1D_preXstm);
     fCorr1D_preXpost = fisherZ(rCorr1D_preXpost);
     fCorr1D_stmXpost = fisherZ(rCorr1D_stmXpost);
-    save([cellName,'.mat'],'rCorr1D_preXstm','pCorr1D_preXstm','rCorr1D_preXpost','pCorr1D_preXpost','rCorr1D_stmXpost','pCorr1D_stmXpost','fCorr1D_preXstm','fCorr1D_preXpost','fCorr1D_stmXpost','-append');
+    save([cellName,'.mat'],'rateMap1D_PRE','rateMap1D_STM','rateMap1D_POST','rCorr1D_preXstm','pCorr1D_preXstm','rCorr1D_preXpost','pCorr1D_preXpost','rCorr1D_stmXpost','pCorr1D_stmXpost','fCorr1D_preXstm','fCorr1D_preXpost','fCorr1D_stmXpost','-append');
     
     spikePositionPRE = spikePosition(1:30);
     A = [1,0];
@@ -106,6 +105,9 @@ for iCell = 1:nCell
     rateMap1D_PRE2 = pethconvSpatialPRE(2,:);
     [rCorr1D_preXpre, pCorr1D_preXpre] = corr(rateMap1D_PRE1',rateMap1D_PRE2','type','Pearson','rows','pairwise');
     fCorr1D_preXpre = fisherZ(rCorr1D_preXpre);
+    if isnan(fCorr1D_preXpre)
+        fCorr1D_preXpre = 0;
+    end
     save([cellName,'.mat'],'rCorr1D_preXpre','pCorr1D_preXpre','fCorr1D_preXpre','-append');
 
 %% Spatial information (spikePosition, occupancy are required)
@@ -116,7 +118,6 @@ for iCell = 1:nCell
     
     numOccuSI = numOccu; % unit [sec]
     numOccuSI(:,end) = []; % delete last bin
-
     if meanFRPRE ~= 0
         spikePRE = reshape(histc(cell2mat(spikePosition(1:30)),winLinear(1):winLinear(2)),1,125);
         spikePRE(end) = [];
@@ -130,7 +131,6 @@ for iCell = 1:nCell
         infoSpikePRE = NaN;
         infoSecondPRE = NaN;
     end
-    
     if meanFRSTM ~= 0
         spikeSTM = reshape(histc(cell2mat(spikePosition(31:60)),winLinear(1):winLinear(2)),1,125);
         spikeSTM(end) = [];
@@ -144,7 +144,6 @@ for iCell = 1:nCell
         infoSpikeSTM = NaN;
         infoSecondSTM = NaN;
     end
-    
     if meanFRPOST ~= 0
         spikePOST = reshape(histc(cell2mat(spikePosition(61:90)),winLinear(1):winLinear(2)),1,125);
         spikePOST(end) = [];
@@ -157,8 +156,7 @@ for iCell = 1:nCell
     else
         infoSpikePOST = NaN;
         infoSecondPOST = NaN;
-    end
-    
+    end   
     if meanFRTotal ~= 0
         spikeTotal = reshape(histc(cell2mat(spikePosition),winLinear(1):winLinear(2)),1,125);
         spikeTotal(end) = [];
@@ -172,7 +170,6 @@ for iCell = 1:nCell
         infoSpikeTotal = NaN;
         infoSecondTotal = NaN;
     end
-
     save([cellName,'.mat'],'infoSpikePRE','infoSecondPRE','infoSpikeSTM','infoSecondSTM','infoSpikePOST','infoSecondPOST','infoSpikeTotal','infoSecondTotal','-append')
 end
 disp('### Making Spatial Raster & PETH & correlation(1D) & spatial information is done!')

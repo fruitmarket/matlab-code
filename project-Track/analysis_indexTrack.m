@@ -8,14 +8,14 @@ cMeanFRPeak = 9;
 cPeakFR = 4;
 cSpkpvr = 1.2;
 cPixelLength = 5;
-
+cOverLapLength = 5;
 alpha = 0.01;
 
 for iFile = 1:nFile
     disp(['### analyzing peak location:',matFile{iFile},'...']);
     [cellDir, cellName, ~] = fileparts(matFile{iFile});
     cd(cellDir);
-    load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_TrackN','p_ttest','lightLoc');
+    load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_TrackN','p_ttest','lightLoc','idxSpikeIn', 'idxSpikeOut', 'idxSpikeTotal','sum_inzoneSpike','sum_outzoneSpike','sum_totalSpike');
     
 %% condi1: meanFR
     if cMeanFRLow < meanFR_task & meanFR_task < cMeanFRPeak & spkpvr > cSpkpvr
@@ -98,6 +98,8 @@ for iFile = 1:nFile
     nLociSTM = size(pixelSTM(idxAreaSTM)',1);
     if nLociSTM == 0
         idxZoneInOutSTM = false;
+        overLapLengthSTM = 0;               %% calculate overlapping area between stm zone & place field
+        idxOverLapLengthSTM = false;
     else
         for iLoci = 1:nLociSTM
             overLapSTM{iLoci,1} = intersect(stmZone,fieldPixelSTM{iLoci});
@@ -106,6 +108,15 @@ for iFile = 1:nFile
             idxZoneInOutSTM = true;
         else
             idxZoneInOutSTM = false;
+        end
+        overLapLengthSTM = cellfun(@length,overLapSTM);
+        if length(overLapLengthSTM) ~= 1
+            overLapLengthSTM = sum(overLapLengthSTM);
+        end
+        if overLapLengthSTM >= cOverLapLength
+            idxOverLapLengthSTM = true;
+        else
+            idxOverLapLengthSTM = false;
         end
     end
 
@@ -147,24 +158,30 @@ for iFile = 1:nFile
     end
 
 %% p-value of spike t-test
-    if sum(p_ttest(:,1)<0.05)>0
-        idxSpikeIn = true;
+    if p_ttest(1,1)<0.05 & (sum_inzoneSpike(2,1) > sum_inzoneSpike(1,1)) % significant spike change in inzone
+        idxSpikeIn = 1;
+    elseif p_ttest(1,1)<0.05 & (sum_inzoneSpike(2,1) < sum_inzoneSpike(1,1))
+        idxSpikeIn = -1;
     else
-        idxSpikeIn = false;
+        idxSpikeIn = 0;
     end
     
-    if sum(p_ttest(:,2)<0.05)>0
-        idxSpikeOut = true;
+    if p_ttest(1,2)<0.05 & (sum_outzoneSpike(2,1) > sum_outzoneSpike(1,1))
+        idxSpikeOut = 1;
+    elseif p_ttest(1,2)<0.05 & (sum_outzoneSpike(2,1) < sum_outzoneSpike(1,1))
+        idxSpikeOut = -1;
     else
-        idxSpikeOut = false;
+        idxSpikeOut = 0;
     end
     
-    if sum(p_ttest(:,3)<0.05)>0
-        idxSpikeTotal = true;
+    if p_ttest(1,3)<0.05 & (sum_totalSpike(2,1) > sum_totalSpike(1,1))
+        idxSpikeTotal = 1;
+    elseif p_ttest(1,3)<0.05 & (sum_totalSpike(2,1) < sum_totalSpike(1,1))
+        idxSpikeTotal = -1;
     else
-        idxSpikeTotal = false;
+        idxSpikeTotal = 0;
     end
-    
-    save([cellName,'.mat'],'idxNeurontype','idxPeakFR','idxPlaceField','idxTotalSpikeNum','idxpLR_Track','idxSpikeIn','idxSpikeOut','idxSpikeTotal','idxZoneInOut','-append');
+
+    save([cellName,'.mat'],'idxNeurontype','idxPeakFR','idxPlaceField','idxTotalSpikeNum','idxpLR_Track','idxSpikeIn','idxSpikeOut','idxSpikeTotal','idxZoneInOut','overLapLengthSTM','idxOverLapLengthSTM','-append');
 end
 disp('### analysis: index calculation completed! ###')

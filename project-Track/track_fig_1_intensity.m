@@ -4,7 +4,7 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load('myParameters.mat');
-load('neuronList_ori_170626.mat');
+load('neuronList_ori_170823.mat');
 
 cMeanFR = 9;
 cMaxPeakFR = 1;

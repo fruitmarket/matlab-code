@@ -7,7 +7,7 @@ load('Events.mat','sensor','preTime','stmTime','postTime');
 
 % align spike time to position time
 for iCell = 1:nCell
-    disp(['### StmZone total spike: ',tList{iCell},'...']);
+    disp(['### inzone total spike: ',tList{iCell},'...']);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     cd(cellPath);
     if ~isempty(regexp(cellPath,'DRun','once')) | ~isempty(regexp(cellPath,'noRun','once'))
@@ -22,34 +22,42 @@ for iCell = 1:nCell
 % Total spike
     spikeTimeTotal = spikePeriod(spikeData,sensor.S1,[sensor.S1(2:end);sensor.S12(end)]); 
     totalSpike = cellfun(@length, spikeTimeTotal);
-    totalSpikeNum(1,1) = sum(totalSpike(1:30));
-    totalSpikeNum(2,1) = sum(totalSpike(31:60));
-    totalSpikeNum(3,1) = sum(totalSpike(61:90));
+    sum_totalSpike(1,1) = sum(totalSpike(1:30));
+    sum_totalSpike(2,1) = sum(totalSpike(31:60));
+    sum_totalSpike(3,1) = sum(totalSpike(61:90));
     
-% STM zone spike    
+% Inzone spike    
     spikeTime = spikePeriod(spikeData, sensorOn, sensorOff);
     inzoneSpike = cellfun(@length,spikeTime);
     
-    inzoneSpikeNum(1,1) = sum(inzoneSpike(1:30));
-    inzoneSpikeNum(2,1) = sum(inzoneSpike(31:60));
-    inzoneSpikeNum(3,1) = sum(inzoneSpike(61:90));
+    sum_inzoneSpike(1,1) = sum(inzoneSpike(1:30));
+    sum_inzoneSpike(2,1) = sum(inzoneSpike(31:60));
+    sum_inzoneSpike(3,1) = sum(inzoneSpike(61:90));
       
-    m_stmzoneSpike(1,1) = mean(inzoneSpike(1:30));
-    m_stmzoneSpike(2,1) = mean(inzoneSpike(31:60));
-    m_stmzoneSpike(3,1) = mean(inzoneSpike(61:90));
+    m_inzoneSpike(1,1) = mean(inzoneSpike(1:30));
+    m_inzoneSpike(2,1) = mean(inzoneSpike(31:60));
+    m_inzoneSpike(3,1) = mean(inzoneSpike(61:90));
     
-    std_stmzoneSpike(1,1) = std(inzoneSpike(1:30));
-    std_stmzoneSpike(2,1) = std(inzoneSpike(31:60));
-    std_stmzoneSpike(3,1) = std(inzoneSpike(61:90));
+    std_inzoneSpike(1,1) = std(inzoneSpike(1:30));
+    std_inzoneSpike(2,1) = std(inzoneSpike(31:60));
+    std_inzoneSpike(3,1) = std(inzoneSpike(61:90));
 
 % Outzone spike
     outzoneSpike(1:30,1) = totalSpike(1:30,1)-inzoneSpike(1:30,1);
     outzoneSpike(31:60,1) = totalSpike(31:60,1)-inzoneSpike(31:60,1);
     outzoneSpike(61:90,1) = totalSpike(61:90,1)-inzoneSpike(61:90,1);
     
-    outzoneSpikeNum(1,1) = sum(outzoneSpike(1:30));
-    outzoneSpikeNum(2,1) = sum(outzoneSpike(31:60));
-    outzoneSpikeNum(3,1) = sum(outzoneSpike(61:90));
+    sum_outzoneSpike(1,1) = sum(outzoneSpike(1:30));
+    sum_outzoneSpike(2,1) = sum(outzoneSpike(31:60));
+    sum_outzoneSpike(3,1) = sum(outzoneSpike(61:90));
+    
+    m_outzoneSpike(1,1) = mean(outzoneSpike(1:30));
+    m_outzoneSpike(2,1) = mean(outzoneSpike(31:60));
+    m_outzoneSpike(3,1) = mean(outzoneSpike(61:90));
+    
+    std_outzoneSpike(1,1) = std(outzoneSpike(1:30));
+    std_outzoneSpike(2,1) = std(outzoneSpike(31:60));
+    std_outzoneSpike(3,1) = std(outzoneSpike(61:90));
 % Statistics
     group = {'PRE','STM','POST'};
 % Inzone
@@ -68,8 +76,11 @@ for iCell = 1:nCell
 % stay time in stm zone
     temp_dTime = sensorOff-sensorOn;
     diffTime = [mean(temp_dTime(1:30)), mean(temp_dTime(31:60)), mean(temp_dTime(61:90))]/mean(temp_dTime(1:30)); % normalized by PRE time
-    timeIn_stmZone = round(diffTime*100)/100;
+    timeIn_inzone = round(diffTime*100)/100;
     
-    save([cellName,'.mat'],'inzoneSpike','inzoneSpikeNum','m_stmzoneSpike','std_stmzoneSpike','timeIn_stmZone','totalSpike','totalSpikeNum','outzoneSpike','outzoneSpikeNum','p_ttest','-append');
+    save([cellName,'.mat'],...
+        'inzoneSpike','sum_inzoneSpike','m_inzoneSpike','std_inzoneSpike',...
+        'outzoneSpike','sum_outzoneSpike','m_outzoneSpike','std_outzoneSpike',...
+        'totalSpike','sum_totalSpike','p_ttest','timeIn_inzone','-append');
 end
-disp('### Calculating stmzone total spike is done!')
+disp('### Calculating inzone total spike is done!')

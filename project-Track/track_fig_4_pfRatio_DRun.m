@@ -16,7 +16,7 @@ lightBand = 3;
 calib = [-3,3]; % unit: cm
 
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170516.mat');
+load('neuronList_ori_170819.mat');
 load myParameters.mat;
 
 condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
@@ -138,6 +138,6 @@ set(hBar,'FaceColor',colorGray);
 set(hRatio,'Box','off','TickDir','out','XTick',[1,2,3,5,6,7],'XTickLabe',{'InPF_Act','InPF_Ina','InPF_Noresp','OutPF_Act','OutPF_Ina','OutPF_Noresp'},'YLim',[0,100],'fontSize',fontL);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',['fig4_pfRatio_DRun_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-dtiff',['fig4_pfRatio_DRun_',datestr(now,formatOut),'.tif']);
 % print('-painters','-r300','-depsc',['fig4_pfRatio_DRun_',datestr(now,formatOut),'.ai']);
 close;

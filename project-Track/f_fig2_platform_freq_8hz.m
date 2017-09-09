@@ -58,12 +58,12 @@ xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
 title('PN_activated','fontSize',fontL,'interpreter','none','fontWeight','bold');
 
-
-
-
-
-
-
+lightProb1hz_dr = T.lightProb1hz_dr((lightDirect));
+lightProb2hz_dr = T.lightProb2hz_dr((lightDirect));
+lightProb8hz_dr = T.lightProb8hz_dr((lightDirect));
+lightProb20hz_dr = T.lightProb20hz_dr((lightDirect));
+lightProb50hz_dr = T.lightProb50hz_dr((lightDirect));
+nCell_dr = sum(double(lightDirect));
 
 m_1hz_dr = mean(lightProb1hz_dr);
 m_2hz_dr = mean(lightProb2hz_dr);

@@ -6,8 +6,8 @@ clearvars;
 
 cd('D:\Dropbox\SNL\P2_Track'); % win version
 % cd('/Users/Jun/Dropbox/SNL/P2_Track'); % mac version
-Txls = readtable('neuronList_ori_170606.xlsx');
-load('neuronList_ori_170626.mat');
+Txls = readtable('neuronList_ori_170819.xlsx');
+load('neuronList_ori_170819.mat');
 load myParameters.mat;
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 
@@ -54,18 +54,18 @@ IN_ina = DRunIN & T.pLR_Track<alpha & T.statDir_Track == -1;
 IN_no = DRunIN & T.pLR_Track>alpha;
 
 %% PETH
-DRunPN_act_pethTrack = cell2mat(T.pethTrack8hz(PN_act));
-DRunPN_actRapid_pethTrack = cell2mat(T.pethTrack8hz(PN_actDirect));
-DRunPN_actDelay_pethTrack = cell2mat(T.pethTrack8hz(PN_actIndirect));
-DRunPN_actDouble_pethTrack = cell2mat(T.pethTrack8hz(PN_actDouble));
-DRunPN_ina_pethTrack = cell2mat(T.pethTrack8hz(PN_ina));
-DRunPN_no_pethTrack = cell2mat(T.pethTrack8hz(PN_no));
+DRunPN_act_pethTrack = T.pethTrackLight(PN_act,:);
+DRunPN_actRapid_pethTrack = T.pethTrackLight(PN_actDirect,:);
+DRunPN_actDelay_pethTrack = T.pethTrackLight(PN_actIndirect,:);
+DRunPN_actDouble_pethTrack = T.pethTrackLight(PN_actDouble,:);
+DRunPN_ina_pethTrack = T.pethTrackLight(PN_ina,:);
+DRunPN_no_pethTrack = T.pethTrackLight(PN_no,:);
 
-DRunIN_act_pethTrack = cell2mat(T.pethTrack8hz(IN_act));
-DRunIN_actRapid_pethTrack = cell2mat(T.pethTrack8hz(IN_actDirect));
-DRunIN_actDelay_pethTrack = cell2mat(T.pethTrack8hz(IN_actIndirect));
-DRunIN_ina_pethTrack = cell2mat(T.pethTrack8hz(IN_ina));
-DRunIN_no_pethTrack = cell2mat(T.pethTrack8hz(IN_no));
+DRunIN_act_pethTrack = T.pethTrackLight(IN_act,:);
+DRunIN_actRapid_pethTrack = T.pethTrackLight(IN_actDirect,:);
+DRunIN_actDelay_pethTrack = T.pethTrackLight(IN_actIndirect,:);
+DRunIN_ina_pethTrack = T.pethTrackLight(IN_ina,:);
+DRunIN_no_pethTrack = T.pethTrackLight(IN_no,:);
 
 %% Mean & Sem
 n_DRunPN_act_pethTrack = size(DRunPN_act_pethTrack,1);
@@ -116,12 +116,12 @@ sem_DRunIN_no_pethTrack = std(DRunIN_no_pethTrack,1)/sqrt(n_DRunIN_no_pethTrack)
 %%
 nCol = 3;
 nRow = 4;
-xpt = T.pethtimeTrack8hz{end};
+xpt = T.pethtimeTrackLight(2,:);
 yMaxDRunPN = max([m_DRunPN_act_pethTrack, m_DRunPN_ina_pethTrack, m_DRunPN_no_pethTrack])*2;
 yMaxDRunIN = max([m_DRunIN_act_pethTrack, m_DRunIN_ina_pethTrack, m_DRunIN_no_pethTrack])*1.5;
 
-yLimPN = [30 40 55 60 25 10];
-yLimIN = [100, 50];
+yLimPN = [30 30 70 80 25 10];
+yLimIN = [120, 50];
 fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 40 20],'Name','latDistribution');
 
 % activated total
@@ -148,7 +148,7 @@ errorbarJun(xpt+1,m_DRunPN_actRapid_pethTrack,sem_DRunPN_actRapid_pethTrack,1,0.
 text(80, yLimPN(2)*0.8,['n = ',num2str(n_DRunPN_actRapid_pethTrack)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
-title('PN: Rapid activated','fontSize',fontL,'fontWeight','bold');
+title('PN: Directly activated','fontSize',fontL,'fontWeight','bold');
 
 % indirect activated
 hPlotDRunPN(3) = axes('Position',axpt(nCol,nRow,2,2,[0.10 0.10 0.85 0.85],wideInterval));
@@ -161,7 +161,7 @@ errorbarJun(xpt+1,m_DRunPN_actDelay_pethTrack,sem_DRunPN_actDelay_pethTrack,1,0.
 text(80, yLimPN(3)*0.8,['n = ',num2str(n_DRunPN_actDelay_pethTrack)],'fontSize',fontL);
 xlabel('Time (ms)','fontSize',fontL);
 ylabel('Spikes/bin','fontSize',fontL);
-title('PN: Delay activated','fontSize',fontL,'fontWeight','bold');
+title('PN: Indirectly activated','fontSize',fontL,'fontWeight','bold');
 
 % double
 hPlotDRunPN(4) = axes('Position',axpt(nCol,nRow,3,2,[0.10 0.10 0.85 0.85],wideInterval));
@@ -277,6 +277,6 @@ set(hPlotDRunIN(1:2),'Box','off','TickDir','out','XLim',[-20 100],'XTick',[-20,0
 set(hPlotDRunIN(3:4),'Box','off','TickDir','out','XLim',[-20 100],'XTick',[-20,0:5:40,100],'YLim',[0, yLimIN(2)],'fontSize',fontM);
 
 formatOut = 'yymmdd';
-% print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig2_pethDRwTrack','.tif']);
+print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_fig2_pethDRwTrack','.tif']);
 % print('-painters','-r300','-depsc',[datestr(now,formatOut),'_fig2_pethDRunTrack','.ai']);
-% close;
+close;

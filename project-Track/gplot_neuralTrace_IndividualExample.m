@@ -9,8 +9,8 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
-load('neuronList_ori_170706.mat');
-Txls = readtable('neuronList_ori_170706.xlsx');
+load('neuronList_ori_170814.mat');
+Txls = readtable('neuronList_ori_170814.xlsx');
 Txls.taskType = categorical(Txls.taskType);
 formatOut = 'yymmdd';
 
@@ -159,7 +159,7 @@ for iCell = 1:nCell
     set(hSmt,'Box','off','TickDir','out','Xlim',[-20,100],'XTick',[-20,0:5:40,100],'fontSize',fontM);
     set(hNeuDist,'Box','off','TickDir','out','Xlim',[-20,100],'XTick',[-20,0:5:40,100],'fontSize',fontM);
 
-    cd('D:\Dropbox\SNL\P2_Track\analysis_neuralTrace\neuralTrace_ina');
+    cd('D:\Dropbox\SNL\P2_Track\analysis_neuralTrace\neuralTrace_ina2');
     print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_PETH_neuralTrace_',num2str(cellID(iCell)),'.tif']);
     close('all')
 end

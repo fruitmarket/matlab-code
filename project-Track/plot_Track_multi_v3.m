@@ -79,9 +79,9 @@ for iFile = 1:nFile
 % Light response spike probability 
     hStmzoneSpike = axes('Position',axpt(1,5,1,3:4,axpt(nCol,nRow,8:10,1:2,[0.1 0.10 0.80 0.87],tightInterval),wideInterval));
     text(0.4,0.8,'Stm zone spike number','fontSize',fontL,'fontWeight','bold');
-    text(0.5,0.6,['Pre: ',num2str(m_stmzoneSpike(1))],'fontSize',fontM);
-    text(0.5,0.4,['Stm: ',num2str(m_stmzoneSpike(2))],'fontSize',fontM);
-    text(0.5,0.2,['Post: ',num2str(m_stmzoneSpike(3))],'fontSize',fontM);
+    text(0.5,0.6,['Pre: ',num2str(m_inzoneSpike(1))],'fontSize',fontM);
+    text(0.5,0.4,['Stm: ',num2str(m_inzoneSpike(2))],'fontSize',fontM);
+    text(0.5,0.2,['Post: ',num2str(m_inzoneSpike(3))],'fontSize',fontM);
     set(hStmzoneSpike,'Box','off','visible','off');
     
 % Response check: Platform
@@ -447,11 +447,11 @@ end
     set(hLine,'Box','off','visible','off');
 
 % Zone spike analysis
-    yLimTotal = max([totalSpikeNum(1,1), totalSpikeNum(2,1), totalSpikeNum(3,1)])*1.2+0.01;
-    yLimInzone = max([inzoneSpikeNum(1,1), inzoneSpikeNum(2,1), inzoneSpikeNum(3,1)])*1.2+0.01;
-    yLimOutzone = max([outzoneSpikeNum(1,1), outzoneSpikeNum(2,1), outzoneSpikeNum(3,1)])*1.2+0.01;
+    yLimTotal = max([sum_totalSpike(1,1), sum_totalSpike(2,1), sum_totalSpike(3,1)])*1.2+0.01;
+    yLimInzone = max([sum_inzoneSpike(1,1), sum_inzoneSpike(2,1), sum_inzoneSpike(3,1)])*1.2+0.01;
+    yLimOutzone = max([sum_outzoneSpike(1,1), sum_outzoneSpike(2,1), sum_outzoneSpike(3,1)])*1.2+0.01;
     hSpike(1) = axes('Position',axpt(6,2,1:2,1,axpt(nCol,nRow,1:5,10:11,[0.10 0.08 0.85 0.85],midInterval),midInterval));
-        plot([1,2,3],[totalSpikeNum(1,1), totalSpikeNum(2,1), totalSpikeNum(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        plot([1,2,3],[sum_totalSpike(1,1), sum_totalSpike(2,1), sum_totalSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
         if p_ttest(1,3) < 0.05
             line([1.1,1.9],[yLimTotal yLimTotal]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
             text(1.4,yLimTotal/1.2*1.05,'*','fontSize',fontL,'color',colorRed);
@@ -467,7 +467,7 @@ end
         title('Total spike','fontSize',fontM);
         ylabel('Spike number','fontSize',fontS);
     hSpike(2) = axes('Position',axpt(6,2,3:4,1,axpt(nCol,nRow,1:5,10:11,[0.10 0.08 0.85 0.85],midInterval),midInterval));
-        plot([1,2,3],[inzoneSpikeNum(1,1), inzoneSpikeNum(2,1), inzoneSpikeNum(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        plot([1,2,3],[sum_inzoneSpike(1,1), sum_inzoneSpike(2,1), sum_inzoneSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
         if p_ttest(1,1) < 0.05
             line([1.1,1.9],[yLimInzone yLimInzone]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
             text(1.4,yLimInzone/1.2*1.05,'*','fontSize',fontL,'color',colorRed);
@@ -482,7 +482,7 @@ end
         end
         title('In-zone spike','fontSize',fontM);
     hSpike(3) = axes('Position',axpt(6,2,5:6,1,axpt(nCol,nRow,1:5,10:11,[0.10 0.08 0.85 0.85],midInterval),midInterval));
-        plot([1,2,3],[outzoneSpikeNum(1,1), outzoneSpikeNum(2,1), outzoneSpikeNum(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
+        plot([1,2,3],[sum_outzoneSpike(1,1), sum_outzoneSpike(2,1), sum_outzoneSpike(3,1)],'-o','color',colorBlack,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',colorGray,'MarkerSize',markerM);
         if p_ttest(1,2) < 0.05
             line([1.1,1.9],[yLimOutzone yLimOutzone]/1.2*1.05,'lineStyle','-','lineWidth',lineM,'color',colorBlack);
             text(1.4,yLimOutzone/1.2*1.05,'*','fontSize',fontL,'color',colorRed);

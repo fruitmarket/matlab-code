@@ -1,4 +1,4 @@
-function gplot_neuralTrace_IndividualExample_v4
+function gplot_neuralTrace_final
 % Neural distance calculated by mahalanobis distance
 
 % common part
@@ -7,8 +7,8 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
-load('neuronList_ori_170803.mat');
-Txls = readtable('neuronList_ori_170803.xlsx');
+load('neuronList_ori_170814.mat');
+Txls = readtable('neuronList_ori_170814.xlsx');
 Txls.taskType = categorical(Txls.taskType);
 formatOut = 'yymmdd';
 
@@ -46,9 +46,6 @@ spikePOST_PN_light = spikePsdPostD(DRun_PN_light,:);
 spikePOST_PN_act = spikePsdPostD(DRun_PN_act,:);
 spikePOST_PN_ina = spikePsdPostD(DRun_PN_ina,:);
 spikePOST_PN_no = spikePsdPostD(DRun_PN_no,:);
-
-
-
 
 [nCell, nBin] = size(spikePRE);
 
@@ -333,7 +330,7 @@ text(-5,130,'Neural trace','fontSize',fontL);
 
 set(hTrace,'Box','off','TickDir','out','XLim',[-10,109],'XTick',[-10:10:40,100],'fontSize',fontL);
 
-print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_neuralTrace_v4_normDist_example','.tif']);
+% print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_neuralTrace_v4_normDist_example','.tif']);
 end
 
 function [spike, smth_spike, m_neuralDist, sem_neuralDist, neuralDist, tracePCA, scorePCA, latentPCA] = analysis_neuralTrace(neuronList,winWidth,mvWinStep,baseLine)

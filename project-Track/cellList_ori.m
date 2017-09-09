@@ -1,8 +1,6 @@
 clearvars;
 rtPath = 'D:\Dropbox\SNL\P2_Track';
-startingDir = {'D:\Projects\Track_151029-4_Rbp6';
-               'D:\Projects\Track_151029-5_Rbp8';
-               'D:\Projects\Track_151213-2_Rbp14';
+startingDir = {'D:\Projects\Track_151029-5_Rbp8';
                'D:\Projects\Track_160221-1_Rbp16';
                'D:\Projects\Track_160417-1_Rbp32ori';
                'D:\Projects\Track_160417-2_Rbp34ori';
@@ -12,11 +10,17 @@ startingDir = {'D:\Projects\Track_151029-4_Rbp6';
                'D:\Projects\Track_160824-2_Rbp58ori';
                'D:\Projects\Track_160824-5_Rbp60ori';
                'D:\Projects\Track_161130-3_Rbp64ori';
-               'D:\Projects\Track_161130-5_Rbp66ori';
                'D:\Projects\Track_161130-7_Rbp68ori';
                'D:\Projects\Track_170119-1_Rbp70ori';
                'D:\Projects\Track_170109-2_Rbp72ori';
-               'D:\Projects\Track_170115-4_Rbp74ori'};
+               'D:\Projects\Track_170305-1_Rbp76ori';
+               'D:\Projects\Track_170305-2_Rbp78ori'};
+           % 20170907 modifided
+           % 'D:\Projects\Track_151029-4_Rbp6' excluded because of virus expression
+           % 'D:\Projects\Track_151213-2_Rbp14' excluded because of optic fiber location
+           % 'D:\Projects\Track_161130-5_Rbp66ori' excluded because of almost no expression
+           % 'D:\Projects\Track_170115-4_Rbp74ori' excluede because of no expression
+% startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
 
 % startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
 matFile = [];
@@ -50,8 +54,6 @@ for iFile = 1:nFile
     peakFR2D_track = {peakFR2D_track}; % pre/stm/post
     peakFR1D_track = {peakFR1D_track}; % pre/stm/post
     
-    xptPlfm2hz = {xptPlfm2hz};
-    yptPlfm2hz = {yptPlfm2hz};
     pethtimePlfm2hz = {pethtimePlfm2hz};
     pethPlfm2hz = {pethPlfm2hz};
     pethPlfm2hzConv = {pethPlfm2hzConv};
@@ -64,18 +66,21 @@ for iFile = 1:nFile
     pethPlfm8hzConv = {pethPlfm8hzConv};
     pethPlfm8hzConvZ = {pethPlfm8hzConvZ};
     
-    xptTrack8hz = xptTrackLight;
-    yptTrack8hz = {yptTrackLight};
     pethtimeTrack8hz = {pethtimeTrackLight};
     pethTrack8hz = {pethTrackLight};
     pethTrack8hzConv = {pethTrackLightConv};
     pethTrack8hzConvZ = {pethTrackLightConvZ};
     
-    yptPsdPre = {yptPsdPre};
+    rateMap1D_PRE = {rateMap1D_PRE};
+    rateMap1D_STM = {rateMap1D_STM};
+    rateMap1D_POST = {rateMap1D_POST};
+    
     pethtimePsdPre = {pethtimePsdPre};
     pethPsdPre = {pethPsdPre};
     
-    yptPsdPost = {yptPsdPost};
+    pethtimePsdStm = {pethtimePsdStm};
+    pethPsdStm = {pethPsdStm};
+    
     pethtimePsdPost = {pethtimePsdPost};
     pethPsdPost = {pethPsdPost};
     
@@ -86,10 +91,67 @@ for iFile = 1:nFile
     spikePsdPreD = {spikePsdPreD};
     
     spikeTime_psdStmD = {spikeTime_psdStmD};
-    yptPsdStmD = {yptPsdStmD};
+%     yptPsdStmD = {yptPsdStmD};
     pethtimePsdStmD = {pethtimePsdStmD};
     pethPsdStmD = {pethPsdStmD};
     spikePsdStmD = {spikePsdStmD};
+    
+    xptPsdPre67 = {xptPsdPre67};
+    yptPsdPre67 = {yptPsdPre67};
+    pethtimePsdPre67 = {pethtimePsdPre67};
+    pethPsdPre67 = {pethPsdPre67};
+    pethPsdPre67Conv = {pethPsdPre67Conv};
+    pethPsdPre67ConvZ = {pethPsdPre67ConvZ};
+    xptPsdPre78 = {xptPsdPre78};
+    yptPsdPre78 = {yptPsdPre78};
+    pethtimePsdPre78 = {pethtimePsdPre78};
+    pethPsdPre78 = {pethPsdPre78};
+    pethPsdPre78Conv = {pethPsdPre78Conv};
+    pethPsdPre78ConvZ = {pethPsdPre78ConvZ};
+    xptPsdPre89 = {xptPsdPre89};
+    yptPsdPre89 = {yptPsdPre89};
+    pethtimePsdPre89 = {pethtimePsdPre89};
+    pethPsdPre89 = {pethPsdPre89};
+    pethPsdPre89Conv = {pethPsdPre89Conv};
+    pethPsdPre89ConvZ = {pethPsdPre89ConvZ};
+    
+    xptLight67 = {xptLight67};
+    yptLight67 = {yptLight67};
+    pethtimeLight67 = {pethtimeLight67};
+    pethLight67 = {pethLight67};
+    pethLight67Conv = {pethLight67Conv};
+    pethLight67ConvZ = {pethLight67ConvZ};
+    pethtimeLight78 = {pethtimeLight78};
+    xptLight78 = {xptLight78};
+    yptLight78 = {yptLight78};
+    pethLight78 = {pethLight78};
+    pethLight78Conv = {pethLight78Conv};
+    pethLight78ConvZ = {pethLight78ConvZ};
+    pethtimeLight89 = {pethtimeLight89};
+    xptLight89 = {xptLight89};
+    yptLight89 = {yptLight89};
+    pethLight89 = {pethLight89};
+    pethLight89Conv = {pethLight89Conv};
+    pethLight89ConvZ = {pethLight89ConvZ};
+    
+    xptPsdPost67 = {xptPsdPost67};
+    yptPsdPost67 = {yptPsdPost67};
+    pethtimePsdPost67 = {pethtimePsdPost67};
+    pethPsdPost67 = {pethPsdPost67};
+    pethPsdPost67Conv = {pethPsdPost67Conv};
+    pethPsdPost67ConvZ = {pethPsdPost67ConvZ};
+    pethtimePsdPost78 = {pethtimePsdPost78};
+    xptPsdPost78 = {xptPsdPost78};
+    yptPsdPost78 = {yptPsdPost78};
+    pethPsdPost78 = {pethPsdPost78};
+    pethPsdPost78Conv = {pethPsdPost78Conv};
+    pethPsdPost78ConvZ = {pethPsdPost78ConvZ};
+    xptPsdPost89 = {xptPsdPost89};
+    yptPsdPost89 = {yptPsdPost89};
+    pethtimePsdPost89 = {pethtimePsdPost89};
+    pethPsdPost89 = {pethPsdPost89};
+    pethPsdPost89Conv = {pethPsdPost89Conv};
+    pethPsdPost89ConvZ = {pethPsdPost89ConvZ};
     
     spikeTime_psdPostD = {spikeTime_psdPostD};
     yptPsdPostD = {yptPsdPostD};
@@ -140,12 +202,16 @@ for iFile = 1:nFile
         infoSecondPRE,infoSecondSTM,infoSecondPOST,infoSecondTotal,...
         xptPlfm2hz,yptPlfm2hz,pethtimePlfm2hz,pethPlfm2hz,pethPlfm2hzConv,pethPlfm2hzConvZ,...
         xptPlfm8hz,yptPlfm8hz,pethtimePlfm8hz,pethPlfm8hz,pethPlfm8hzConv,pethPlfm8hzConvZ,...
-        xptTrack8hz,yptTrack8hz,pethtimeTrack8hz,pethTrack8hz,pethTrack8hzConv,pethTrack8hzConvZ,...
+        xptTrackLight,yptTrackLight,pethtimeTrackLight,pethTrackLight,pethTrackLightConv,pethTrackLightConvZ,...
         xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,...
         xptPsdStm, yptPsdStm, pethtimePsdStm, pethPsdStm,...    
         xptPsdPost,yptPsdPost,pethtimePsdPost,pethPsdPost,...
         spikeTime_psdPreD, spikeTime_psdStmD, spikeTime_psdPostD,...
         xptPsdPreD,yptPsdPreD,pethtimePsdPreD,pethPsdPreD,xptPsdStmD,yptPsdStmD,pethtimePsdStmD,pethPsdStmD,xptPsdPostD,yptPsdPostD,pethtimePsdPostD,pethPsdPostD,...
+        xptPsdPre67, yptPsdPre67, pethtimePsdPre67, pethPsdPre67, pethPsdPre67Conv, pethPsdPre67ConvZ, xptPsdPre78, yptPsdPre78, pethtimePsdPre78, pethPsdPre78, pethPsdPre78Conv, pethPsdPre78ConvZ, xptPsdPre89, yptPsdPre89, pethtimePsdPre89, pethPsdPre89, pethPsdPre89Conv, pethPsdPre89ConvZ,...
+        xptLight67, yptLight67, pethtimeLight67, pethLight67, pethLight67Conv, pethLight67ConvZ, xptLight78, yptLight78, pethtimeLight78, pethLight78, pethLight78Conv, pethLight78ConvZ, xptLight89, yptLight89, pethtimeLight89, pethLight89, pethLight89Conv, pethLight89ConvZ,...
+        xptPsdPost67, yptPsdPost67, pethtimePsdPost67, pethPsdPost67, pethPsdPost67Conv, pethPsdPost67ConvZ, xptPsdPost78, yptPsdPost78, pethtimePsdPost78, pethPsdPost78, pethPsdPost78Conv, pethPsdPost78ConvZ, xptPsdPost89, yptPsdPost89, pethtimePsdPost89, pethPsdPost89, pethPsdPost89Conv, pethPsdPost89ConvZ,...
+        rateMap1D_PRE,rateMap1D_STM,rateMap1D_POST,...
         spikePsdPreD,spikePsdStmD,spikePsdPostD,...
         r_wv,m_spont_wv,m_evoked_wv,...
         inzoneSpike,inzoneSpikeNum,m_stmzoneSpike,std_stmzoneSpike,timeIn_stmZone,totalSpike,totalSpikeNum,outzoneSpike,outzoneSpikeNum,p_ttest,...
@@ -154,7 +220,7 @@ for iFile = 1:nFile
         evoSpike_preEarly, evoSpike_preLate, evoSpike_stmEarly, evoSpike_stmLate, evoSpike_postEarly, evoSpike_postLate,...
         evoXptTrackLight,evoXptPsdPre,evoXptPsdPost,...
         LRatio,ID,...
-        idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxSpikeIn,idxSpikeOut,idxSpikeTotal,idxZoneInOut);
+        idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxSpikeIn,idxSpikeOut,idxSpikeTotal,idxZoneInOut,overLapLengthSTM,idxOverLapLengthSTM);
     T = [T; temT];
     
     temp_Txls = table(path,cellID,taskType,tetLocation,...

@@ -35,32 +35,32 @@ for iCell = 1:nCell
     % tData{iCell} unit: msec
 
 %% Light - ontrack
-%     if ~isempty(lightTime.Track8hz); % ChETA
-%         spikeTimeTrackLight = spikeWin(tData{iCell},lightTime.Track8hz,winTrack);
-%         [xptTrackLight, yptTrackLight, pethtimeTrackLight, pethTrackLight,pethTrackLightConv,pethTrackLightConvZ] = rasterPETH(spikeTimeTrackLight,true(size(lightTime.Track8hz)),winTrack,binSizeBlue,resolution,1);     
-%         lightSpk = sum(0<xptTrackLight{1} & xptTrackLight{1}<winCri);
-%         lightPreSpk = sum(-winCri<xptTrackLight{1} & xptTrackLight{1}<0);
-%         lightPostSpk = sum(winCri<xptTrackLight{1} & xptTrackLight{1}<2*winCri);      
-%         
-%         save([cellName,'.mat'],'spikeTimeTrackLight','xptTrackLight','yptTrackLight','pethtimeTrackLight','pethTrackLight','pethTrackLightConv','pethTrackLightConvZ','lightSpk','lightPreSpk','lightPostSpk','-append');
-%     end
+    if ~isempty(lightTime.Track8hz); % ChETA
+        spikeTimeTrackLight = spikeWin(tData{iCell},lightTime.Track8hz,winTrack);
+        [xptTrackLight, yptTrackLight, pethtimeTrackLight, pethTrackLight,pethTrackLightConv,pethTrackLightConvZ] = rasterPETH(spikeTimeTrackLight,true(size(lightTime.Track8hz)),winTrack,binSizeBlue,resolution,1);     
+        lightSpk = sum(0<xptTrackLight{1} & xptTrackLight{1}<winCri);
+        lightPreSpk = sum(-winCri<xptTrackLight{1} & xptTrackLight{1}<0);
+        lightPostSpk = sum(winCri<xptTrackLight{1} & xptTrackLight{1}<2*winCri);      
+        
+        save([cellName,'.mat'],'spikeTimeTrackLight','xptTrackLight','yptTrackLight','pethtimeTrackLight','pethTrackLight','pethTrackLightConv','pethTrackLightConvZ','lightSpk','lightPreSpk','lightPostSpk','-append');
+    end
     
 %% Pseudo light (On track)
-%     if exist('psdlightPre','var') && exist('psdlightPost','var')
-%         spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTrackPsd); % Pseudo light Pre
-%         [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTrackPsd,binSizeBlue,resolution_psd,1);
-%         spikeTime_psdStm = spikeWin(tData{iCell},lightTime.Track8hz,winTrackPsd); % Pseudo light Pre
-%         [xptPsdStm, yptPsdStm, pethtimePsdStm, pethPsdStm,pethPsdStmConv,pethPsdStmConvZ] = rasterPETH(spikeTime_psdStm,true(size(lightTime.Track8hz)),winTrackPsd,binSizeBlue,resolution_psd,1);
-%         spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTrackPsd); % Pseudo light Post
-%         [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTrackPsd,binSizeBlue,resolution_psd,1);
-%         psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<winCri);
-%         psdStmSpk = sum(0<xptPsdStm{1} & xptPsdStm{1}<winCri);
-%         psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<winCri);
-%         
-%         save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','pethPsdPre','pethPsdPreConv','pethPsdPreConvZ','psdPreSpk',...
-%             'xptPsdStm', 'yptPsdStm', 'pethtimePsdStm', 'pethPsdStm', 'pethPsdStmConv', 'pethPsdStmConvZ','psdStmSpk',...
-%             'xptPsdPost','yptPsdPost','pethtimePsdPost','pethPsdPost','pethPsdPostConv','pethPsdPostConvZ','psdPostSpk','-append');
-%     end
+    if exist('psdlightPre','var') && exist('psdlightPost','var')
+        spikeTime_psdPre = spikeWin(tData{iCell},psdlightPre,winTrackPsd); % Pseudo light Pre
+        [xptPsdPre, yptPsdPre, pethtimePsdPre, pethPsdPre,pethPsdPreConv,pethPsdPreConvZ] = rasterPETH(spikeTime_psdPre,true(size(psdlightPre)),winTrackPsd,binSizeBlue,resolution_psd,1);
+        spikeTime_psdStm = spikeWin(tData{iCell},lightTime.Track8hz,winTrackPsd); % Pseudo light Pre
+        [xptPsdStm, yptPsdStm, pethtimePsdStm, pethPsdStm,pethPsdStmConv,pethPsdStmConvZ] = rasterPETH(spikeTime_psdStm,true(size(lightTime.Track8hz)),winTrackPsd,binSizeBlue,resolution_psd,1);
+        spikeTime_psdPost = spikeWin(tData{iCell},psdlightPost,winTrackPsd); % Pseudo light Post
+        [xptPsdPost, yptPsdPost, pethtimePsdPost, pethPsdPost,pethPsdPostConv,pethPsdPostConvZ] = rasterPETH(spikeTime_psdPost,true(size(psdlightPost)),winTrackPsd,binSizeBlue,resolution_psd,1);
+        psdPreSpk = sum(0<xptPsdPre{1} & xptPsdPre{1}<winCri);
+        psdStmSpk = sum(0<xptPsdStm{1} & xptPsdStm{1}<winCri);
+        psdPostSpk = sum(0<xptPsdPost{1} & xptPsdPost{1}<winCri);
+        
+        save([cellName,'.mat'],'xptPsdPre','yptPsdPre','pethtimePsdPre','pethPsdPre','pethPsdPreConv','pethPsdPreConvZ','psdPreSpk',...
+            'xptPsdStm', 'yptPsdStm', 'pethtimePsdStm', 'pethPsdStm', 'pethPsdStmConv', 'pethPsdStmConvZ','psdStmSpk',...
+            'xptPsdPost','yptPsdPost','pethtimePsdPost','pethPsdPost','pethPsdPostConv','pethPsdPostConvZ','psdPostSpk','-append');
+    end
     
 %% Pseudo light (On track) version 2 (to calculate neural distance; binSize = 1)
     if exist('psdlightPre','var') && exist('psdlightPost','var')
@@ -91,27 +91,27 @@ for iCell = 1:nCell
     end
     
 %% Light (Plfm) 8mw analysis [201:400]
-%     if isfield(lightTime,'Plfm2hz') % Activation (ChETA)
-%        spikeTimePlfm2hz = spikeWin(tData{iCell},lightTime.Plfm2hz(201:400),winPlfm2hz);
-%        [xptPlfm2hz, yptPlfm2hz, pethtimePlfm2hz, pethPlfm2hz,pethPlfm2hzConv,pethPlfm2hzConvZ] = rasterPETH(spikeTimePlfm2hz,true(size(lightTime.Plfm2hz(201:400))),winPlfm2hz,binSizeBlue,resolution,1);
-%        lightSpkPlfm2hz = sum(0<xptPlfm2hz{1} & xptPlfm2hz{1}<winCri);
-%        lightSpkPlfm2hz_pre = sum(-winCri<xptPlfm2hz{1} & xptPlfm2hz{1}<0);
-%        lightSpkPlfm2hz_post = sum(winCri<xptPlfm2hz{1} & xptPlfm2hz{1}<2*winCri);
-%        
-%        save([cellName,'.mat'],'spikeTimePlfm2hz','xptPlfm2hz','yptPlfm2hz','pethtimePlfm2hz','pethPlfm2hz','lightSpkPlfm2hz','pethPlfm2hzConv','pethPlfm2hzConvZ','lightSpkPlfm2hz_pre','lightSpkPlfm2hz_post','-append');
-%     end
-%     
-%     if isfield(lightTime,'Plfm8hz') & ~isempty(lightTime.Plfm8hz);
-%         spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winPlfm8hz);
-%         [xptPlfm8hz, yptPlfm8hz, pethtimePlfm8hz, pethPlfm8hz,pethPlfm8hzConv,pethPlfm8hzConvZ] = rasterPETH(spikeTimePlfm8hz,true(size(lightTime.Plfm8hz)),winPlfm8hz,binSizeBlue,resolution,1);
-%         lightSpkPlfm8hz = sum(0<xptPlfm8hz{1} & xptPlfm8hz{1}<winCri);
-%         lightSpkPlfm8hz_pre = sum(-winCri<xptPlfm8hz{1} & xptPlfm8hz{1}<0);
-%         lightSpkPlfm8hz_post = sum(winCri<xptPlfm8hz{1} & xptPlfm8hz{1}<2*winCri);
-%         save([cellName,'.mat'],'spikeTimePlfm8hz','xptPlfm8hz','yptPlfm8hz','pethtimePlfm8hz','pethPlfm8hz','pethPlfm8hzConv','pethPlfm8hzConvZ','lightSpkPlfm8hz','lightSpkPlfm8hz_pre','lightSpkPlfm8hz_post','-append');
-%     else
-%         [spikeTimePlfm8hz,xptPlfm8hz,yptPlfm8hz,pethtimePlfm8hz,pethPlfm8hz,pethPlfm8hzConv,pethPlfm8hzConvZ,lightSpkPlfm8hz,lightSpkPlfm8hz_pre,lightSpkPlfm8hz_post] = deal(NaN);
-%         save([cellName,'.mat'],'spikeTimePlfm8hz','xptPlfm8hz','yptPlfm8hz','pethtimePlfm8hz','pethPlfm8hz','pethPlfm8hzConv','pethPlfm8hzConvZ','lightSpkPlfm8hz','lightSpkPlfm8hz_pre','lightSpkPlfm8hz_post','-append');
-%     end
+    if isfield(lightTime,'Plfm2hz') % Activation (ChETA)
+       spikeTimePlfm2hz = spikeWin(tData{iCell},lightTime.Plfm2hz(201:400),winPlfm2hz);
+       [xptPlfm2hz, yptPlfm2hz, pethtimePlfm2hz, pethPlfm2hz,pethPlfm2hzConv,pethPlfm2hzConvZ] = rasterPETH(spikeTimePlfm2hz,true(size(lightTime.Plfm2hz(201:400))),winPlfm2hz,binSizeBlue,resolution,1);
+       lightSpkPlfm2hz = sum(0<xptPlfm2hz{1} & xptPlfm2hz{1}<winCri);
+       lightSpkPlfm2hz_pre = sum(-winCri<xptPlfm2hz{1} & xptPlfm2hz{1}<0);
+       lightSpkPlfm2hz_post = sum(winCri<xptPlfm2hz{1} & xptPlfm2hz{1}<2*winCri);
+       
+       save([cellName,'.mat'],'spikeTimePlfm2hz','xptPlfm2hz','yptPlfm2hz','pethtimePlfm2hz','pethPlfm2hz','lightSpkPlfm2hz','pethPlfm2hzConv','pethPlfm2hzConvZ','lightSpkPlfm2hz_pre','lightSpkPlfm2hz_post','-append');
+    end
+    
+    if isfield(lightTime,'Plfm8hz') & ~isempty(lightTime.Plfm8hz);
+        spikeTimePlfm8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winPlfm8hz);
+        [xptPlfm8hz, yptPlfm8hz, pethtimePlfm8hz, pethPlfm8hz,pethPlfm8hzConv,pethPlfm8hzConvZ] = rasterPETH(spikeTimePlfm8hz,true(size(lightTime.Plfm8hz)),winPlfm8hz,binSizeBlue,resolution,1);
+        lightSpkPlfm8hz = sum(0<xptPlfm8hz{1} & xptPlfm8hz{1}<winCri);
+        lightSpkPlfm8hz_pre = sum(-winCri<xptPlfm8hz{1} & xptPlfm8hz{1}<0);
+        lightSpkPlfm8hz_post = sum(winCri<xptPlfm8hz{1} & xptPlfm8hz{1}<2*winCri);
+        save([cellName,'.mat'],'spikeTimePlfm8hz','xptPlfm8hz','yptPlfm8hz','pethtimePlfm8hz','pethPlfm8hz','pethPlfm8hzConv','pethPlfm8hzConvZ','lightSpkPlfm8hz','lightSpkPlfm8hz_pre','lightSpkPlfm8hz_post','-append');
+    else
+        [spikeTimePlfm8hz,xptPlfm8hz,yptPlfm8hz,pethtimePlfm8hz,pethPlfm8hz,pethPlfm8hzConv,pethPlfm8hzConvZ,lightSpkPlfm8hz,lightSpkPlfm8hz_pre,lightSpkPlfm8hz_post] = deal(NaN);
+        save([cellName,'.mat'],'spikeTimePlfm8hz','xptPlfm8hz','yptPlfm8hz','pethtimePlfm8hz','pethPlfm8hz','pethPlfm8hzConv','pethPlfm8hzConvZ','lightSpkPlfm8hz','lightSpkPlfm8hz_pre','lightSpkPlfm8hz_post','-append');
+    end
 end
 disp('### pethLight is done! ###');
 

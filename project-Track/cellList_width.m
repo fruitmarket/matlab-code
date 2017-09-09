@@ -9,7 +9,9 @@ startingDir = {'D:\Projects\Track_160726-1_Rbp48pulse';
                'D:\Projects\Track_161130-7_Rbp68pulse';
                'D:\Projects\Track_170119-1_Rbp70pulse';
                'D:\Projects\Track_170109-2_Rbp72pulse';
-               'D:\Projects\Track_170115-4_Rbp74pulse'};
+               'D:\Projects\Track_170115-4_Rbp74pulse';
+               'D:\Projects\Track_170305-1_Rbp76pulse';
+               'D:\Projects\Track_170305-2_Rbp78pulse'};
 
 formatOut = 'yymmdd';
 matFile = [];
@@ -20,7 +22,7 @@ for iDir = 1:nDir
 end
 nFile = length(matFile);
 
-T = table();
+[T, Txls] = deal(table());
 for iFile = 1:nFile
     load(matFile{iFile});
 
@@ -59,28 +61,16 @@ for iFile = 1:nFile
         xpt50ms,ypt50ms,pethtime50ms,peth50ms,pethConv50ms,pethConvZ50ms,nlight50ms,lightspk50ms,...
         pLR_Plfm2hz,statDir_Plfm2hz,latency1st,latency2nd,...  % tagstatTrack_poster
         spkwv,spkwth,spkpvr,hfvwth);
-                
     T = [T; temT];
+
+%% Excel file    
+    temp_Txls = table(mouseLine, path, cellID);
+    Txls = [Txls; temp_Txls];
     fclose('all');
 end
 cd(rtPath);
 save(['neuronList_width_',datestr(now,formatOut),'.mat'],'T');
+writetable(Txls,['neuronList_width_',datestr(now,formatOut),'.xlsx']);
 
-%% Excel output
-T = table();
-for iFile = 1:nFile
-    load(matFile{iFile});
-    
-    path = matFile(iFile);
-    fileSeg = strsplit(matFile{iFile},{'\','_'});
-    mouseLine = categorical(cellstr(fileSeg{5}));
-    cellID = (iFile)';
-    
-    temT = table(mouseLine, path, cellID);
-
-    T = [T; temT];
-    fclose('all');
-end
-writetable(T,['neuronList_width_',datestr(now,formatOut),'.xlsx']);
 disp('##### Done! #####');
 clearvars;

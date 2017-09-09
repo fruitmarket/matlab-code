@@ -3,8 +3,8 @@ clearvars;
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 load myParameters.mat
-load('neuronList_freq_170608.mat');
-Txls = readtable('neuronList_freq_170608.xlsx');
+load('neuronList_freq_170821.mat');
+Txls = readtable('neuronList_freq_170821.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 formatOut = 'yymmdd';
 
@@ -19,15 +19,15 @@ condiPN = T.spkpvr>cSpkpvr;
 condiIN = ~condiPN;
 
 lightActPN = condiPN & (Txls.statDir_visual == 1);
-lightActRPN = condiPN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'rapid';
-lightActDPN = condiPN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'delay';
+lightActRPN = condiPN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'direct';
+lightActDPN = condiPN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'indirect';
 lightActDBPN = condiPN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'double';
 lightInaPN = condiPN & (Txls.statDir_visual == -1);
 lightNoPN = condiPN & (Txls.statDir_visual == 0);
 
 lightActIN = condiIN & (Txls.statDir_visual == 1);
-lightActRIN = condiIN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'rapid';
-lightActDIN = condiIN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'delay';
+lightActRIN = condiIN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'direct';
+lightActDIN = condiIN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'indirect';
 lightInaIN = condiIN & (Txls.statDir_visual == -1);
 lightNoIN = condiIN & (Txls.statDir_visual == 0);
 

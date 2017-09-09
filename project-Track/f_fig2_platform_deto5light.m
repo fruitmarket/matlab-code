@@ -11,7 +11,6 @@ formatOut = 'yymmdd';
 
 alpha = 0.01;
 alpha2 = alpha/5;
-cMeanFR = 9;
 cSpkpvr = 1.2;
 
 % light1hz = T.spkpvr>cSpkpvr & T.pLR_Plfm1hz < alpha;

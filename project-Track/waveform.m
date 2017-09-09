@@ -6,10 +6,10 @@ function waveform()
 % Last modified: 4. 20. 2015
 %%%%%%%%%%%%%%%%%%%
 %% Load t files
-[ttfile, nCell]= tfilecollector();
-
+[~, tList]= tLoad();
+nCell = length(tList);
 for icell = 1:nCell
-    [cellPath,cellname,~] = fileparts(ttfile{icell});
+    [cellPath,cellname,~] = fileparts(tList{icell});
     ttname = strsplit(cellname,'_');
     cd(cellPath);
     fileParts = strsplit(cellPath,'\');

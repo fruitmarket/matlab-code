@@ -1,17 +1,16 @@
 %% Directory setup
 rtPath = 'D:\Dropbox\SNL\P2_Track';
-% startingDir = {'D:\Projects\Track_160824-2_Rbp58pulse';
-%                'D:\Projects\Track_160824-5_Rbp60pulse';
-%                'D:\Projects\Track_161130-3_Rbp64pulse';
-%                'D:\Projects\Track_161130-5_Rbp66pulse';
-%                'D:\Projects\Track_161130-7_Rbp68pulse';
-%                'D:\Projects\Track_170119-1_Rbp70pulse';
-%                'D:\Projects\Track_170109-2_Rbp72pulse';
-%                'D:\Projects\Track_170115-4_Rbp74pulse';
-%                'D:\Projects\Track_170305-1_Rbp76pulse';
-%                'D:\Projects\Track_170305-2_Rbp78pulse'};
-startingDir = {'D:\Projects\Track_170305-1_Rbp76pulse';
-                'D:\Projects\Track_170305-2_Rbp78pulse'};
+startingDir = {'D:\Projects\Track_160824-2_Rbp58pulse';
+               'D:\Projects\Track_160824-5_Rbp60pulse';
+               'D:\Projects\Track_161130-3_Rbp64pulse';
+               'D:\Projects\Track_161130-5_Rbp66pulse';
+               'D:\Projects\Track_161130-7_Rbp68pulse';
+               'D:\Projects\Track_170119-1_Rbp70pulse';
+               'D:\Projects\Track_170109-2_Rbp72pulse';
+               'D:\Projects\Track_170115-4_Rbp74pulse';
+               'D:\Projects\Track_170305-1_Rbp76pulse';
+               'D:\Projects\Track_170305-2_Rbp78pulse'};
+
 nDir = size(startingDir,1);
 [matFile, tFile, cscFile] = deal([]);
 typeName = input('Enter file type (e, m, t, c): ', 's');
@@ -54,10 +53,11 @@ for iPath = 1:nPath
     switch typeName
         case 'e'
             event2mat_pulse;
-        otherwise
+        case 't'
             analysis_laserWidthTest;
             analysis_respstatWidthTest;
             waveform;
+        case 'm'
 %             plot_widthT;
     end
     fclose('all');

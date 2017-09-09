@@ -5,7 +5,7 @@ winCri2hz = [-500, 8000];
 winCri8hz = [-500, 2500];
 winCri20hz = [-500, 1000];
 winCri50hz = [-500, 1000];
-winCri_ori = [-10, 100];
+winCri_ori = [-10, 115];
 winCri_ori2 = [-10, 30];
 winCri_ori3 = [-5, 15];
 
@@ -30,7 +30,7 @@ for iCell = 1:nCell
     cd(cellPath);
     
     load Events.mat
-
+    % Spikes are aligned on each light 
         spkTime1hz_ori = spikeWin(tData{iCell},lightTime.Plfm1hz,winCri_ori);
         [xpt1hz_ori, ypt1hz_ori, pethtime1hz_ori, peth1hz_ori, peth1hzConv_ori, peth1hzConvZ_ori] = rasterPETH(spkTime1hz_ori,true(size(lightTime.Plfm1hz)),winCri_ori,binSize,resolution,1);
 
@@ -46,7 +46,7 @@ for iCell = 1:nCell
         spkTime50hz_ori = spikeWin(tData{iCell},lightTime.Plfm50hz,winCri_ori);
         [xpt50hz_ori, ypt50hz_ori, pethtime50hz_ori, peth50hz_ori, peth50hzConv_ori, peth50hzConvZ_ori] = rasterPETH(spkTime50hz_ori,true(size(lightTime.Plfm50hz)),winCri_ori3,binSize,resolution,1);
 
-    % Spikes are aligned on each light 
+    % Spikes are aligned on lap light onset
         spkTime1hz = spikeWin(tData{iCell},lightTime.Plfm1hz(1:15:end),winCri1hz);
         [xpt1hz, ypt1hz, pethtime1hz, peth1hz, peth1hzConv, peth1hzConvZ] = rasterPETH(spkTime1hz,true(size(spkTime1hz)),win1hz,binSize,resolution,1);
 
@@ -61,7 +61,7 @@ for iCell = 1:nCell
 
         spkTime50hz = spikeWin(tData{iCell},lightTime.Plfm50hz(1:15:end),winCri50hz);
         [xpt50hz, ypt50hz, pethtime50hz, peth50hz, peth50hzConv, peth50hzConvZ] = rasterPETH(spkTime50hz,true(size(spkTime50hz)),win50hz,binSize,resolution,1);
-        
+
         save([cellName,'.mat'],'xpt1hz_ori','ypt1hz_ori','pethtime1hz_ori','peth1hz_ori','peth1hzConv_ori','peth1hzConvZ_ori',...
             'xpt2hz_ori','ypt2hz_ori','pethtime2hz_ori','peth2hz_ori','peth2hzConv_ori','peth2hzConvZ_ori',...
             'xpt8hz_ori','ypt8hz_ori','pethtime8hz_ori','peth8hz_ori','peth8hzConv_ori','peth8hzConvZ_ori',...

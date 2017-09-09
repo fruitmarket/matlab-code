@@ -87,9 +87,9 @@ for iFile = 1:nFile
 % Light response spike probability 
     hStmzoneSpike = axes('Position',axpt(1,5,1,3:4,axpt(nCol,nRow,8:10,1:2,[0.1 0.10 0.80 0.87],tightInterval),wideInterval));
     text(0.3,0.9,'Stm zone spike number','fontSize',fontL,'fontWeight','bold');
-    text(0.5,0.6,['Pre: ',num2str(stmzoneSpike(1))],'fontSize',fontM);
-    text(0.5,0.4,['Stm: ',num2str(stmzoneSpike(2))],'fontSize',fontM);
-    text(0.5,0.2,['Post: ',num2str(stmzoneSpike(3))],'fontSize',fontM);
+    text(0.5,0.6,['Pre: ',num2str(inzoneSpike(1))],'fontSize',fontM);
+    text(0.5,0.4,['Stm: ',num2str(inzoneSpike(2))],'fontSize',fontM);
+    text(0.5,0.2,['Post: ',num2str(inzoneSpike(3))],'fontSize',fontM);
     set(hStmzoneSpike,'Box','off','visible','off');
     
 % Response check: Platform

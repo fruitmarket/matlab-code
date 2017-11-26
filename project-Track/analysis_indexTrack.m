@@ -8,14 +8,15 @@ cMeanFRPeak = 9;
 cPeakFR = 4;
 cSpkpvr = 1.2;
 cPixelLength = 5;
-cOverLapLength = 5;
+% cOverLapLength = 5;
 alpha = 0.01;
 
 for iFile = 1:nFile
     disp(['### analyzing peak location:',matFile{iFile},'...']);
     [cellDir, cellName, ~] = fileparts(matFile{iFile});
     cd(cellDir);
-    load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_TrackN','p_ttest','lightLoc','idxSpikeIn', 'idxSpikeOut', 'idxSpikeTotal','sum_inzoneSpike','sum_outzoneSpike','sum_totalSpike');
+%     clear('meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_TrackN','pLR_Plfm8hz','p_ttest','lightLoc','m_lapFrInzone','m_lapFrOutzone','m_lapFrTotalzone');
+    load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_TrackN','pLR_Plfm8hz','p_ttest','lightLoc','m_lapFrInzone','m_lapFrOutzone','m_lapFrTotalzone');
     
 %% condi1: meanFR
     if cMeanFRLow < meanFR_task & meanFR_task < cMeanFRPeak & spkpvr > cSpkpvr
@@ -35,7 +36,7 @@ for iFile = 1:nFile
     
 %% condi3 find the biggest place field size (if the field is smaller than 5, consider no place fields)
 % a continuous region of at least 5 bins (5cm)in which the firing rate
-% was above 60% of the peak rate in the maze, containing at least one bin above 80% of the peak rate in the mze.
+% was above 60% of the peak rate in the maze, containing at least one bin above 80% of the peak rate in the maze.
 % block-wise calculation --> if there is a place field in at least one block(PRE, STM, POST) consider there is a place field.
     
     peakFR = max(pethconvSpatial,[],2);
@@ -74,49 +75,53 @@ for iFile = 1:nFile
 %% Is place field in the stimulation zone? Yes:1 No:0
 % block-wize comparison. If at least one block has a place field in a stimulation zone, count it as 1.
     stmZone = round(lightLoc(1):lightLoc(2));
-
+    cOverLapLength = length(stmZone)*0.5;
+    
     idxAreaPRE = [tempValuePRE.Area]>cPixelLength;
     pixelPRE = {tempValuePRE.PixelIdxList};
     fieldPixelPRE = pixelPRE(idxAreaPRE)';
     nLociPRE = size(pixelPRE(idxAreaPRE)',1);
+    [overLapPRE, overLapSTM, overLapPOST] = deal({});
+    
     if nLociPRE == 0
         idxZoneInOutPRE = false;
+        overLapLength = 0;               %% calculate overlapping area between stm zone & place field
+        idxOverLap = 'Nofield';
     else
         for iLoci = 1:nLociPRE
             overLapPRE{iLoci,1} = intersect(stmZone,fieldPixelPRE{iLoci});
         end
-        if ~cellfun(@isempty,overLapPRE)
+        if sum(double(~cellfun(@isempty,overLapPRE)))>0
             idxZoneInOutPRE = true;
         else
             idxZoneInOutPRE = false;
         end
+        overLapLength = cellfun(@length,overLapPRE);
+        if length(overLapLength) ~= 1
+            overLapLength = max(overLapLength); % find biggest overlap length
+        end
+        if overLapLength > cOverLapLength
+            idxOverLap = 'Inzone';
+        elseif 0 < overLapLength & overLapLength <= cOverLapLength
+            idxOverLap = 'UNC';
+        else
+            idxOverLap = 'Outzone';
+        end
     end
-
     idxAreaSTM = [tempValueSTM.Area]>cPixelLength;
     pixelSTM = {tempValueSTM.PixelIdxList};
     fieldPixelSTM = pixelSTM(idxAreaSTM)';
     nLociSTM = size(pixelSTM(idxAreaSTM)',1);
     if nLociSTM == 0
         idxZoneInOutSTM = false;
-        overLapLengthSTM = 0;               %% calculate overlapping area between stm zone & place field
-        idxOverLapLengthSTM = false;
     else
         for iLoci = 1:nLociSTM
             overLapSTM{iLoci,1} = intersect(stmZone,fieldPixelSTM{iLoci});
         end
-        if ~cellfun(@isempty,overLapSTM)
+        if sum(double(~cellfun(@isempty,overLapSTM)))>0
             idxZoneInOutSTM = true;
         else
             idxZoneInOutSTM = false;
-        end
-        overLapLengthSTM = cellfun(@length,overLapSTM);
-        if length(overLapLengthSTM) ~= 1
-            overLapLengthSTM = sum(overLapLengthSTM);
-        end
-        if overLapLengthSTM >= cOverLapLength
-            idxOverLapLengthSTM = true;
-        else
-            idxOverLapLengthSTM = false;
         end
     end
 
@@ -130,7 +135,7 @@ for iFile = 1:nFile
         for iLoci = 1:nLociPOST
             overLapPOST{iLoci,1} = intersect(stmZone,fieldPixelPOST{iLoci});
         end
-        if ~cellfun(@isempty,overLapPOST)
+        if sum(double(~cellfun(@isempty,overLapPOST)))>0
             idxZoneInOutPOST = true;
         else
             idxZoneInOutPOST = false;
@@ -156,32 +161,39 @@ for iFile = 1:nFile
     else
         idxpLR_Track = false;
     end
+    
+%% light modulation (Platform)
+    if pLR_Plfm8hz < alpha
+        idxpLR_Plfm8hz = true;
+    else
+        idxpLR_Plfm8hz = false;
+    end
 
 %% p-value of spike t-test
-    if p_ttest(1,1)<0.05 & (sum_inzoneSpike(2,1) > sum_inzoneSpike(1,1)) % significant spike change in inzone
-        idxSpikeIn = 1;
-    elseif p_ttest(1,1)<0.05 & (sum_inzoneSpike(2,1) < sum_inzoneSpike(1,1))
-        idxSpikeIn = -1;
+    if p_ttest(1,1)<0.05 & (m_lapFrInzone(2) > m_lapFrInzone(1)) % significant spike change in inzone
+        idxmFrIn = 1;
+    elseif p_ttest(1,1)<0.05 & (m_lapFrInzone(2) < m_lapFrInzone(1))
+        idxmFrIn = -1;
     else
-        idxSpikeIn = 0;
+        idxmFrIn = 0;
     end
     
-    if p_ttest(1,2)<0.05 & (sum_outzoneSpike(2,1) > sum_outzoneSpike(1,1))
-        idxSpikeOut = 1;
-    elseif p_ttest(1,2)<0.05 & (sum_outzoneSpike(2,1) < sum_outzoneSpike(1,1))
-        idxSpikeOut = -1;
+    if p_ttest(1,2)<0.05 & (m_lapFrOutzone(2) > m_lapFrOutzone(1))
+        idxmFrOut = 1;
+    elseif p_ttest(1,2)<0.05 & (m_lapFrOutzone(2) < m_lapFrOutzone(1))
+        idxmFrOut = -1;
     else
-        idxSpikeOut = 0;
+        idxmFrOut = 0;
     end
     
-    if p_ttest(1,3)<0.05 & (sum_totalSpike(2,1) > sum_totalSpike(1,1))
-        idxSpikeTotal = 1;
-    elseif p_ttest(1,3)<0.05 & (sum_totalSpike(2,1) < sum_totalSpike(1,1))
-        idxSpikeTotal = -1;
+    if p_ttest(1,3)<0.05 & (m_lapFrTotalzone(2) > m_lapFrTotalzone(1))
+        idxmFrTotal = 1;
+    elseif p_ttest(1,3)<0.05 & (m_lapFrTotalzone(2) < m_lapFrTotalzone(1))
+        idxmFrTotal = -1;
     else
-        idxSpikeTotal = 0;
+        idxmFrTotal = 0;
     end
 
-    save([cellName,'.mat'],'idxNeurontype','idxPeakFR','idxPlaceField','idxTotalSpikeNum','idxpLR_Track','idxSpikeIn','idxSpikeOut','idxSpikeTotal','idxZoneInOut','overLapLengthSTM','idxOverLapLengthSTM','-append');
+    save([cellName,'.mat'],'idxNeurontype','idxPeakFR','idxPlaceField','idxTotalSpikeNum','idxpLR_Track','idxpLR_Plfm8hz','idxmFrIn','idxmFrOut','idxmFrTotal','idxZoneInOut','idxZoneInOutPRE','idxZoneInOutSTM','overLapLength','-append');
 end
 disp('### analysis: index calculation completed! ###')

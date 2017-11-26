@@ -2,7 +2,6 @@ function f_fig1_platform_example
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 load myParameters.mat;
-
 cd('D:\Dropbox\SNL\P2_Track\Rbp48ori_161201_DV2.15_2_DRw_100_T246'); % example 2, matfile:1, tetrode:2
 
 matFile = mLoad;
@@ -54,19 +53,21 @@ xptCSC = [win(1):0.5:win(2)];
 
 fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});
 nCol = 2;
-nRow = 6;
-hFreq8hz(1) = axes('Position',axpt(nCol,nRow,1,2,axpt(1,1,1,1,[0.15 0.10 0.80 0.80],midInterval),midInterval));
+nRow = 2;
+%% individual light
+hFreq8hz(1) = axes('Position',axpt(3,5,1:2,2,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),wideInterval));
 for iLight = 1:nLabLight
 %     hLBar(1) = rectangle('Position',[125*iLight-125,0,10,30],'LineStyle','none','FaceColor',colorLLightBlue);
 %     hold on;
     hLpatch(1) = patch([125*(iLight-1), 125*(iLight-1)+10,125*(iLight-1)+10,125*(iLight-1)],[yLimSpike(2)*0.9, yLimSpike(2)*0.9, yLimSpike(2), yLimSpike(2)],colorLightBlue,'EdgeColor','none');
     hold on;
 end
-plot(xpt8hz{1},ypt8hz{1},'LineStyle','none','Marker','o','MarkerSize',markerS,'Color',colorBlack,'MarkerFaceColor',colorBlack);
-xlabel('Time (ms)','fontSize',fontL);
-ylabel('Cycle','fontSize',fontL);
+plot(xpt8hz{1},ypt8hz{1},'LineStyle','none','Marker','o','MarkerSize',1,'Color',colorBlack,'MarkerFaceColor',colorBlack,'MarkerEdgeColor','none');
+xlabel('Time (ms)','fontSize',fontS);
+ylabel('Cycle','fontSize',fontS);
 
-hFreq8hz(2) = axes('Position',axpt(nCol,nRow,1,1,axpt(1,1,1,1,[0.15 0.10 0.80 0.80],midInterval),midInterval));
+%% csc
+hFreq8hz(2) = axes('Position',axpt(3,5,1:2,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),wideInterval));
 for iLight = 1:nLabLight
 %     hLBar(1) = rectangle('Position',[125*iLight-125,0,10,30],'LineStyle','none','FaceColor',colorLLightBlue);
 %     hold on;
@@ -74,23 +75,27 @@ for iLight = 1:nLabLight
     hold on;
 end
 plot(xptCSC,m_cscLight8hz,'color',colorBlack,'lineWidth',1);
-text(-350,yLimCSC(2)*0.7,'LFP signal','fontSize',fontL);
+text(-350,yLimCSC(2)*0.7,'LFP signal','fontSize',fontS);
 
-hFreq8hz(3) = axes('Position',axpt(nCol,nRow,1,3,axpt(1,1,1,1,[0.15 0.10 0.80 0.80],midInterval),midInterval));
+%% all light aligned
+hFreq8hz(3) = axes('Position',axpt(3,5,1:2,3,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),wideInterval));
 hLpatch(3) = patch([0 10 10 0],[0 0 nLight nLight],colorLightBlue,'EdgeColor','none');
 hold on;
-plot(xptPlfm8hz{1}, yptPlfm8hz{1}, 'LineStyle','none','Marker','o','MarkerSize',markerS,'Color',colorBlack,'MarkerFaceColor',colorBlack);
+plot(xptPlfm8hz{1}, yptPlfm8hz{1}, 'LineStyle','none','Marker','o','MarkerSize',1,'Color',colorBlack,'MarkerFaceColor',colorBlack,'MarkerEdgeColor','none');
 
-ylabel('n-Light','fontSize',fontL);
-xlabel('Time (ms)','fontSize',fontL);
+ylabel('n-Light','fontSize',fontS);
+xlabel('Time (ms)','fontSize',fontS);
 
-set(hFreq8hz,'Box','off','XLim',winAxis,'XTick',[winAxis(1),0:500:winAxis(2)],'TickDir','out','fontSize',fontL);
-set(hFreq8hz(1),'YLim',yLimSpike,'YTick',[0:5:30]);
+align_ylabel([hFreq8hz(1),hFreq8hz(3)]);
+
+set(hFreq8hz,'Box','off','XLim',winAxis,'XTick',[winAxis(1),0:500:winAxis(2)],'TickDir','out','fontSize',fontS);
+set(hFreq8hz(1),'YLim',yLimSpike,'YTick',[0:10:30]);
 set(hFreq8hz(2),'Box','off','visible','off','YLim',yLimCSC,'YTick',[]);
 set(hFreq8hz(3),'XLim',winBlue,'XTick',[-25,0,10,20,100],'YLim',[0 nLight],'YTick',[0 nLight],'YTickLabel',{0, nLight});
 
-% print('-painters','-r300','-depsc',['fig1_EEG_',datestr(now,formatOut),'.ai']);
 print('-painters','-r300','-dtiff',['final_fig1_example_',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-depsc',['final_fig1_example_',datestr(now,formatOut),'.ai']);
+close;
 function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = rasterPETH(spikeTime, trialIndex, win, binSize, resolution, dot)
 % raterPSTH converts spike time into raster plot
 %   spikeTime: cell array. Each cell contains vector array of spike times per each trial unit is ms.

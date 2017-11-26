@@ -3,15 +3,14 @@ rtPath = 'D:\Dropbox\SNL\P2_Track';
 startingDir = {'D:\Projects\Track_160824-2_Rbp58freq';
                'D:\Projects\Track_160824-5_Rbp60freq';
                'D:\Projects\Track_161130-3_Rbp64freq';
-               'D:\Projects\Track_161130-5_Rbp66freq';
                'D:\Projects\Track_161130-7_Rbp68freq';
                'D:\Projects\Track_170119-1_Rbp70freq';
                'D:\Projects\Track_170109-2_Rbp72freq';
-               'D:\Projects\Track_170115-4_Rbp74freq';
-               'D:\Projects\Track_170305-1_Rbp76freq';
-               'D:\Projects\Track_170305-2_Rbp78freq'};
-% startingDir = {'D:\Projects\Track_170305-1_Rbp76freq';...
-%                'D:\Projects\Track_170305-2_Rbp78freq'};
+               'D:\Projects\Track_170305-1_Rbp76freq_8mw';
+               'D:\Projects\Track_170305-2_Rbp78freq_8mw'};
+               % 'D:\Projects\Track_161130-5_Rbp66freq';
+               % 'D:\Projects\Track_170115-4_Rbp74freq';
+
 nDir = size(startingDir,1);
 [matFile, tFile, cscFile] = deal([]);
 typeName = input('Enter file type (e, m, t, c): ', 's');
@@ -56,7 +55,7 @@ end
 filePath = unique(filePath);
 nPath = length(filePath);
 
-for iPath = 1:nPath % 1hz,2hz,8hz,20hz,50hz from 4th file
+for iPath = 4:nPath % 1hz,2hz,8hz,20hz,50hz from 4th file
     curPath = iPath;
     cd(filePath{iPath});
     switch typeName
@@ -70,10 +69,10 @@ for iPath = 1:nPath % 1hz,2hz,8hz,20hz,50hz from 4th file
             analysis_respstatFreqTest_v2;
             analysis_freq_detoSpike;
             waveform;
-            analysis_cscFreqTest;
+%             analysis_cscFreqTest;
         case 'm'            
-            plot_cscLightStm;
-%             plot_freqDependency_single;
+%             plot_cscLightStm;
+            plot_freqDependency_single;
     end
     fclose('all');
     close all;

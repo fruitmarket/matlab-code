@@ -13,8 +13,8 @@ lightBand = 3;
 
 %% Loading cell information
 %% Loading cell information
-load('neuronList_ori_control_170721.mat');
-Txls = readtable('neuronList_ori_control_170721.xlsx');
+load('neuronList_ori_control_171014.mat');
+Txls = readtable('neuronList_ori_control_171014.xlsx');
 Txls.taskType = categorical(Txls.taskType);
 formatOut = 'yymmdd';
 
@@ -24,41 +24,34 @@ DRunIN = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
 DRunUNC = T.taskType == 'DRun' & T.idxNeurontype == 'UNC';
 
 %% separation of place cells from non place cell
-dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_eYFP\placefield\total_PF';
-rmdir(dirParent,'s');
-
 group = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
 fileName = T.path(group);
-cellID = T.cellID(group);
-mkdir(dirParent,'DRun');
-path = strcat(dirParent,'\DRun');
-plot_Track_multi_v3(fileName,cellID,path);
+cellID = Txls.cellID(group);
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_eYFPDRunPC');
 
 group = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
 fileName = T.path(group);
-cellID = T.cellID(group);
-mkdir(dirParent,'DRw');
-path = strcat(dirParent,'\DRw');
-plot_Track_multi_v3(fileName,cellID,path);
+cellID = Txls.cellID(group);
+plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_eYFPDRwPC');
 
 
-% non place cell
-dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_eYFP\placefield\total_nPF';
-rmdir(dirParent,'s');
-
-group = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum);
-fileName = T.path(group);
-cellID = T.cellID(group);
-mkdir(dirParent,'DRun');
-path = strcat(dirParent,'\DRun');
-plot_Track_multi_v3(fileName,cellID,path);
-
-group = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum);
-fileName = T.path(group);
-cellID = T.cellID(group);
-mkdir(dirParent,'DRw');
-path = strcat(dirParent,'\DRw');
-plot_Track_multi_v3(fileName,cellID,path);
+% % non place cell
+% dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_eYFP\placefield\total_nPF';
+% rmdir(dirParent,'s');
+% 
+% group = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum);
+% fileName = T.path(group);
+% cellID = T.cellID(group);
+% mkdir(dirParent,'DRun');
+% path = strcat(dirParent,'\DRun');
+% plot_Track_multi_v3(fileName,cellID,path);
+% 
+% group = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & ~(T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum);
+% fileName = T.path(group);
+% cellID = T.cellID(group);
+% mkdir(dirParent,'DRw');
+% path = strcat(dirParent,'\DRw');
+% plot_Track_multi_v3(fileName,cellID,path);
 
 
 %% analysis with place field (whether the field is in the stm zone or not)

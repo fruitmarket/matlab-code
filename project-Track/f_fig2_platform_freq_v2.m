@@ -5,9 +5,9 @@ clearvars;
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
-load('myParameters.mat');
-Txls = readtable('neuronList_freq_170821.xlsx');
-load('neuronList_freq_170821.mat');
+load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
+Txls = readtable('neuronList_freq_170921.xlsx');
+load('neuronList_freq_170921.mat');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 % folder = 'D:\Dropbox\#team_hippocampus Team Folder\project_Track\samples_v9\';
 formatOut = 'yymmdd';
@@ -30,6 +30,12 @@ lightDirect = T.spkpvr>cSpkpvr & Txls.latencyIndex == 'direct';
 lightIndirect = T.spkpvr>cSpkpvr & Txls.latencyIndex == 'indirect';
 nolightCri = T.spkpvr>cSpkpvr & ~(T.pLR_Plfm1hz<alpha2 | T.pLR_Plfm2hz<alpha2 | T.pLR_Plfm8hz<alpha2 | T.pLR_Plfm20hz<alpha2 | T.pLR_Plfm50hz<alpha2);
 cellID = T.cellID(lightResp);
+
+exampleBuild_1hz = T.lightProb1hz_dr(T.cellID == 120);
+exampleBuild_2hz = T.lightProb2hz_dr(T.cellID == 120);
+exampleBuild_8hz = T.lightProb8hz_dr(T.cellID == 120);
+exampleBuild_20hz = T.lightProb20hz_dr(T.cellID == 120);
+exampleBuild_50hz = T.lightProb50hz_dr(T.cellID == 120);
 
 % plot_freqDependency_multi(T.path(lightResp),cellID,'C:\Users\Jun\Desktop\freqExample');
 
@@ -131,137 +137,60 @@ sem_50hz_T = std(lightProb50hzT)/sqrt(nCellT);
 
 
 %% statistics
-anova_dr = kruskalwallis([lightProb1hz_dr, lightProb2hz_dr, lightProb8hz_dr, lightProb20hz_dr, lightProb50hz_dr],{'dr1hz','dr2hz','dr8hz','dr20hz','dr50hz'},'off');
-anova_idr = kruskalwallis([lightProb1hz_idr, lightProb2hz_idr, lightProb8hz_idr, lightProb20hz_idr, lightProb50hz_idr],{'idr1hz','idr2hz','idr8hz','idr20hz','idr50hz'},'off');
-anova_to = kruskalwallis([lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],{'total1hz','total2hz','total8hz','total20hz','total50hz'},'off');
-
+[p_kw_dr,tbl_dr] = kruskalwallis([lightProb1hz_dr, lightProb2hz_dr, lightProb8hz_dr, lightProb20hz_dr, lightProb50hz_dr],{'dr1hz','dr2hz','dr8hz','dr20hz','dr50hz'},'off');
+[p_kw_idr,tbl_idr] = kruskalwallis([lightProb1hz_idr, lightProb2hz_idr, lightProb8hz_idr, lightProb20hz_idr, lightProb50hz_idr],{'idr1hz','idr2hz','idr8hz','idr20hz','idr50hz'},'off');
+[p_kw_to,tbl_to] = kruskalwallis([lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],{'total1hz','total2hz','total8hz','total20hz','total50hz'},'off');
+p_idr1vs8 = ranksum(lightProb1hz_idr, lightProb8hz_idr);
+p_idr1vs20 = ranksum(lightProb1hz_idr, lightProb20hz_idr);
+p_t1vs8 = ranksum(lightProb1hzT,lightProb8hzT);
+p_t1vs20 = ranksum(lightProb1hzT,lightProb20hzT);
+p_idr2vs8 = ranksum(lightProb2hz_idr, lightProb8hz_idr);
+p_idr2vs20 = ranksum(lightProb2hz_idr, lightProb20hz_idr);
 %% Plot
 nCol = 2;
 nRow = 6;
 hHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});
 
 % light response population
-hPlot(1) = axes('Position',axpt(3,1,1,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
-plot([1,2,3,4,5],[lightProb1hz_dr, lightProb2hz_dr, lightProb8hz_dr, lightProb20hz_dr, lightProb50hz_dr],'-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
+hPlot(1) = axes('Position',axpt(3,1,1,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval),wideInterval));
+plot([1,2,3,4,5],[lightProb1hz_dr, lightProb2hz_dr, lightProb8hz_dr, lightProb20hz_dr, lightProb50hz_dr],'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
 hold on;
-plot([1,2,3,4,5],[m_1hz_dr, m_2hz_dr, m_8hz_dr, m_20hz_dr, m_50hz_dr],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
+plot([1,2,3,4,5],[m_1hz_dr, m_2hz_dr, m_8hz_dr, m_20hz_dr, m_50hz_dr],'o','color',colorBlack,'markerSize',markerS,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
+hold on;
+plot([1,2,3,4,5],[exampleBuild_1hz,exampleBuild_2hz,exampleBuild_8hz,exampleBuild_20hz,exampleBuild_50hz ],'-o','color',colorBlack,'markerSize',markerS,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlue);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hz_dr, m_2hz_dr, m_8hz_dr, m_20hz_dr, m_50hz_dr],[sem_1hz_dr,sem_2hz_dr,sem_8hz_dr,sem_20hz_dr,sem_50hz_dr],0.2, 0.8, colorBlack);
+text(1,30,['n = ',num2str(nCell_dr)],'fontSize',fontS);
+% xlabel('Frequency, Hz','fontSize',fontS);
+ylabel('Spike fidelity (%)','fontSize',fontS);
+title('Directly activated','fontSize',fontS);
 
-text(1,30,['n = ',num2str(nCell_dr)],'fontSize',fontL);
-% xlabel('Frequency, Hz','fontSize',fontL);
-ylabel('Spike fidelity (%)','fontSize',fontL);
-title('Directly activated','fontSize',fontL);
-
-hPlot(2) = axes('Position',axpt(3,1,2,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
-plot([1,2,3,4,5],[lightProb1hz_idr, lightProb2hz_idr, lightProb8hz_idr, lightProb20hz_idr, lightProb50hz_idr],'-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
+hPlot(2) = axes('Position',axpt(3,1,2,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval),wideInterval));
+plot([1,2,3,4,5],[lightProb1hz_idr, lightProb2hz_idr, lightProb8hz_idr, lightProb20hz_idr, lightProb50hz_idr],'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
 hold on;
-plot([1,2,3,4,5],[m_1hz_idr, m_2hz_idr, m_8hz_idr, m_20hz_idr, m_50hz_idr],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
+plot([1,2,3,4,5],[m_1hz_idr, m_2hz_idr, m_8hz_idr, m_20hz_idr, m_50hz_idr],'o','color',colorBlack,'markerSize',markerS,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hz_idr, m_2hz_idr, m_8hz_idr, m_20hz_idr, m_50hz_idr],[sem_1hz_idr,sem_2hz_idr,sem_8hz_idr,sem_20hz_idr,sem_50hz_idr],0.2, 0.8, colorBlack);
 
-text(1,30,['n = ',num2str(nCell_idr)],'fontSize',fontL);
-xlabel('Frequency, Hz','fontSize',fontL);
-% ylabel('Spike fidelity (%)','fontSize',fontL);
-title('Indirectly activated','fontSize',fontL);
+text(1,30,['n = ',num2str(nCell_idr)],'fontSize',fontS);
+xlabel('Frequency, Hz','fontSize',fontS);
+% ylabel('Spike fidelity (%)','fontSize',fontS);
+title('Indirectly activated','fontSize',fontS);
 
-hPlot(3) = axes('Position',axpt(3,1,3,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
-plot([1,2,3,4,5],[lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],'-o','color',colorDarkGray,'markerSize',markerL,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
+hPlot(3) = axes('Position',axpt(3,1,3,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],wideInterval),wideInterval));
+plot([1,2,3,4,5],[lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightGray);
 hold on;
-plot([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],'o','color',colorBlack,'markerSize',markerL,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
+plot([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],'o','color',colorBlack,'markerSize',markerS,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],[sem_1hz_T,sem_2hz_T,sem_8hz_T,sem_20hz_T,sem_50hz_T],0.2, 0.8, colorBlack);
-text(1,30,['n = ',num2str(nCellT)],'fontSize',fontL);
-% xlabel('Frequency, Hz','fontSize',fontL);
-% ylabel('Spike fidelity (%)','fontSize',fontL);
-title('Total activated neuron','fontSize',fontL);
+text(1,30,['n = ',num2str(nCellT)],'fontSize',fontS);
+% xlabel('Frequency, Hz','fontSize',fontS);
+% ylabel('Spike fidelity (%)','fontSize',fontS);
+title('Total activated neuron','fontSize',fontS);
 
 set(hPlot,'TickDir','out','Box','off');
-set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontL);
+set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontS);
 set(hPlot,'YLim',[-1,35]);
-
-%% deto 5 light
-light1hz = T.spkpvr>cSpkpvr & T.pLR_Plfm1hz < alpha;
-light2hz = T.spkpvr>cSpkpvr & T.pLR_Plfm2hz < alpha;
-light8hz = T.spkpvr>cSpkpvr & T.pLR_Plfm8hz < alpha;
-light20hz = T.spkpvr>cSpkpvr & T.pLR_Plfm20hz < alpha;
-light50hz = T.spkpvr>cSpkpvr & T.pLR_Plfm50hz < alpha;
-
-nLight1hz = sum(double(light1hz));
-nLight2hz = sum(double(light2hz));
-nLight8hz = sum(double(light8hz));
-nLight20hz = sum(double(light20hz));
-nLight50hz = sum(double(light50hz));
-
-evoSpike1hz = T.evoDetoSpk1hz(light1hz,:);
-evoSpike2hz = T.evoDetoSpk2hz(light2hz,:);
-evoSpike8hz = T.evoDetoSpk8hz(light8hz,:);
-evoSpike20hz = T.evoDetoSpk20hz(light20hz,:);
-evoSpike50hz = T.evoDetoSpk50hz(light50hz,:);
-
-detoSpike1hz = T.detoProb1hz(light1hz,:);
-detoSpike2hz = T.detoProb2hz(light2hz,:);
-detoSpike8hz = T.detoProb8hz(light8hz,:);
-detoSpike20hz = T.detoProb20hz(light20hz,:);
-detoSpike50hz = T.detoProb50hz(light50hz,:);
-
-m_detoSpike1hz = mean(detoSpike1hz,1);
-m_detoSpike2hz = mean(detoSpike2hz,1);
-m_detoSpike8hz = mean(detoSpike8hz,1);
-m_detoSpike20hz = mean(detoSpike20hz,1);
-m_detoSpike50hz = mean(detoSpike50hz,1);
-
-sem_detoSpike1hz = std(detoSpike1hz,0,1)/sqrt(nLight1hz);
-sem_detoSpike2hz = std(detoSpike2hz,0,1)/sqrt(nLight2hz);
-sem_detoSpike8hz = std(detoSpike8hz,0,1)/sqrt(nLight8hz);
-sem_detoSpike20hz = std(detoSpike20hz,0,1)/sqrt(nLight20hz);
-sem_detoSpike50hz = std(detoSpike50hz,0,1)/sqrt(nLight50hz);
-
-eBarM = 0.2;
-color1 = [38, 50, 56]./255;
-color2 = [69, 90, 100]./255;
-color3 = [96, 125, 139]./255;
-color4 = [144, 164, 174]./255;
-color5 = [176, 190, 197]./255;
-
-xpt = 1:5;
-hPlot_mean = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.88],midInterval),midInterval));
-% 1hz
-errorbarJun(xpt,m_detoSpike1hz(1:5),sem_detoSpike1hz(1:5),eBarM,0.4,colorBlack);
-hold on;
-plot(xpt,m_detoSpike1hz(1:5),'-o','color',color1,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',color1);
-hold on;
-% 2hz
-errorbarJun(xpt,m_detoSpike2hz(1:5),sem_detoSpike2hz(1:5),eBarM,0.4,colorBlack);
-hold on;
-plot(xpt,m_detoSpike2hz(1:5),'-o','color',color2,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',color2);
-hold on;
-% 8hz
-errorbarJun(xpt,m_detoSpike8hz(1:5),sem_detoSpike8hz(1:5),eBarM,0.4,colorBlack);
-hold on;
-plot(xpt,m_detoSpike8hz(1:5),'-o','color',color3,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',color3);
-hold on;
-% 20hz
-errorbarJun(xpt,m_detoSpike20hz(1:5),sem_detoSpike20hz(1:5),eBarM,0.4,colorBlack);
-hold on;
-plot(xpt,m_detoSpike20hz(1:5),'-o','color',color4,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',color4);
-hold on;
-% 50hz
-errorbarJun(xpt,m_detoSpike50hz(1:5),sem_detoSpike50hz(1:5),eBarM,0.4,colorBlack);
-hold on;
-plot(xpt,m_detoSpike50hz(1:5),'-o','color',color5,'MarkerEdgeColor',colorBlack,'MarkerFaceColor',color5);
-hold on;
-
-text(3.5, 32, ['1 Hz (n = ',num2str(nLight1hz),')'],'color',color1,'fontSize',fontL);
-text(3.5, 29, ['2 Hz (n = ',num2str(nLight2hz),')'],'color',color2,'fontSize',fontL);
-text(3.5, 26, ['8 Hz (n = ',num2str(nLight8hz),')'],'color',color3,'fontSize',fontL);
-text(3.5, 23, ['20 Hz (n = ',num2str(nLight20hz),')'],'color',color4,'fontSize',fontL);
-text(3.5, 20, ['50 Hz (n = ',num2str(nLight50hz),')'],'color',color5,'fontSize',fontL);
-
-xlabel('n-th light pulse','fontSize',fontL);
-ylabel('Spike fidelity (%)','fontSize',fontL);
-set(hPlot_mean,'TickDir','out','Box','off');
-set(hPlot_mean,'XLim',[0,6],'XTick',1:5,'fontSize',fontL,'YLim',[0 35],'YTick',0:10:50);
 
 print('-painters','-r300','-dtiff',['final_fig2_platform_freqTest_v2_',datestr(now,formatOut),'.tif']);
 print('-painters','-r300','-depsc',['final_fig2_platform_freqTest_v2_',datestr(now,formatOut),'.ai']);

@@ -27,6 +27,8 @@ dT = diff(timestamps_ori);
 idx = find(dT > 256000);
 
 switch length(idx)+1
+    case 1
+        timestamp = [timestamps_ori(1) + (0:512*(size(timestamps_ori,2))-1)*500]'; % continuous recording
     case 2
         disp('Check the recording note!');
     case 3 % three sessions

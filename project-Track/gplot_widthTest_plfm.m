@@ -4,19 +4,17 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load myParameters.mat         
-load('neuronList_width_170821.mat');
-Txls = readtable('neuronList_width_170821.xlsx');
+load('neuronList_width_170920.mat');
+Txls = readtable('neuronList_width_170920.xlsx');
 formatOut = 'yymmdd';
 
 cMeanFR = 9;
-cMaxPeakFR = 1;
 cSpkpvr = 1.2;
-alpha = 0.01;
+alpha = 0.05;
 %% Population separation
 
 % listPN = T.meanFR10<cMeanFR;
 listPN = T.spkpvr>cSpkpvr;
-
 lightResp = T.pLR_Plfm2hz<alpha;
 % lightAct = T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==1;
 % lightIna = T.pLR_Plfm2hz<alpha & T.statDir_Plfm2hz==-1;
@@ -25,6 +23,13 @@ lightAct = T.pLR_Plfm2hz<alpha & Txls.statDir==1;
 lightIna = T.pLR_Plfm2hz<alpha & Txls.statDir==-1;
 lightNo = ~(T.pLR_Plfm2hz<alpha);
 
+
+%%
+plot_widthT_multi(T.path(listPN), T.cellID(listPN), 'C:\Users\Jun\Desktop\widthExample');
+
+
+
+%%
 % Pyramidal neuron
 actPN_peth10 = cell2mat(T.peth10ms(listPN & lightAct));
 actPN_peth50 = cell2mat(T.peth50ms(listPN & lightAct));

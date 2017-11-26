@@ -1,13 +1,13 @@
 %% Directory setup
 rtPath = 'D:\Dropbox\SNL\P2_Track';
-startingDir = {'D:\Projects\Track_160824-2_Rbp58pulse';
+startingDir = {'D:\Projects\Track_160726-1_Rbp48pulse';
+               'D:\Projects\Track_160726-2_Rbp50pulse';
+               'D:\Projects\Track_160824-2_Rbp58pulse';
                'D:\Projects\Track_160824-5_Rbp60pulse';
                'D:\Projects\Track_161130-3_Rbp64pulse';
-               'D:\Projects\Track_161130-5_Rbp66pulse';
                'D:\Projects\Track_161130-7_Rbp68pulse';
                'D:\Projects\Track_170119-1_Rbp70pulse';
                'D:\Projects\Track_170109-2_Rbp72pulse';
-               'D:\Projects\Track_170115-4_Rbp74pulse';
                'D:\Projects\Track_170305-1_Rbp76pulse';
                'D:\Projects\Track_170305-2_Rbp78pulse'};
 

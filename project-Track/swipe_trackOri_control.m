@@ -3,7 +3,10 @@ rtPath = 'D:\Dropbox\SNL\P2_Track';
 startingDir = {'D:\Projects\Track_160510-7_Rbp42ori';
                'D:\Projects\Track_160510-4_Rbp46ori';
                'D:\Projects\Track_160726_1_Rbp56ori';
-               'D:\Projects\Track_160808-4_Rbp62ori'};
+               'D:\Projects\Track_170509-1_Rbp90_cntr';
+               'D:\Projects\Track_170509-7_Rbp92_cntr';
+               'D:\Projects\Track_170509-8_Rbp94_cntr'};
+           %   'D:\Projects\Track_160808-4_Rbp62ori';
 % startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
 nDir = size(startingDir,1);
 [matFile, tFile, cscFile] = deal([]);
@@ -58,16 +61,15 @@ for iPath = 1:nPath
 %             sensorMeanFR;
 %             analysis_burst6ms;
 %             analysis_wvformCrosscor;
-%             analysis_spatialRaster;
+            analysis_spatialRaster;
 %             analysis_plfm_laserIntTest;
 %             analysis_track_peth1stLight;
 %             laserFreqCheck;
 %             analysis_detoSpike8hz;
-            analysis_stmzoneSpike;
+%             analysis_stmzoneSpike;
 %             analysis_laserSpikeChange;
 %             analysis_findPeakLoci;
 %             analysis_LRatioID;
-
         case 'm'
             analysis_indexTrack;
 %             plot_Track_sin_v3;            

@@ -2,7 +2,10 @@ clearvars;
 rtPath = 'D:\Dropbox\SNL\P2_Track';
 startingDir = {'D:\Projects\Track_160510-7_Rbp42ori';
                'D:\Projects\Track_160510-4_Rbp46ori';
-               'D:\Projects\Track_160726_1_Rbp56ori'};
+               'D:\Projects\Track_160726_1_Rbp56ori';
+               'D:\Projects\Track_170509-1_Rbp90_cntr';
+               'D:\Projects\Track_170509-7_Rbp92_cntr';
+               'D:\Projects\Track_170509-8_Rbp94_cntr'};
 
 % startingDir = {'D:\Projects\Track_160417-1_Rbp32ori'};
 matFile = [];
@@ -105,7 +108,8 @@ for iFile = 1:nFile
     normTrackFR_total = {normTrackFR_total};
     
     idxNeurontype = categorical({idxNeurontype});
-    
+    idxOverLapSTM = categorical({idxOverLapSTM});
+
     temT = table(path,cellID,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % pethSensor
         lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
         spkwv,spkwth,hfvwth,spkpvr,...  % waveform
@@ -141,7 +145,7 @@ for iFile = 1:nFile
         evoSpike_preEarly, evoSpike_preLate, evoSpike_stmEarly, evoSpike_stmLate, evoSpike_postEarly, evoSpike_postLate,...
         evoXptTrackLight,evoXptPsdPre,evoXptPsdPost,...
         LRatio,ID,...
-        idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxSpikeIn,idxSpikeOut,idxSpikeTotal,idxZoneInOut);
+        idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxmFrIn,idxmFrOut,idxmFrTotal,idxZoneInOut,idxZoneInOutSTM,overLapLengthSTM,idxOverLapSTM);
     T = [T; temT];
     
     temp_Txls = table(path,cellID,taskType,tetLocation,...

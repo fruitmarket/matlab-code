@@ -4,7 +4,7 @@ function analysis_wvformCrosscor50hz
 % 
 % pre-stm, and post-stm are used for baseline spike waveforms
 
-lightwin = [0 30]; % ms
+lightwin = [0 20]; % ms
 
 % Load mat-files in the folder
 mList = mLoad;
@@ -102,14 +102,33 @@ for iCell = 1:nCell
     % Get mean waveform
     spont_wv = cellwv(logical(spont_idx),:,:);
     evoked_wv = cellwv(logical(evoked_idx),:,:);
-    
-    for iTT = 1:4
-        m_spont_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(spont_wv(:,iTT,:)));
-        m_evoked_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(evoked_wv(:,iTT,:)));
+
+% if there is only one spike during certain period, the previous code could
+% not calculate correctly. So, little modification was added.
+    if (size(spont_wv,1) ~= 1) && (size(evoked_wv,1) ~= 1);
+            for iTT = 1:4
+                m_spont_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(spont_wv(:,iTT,:)));
+                m_evoked_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(evoked_wv(:,iTT,:)));
+            end
+    elseif (size(spont_wv,1) == 1) && (size(evoked_wv,1) ~= 1);
+            for iTT = 1:4
+                m_spont_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(spont_wv,2));
+                m_evoked_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(evoked_wv(:,iTT,:)));
+            end
+    elseif (size(spont_wv,1) == ~1) && (size(evoked_wv,1) == 1);
+            for iTT = 1:4
+                m_spont_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(spont_wv(:,iTT,:)));
+                m_evoked_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(evoked_wv,2));
+            end
+    else (size(spont_wv,1) == 1) && (size(evoked_wv,1) == 1);
+            for iTT = 1:4
+                m_spont_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(spont_wv,2));
+                m_evoked_wv{iTT} = (10^6)*bitvolt(iTT)*squeeze(mean(evoked_wv,2));
+            end
     end
     
     spkTimeLight = spikeWin(tData{iCell},lighttime,lightwin);
-    if sum(double(~cellfun(@isempty,spkTimeLight)))<10
+    if sum(double(~cellfun(@isempty,spkTimeLight)))<10;
         r_wv = NaN;
     else
         rtemp = corrcoef(m_spont_wv{maintt}',m_evoked_wv{maintt}');  

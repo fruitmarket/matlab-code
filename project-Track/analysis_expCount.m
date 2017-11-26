@@ -40,4 +40,5 @@ eYFPstdTotal = std(eYFPmeanMice);
 
 formatOut = 'yymmdd';
 save(['expChETA_',datestr(now,formatOut),'.mat'],'T','eYFPmeanMice','eYFPmeanTotal','eYFPstdTotal');
+clc;
 disp('### Done! ###');

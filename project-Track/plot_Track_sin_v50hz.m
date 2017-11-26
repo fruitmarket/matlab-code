@@ -260,9 +260,9 @@ for iFile = 1:nFile
 % Light response spike probability 
     hStmzoneSpike = axes('Position',axpt(2,8,2,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
     text(0.2,0.7,'Stm zone spike number','fontSize',fontL,'fontWeight','bold');
-    text(0.4,0.5,['Pre: ',num2str(stmzoneSpike(1))],'fontSize',fontM);
-    text(0.4,0.35,['Stm: ',num2str(stmzoneSpike(2))],'fontSize',fontM);
-    text(0.4,0.2,['Post: ',num2str(stmzoneSpike(3))],'fontSize',fontM);
+    text(0.4,0.5,['Pre: ',num2str(sum_inzoneSpike(1))],'fontSize',fontM);
+    text(0.4,0.35,['Stm: ',num2str(sum_inzoneSpike(2))],'fontSize',fontM);
+    text(0.4,0.2,['Post: ',num2str(sum_inzoneSpike(3))],'fontSize',fontM);
     set(hStmzoneSpike,'Box','off','visible','off');
 
 % Heat map

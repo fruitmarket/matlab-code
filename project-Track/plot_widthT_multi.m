@@ -29,7 +29,7 @@ nFile = length(matFile);
 
 nCol = 2;
 nRow = 5;
-winPlot = [-100 200];
+winPlot = [-50 150];
 
 for iFile = 1:nFile
     [cellDir, cellName, ~] = fileparts(matFile{iFile});

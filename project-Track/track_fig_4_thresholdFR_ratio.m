@@ -16,7 +16,7 @@ lightBand = 3;
 calib = [-3,3]; % unit: cm
 
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_170606.mat');
+load('neuronList_ori_170928.mat');
 load myParameters.mat;
 
 condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));

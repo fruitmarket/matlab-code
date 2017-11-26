@@ -9,8 +9,8 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
-load('neuronList_ori_170803.mat');
-Txls = readtable('neuronList_ori_170803.xlsx');
+load('neuronList_ori_171016.mat');
+Txls = readtable('neuronList_ori_171016.xlsx');
 Txls.taskType = categorical(Txls.taskType);
 formatOut = 'yymmdd';
 

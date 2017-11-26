@@ -55,7 +55,7 @@ end
 filePath = unique(filePath);
 nPath = length(filePath);
 
-for iPath = 4:nPath % 1hz,2hz,8hz,20hz,50hz from 4th file
+for iPath = 1:nPath % 1hz,2hz,8hz,20hz,50hz from
     curPath = iPath;
     cd(filePath{iPath});
     switch typeName
@@ -68,6 +68,7 @@ for iPath = 4:nPath % 1hz,2hz,8hz,20hz,50hz from 4th file
             analysis_freq_evokeProb;
             analysis_respstatFreqTest_v2;
             analysis_freq_detoSpike;
+            analysis_baseVsLight;
             waveform;
 %             analysis_cscFreqTest;
         case 'm'            

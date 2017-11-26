@@ -251,12 +251,12 @@ for iFile = 1:nFile
     set(hTextSpkProb,'Box','off','visible','off');
 
 % Light response spike probability 
-    hStmzoneSpike = axes('Position',axpt(2,8,2,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
+    hinzoneSpike = axes('Position',axpt(2,8,2,7:8,axpt(nCol,nRow,7:10,2:5,[0.1 0.15 0.80 0.75],tightInterval),wideInterval));
     text(0.2,0.7,'Stm zone spike number','fontSize',fontL,'fontWeight','bold');
-    text(0.4,0.5,['Pre: ',num2str(stmzoneSpike(1))],'fontSize',fontM);
-    text(0.4,0.35,['Stm: ',num2str(stmzoneSpike(2))],'fontSize',fontM);
-    text(0.4,0.2,['Post: ',num2str(stmzoneSpike(3))],'fontSize',fontM);
-    set(hStmzoneSpike,'Box','off','visible','off');
+    text(0.4,0.5,['Pre: ',num2str(sum_inzoneSpike(1))],'fontSize',fontM);
+    text(0.4,0.35,['Stm: ',num2str(sum_inzoneSpike(2))],'fontSize',fontM);
+    text(0.4,0.2,['Post: ',num2str(sum_inzoneSpike(3))],'fontSize',fontM);
+    set(hinzoneSpike,'Box','off','visible','off');
     
 % Heat map   
     totalmap = [pre_ratemap(1:90,40:130),stm_ratemap(1:90,40:130),post_ratemap(1:90,40:130)];
@@ -399,6 +399,8 @@ end
         for iType = 1:3
             plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
+        peakFR_track = round(max(peakFR1D_track)*10)/10;
+        text(115,ylimpethSpatial*0.8,[num2str(peakFR_track),' Hz'],'fontSize',fontM);
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Position (cm)','FontSize',fontM);
         uistack(rec,'bottom');  
@@ -432,96 +434,109 @@ end
         text(0.1,0.25,' : Reward','FontSize',fontL,'Color',colorLightRed,'fontWeight','Bold');
     set(hLine,'Box','off','visible','off');
 
-% LFP analysis (Plfm 2hz)
-    lightPlfm2hz = lightTime.Plfm2hz(201:400);
-    lapPlfm2hzIdx = 1:10:200; % find start light of each lap
-    nLabLightPlfm2hz = 10;
-    lightOnPlfm2hz = lightPlfm2hz(lapPlfm2hzIdx);
     
-    winPlfm2hz = [-300, 5200]; % unit: msec
-    sFreq = 2000; % 2000 samples / sec
-    win_csc2hz = winPlfm2hz/1000*sFreq;
-    xLimCSC = [-300 1100];
-    xpt_csc2hz = winPlfm2hz(1):0.5:winPlfm2hz(2);
-
-    for iCycle = 1:20
-        cscIdxPlfm2hz = find(cscTime{1}>lightOnPlfm2hz(iCycle),1,'first');
-        cscPlfm2hz(:,iCycle) = cscSample((cscIdxPlfm2hz+win_csc2hz(1)):cscIdxPlfm2hz+win_csc2hz(2));
-    end
-    m_cscPlfm2hz = mean(cscPlfm2hz,2);
-    yLimCSC_Plfm2hz = [min(m_cscPlfm2hz(find(xpt_csc2hz==xLimCSC(1)):find(xpt_csc2hz==xLimCSC(2)))), max(m_cscPlfm2hz(find(xpt_csc2hz==xLimCSC(1)):find(xpt_csc2hz==xLimCSC(2))))]*1.1;
-
-% LFP analysis (Track 50hz)
-    lightTrack50hz = lightTime.Track50hz;
-    lapTrack50hzIdx = [1;(find(diff(lightTrack50hz)>1000)+1)]; % find start light of each lap
-    nLabLightTrack50hz = min(diff(lapTrack50hzIdx));
-    lightOnTrack50hz = lightTrack50hz(lapTrack50hzIdx);
-    
-    winTrack50hz = [-500,3000];
-    win_csc50hz = winTrack50hz/1000*sFreq;
-    xpt_csc50hz = winTrack50hz(1):0.5:winTrack50hz(2);
-    for iCycle = 1:30
-        cscIdxTrack50hz = find(cscTime{1}>lightOnTrack50hz(iCycle),1,'first');
-        cscTrack50hz(:,iCycle) = cscSample((cscIdxTrack50hz+win_csc50hz(1)):cscIdxTrack50hz+win_csc50hz(2));
-    end
-    m_cscTrack50hz = mean(cscTrack50hz,2);
-    yLimCSC_Track50hz = [min(m_cscTrack50hz(find(xpt_csc50hz==xLimCSC(1)):find(xpt_csc50hz==xLimCSC(2)))), max(m_cscTrack50hz(find(xpt_csc50hz==xLimCSC(1)):find(xpt_csc50hz==xLimCSC(2))))]*1.1;
-    
-    hLFP(1) = axes('Position',axpt(6,6,1:6,1:2,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
-    for iLight = 1:nLabLightPlfm2hz
-        hLpatch(1) = patch([500*(iLight-1), 500*(iLight-1)+10, 500*(iLight-1)+10, 500*(iLight-1)],[yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(2), yLimCSC_Plfm2hz(2)],colorLightBlue,'EdgeColor','none');
+%% light raster
+    hLight = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:nCol,10:nRow,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+    plot([xptPre1st{1},xptLight1st{1},xptPost1st{1}],[yptPre1st{1},yptLight1st{1}+30,yptPost1st{1}+60],'marker','.','markerSize',markerS,'LineStyle','none','color','k');
+    hold on;
+    for iPulse = 1:minPulseTrack50hz
+        pminLight(iPulse) = patch([20*iPulse-20 20*iPulse-10 20*iPulse-10 20*iPulse-20],[31 31 60 60],colorLLightBlue,'lineStyle','none');
         hold on;
     end
-    plot(xpt_csc2hz,m_cscPlfm2hz,'color',colorBlack,'lineWidth',0.8);
-    line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Plfm2hz(2)*0.7, yLimCSC_Plfm2hz(2)*0.7],'color',colorBlack);
-    line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Plfm2hz(2)*0.7, yLimCSC_Plfm2hz(2)*0.7+0.2],'color',colorBlack);
-    ylabel('LFP (Plfm2hz)','fontSize',fontM);
-    text(xLimCSC(1), yLimCSC_Plfm2hz(2),'LFP (Plfm 2hz)','fontSize',fontM);
-    text(xLimCSC(2)*0.91,yLimCSC_Plfm2hz(2)*0.7+0.1,'0.2 mVolt','fontSize',fontS);
-    text(xLimCSC(2)*0.97,yLimCSC_Plfm2hz(2)*0.60,'20 ms','fontSize',fontS);
-        
-    hLFP(2) = axes('Position',axpt(6,6,1:6,5:6,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
-    for iLight = 1:nLabLightTrack50hz
-        hLpatch(2) = patch([125*(iLight-1), 125*(iLight-1)+10, 125*(iLight-1)+10, 125*(iLight-1)],[yLimCSC_Track50hz(1)*0.8, yLimCSC_Track50hz(1)*0.8, yLimCSC_Track50hz(2), yLimCSC_Track50hz(2)],colorLightBlue,'EdgeColor','none');
-        hold on;
-    end
-    plot(xpt_csc50hz,m_cscTrack50hz,'color',colorBlack,'lineWidth',0.8);
-    line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Track50hz(2)*0.7, yLimCSC_Track50hz(2)*0.7],'color',colorBlack);
-    line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Track50hz(2)*0.7, yLimCSC_Track50hz(2)*0.7+0.2],'color',colorBlack);
-    ylabel('LFP (Track50hz)','fontSize',fontM);
-    text(xLimCSC(1), yLimCSC_Track50hz(2),'LFP (Track 50hz)','fontSize',fontM);
+    set(hLight,'TickDir','out','Box','off','XLim',[-500, 2000],'YLim',[0,90],'XTick',[-500:500:2000],'YTick',[0:30:90],'fontSize',fontM);
+    text(500,95,['min light pulse: ',num2str(minPulseTrack50hz)],'fontSize',fontM);
+    xlabel('Time (ms)','fontSize',fontM);
     
-    set(hLFP(1),'Xlim',xLimCSC,'XTick',[],'YLim',yLimCSC_Plfm2hz,'fontSize',fontM);
-    set(hLFP(2),'Xlim',xLimCSC,'XTick',[],'YLim',yLimCSC_Track50hz,'fontSize',fontM);
+%% LFP analysis (Plfm 2hz)
+%     lightPlfm2hz = lightTime.Plfm2hz(201:400);
+%     lapPlfm2hzIdx = 1:10:200; % find start light of each lap
+%     nLabLightPlfm2hz = 10;
+%     lightOnPlfm2hz = lightPlfm2hz(lapPlfm2hzIdx);
+%     
+%     winPlfm2hz = [-300, 5200]; % unit: msec
+%     sFreq = 2000; % 2000 samples / sec
+%     win_csc2hz = winPlfm2hz/1000*sFreq;
+%     xLimCSC = [-300 1100];
+%     xpt_csc2hz = winPlfm2hz(1):0.5:winPlfm2hz(2);
+% 
+%     for iCycle = 1:20
+%         cscIdxPlfm2hz = find(cscTime{1}>lightOnPlfm2hz(iCycle),1,'first');
+%         cscPlfm2hz(:,iCycle) = cscSample((cscIdxPlfm2hz+win_csc2hz(1)):cscIdxPlfm2hz+win_csc2hz(2));
+%     end
+%     m_cscPlfm2hz = mean(cscPlfm2hz,2);
+%     yLimCSC_Plfm2hz = [min(m_cscPlfm2hz(find(xpt_csc2hz==xLimCSC(1)):find(xpt_csc2hz==xLimCSC(2)))), max(m_cscPlfm2hz(find(xpt_csc2hz==xLimCSC(1)):find(xpt_csc2hz==xLimCSC(2))))]*1.1;
 
-% LFP analysis (Plfm 50hz)
-    if isfield(lightTime,'Plfm50hz') && ~isempty(lightTime.Plfm50hz) && exist('xptPlfm50hz','var')
-        lightPlfm50hz = lightTime.Plfm50hz;
-        lapPlfm50hzIdx = [1;(find(diff(lightPlfm50hz)>1000)+1)]; % find start light of each lap
-        nLabLightPlfm50hz = min(diff(lapPlfm50hzIdx));
-        lightOnPlfm50hz = lightPlfm50hz(lapPlfm50hzIdx);
+%% LFP analysis (Track 50hz)
+%     lightTrack50hz = lightTime.Track50hz;
+%     lapTrack50hzIdx = [1;(find(diff(lightTrack50hz)>1000)+1)]; % find start light of each lap
+%     nLabLightTrack50hz = min(diff(lapTrack50hzIdx));
+%     lightOnTrack50hz = lightTrack50hz(lapTrack50hzIdx);
+%     
+%     winTrack50hz = [-500,3000];
+%     win_csc50hz = winTrack50hz/1000*sFreq;
+%     xpt_csc50hz = winTrack50hz(1):0.5:winTrack50hz(2);
+%     for iCycle = 1:30
+%         cscIdxTrack50hz = find(cscTime{1}>lightOnTrack50hz(iCycle),1,'first');
+%         cscTrack50hz(:,iCycle) = cscSample((cscIdxTrack50hz+win_csc50hz(1)):cscIdxTrack50hz+win_csc50hz(2));
+%     end
+%     m_cscTrack50hz = mean(cscTrack50hz,2);
+%     yLimCSC_Track50hz = [min(m_cscTrack50hz(find(xpt_csc50hz==xLimCSC(1)):find(xpt_csc50hz==xLimCSC(2)))), max(m_cscTrack50hz(find(xpt_csc50hz==xLimCSC(1)):find(xpt_csc50hz==xLimCSC(2))))]*1.1;
+%     
+%     hLFP(1) = axes('Position',axpt(6,6,1:6,1:2,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+%     for iLight = 1:nLabLightPlfm2hz
+%         hLpatch(1) = patch([500*(iLight-1), 500*(iLight-1)+10, 500*(iLight-1)+10, 500*(iLight-1)],[yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(1)*0.8, yLimCSC_Plfm2hz(2), yLimCSC_Plfm2hz(2)],colorLightBlue,'EdgeColor','none');
+%         hold on;
+%     end
+%     plot(xpt_csc2hz,m_cscPlfm2hz,'color',colorBlack,'lineWidth',0.8);
+%     line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Plfm2hz(2)*0.7, yLimCSC_Plfm2hz(2)*0.7],'color',colorBlack);
+%     line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Plfm2hz(2)*0.7, yLimCSC_Plfm2hz(2)*0.7+0.2],'color',colorBlack);
+%     ylabel('LFP (Plfm2hz)','fontSize',fontM);
+%     text(xLimCSC(1), yLimCSC_Plfm2hz(2),'LFP (Plfm 2hz)','fontSize',fontM);
+%     text(xLimCSC(2)*0.91,yLimCSC_Plfm2hz(2)*0.7+0.1,'0.2 mVolt','fontSize',fontS);
+%     text(xLimCSC(2)*0.97,yLimCSC_Plfm2hz(2)*0.60,'20 ms','fontSize',fontS);
+%         
+%     hLFP(2) = axes('Position',axpt(6,6,1:6,5:6,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+%     for iLight = 1:nLabLightTrack50hz
+%         hLpatch(2) = patch([20*(iLight-1), 20*(iLight-1)+10, 20*(iLight-1)+10, 20*(iLight-1)],[yLimCSC_Track50hz(1)*0.8, yLimCSC_Track50hz(1)*0.8, yLimCSC_Track50hz(2), yLimCSC_Track50hz(2)],colorLightBlue,'EdgeColor','none');
+%         hold on;
+%     end
+%     plot(xpt_csc50hz,m_cscTrack50hz,'color',colorBlack,'lineWidth',0.8);
+%     line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Track50hz(2)*0.7, yLimCSC_Track50hz(2)*0.7],'color',colorBlack);
+%     line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Track50hz(2)*0.7, yLimCSC_Track50hz(2)*0.7+0.2],'color',colorBlack);
+%     ylabel('LFP (Track50hz)','fontSize',fontM);
+%     text(xLimCSC(1), yLimCSC_Track50hz(2),'LFP (Track 50hz)','fontSize',fontM);
+%     
+%     set(hLFP(1),'Xlim',xLimCSC,'XTick',[],'YLim',yLimCSC_Plfm2hz,'fontSize',fontM);
+%     set(hLFP(2),'Xlim',xLimCSC,'XTick',[],'YLim',yLimCSC_Track50hz,'fontSize',fontM);
 
-        for iCycle = 1:30
-            cscIdxPlfm50hz = find(cscTime{1}>lightOnPlfm50hz(iCycle),1,'first');
-            cscPlfm50hz(:,iCycle) = cscSample((cscIdxPlfm50hz+win_csc50hz(1)):cscIdxPlfm50hz+win_csc50hz(2));
-        end
-        m_cscPlfm50hz = mean(cscPlfm50hz,2);
-        yLimCSC_Plfm50hz = [min(m_cscPlfm50hz(find(xpt_csc50hz==xLimCSC(1)):find(xpt_csc50hz==xLimCSC(2)))), max(m_cscPlfm50hz(find(xpt_csc50hz==xLimCSC(1)):find(xpt_csc50hz==xLimCSC(2))))]*1.1;
-        xpt_csc50hz = winTrack50hz(1):0.5:winTrack50hz(2);
-
-        hLFP(3) = axes('Position',axpt(6,6,1:6,3:4,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
-        for iLight = 1:nLabLightPlfm50hz
-            hLpatch(3) = patch([125*(iLight-1), 125*(iLight-1)+10, 125*(iLight-1)+10, 125*(iLight-1)],[yLimCSC_Plfm50hz(1)*0.8 yLimCSC_Plfm50hz(1)*0.8 yLimCSC_Plfm50hz(2), yLimCSC_Plfm50hz(2)],colorLightBlue,'EdgeColor','none');
-            hold on;
-        end
-        plot(xpt_csc50hz,m_cscPlfm50hz,'color',colorBlack,'lineWidth',0.8);
-        line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Plfm50hz(2)*0.7, yLimCSC_Plfm50hz(2)*0.7],'color',colorBlack);
-        line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Plfm50hz(2)*0.7, yLimCSC_Plfm50hz(2)*0.7+0.2],'color',colorBlack);
-        ylabel('LFP (Plfm50hz)','fontSize',fontM);
-        text(xLimCSC(1), yLimCSC_Plfm50hz(2),'LFP (Plfm 50hz)','fontSize',fontM);
-        set(hLFP(3),'Xlim',xLimCSC,'XTick',[],'YLim',yLimCSC_Plfm50hz,'fontSize',fontM);
-    end
-    set(hLFP,'Box','off','TickDir','out','visible','off');
+%% LFP analysis (Plfm 50hz)
+%     if isfield(lightTime,'Plfm50hz') && ~isempty(lightTime.Plfm50hz) && exist('xptPlfm50hz','var')
+%         lightPlfm50hz = lightTime.Plfm50hz;
+%         lapPlfm50hzIdx = [1;(find(diff(lightPlfm50hz)>1000)+1)]; % find start light of each lap
+%         nLabLightPlfm50hz = min(diff(lapPlfm50hzIdx));
+%         lightOnPlfm50hz = lightPlfm50hz(lapPlfm50hzIdx);
+% 
+%         for iCycle = 1:30
+%             cscIdxPlfm50hz = find(cscTime{1}>lightOnPlfm50hz(iCycle),1,'first');
+%             cscPlfm50hz(:,iCycle) = cscSample((cscIdxPlfm50hz+win_csc50hz(1)):cscIdxPlfm50hz+win_csc50hz(2));
+%         end
+%         m_cscPlfm50hz = mean(cscPlfm50hz,2);
+%         yLimCSC_Plfm50hz = [min(m_cscPlfm50hz(find(xpt_csc50hz==xLimCSC(1)):find(xpt_csc50hz==xLimCSC(2)))), max(m_cscPlfm50hz(find(xpt_csc50hz==xLimCSC(1)):find(xpt_csc50hz==xLimCSC(2))))]*1.1;
+%         xpt_csc50hz = winTrack50hz(1):0.5:winTrack50hz(2);
+% 
+%         hLFP(3) = axes('Position',axpt(6,6,1:6,3:4,axpt(nCol,nRow,1:nCol,10:11,[0.10 0.05 0.85 0.85],tightInterval),wideInterval));
+%         for iLight = 1:nLabLightPlfm50hz
+%             hLpatch(3) = patch([20*(iLight-1), 20*(iLight-1)+10, 20*(iLight-1)+10, 20*(iLight-1)],[yLimCSC_Plfm50hz(1)*0.8 yLimCSC_Plfm50hz(1)*0.8 yLimCSC_Plfm50hz(2), yLimCSC_Plfm50hz(2)],colorLightBlue,'EdgeColor','none');
+%             hold on;
+%         end
+%         plot(xpt_csc50hz,m_cscPlfm50hz,'color',colorBlack,'lineWidth',0.8);
+%         line([xLimCSC(2)*0.97 xLimCSC(2)*0.97+20],[yLimCSC_Plfm50hz(2)*0.7, yLimCSC_Plfm50hz(2)*0.7],'color',colorBlack);
+%         line([xLimCSC(2)*0.97 xLimCSC(2)*0.97],[yLimCSC_Plfm50hz(2)*0.7, yLimCSC_Plfm50hz(2)*0.7+0.2],'color',colorBlack);
+%         ylabel('LFP (Plfm50hz)','fontSize',fontM);
+%         text(xLimCSC(1), yLimCSC_Plfm50hz(2),'LFP (Plfm 50hz)','fontSize',fontM);
+%         set(hLFP(3),'Xlim',xLimCSC,'XTick',[],'YLim',yLimCSC_Plfm50hz,'fontSize',fontM);
+%     end
+%     set(hLFP,'Box','off','TickDir','out','visible','off');
     
 % % Spectrogram (aligned on sensor onset)
 %     load(['CSC','.mat']);

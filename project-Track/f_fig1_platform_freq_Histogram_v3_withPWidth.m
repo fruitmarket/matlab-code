@@ -7,6 +7,7 @@ load('neuronList_freq_170921.mat');
 Txls = readtable('neuronList_freq_170921.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 formatOut = 'yymmdd';
+fontS = 6;
 
 %% Population separation
 cSpkpvr = 1.2;

@@ -2,6 +2,7 @@ function analysis_freq_evokeProb
 
 winCri_dr = [0, 10];
 winCri_idr = [11, 20];
+winCri_total = [0, 20];
 
 % Load t-files
 [tData, tList] = tLoad;
@@ -20,11 +21,19 @@ for iCell = 1:nCell
         spkTime1hz_idr = spikeWin(tData{iCell},lightTime.Plfm1hz,winCri_idr);
         lightProb1hz_idr = sum(double(~cellfun(@isempty,spkTime1hz_idr)))/length(lightTime.Plfm1hz)*100;
         evoSpike1hz_idr = sum(cellfun(@length,spkTime1hz_idr));
+        
+        spkTime1hz = spikeWin(tData{iCell},lightTime.Plfm1hz,winCri_total);
+        lightProb1hz = sum(double(~cellfun(@isempty,spkTime1hz)))/length(lightTime.Plfm1hz)*100;
+        evoSpike1hz = sum(cellfun(@length,spkTime1hz));
+
     else
         lightProb1hz_dr = NaN;
         evoSpike1hz_dr = NaN;
         lightProb1hz_idr = NaN;
         evoSpike1hz_idr = NaN;
+        
+        lightProb1hz = NaN;
+        evoSpike1hz = NaN;
     end
 
     spkTime2hz_dr = spikeWin(tData{iCell},lightTime.Plfm2hz,winCri_dr);
@@ -33,6 +42,9 @@ for iCell = 1:nCell
     spkTime2hz_idr = spikeWin(tData{iCell},lightTime.Plfm2hz,winCri_idr);
     lightProb2hz_idr = sum(double(~cellfun(@isempty,spkTime2hz_idr)))/length(lightTime.Plfm2hz)*100;
     evoSpike2hz_idr = sum(cellfun(@length, spkTime2hz_idr));
+    spkTime2hz = spikeWin(tData{iCell},lightTime.Plfm2hz,winCri_total);
+    lightProb2hz = sum(double(~cellfun(@isempty,spkTime2hz)))/length(lightTime.Plfm2hz)*100;
+    evoSpike2hz = sum(cellfun(@length,spkTime2hz));
     
     spkTime8hz_dr = spikeWin(tData{iCell},lightTime.Plfm8hz,winCri_dr);
     lightProb8hz_dr = sum(double(~cellfun(@isempty,spkTime8hz_dr)))/length(lightTime.Plfm8hz)*100;
@@ -40,6 +52,10 @@ for iCell = 1:nCell
     spkTime8hz_idr = spikeWin(tData{iCell},lightTime.Plfm8hz,winCri_idr);
     lightProb8hz_idr = sum(double(~cellfun(@isempty,spkTime8hz_idr)))/length(lightTime.Plfm8hz)*100;
     evoSpike8hz_idr = sum(cellfun(@length, spkTime8hz_idr));
+    spkTime8hz = spikeWin(tData{iCell},lightTime.Plfm8hz,winCri_total);
+    lightProb8hz = sum(double(~cellfun(@isempty,spkTime8hz)))/length(lightTime.Plfm8hz)*100;
+    evoSpike8hz = sum(cellfun(@length,spkTime8hz));
+    
     
     if isfield(lightTime,'Plfm20hz')
         spkTime20hz_dr = spikeWin(tData{iCell},lightTime.Plfm20hz,winCri_dr);
@@ -48,11 +64,17 @@ for iCell = 1:nCell
         spkTime20hz_idr = spikeWin(tData{iCell},lightTime.Plfm20hz,winCri_idr);
         lightProb20hz_idr = sum(double(~cellfun(@isempty,spkTime20hz_idr)))/length(lightTime.Plfm20hz)*100;
         evoSpike20hz_idr = sum(cellfun(@length, spkTime20hz_idr));
+        spkTime20hz = spikeWin(tData{iCell},lightTime.Plfm20hz,winCri_total);
+        lightProb20hz = sum(double(~cellfun(@isempty,spkTime20hz)))/length(lightTime.Plfm20hz)*100;
+        evoSpike20hz = sum(cellfun(@length,spkTime20hz));
+        
     else
         lightProb20hz_dr = NaN;
         evoSpike20hz_dr = NaN;
         lightProb20hz_idr = NaN;
         evoSpike20hz_idr = NaN;
+        lightProb20hz = NaN;
+        evoSpike20hz = NaN;
     end
 
     if isfield(lightTime,'Plfm50hz')
@@ -62,14 +84,20 @@ for iCell = 1:nCell
         spkTime50hz_idr = spikeWin(tData{iCell},lightTime.Plfm50hz,winCri_idr);
         lightProb50hz_idr = sum(double(~cellfun(@isempty,spkTime50hz_idr)))/length(lightTime.Plfm50hz)*100;
         evoSpike50hz_idr = sum(cellfun(@length, spkTime50hz_idr));
+        spkTime50hz = spikeWin(tData{iCell},lightTime.Plfm50hz,winCri_total);
+        lightProb50hz = sum(double(~cellfun(@isempty,spkTime50hz)))/length(lightTime.Plfm50hz)*100;
+        evoSpike50hz = sum(cellfun(@length,spkTime50hz));
     else
         lightProb50hz_dr = NaN;
         evoSpike50hz_dr = NaN;
         lightProb50hz_idr = NaN;
         evoSpike50hz_idr = NaN;
+        lightProb50hz = NaN;
+        evoSpike50hz = NaN;
     end
 
     save([cellName,'.mat'],...
+        'lightProb1hz','lightProb2hz','lightProb8hz','lightProb20hz','lightProb50hz',...
         'lightProb1hz_dr','lightProb2hz_dr','lightProb8hz_dr','lightProb20hz_dr','lightProb50hz_dr',...
         'evoSpike1hz_dr','evoSpike2hz_dr','evoSpike8hz_dr','evoSpike20hz_dr','evoSpike50hz_dr',...
         'lightProb1hz_idr','lightProb2hz_idr','lightProb8hz_idr','lightProb20hz_idr','lightProb50hz_idr',...

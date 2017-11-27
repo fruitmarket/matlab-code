@@ -62,14 +62,14 @@ for iPath = 1:nPath % 1hz,2hz,8hz,20hz,50hz from
         case 'e'
             event2mat_freq;
         case 't'
-            analysis_freq_rasterLight; % calculate raster for each frequency
-            analysis_freq_pethLight; % calculate based on all lights
-            analysis_meanFRfreqTest;
-            analysis_freq_evokeProb;
-            analysis_respstatFreqTest_v2;
-            analysis_freq_detoSpike;
-            analysis_baseVsLight;
-            waveform;
+%             analysis_freq_rasterLight; % calculate raster for each frequency
+%             analysis_freq_pethLight; % calculate based on all lights
+%             analysis_meanFRfreqTest;
+%             analysis_freq_evokeProb;
+%             analysis_respstatFreqTest_v2;
+%             analysis_freq_detoSpike;
+%             analysis_baseVsLight;
+%             waveform;
 %             analysis_cscFreqTest;
         case 'm'            
 %             plot_cscLightStm;

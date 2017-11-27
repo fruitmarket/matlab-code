@@ -54,9 +54,10 @@ for iPath = 1:nPath
         case 'e'
             event2mat_pulse;
         case 't'
-            analysis_laserWidthTest;
-            analysis_respstatWidthTest;
-            waveform;
+%             analysis_laserWidthTest;
+%             analysis_respstatWidthTest;
+            analysis_pulse_baseVsLight;
+%             waveform;
         case 'm'
 %             plot_widthT;
     end

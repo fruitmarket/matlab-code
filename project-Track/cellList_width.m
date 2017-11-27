@@ -52,6 +52,11 @@ for iFile = 1:nFile
     pethConv50ms = {pethConv50ms};
     pethConvZ50ms = {pethConvZ50ms};
     
+    spike_light10ms = {spike_light10ms};
+    spike_light50ms = {spike_light50ms};
+    spike_base10ms = {spike_base10ms};
+    spike_base50ms = {spike_base50ms};
+    p_spike = {p_spike};
     spkwv = {spkwv};
     
     temT = table(mouseLine,path,cellID,...
@@ -60,6 +65,7 @@ for iFile = 1:nFile
         xpt20ms,ypt20ms,pethtime20ms,peth20ms,pethConv20ms,pethConvZ20ms,nlight20ms,lightspk20ms,...
         xpt50ms,ypt50ms,pethtime50ms,peth50ms,pethConv50ms,pethConvZ50ms,nlight50ms,lightspk50ms,...
         pLR_Plfm2hz,statDir_Plfm2hz,latency1st,latency2nd,...  % tagstatTrack_poster
+        spike_light10ms,spike_light50ms,spike_base10ms,spike_base50ms,p_spike,idx_light10ms,idx_light50ms,...
         spkwv,spkwth,spkpvr,hfvwth);
     T = [T; temT];
 

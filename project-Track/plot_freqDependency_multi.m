@@ -1,33 +1,5 @@
 function plot_freqDependency_multi(matFile,cellID,saveDir)
-lineColor = {[144, 164, 174]./255,... % Before stimulation
-    [33 150 243]./ 255,... % During stimulation
-    [38, 50, 56]./255}; % After stimulation
-
-lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 5; fontL = 7; fontXL = 9; % font size large
-lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
-
-colorBlue = [33 150 243] ./ 255;
-colorLightBlue = [100 181 246] ./ 255;
-colorLLightBlue = [187, 222, 251]./255;
-colorRed = [237 50 52] ./ 255;
-colorLightRed = [242 138 130] ./ 255;
-colorGray = [189 189 189] ./ 255;
-colorLightGray = [238, 238, 238] ./255;
-colorDarkGray = [117, 117, 117] ./255;
-colorYellow = [255 243 3] ./ 255;
-colorLightYellow = [255 249 196] ./ 255;
-colorBlack = [0, 0, 0];
-
-markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
-tightInterval = [0.02 0.02]; midInterval = [0.03 0.03]; wideInterval = [0.07 0.07];
-width = 0.7;
-
-paperSize = {[0 0 21 29.7];
-             [0 0 29.7 21];
-             [0 0 15.7 21];
-             [0 0 21.6 27.9]};
-figSize = [0.15 0.10 0.85 0.90];
+load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 
 winCri1hz = [0, 15500];
 winCri2hz = [0, 8000];
@@ -83,17 +55,17 @@ for iFile = 1:nFile
     text(0,0.6,['pv ratio: ',num2str(spkpvr,3)],'fontSize',fontL);
     set(hText,'visible','off');
 
-    hPvalue(1) = axes('Position',axpt(nCol,nRow,5,2,[0.1 0.1 0.85 0.85],midInterval));
-    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm1hz,3)],'fontSize',fontL);
-    hPvalue(2) = axes('Position',axpt(nCol,nRow,5,3,[0.1 0.1 0.85 0.85],midInterval));
-    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm2hz,3)],'fontSize',fontL);
-    hPvalue(3) = axes('Position',axpt(nCol,nRow,5,4,[0.1 0.1 0.85 0.85],midInterval));
-    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm8hz,3)],'fontSize',fontL);
-    hPvalue(4) = axes('Position',axpt(nCol,nRow,5,5,[0.1 0.1 0.85 0.85],midInterval));
-    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm20hz,3)],'fontSize',fontL);
-    hPvalue(5) = axes('Position',axpt(nCol,nRow,5,6,[0.1 0.1 0.85 0.85],midInterval));
-    text(0.1,0.5,['p-value: ',num2str(pLR_Plfm50hz,3)],'fontSize',fontL);
-    set(hPvalue,'visible','off');
+%     hPvalue(1) = axes('Position',axpt(nCol,nRow,5,2,[0.1 0.1 0.85 0.85],midInterval));
+%     text(0.1,0.5,['p-value: ',num2str(pLR_Plfm1hz,3)],'fontSize',fontL);
+%     hPvalue(2) = axes('Position',axpt(nCol,nRow,5,3,[0.1 0.1 0.85 0.85],midInterval));
+%     text(0.1,0.5,['p-value: ',num2str(pLR_Plfm2hz,3)],'fontSize',fontL);
+%     hPvalue(3) = axes('Position',axpt(nCol,nRow,5,4,[0.1 0.1 0.85 0.85],midInterval));
+%     text(0.1,0.5,['p-value: ',num2str(pLR_Plfm8hz,3)],'fontSize',fontL);
+%     hPvalue(4) = axes('Position',axpt(nCol,nRow,5,5,[0.1 0.1 0.85 0.85],midInterval));
+%     text(0.1,0.5,['p-value: ',num2str(pLR_Plfm20hz,3)],'fontSize',fontL);
+%     hPvalue(5) = axes('Position',axpt(nCol,nRow,5,6,[0.1 0.1 0.85 0.85],midInterval));
+%     text(0.1,0.5,['p-value: ',num2str(pLR_Plfm50hz,3)],'fontSize',fontL);
+%     set(hPvalue,'visible','off');
 
 %% Original 1Hz
     hLight1hzOri(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
@@ -296,10 +268,11 @@ for iFile = 1:nFile
 
 %% Light probability
     hFrequency = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,6,1:2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
-    plot([1,2,3,4,5],[lightProb1hz_dr,lightProb2hz_dr,lightProb8hz_dr,lightProb20hz_dr,lightProb50hz_dr],'o','MarkerEdgeColor','k','MarkerSize',markerL);
+%     plot([1,2,3,4,5],[lightProb1hz_dr,lightProb2hz_dr,lightProb8hz_dr,lightProb20hz_dr,lightProb50hz_dr],'o','MarkerEdgeColor','k','MarkerSize',markerL);
+    plot([1,2,3,4,5],[lightProb1hz,lightProb2hz,lightProb8hz,lightProb20hz,lightProb50hz],'o','MarkerEdgeColor','k','MarkerSize',markerL);
     
     set(hFrequency,'Box','off','TickDir','out','fontSize',fontL);
-    set(hFrequency,'XLim',[0,6],'XTick',1:4,'XTickLabel',{'1 hz'; '2 hz'; '8 hz'; '20 hz'; '50 hz'},'YLim',[0,50]);
+    set(hFrequency,'XLim',[0,6],'XTick',1:4,'XTickLabel',{'1 hz'; '2 hz'; '8 hz'; '20 hz'; '50 hz'},'YLim',[0,60]);
     ylabel('Spike P, %','fontSize',fontL);
     xlabel('Frequency (Hz)','fontSize',fontL);
     

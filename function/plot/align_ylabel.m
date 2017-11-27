@@ -18,6 +18,7 @@ for iAx = 1:nAx(1)
     for jAx = 1:nAx(2)
         hPos{iAx,jAx}(1) = meanXPos;
         hPos{iAx,jAx}(2) = meanYPos;
-        set(hYLabel(iAx,jAx),'Position',hPos{iAx,jAx}+[0, meanYPos, 0]);
+        set(hYLabel(iAx,jAx),'Position',hPos{iAx,jAx}+[0, meanYPos*1.5, 0]);
+%         set(hYLabel(iAx,jAx),'Position',hPos{iAx,jAx});
     end
 end

@@ -2,28 +2,26 @@ clearvars;
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
-load myParameters.mat
-load('neuronList_freq_170821.mat');
-Txls = readtable('neuronList_freq_170821.xlsx');
+load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
+load('neuronList_freq_171127.mat');
+Txls = readtable('neuronList_freq_170921.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 formatOut = 'yymmdd';
 
 %% Population separation
 cri_MeanFR = 9;
 cMaxPeakFR = 1;
-cSpkpvr = 1.1;
-alpha = 0.01;
+cSpkpvr = 1.2;
 
-condiPN = T.spkpvr>cSpkpvr & T.meanFR<cri_MeanFR;
 condiPN = T.spkpvr>cSpkpvr;
 condiIN = ~condiPN;
 
-lightActPN = condiPN & (Txls.statDir_visual == 1);
-lightActDirectPN = condiPN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'direct';
-lightActIndirectPN = condiPN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'indirect';
-lightActDoublePN = condiPN & (Txls.statDir_visual == 1) & Txls.latencyIndex == 'double';
-lightInaPN = condiPN & (Txls.statDir_visual == -1);
-lightNoPN = condiPN & (Txls.statDir_visual == 0);
+lightActPN = condiPN & (T.idx_light8hz == 1);
+lightActDirectPN = condiPN & (T.idx_light8hz == 1) & Txls.latencyIndex == 'direct';
+lightActIndirectPN = condiPN & (T.idx_light8hz == 1) & Txls.latencyIndex == 'indirect';
+lightActDoublePN = condiPN & (T.idx_light8hz == 1) & Txls.latencyIndex == 'double';
+lightInaPN = condiPN & (T.idx_light8hz == -1);
+lightNoPN = condiPN & (T.idx_light8hz == 0);
 
 % Pyramidal neuron
 actPN_peth = cell2mat(T.peth8hz_ori(lightActPN));
@@ -151,5 +149,5 @@ set(hPlotPN(3),'XLim',[-10, 55],'YLim',[0 yLim(3)],'fontSize',fontL);
 set(hPlotPN(4),'YLim',[0 yLim(4)],'fontSize',fontL);
 set(hPlotPN(5),'YLim',[0 yLim(5)],'fontSize',fontL);
 
-print('-painters','-r300','-dtiff',['final_fig2_platform_8hzHistogram',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-dtiff',['final_fig2_platform_8hzHistogram',datestr(now,formatOut),'_v2.tif']);
 % print('-painters','-r300','-depsc',[datestr(now,formatOut),'_plot_freqTest_totalPETH_','.ai']);

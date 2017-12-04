@@ -84,6 +84,8 @@ for iFile = 1:nFile
     p_ttestFR = {p_ttest};
     
     peakloci_total = {peakloci_total};
+    peakloci_stm = {peakloci_stm};
+    fieldArea_total = {fieldArea_total};
     pethconvSpatial = {pethconvSpatial};
     normTrackFR_total = {normTrackFR_total};
     
@@ -108,10 +110,11 @@ for iFile = 1:nFile
         xptPlfm2hz,yptPlfm2hz,pethtimePlfm2hz,pethPlfm2hz,pethPlfm2hzConv,pethPlfm2hzConvZ,...
         xptPlfm50hz,yptPlfm50hz,pethtimePlfm50hz,pethPlfm50hz,pethPlfm50hzConv,pethPlfm50hzConvZ,...
         xptTrack50hz,yptTrack50hz,pethtimeTrack50hz,pethTrack50hz,pethTrack50hzConv,pethTrack50hzConvZ,...
+        pethconvSpatial,...
         rateMap1D_PRE,rateMap1D_STM,rateMap1D_POST,...    
         r_wv,m_spont_wv,m_evoked_wv,...
         inzoneSpike,sum_inzoneSpike,m_inzoneSpike,sem_inzoneSpike,timeIn_inzone,totalSpike,sum_totalSpike,outzoneSpike,sum_outzoneSpike,m_outzoneSpike,sem_outzoneSpike,m_lapFrInzone,m_lapFrOutzone,m_lapFrTotalzone,p_ttestFR,...
-        peakloci_total,normTrackFR_total,... % analysis_findPeakLoci
+        peakloci_total,peakloci_stm,normTrackFR_total,fieldArea_total,... % analysis_findPeakLoci
         m_deto_spkPlfm50hz,m_deto_spkTrack50hz,evoSpkTrack50hz,evoSpkPlfm50hz,... %analysis_detoSpike50hz
         LRatio,ID,...
         idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxpLR_Plfm50hz,idxmFrIn,idxmFrOut,idxmFrTotal,idxZoneInOut,overLapLengthSTM,idxOverLapLengthSTM);
@@ -124,7 +127,7 @@ for iFile = 1:nFile
 end
 cd(rtPath);
 formatOut = 'yymmdd';
-% save(['neuronList_ori50hz_',datestr(now,formatOut),'.mat'],'T');
+save(['neuronList_ori50hz_',datestr(now,formatOut),'.mat'],'T');
 writetable(Txls,['neuronList_ori50hz_',datestr(date,formatOut),'.xlsx']);
 clearvars;
 disp('### neuron list file is generated! ###');

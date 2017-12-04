@@ -63,12 +63,12 @@ for iPath = 1:nPath
 %             analysis_wvformCrosscor;
             analysis_spatialRaster;
 %             analysis_plfm_laserIntTest;
-%             analysis_track_peth1stLight;
+            analysis_track_peth1stLight;
 %             laserFreqCheck;
 %             analysis_detoSpike8hz;
-%             analysis_stmzoneSpike;
+            analysis_stmzoneSpike;
 %             analysis_laserSpikeChange;
-%             analysis_findPeakLoci;
+            analysis_findPeakLoci;
 %             analysis_LRatioID;
         case 'm'
             analysis_indexTrack;

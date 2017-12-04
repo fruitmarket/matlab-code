@@ -9,8 +9,8 @@ load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 formatOut = 'yymmdd';
 
 % TN: track neuron
-% tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
 tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN';
+% tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
 % tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>1; % mean firing rate > 1hz
 
 ntPC_DRun = sum(double(tPC_DRun));
@@ -86,31 +86,31 @@ nCol = 3;
 nRow = 5;
 fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});
 
-hPVCorr(1) = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],midInterval),wideInterval));
+hPVCorr(1) = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),wideInterval));
 bar([1,3,5],m_tPC_DRun_PVcorr,barWidth,'faceColor',colorGray);
 hold on;
 errorbarJun([1,3,5],m_tPC_DRun_PVcorr,sem_tPC_DRun_PVcorr,0.3,1.0,colorBlack);
 title('Total (DRun)','fontSize',fontM,'fontWeight','bold');
 ylabel('PV correlation','fontSize',fontM);
 text(4.2, 1.2,['n (DRun) = ',num2str(ntPC_DRun)],'fontSize',fontM,'color',colorDarkGray);
-text(1.3, 0.9,['p = ',num2str(p_Runttest(1))],'fontSize',fontM,'color',colorBlack);
-text(3, 1.1,['p = ',num2str(p_Runttest(2))],'fontSize',fontM,'color',colorBlack);
-text(4.5, 0.9,['p = ',num2str(p_Runttest(3))],'fontSize',fontM,'color',colorBlack);
+text(1, -0.5,['p12 = ',num2str(p_Runttest(1))],'fontSize',fontM,'color',colorBlack);
+text(1, -0.7,['p13 = ',num2str(p_Runttest(2))],'fontSize',fontM,'color',colorBlack);
+text(1, -0.9,['p23 = ',num2str(p_Runttest(3))],'fontSize',fontM,'color',colorBlack);
 
-hPVCorr(2) = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85],midInterval),wideInterval));
+hPVCorr(2) = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,2,1,[0.1 0.1 0.85 0.85],midInterval),wideInterval));
 bar([1,3,5],m_tPC_DRw_PVcorr,barWidth,'faceColor',colorGray);
 hold on;
 errorbarJun([1,3,5],m_tPC_DRw_PVcorr,sem_tPC_DRw_PVcorr,0.3,1.0,colorBlack);
 title('Total (DRw)','fontSize',fontM,'fontWeight','bold');
 ylabel('PV correlation','fontSize',fontM);
 text(4.2, 1.2,['n (DRw) = ',num2str(ntPC_DRw)],'fontSize',fontM,'color',colorDarkGray);
-text(1.3, 0.9,['p = ',num2str(p_Rwttest(1))],'fontSize',fontM,'color',colorBlack);
-text(3, 1.1,['p = ',num2str(p_Rwttest(2))],'fontSize',fontM,'color',colorBlack);
-text(4.5, 0.9,['p = ',num2str(p_Rwttest(3))],'fontSize',fontM,'color',colorBlack);
+text(1, -0.5,['p12 = ',num2str(p_Rwttest(1))],'fontSize',fontM,'color',colorBlack);
+text(1, -0.7,['p13 = ',num2str(p_Rwttest(2))],'fontSize',fontM,'color',colorBlack);
+text(1, -0.9,['p23 = ',num2str(p_Rwttest(3))],'fontSize',fontM,'color',colorBlack);
 
 set(hPVCorr(1),'TickDir','out','Box','off','XLim',[0,6],'YLim',[0 1.15],'XTick',[1, 3, 5],'XTickLabel',[{'PRExSTIM','PRExPOST','STIMxPOST'}],'fontSize',fontM);
 set(hPVCorr(2),'TickDir','out','Box','off','XLim',[0,6],'YLim',[0 1.15],'XTick',[1, 3, 5],'XTickLabel',[{'PRExSTIM','PRExPOST','STIMxPOST'}],'fontSize',fontM);
 
-print('-painters','-r300','-dtiff',['final_figXX_placeField_PVCorr_DRunDRw_50hz_totalPN_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['final_figXX_placeField_PVCorr_DRunDRw_50hz_totalPN_',datestr(now,formatOut),'.ai']);
+print('-painters','-r300','-dtiff',['f_short_suppleXX_PVCorr_DRunDRw_50hz_totalPN_',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-depsc',['f_short_suppleXX_PVCorr_DRunDRw_50hz_totalPN_',datestr(now,formatOut),'.ai']);
 close;

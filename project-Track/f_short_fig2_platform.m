@@ -3,7 +3,6 @@ load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 winCri_ori = [-5, 20];
 nTrial_ori = 300;
 markerSS = 1;
-fontS = 6;
 
 formatOut = 'yymmdd';
 saveDir = 'D:\Dropbox\SNL\P2_Track';
@@ -20,42 +19,42 @@ hLightNormal(1) = axes('Position',axpt(5,4,1,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.8
 hLBarNor(1) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt1hz_ori{1},ypt1hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFaceColor','k','markerEdgeColor','none');
-ylabel('Trials','FontSize',fontS);
+ylabel('Light pulse #','FontSize',fontM);
 % xlabel('Time (ms)','FontSize',fontS);
-title('1 Hz','fontSize',fontS);
+title('1 Hz','fontSize',fontM);
 
 hLightNormal(2) = axes('Position',axpt(5,4,2,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
 hLBarNor(2) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt2hz_ori{1},ypt2hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFaceColor','k','markerEdgeColor','none');
 % xlabel('Time (ms)','FontSize',fontS);
-title('2 Hz','fontSize',fontS);
+title('2 Hz','fontSize',fontM);
 
 hLightNormal(3) = axes('Position',axpt(5,4,3,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
 hLBarNor(3) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt8hz_ori{1},ypt8hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFace','k','markerEdgeColor','none');
-xlabel('Time (ms)','FontSize',fontS);
-title('8 Hz','fontSize',fontS);
+xlabel('Time (ms)','FontSize',fontM);
+title('8 Hz','fontSize',fontM);
 
 hLightNormal(4) = axes('Position',axpt(5,4,4,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
 hLBarNor(4) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt20hz_ori{1},ypt20hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFaceColor','k','markerEdgeColor','none');
-title('20 Hz','fontSize',fontS);
+title('20 Hz','fontSize',fontM);
 
 hLightNormal(5) = axes('Position',axpt(5,4,5,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
 hLBarNor(5) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt50hz_ori{1},ypt50hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFaceColor','k','markerEdgeColor','none');
 % xlabel('Time (ms)','FontSize',fontS);
-title('50 Hz','fontSize',fontS);
+title('50 Hz','fontSize',fontM);
 
 set(hLightNormal,'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[]);
 set(hLightNormal(1),'YTick',[0:100:300]);
-set(hLightNormal(3),'XTick',[0 10]);
-set(hLightNormal,'Box','off','TickDir','out','fontSize',fontS);
-
+set(hLightNormal(3),'XTick',[0 20]);
+set(hLightNormal,'Box','off','TickDir','out','fontSize',fontM);
+set(hLightNormal,'TickLength',[0.03, 0.03]);
 
 %% freq dependency
 Txls = readtable('neuronList_freq_171127.xlsx');
@@ -93,19 +92,21 @@ sem_8hz_T = std(lightProb8hzT)/sqrt(nCellT);
 sem_20hz_T = std(lightProb20hzT)/sqrt(nCellT);
 sem_50hz_T = std(lightProb50hzT)/sqrt(nCellT);
 
+% p = anova1([lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],{'1Hz','2Hz','8Hz','20Hz','50Hz'},'display','off');
+
 hPlot = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
 plot([1,2,3,4,5],[lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],'-o','color',colorGray,'markerSize',markerS-1.5,'markerEdgeColor',colorGray,'markerFaceColor',colorLightGray);
 hold on;
-plot([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],'o','color',colorBlack,'markerSize',markerS,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
+plot([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],'o','color',colorBlack,'markerSize',markerS-0.5,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],[sem_1hz_T,sem_2hz_T,sem_8hz_T,sem_20hz_T,sem_50hz_T],0.2, 0.8, colorBlack);
-text(1,50,['n = ',num2str(nCellT)],'fontSize',fontS);
-ylabel('Spike fidelity (%)','fontSize',fontS);
-xlabel('Frequency (Hz)','fontSize',fontS);
+text(1,50,['n = ',num2str(nCellT)],'fontSize',fontM);
+ylabel('Spike probability (%)','fontSize',fontM);
+xlabel('Frequency (Hz)','fontSize',fontM);
 % title('Total activated neuron','fontSize',fontS);
 
-set(hPlot,'TickDir','out','Box','off');
-set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontS);
+set(hPlot,'TickDir','out','Box','off','TickLength',[0.03,0.03]);
+set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontM);
 set(hPlot,'YLim',[-1,60]);
 
 %%
@@ -139,16 +140,17 @@ pop_total = [popul_1hz; popul_2hz; popul_8hz; popul_20hz; popul_50hz];
 pop_total_ratio = pop_total/122*100;
 
 hProp = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85],midInterval),midInterval));
-plot([1,2,3,4,5],pop_total_ratio(:,1),'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightBlue);
+plot([1,2,3,4,5],pop_total_ratio(:,1),'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightRed);
 hold on;
-plot([1,2,3,4,5],pop_total_ratio(:,2),'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightRed);
+plot([1,2,3,4,5],pop_total_ratio(:,2),'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightBlue);
 % title('Proportion of light responsive neuron','fontSize',fontS);
-ylabel('Proportion (%)','fontSize',fontS);
-xlabel('Frequency (Hz)','fontSize',fontS);
+ylabel('Proportion (%)','fontSize',fontM);
+xlabel('Frequency (Hz)','fontSize',fontM);
 
 set(hProp,'TickDir','out','Box','off');
-set(hProp,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YTick',[0:5:20],'fontSize',fontS);
+set(hProp,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YTick',[0:5:20],'fontSize',fontM);
 set(hProp,'YLim',[-1,20]);
+set(hProp,'TickLength',[0.03, 0.03]);
 
 print('-painters','-r300','-dtiff',['final_fig2_platform_total_',datestr(now,formatOut),'_v2.tif']);
 print('-painters','-r300','-depsc',['final_fig2_platform_total_',datestr(now,formatOut),'_v2.ai']);

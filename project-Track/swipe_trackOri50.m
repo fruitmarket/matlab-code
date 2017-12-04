@@ -66,9 +66,9 @@ for iPath = 1:nPath
 %             analysis_track_peth1stLight50hz;
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
-            analysis_lap1stlight50hz;
+%             analysis_lap1stlight50hz;
         case 'm'
-%             analysis_indexTrack50hz
+            analysis_indexTrack50hz
 %             plot_Track_sin_v50hz;
             plot_Track_sin_v50hz_lightraster;
     end

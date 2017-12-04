@@ -24,12 +24,12 @@ DRunIN = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
 DRunUNC = T.taskType == 'DRun' & T.idxNeurontype == 'UNC';
 
 %% separation of place cells from non place cell
-group = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+group = T.taskType == 'DRun' & T.idxNeurontype == 'PN';
 fileName = T.path(group);
 cellID = Txls.cellID(group);
 plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_eYFPDRunPC');
 
-group = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+group = T.taskType == 'DRw' & T.idxNeurontype == 'PN';
 fileName = T.path(group);
 cellID = Txls.cellID(group);
 plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_eYFPDRwPC');

@@ -1,7 +1,7 @@
-function f_fig1_cellCount()
+function f_short_fig1_cellCount()
 cd('D:\Dropbox\SNL\P2_Track\analysis_expressCount\ChETA')
 % load expChETA_170914.mat
-load expChETA_171101.mat
+load expChETA_171201.mat
 
 cd('D:\Dropbox\SNL\P2_Track');
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');

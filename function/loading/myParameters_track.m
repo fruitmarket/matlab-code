@@ -5,7 +5,7 @@ lineColor = {[144, 164, 174]./255,... % Before stimulation
     [38, 50, 56]./255}; % After stimulation
 
 lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontSS = 3; fontS = 5; fontM = 7; fontL = 9; fontXL = 11;% font size large
+fontSS = 4; fontS = 6; fontM = 8; fontL = 10; fontXL = 11;% font size large
 lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
 
 colorDarkBlue = [13, 71, 161]/255;

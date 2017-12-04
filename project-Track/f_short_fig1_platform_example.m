@@ -2,7 +2,6 @@ function f_fig1_platform_example_v2
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
-fontS = 6;
 
 cd('D:\Projects\Track_161130-3_Rbp64freq\170304_DV2.05_1hz2hz8hz20hz50hz_T3'); % example 2, matfile:1, tetrode:2
 % 'D:\Projects\Track_161130-3_Rbp64freq\170304_DV2.05_1hz2hz8hz20hz50hz_T3\TT3_1.mat'
@@ -65,8 +64,8 @@ for iLight = 1:nLabLight
     hold on;
 end
 plot(xpt8hz{1},ypt8hz{1},'LineStyle','none','Marker','o','MarkerSize',1,'Color',colorBlack,'MarkerFaceColor',colorBlack,'MarkerEdgeColor','none');
-xlabel('Time (ms)','fontSize',fontS);
-ylabel('Cycle','fontSize',fontS);
+xlabel('Time (ms)','fontSize',fontM);
+ylabel('Sweep','fontSize',fontM);
 
 %% csc
 % hFreq8hz(2) = axes('Position',axpt(3,5,1:2,1,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),wideInterval));
@@ -85,12 +84,14 @@ hLpatch(3) = patch([0 10 10 0],[0 0 nLight nLight],colorLLightBlue,'EdgeColor','
 hold on;
 plot(xpt8hz_ori{1}, ypt8hz_ori{1}, 'LineStyle','none','Marker','o','MarkerSize',1,'Color',colorBlack,'MarkerFaceColor',colorBlack,'MarkerEdgeColor','none');
 
-ylabel('n-Light pulse','fontSize',fontS);
-xlabel('Time (ms)','fontSize',fontS);
+ylabel('Light pulse #','fontSize',fontM);
+xlabel('Time (ms)','fontSize',fontM);
 
 align_ylabel([hFreq8hz(1),hFreq8hz(2)]);
 
-set(hFreq8hz,'Box','off','XLim',winAxis,'XTick',[winAxis(1),0:500:winAxis(2)],'TickDir','out','fontSize',fontS);
+set(hFreq8hz,'Box','off','XLim',winAxis,'XTick',[winAxis(1),0:500:winAxis(2)],'TickDir','out','fontSize',fontM);
+set(hFreq8hz,'TickLength',[0.03, 0.03]);
+
 set(hFreq8hz(1),'YLim',yLimSpike,'YTick',[0:10:20]);
 % set(hFreq8hz(2),'Box','off','visible','off','YLim',yLimCSC,'YTick',[]);
 set(hFreq8hz(2),'XLim',winBlue,'XTick',[-25,0,10,20,100],'YLim',[0 nLight],'YTick',[0 nLight],'YTickLabel',{0, nLight});

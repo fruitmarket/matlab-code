@@ -37,20 +37,32 @@ for iFile = 1:nFile
     cellFigName = strcat(cellDirSplit(end-1),'_',cellDirSplit(end),'_',cellName);
     cscTetrode = str2double(cellName(3)); % find a tetrode for csc analysis
     
-    % Arc property
-    if ~isempty(strfind(cellDir,'DRun'));
-        arc = linspace(pi,pi/2*3,170); % s6-s9
-    else ~isempty(strfind(cellDir,'DRw'));
-        arc = linspace(pi/6*5, pi/6*4,170);
-    end
     cd(cellDir);
 
-    [cscTime, total_cscSample, cscList] = cscLoad;
-    cscSample = total_cscSample{cscTetrode};
+%     [cscTime, total_cscSample, cscList] = cscLoad;
+%     cscSample = total_cscSample{cscTetrode};
 
     load(matFile{iFile});
     load('Events.mat');
     
+%% Lap light time
+if(regexp(cellDir,'Run'))
+    sensorOn = sensor.S6(31:60);
+    sensorOff = sensor.S9(31:60);
+else
+    sensorOn = sensor.S10(31:60);
+    sensorOff = sensor.S11(31:60);
+end
+temp_lightT = [0; sensorOff-sensorOn];
+xpt_lightT = repmat(temp_lightT',2,1);
+xpt_lightT = xpt_lightT(:);
+xpt_lightT(1) = [];
+xpt_lightT = [xpt_lightT;0];
+
+ypt_lightT = repmat([30:60],2,1);
+ypt_lightT = ypt_lightT(:);
+
+%%  
     nCol = 10;
     nRow = 11;
 % Cell information    
@@ -269,6 +281,7 @@ for iFile = 1:nFile
     else ~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'noRw'));
         arc = linspace(pi/6*5, pi/6*4,170);
     end
+    
     if ~isempty(lightTime.Track50hz)
         hold on;
         arc_r = 40;
@@ -339,24 +352,28 @@ for iFile = 1:nFile
 if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'noRun'))
     iSensor1 = 6; % Light on sensor
     lightDur = 1; % Putative light duration
+    lightLoc = [20*pi*5/6 20*pi*8/6];
 end
 if ~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'noRw'))
     iSensor1 = 10; % Light on sensor
     lightDur = 4; % Putative light duration
+    lightLoc = [20*pi*9/6 20*pi*10/6];
 end
+rewardLoc1 = [20*pi*3/6 20*pi*4/6];
+rewardLoc2 = [20*pi*9/6 20*pi*10/6];
 
 % Spatial raster plot
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw')) % Light session
         hSRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[lightLoc(1), 31, lightLoc(2)-lightLoc(1), 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
+        pLight = patch([lightLoc(1) lightLoc(2) lightLoc(2) lightLoc(1)],[31 31 60 60],lightDurationColor{1},'LineStyle','none');
         ylabel('Trial','FontSize',fontM);
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        pRw(1) = patch([rewardLoc(1)+2, rewardLoc(1)+6, rewardLoc(1)+6, rewardLoc(1)+2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(1) = patch([rewardLoc1(1), rewardLoc1(2), rewardLoc1(2), rewardLoc1(1)],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
-        pRw(2) = patch([rewardLoc(2)+2.5, rewardLoc(2)+6.5, rewardLoc(2)+6.5, rewardLoc(2)+2.5],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(2) = patch([rewardLoc2(1), rewardLoc2(2), rewardLoc2(2), rewardLoc2(1)],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -367,7 +384,7 @@ end
 % Temporal raster plot
         hTRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:10,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         plot([xpt.(fields{iSensor1}){:}],[ypt.(fields{iSensor1}){:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[0 31 lightDur 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
+        pLight = patch(xpt_lightT,ypt_lightT,colorLLightBlue);
         ylabel('Trial','FontSize',fontM);
         title(['Temporal Raster & PETH at ',fields{iSensor1}],'FontSize',fontL,'FontWeight','bold');
         hTPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:10,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
@@ -378,7 +395,6 @@ end
         end
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Time (sec)','FontSize',fontM);
-        uistack(rec,'bottom');
     end
 
     if ~isempty(strfind(cellDir,'noRun')) | ~isempty(strfind(cellDir,'noRw')) % No light session
@@ -386,14 +402,15 @@ end
         hSRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1:4,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
         hold on;
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[lightLoc(1), 31, lightLoc(2)-lightLoc(1), 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
+        pLight = patch([abso_light(1) abso_light(2) abso_light(2) abso_light(1)],[31 31 60 60],lightDurationColor{1},'LineStyle','none');
+%         rec = rectangle('Position',[lightLoc(1), 31, lightLoc(2)-lightLoc(1), 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
         ylabel('Trial','FontSize',fontM);
         title(['Spatial Raster & PETH at ',fields{iSensor1}],'FontSize',fontM,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        pRw(1) = patch([rewardLoc(1)+2, rewardLoc(1)+6, rewardLoc(1)+6, rewardLoc(1)+2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(1) = patch([rewardLoc1(1), rewardLoc1(2), rewardLoc1(2), rewardLoc1(1)],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
-        pRw(2) = patch([rewardLoc(2)+2.5, rewardLoc(2)+6.5, rewardLoc(2)+6.5, rewardLoc(2)+2.5],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(2) = patch([rewardLoc2(1), rewardLoc2(2), rewardLoc2(2), rewardLoc2(1)],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -425,6 +442,7 @@ end
     set(hSPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[0, 124],'XTick',[0:10:120],'YLim',[0 ylimpethSpatial]);
     set(hTPsth,'Box','off','TickDir','out','LineWidth',lineS,'FontSize',fontM,'XLim',[-5, 5],'XTick',[-5:5],'YLim',[0 ylimpeth1]);
     set(pRw,'LineStyle','none','FaceAlpha',0.2);
+    set(pLight,'LineStyle','none');
     
     hLine = axes('Position',axpt(1,2,1,1:2,axpt(nCol,nRow,5:6,8,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
         text(0.2,1.00,'-: Pre','FontSize',fontL,'Color',colorGray,'fontWeight','Bold');    

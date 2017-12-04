@@ -1,12 +1,12 @@
 function [thetaDist, theta, timeTrack, refPosition, numOccu, numOccuPRE] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win)
 %
 % outputs
-% theta: cumulative position expressed in radian (2*pi is added for each lap)
+% thetaDist: cumulative position expressed in radian (2*pi is added for each lap)
 % timeTrack: video time on the track
 % newX: positionX
 % newY: positionY
 % numOccu: number of occupance of the position (1cm bin)
-%
+% refPosition: event position (either sensor or reward)
 % Inputs
 % vtPositionX, vtPositionY, vtTime should be same size arrays
 % refSensor should be one sensor from 12 sensors (ex. sensor.S1)

@@ -6,6 +6,7 @@ resolution = 10; % sigma = resoution * binSize = 100 msec
 
 % Tag variables
 winSpike = [0 20]; % unit: msec
+winSpike8hz = [-20 80];
 binSize = 2;
 winLight = 20;
 
@@ -17,23 +18,31 @@ for iCell = 1:nCell
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     
-% Load Events variables
     load('Events.mat');
     
 % Mean FR
     meanFR = mean([sum(histc(tData{iCell},time1hz))/(diff(time1hz)/1000),sum(histc(tData{iCell},time2hz))/(diff(time2hz)/1000),sum(histc(tData{iCell},time8hz))/(diff(time8hz)/1000),sum(histc(tData{iCell},time20hz))/(diff(time20hz)/1000),sum(histc(tData{iCell},time50hz))/(diff(time50hz)/1000)]);
     
 % Light
-    lightTime = [lightTime.Plfm1hz; lightTime.Plfm2hz; lightTime.Plfm8hz; lightTime.Plfm20hz; lightTime.Plfm50hz];
+%     lightTime = [lightTime.Plfm1hz; lightTime.Plfm2hz; lightTime.Plfm8hz; lightTime.Plfm20hz; lightTime.Plfm50hz];
+    lightTime = lightTime.Plfm8hz;
     nLight = length(lightTime);
-        
-    spikeTime = spikeWin(tData{iCell},lightTime,winSpike);
-    [xptLight, yptLight, pethtimeLight, pethLight, pethConvLight, pethConvZLight] = rasterPETH(spikeTime,true(size(lightTime)),winSpike,binSize,resolution,1);
     
-    lightSpk = sum(0<xptLight{1} & xptLight{1}<winLight);
+%     spikeTime = spikeWin(tData{iCell},lightTime,winSpike8hz);
+%     [xptLight, yptLight, pethtimeLight, pethLight, pethConvLight, pethConvZLight] = rasterPETH(spikeTime,true(size(lightTime)),winSpike8hz,binSize,resolution,1);
+%     
+%     lightSpk = sum(0<xptLight{1} & xptLight{1}<winLight);
     
-    save([cellName,'.mat'],'meanFR','xptLight','yptLight','pethtimeLight','pethLight','pethConvLight','pethConvZLight','nLight','lightSpk','-append');
     
+    spikeTime = spikeWin(tData{iCell},lightTime,winSpike8hz);
+    [xptLight8hz, yptLight8hz, pethtimeLight8hz, pethLight8hz, pethConvLight8hz, pethConvZLight8hz] = rasterPETH(spikeTime,true(size(lightTime)),winSpike8hz,binSize,resolution,1);
+    
+    spikeLatency = spikeWin(tData{iCell},lightTime,[0,20]);
+    temp_latency = cellfun(@min, spikeLatency,'UniformOutput',false);
+    latency8hz = mean(cell2mat(temp_latency));
+    lightSpk = sum(0<xptLight8hz{1} & xptLight8hz{1}<winLight);
+    
+    save([cellName,'.mat'],'meanFR','xptLight8hz','yptLight8hz','pethtimeLight8hz','pethLight8hz','pethConvLight8hz','pethConvZLight8hz','nLight','lightSpk','latency8hz','-append');
 end
 disp('### freq_Laser PETH calculation is done!!!');
 

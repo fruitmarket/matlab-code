@@ -12,6 +12,8 @@ winTrack = [0 125];
 winCriProb = [0, 20];
 winCri1 = [0 20];
 winCri2 = [30 125];
+winTest = [0 20];
+winBase = [-20 0];
 binSizeBlue = 2;
 
 [tData, tList] = tLoad;
@@ -82,6 +84,22 @@ for iCell = 1:nCell
     evoSpike_postLate = sum(winCri2(1)<evoXptPsdPost{1} & evoXptPsdPost{1}<winCri2(2));
 
     save([cellName,'.mat'],'evoXptTrackLight','evoXptPsdPre','evoXptPsdPost','evoSpike_stmEarly','evoSpike_stmLate','evoSpike_preEarly','evoSpike_preLate','evoSpike_postEarly','evoSpike_postLate','-append');
+    
+%% [-20, 0] vs [0, 20]
+    % base / test
+    spikeBase = spikeWin(tData{iCell},lightTime.Track8hz,winBase);
+    lap_spikeBase = cellfun(@length,spikeBase);
+    spikeTest = spikeWin(tData{iCell},lightTime.Track8hz,winTest);
+    lap_spikeTest = cellfun(@length,spikeTest);
+    [~,p_evoSpike] = ttest(lap_spikeBase,lap_spikeTest);
+    if sum(lap_spikeBase)>sum(lap_spikeTest) & p_evoSpike<0.05
+        idx_evoSpikeDir = -1;
+    elseif sum(lap_spikeBase)<sum(lap_spikeTest) & p_evoSpike<0.05
+        idx_evoSpikeDir = 1;
+    else
+        idx_evoSpikeDir = 0;
+    end
+    save([cellName,'.mat'],'idx_evoSpikeDir','-append');
 end
 disp('### Calculating Light induced spike change is done! ###');
 

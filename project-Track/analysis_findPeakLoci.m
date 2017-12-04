@@ -19,7 +19,8 @@ for iFile = 1:nFile
     peakloci_pre = infoPre.peakloci;
     peakloci_stm = infoStm.peakloci;
     peakloci_post = infoPost.peakloci;
+    fieldArea_total = infoTotal.area;
     
-    save([cellName,'.mat'],'peakloci_total','normTrackFR_total','peakloci_pre','peakloci_stm','peakloci_post','-append');
+    save([cellName,'.mat'],'peakloci_total','normTrackFR_total','peakloci_pre','peakloci_stm','peakloci_post','fieldArea_total','-append');
 end
 disp('### analysis: finding peak location is done! ###')

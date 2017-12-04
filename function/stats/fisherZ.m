@@ -9,6 +9,6 @@ function z = fisherZ(r)
 
 r = r(:);
 % n = length(r);
-z = 1/2.*log((1+r)./(1-r));
+z = 1/2*log((1+r)./(1-r));
 % error = 1/(sqrt(n-3));
 end

@@ -15,7 +15,7 @@ for iFile = 1:nFile
     disp(['### analyzing peak location:',matFile{iFile},'...']);
     [cellDir, cellName, ~] = fileparts(matFile{iFile});
     cd(cellDir);
-    load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_Track','pLR_Plfm50hz','p_ttest','lightLoc','m_lapFrInzone','m_lapFrOutzone','m_lapFrTotalzone');
+    load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_Track','pLR_Plfm50hz','p_ttest','m_lapFrInzone','m_lapFrOutzone','m_lapFrTotalzone');
     
 %% condi1: meanFR
     if cMeanFRLow < meanFR_task & meanFR_task < cMeanFRPeak & spkpvr > cSpkpvr
@@ -73,7 +73,12 @@ for iFile = 1:nFile
     end
 %% Is place field in the stimulation zone? Yes:1 No:0
 % block-wize comparison. If at least one block has a place field in a stimulation zone, count it as 1.
-    stmZone = round(lightLoc(1):lightLoc(2));
+    if(regexp(cellDir,'Run'))
+        lightLoc = [20*pi*5/6 20*pi*8/6];
+    else
+        lightLoc = [20*pi*9/6 20*pi*10/6];
+    end
+    stmZone = [lightLoc(1) lightLoc(2)];
 
     idxAreaPRE = [tempValuePRE.Area]>cPixelLength;
     pixelPRE = {tempValuePRE.PixelIdxList};

@@ -58,40 +58,26 @@ for iCell = 1:nCell
     lightLoc = [lightOnLoc, lightOffLoc];
 
 % Reward zone
-    for iReward = 1:90
-            [~,reward2on_idx] = min(abs(sensor.S4(iReward)-timeTrack));
-            temp_reward2on_idx = theta(reward2on_idx)*20;
-            [~,reward2off_idx] = min(abs(sensor.S5(iReward)-timeTrack));
-            temp_reward2off_idx = theta(reward2off_idx)*20;
-            [~,reward4on_idx] = min(abs(sensor.S10(iReward)-timeTrack));
-            temp_reward4on_idx = theta(reward4on_idx)*20;
-            [~,reward4off_idx] = min(abs(sensor.S11(iReward)-timeTrack));
-            temp_reward4off_idx = theta(reward4off_idx)*20;     
+    nReward2 = length(reward2);
+    nReward4 = length(reward4);
+    temp_reward2Loc = zeros(nReward2,1);
+    temp_reward4Loc = zeros(nReward4,1);
+    for iReward2 = 1:nReward2
+        [~,reward2Idx] = min(abs(reward2(iReward2)-timeTrack));
+        temp_reward2Loc(iReward2) = theta(reward2Idx)*20;
     end
-    reward2Loc = [round(mean(temp_reward2on_idx)*10)/10 round(mean(temp_reward2off_idx)*10)/10];
-    reward4Loc = [round(mean(temp_reward4on_idx)*10)/10 round(mean(temp_reward4off_idx)*10)/10];
-    rewardLoc = [reward2Loc; reward4Loc];
+    reward2Loc = round(mean(temp_reward2Loc)*10)/10;
+    for iReward4 = 1:nReward4
+        [~,reward4Idx] = min(abs(reward4(iReward4)-timeTrack));
+        temp_reward4Loc(iReward4) = theta(reward4Idx)*20;
+    end
+    reward4Loc = round(mean(temp_reward4Loc)*10)/10;
+    rewardLoc = [reward2Loc, reward4Loc];
 
-    abso_reward2Posi = [3/6 4/6]*20*pi;
-    abso_reward4Posi = [9/6 10/6]*20*pi;
-    if(regexp(cellPath,'Run'))
-       abso_light = [5/6 8/6]*20*pi;
-    else
-       abso_light = [9/6 10/6]*20*pi;
-    end
-    diff_light = abso_light - lightLoc;
-    diff_reward2 = abso_reward2Posi - reward2Loc;
-    diff_reward4 = abso_reward4Posi - reward4Loc;
-    calib_distance = mean([diff_light, diff_reward2, diff_reward4]);
-    calib_distance = round(calib_distance);
-    eventPosition_calib = eventPosition - calib_distance;
-    
-    temp_numOccu = numOccu(:,1:end-1);
-    numOccu_cali = [temp_numOccu(:,end-calib_distance+1:end), temp_numOccu(:,1:end-calib_distance)];
 % Spike location
     spikeLocation = realDist(spkPositionIdx); % position data of each spike
-    spikePosition = spikeWin(spikeLocation,eventPosition_calib,winSpace);
-    [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu_cali, winSpace, binSize, resolution, dot);
+    spikePosition = spikeWin(spikeLocation,eventPosition,winSpace);
+    [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu(:,1:end-1), winSpace, binSize, resolution, dot);
     peakFR1D_track = max(pethconvSpatial,[],2);
     
     save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','peakFR1D_track','lightLoc','rewardLoc','-append');

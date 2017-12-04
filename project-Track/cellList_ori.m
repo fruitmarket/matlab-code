@@ -226,6 +226,7 @@ for iFile = 1:nFile
         m_deto_spkPlfm8hz,m_deto_spkTrack8hz,evoSpkTrack8hz,evoSpkPlfm8hz,...%analysis_detoSpike8hz
         evoSpike_preEarly, evoSpike_preLate, evoSpike_stmEarly, evoSpike_stmLate, evoSpike_postEarly, evoSpike_postLate,...
         evoXptTrackLight,evoXptPsdPre,evoXptPsdPost,...
+        idx_evoSpikeDir,...
         LRatio,ID,...
         idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxpLR_Plfm8hz,idxmFrIn,idxmFrOut,idxmFrTotal,idxZoneInOut,idxZoneInOutPRE,overLapLength);
     T = [T; temT];
@@ -243,4 +244,4 @@ end
 cd(rtPath);
 formatOut = 'yymmdd';
 save(['neuronList_ori_',datestr(now,formatOut),'.mat'],'T');
-writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);
+% writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);

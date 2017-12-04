@@ -12,9 +12,10 @@ correctY = 0.5;
 lightBand = 3;
 
 %% Loading cell information
-load('neuronList_ori_171018.mat');
-Txls = readtable('neuronList_ori_171018.xlsx');
-Txls.taskType = categorical(Txls.taskType);
+% load('neuronList_ori_171018.mat');
+% Txls = readtable('neuronList_ori_171018.xlsx');
+% Txls.taskType = categorical(Txls.taskType);
+load('neuronList_ori_171205.mat');
 formatOut = 'yymmdd';
 
 %% separation of place cells from non place cell
@@ -513,24 +514,24 @@ noRunPN = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxP
 noRwPN = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
 
 fileName = T.path(DRunPN);
-cellID = Txls.cellID(DRunPN);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_DRunPC');
+cellID = T.cellID(DRunPN);
+plot_Track_multi_v3(fileName, cellID, 'C:\Users\Jun\Desktop\test');
 
 % fileName = T.path(DRunIN);
 % cellID = Txls.cellID(DRunIN);
 % plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRun\IN');
 
-fileName = T.path(DRwPN);
-cellID = Txls.cellID(DRwPN);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_DRwPC');
+% fileName = T.path(DRwPN);
+% cellID = Txls.cellID(DRwPN);
+% plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_DRwPC');
 
 % fileName = T.path(DRwIN);
 % cellID = Txls.cellID(DRwIN);
 % plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRw\IN');
 
-fileName = T.path(noRunPN);
-cellID = Txls.cellID(noRunPN);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_noRunPC');
+% fileName = T.path(noRunPN);
+% cellID = Txls.cellID(noRunPN);
+% plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_noRunPC');
 
 % fileName = T.path(noRunIN);
 % cellID = Txls.cellID(noRunIN);

@@ -2,7 +2,11 @@ function analysis_baseVsLight
  
 winLight = [0, 20];
 winBase = [-300, 0];
-winBase2 = [-15000, 0];
+
+winBase2 = [-10, 0];
+winLight2 = [0, 9];
+winLight3 = [10,19];
+
 pValue = 0.05;
  
 [tData, tList] = tLoad;
@@ -45,39 +49,25 @@ for iCell = 1:nCell
 % Baseline firing rate
     spikeTimeBase1hz = spikeWin(tData{iCell},lightTime.Plfm1hz(1:15:end),winBase);
     baseSpike1hz = cellfun(@length,spikeTimeBase1hz);
-    spikeTimeBase1hz_v2 = spikeWin(tData{iCell},[lightTime.Plfm1hz(16:15:end);time_recEnd(1)],winBase2);
-    baseSpike1hz_v2 = cellfun(@length,spikeTimeBase1hz_v2);
     
-%     spikeTimeBase2hz = spikeWin(tData{iCell},[lightTime.Plfm2hz(16:15:end);time_recEnd(2)],winBase);
     spikeTimeBase2hz = spikeWin(tData{iCell},lightTime.Plfm2hz(1:15:end),winBase);
     baseSpike2hz = cellfun(@length,spikeTimeBase2hz);
-    spikeTimeBase2hz_v2 = spikeWin(tData{iCell},[lightTime.Plfm2hz(16:15:end);time_recEnd(2)],winBase2);
-    baseSpike2hz_v2 = cellfun(@length,spikeTimeBase2hz_v2);
     
-%     spikeTimeBase8hz = spikeWin(tData{iCell},[lightTime.Plfm8hz(16:15:end);time_recEnd(3)],winBase);
     spikeTimeBase8hz = spikeWin(tData{iCell},lightTime.Plfm8hz(1:15:end),winBase);
     baseSpike8hz = cellfun(@length,spikeTimeBase8hz);
-    spikeTimeBase8hz_v2 = spikeWin(tData{iCell},[lightTime.Plfm8hz(16:15:end);time_recEnd(3)],winBase2);
-    baseSpike8hz_v2 = cellfun(@length,spikeTimeBase8hz_v2);
     
-%     spikeTimeBase20hz = spikeWin(tData{iCell},[lightTime.Plfm20hz(16:15:end);time_recEnd(4)],winBase);
     spikeTimeBase20hz = spikeWin(tData{iCell},lightTime.Plfm20hz(1:15:end),winBase);
     baseSpike20hz = cellfun(@length,spikeTimeBase20hz);
-    spikeTimeBase20hz_v2 = spikeWin(tData{iCell},[lightTime.Plfm20hz(16:15:end);time_recEnd(4)],winBase2);
-    baseSpike20hz_v2 = cellfun(@length,spikeTimeBase20hz_v2);
     
-%     spikeTimeBase50hz = spikeWin(tData{iCell},[lightTime.Plfm50hz(16:15:end);time_recEnd(5)],winBase);
     spikeTimeBase50hz = spikeWin(tData{iCell},lightTime.Plfm50hz(1:15:end),winBase);
     baseSpike50hz = cellfun(@length,spikeTimeBase50hz);
-    spikeTimeBase50hz_v2 = spikeWin(tData{iCell},[lightTime.Plfm50hz(16:15:end);time_recEnd(5)],winBase2);
-    baseSpike50hz_v2 = cellfun(@length,spikeTimeBase50hz_v2);
-    
+
     save([cellName,'.mat'],...
-        'lightSpike1hz','baseSpike1hz','baseSpike1hz_v2',...
-        'lightSpike2hz','baseSpike2hz','baseSpike2hz_v2',...
-        'lightSpike8hz','baseSpike8hz','baseSpike8hz_v2',...
-        'lightSpike20hz','baseSpike20hz','baseSpike20hz_v2',...
-        'lightSpike50hz','baseSpike50hz','baseSpike50hz_v2','-append')
+        'lightSpike1hz','baseSpike1hz',...
+        'lightSpike2hz','baseSpike2hz',...
+        'lightSpike8hz','baseSpike8hz',...
+        'lightSpike20hz','baseSpike20hz',...
+        'lightSpike50hz','baseSpike50hz','-append')
 
 
     freq_base1hz = mean(baseSpike1hz/300*1000); % change to [Hz]
@@ -97,6 +87,30 @@ for iCell = 1:nCell
         'freq_light1hz','freq_light2hz','freq_light8hz','freq_light20hz','freq_light50hz',...
         'freq_base1hz','freq_base2hz','freq_base8hz','freq_base20hz','freq_base50hz',...
         'p_spike','-append')
+%% peak location during 8 Hz stimulation
+    spikeTime_base10 = spikeWin(tData{iCell},lightTime.Plfm8hz,winBase2);
+    spikeBase010 = cellfun(@length,spikeTime_base10);
+
+    spikeTime_light010 = spikeWin(tData{iCell},lightTime.Plfm8hz,winLight2);
+    spikeLight010 = cellfun(@length,spikeTime_light010);
+
+    spikeTime_light020 = spikeWin(tData{iCell},lightTime.Plfm8hz,winLight3);
+    spikeLight020 = cellfun(@length,spikeTime_light020);
+
+    p_latency(1) = ranksum(spikeBase010/10,spikeLight010/diff(winLight2));
+    p_latency(2) = ranksum(spikeBase010/10,spikeLight020/diff(winLight3));
+    
+    if p_latency(1)<0.05 && ~(p_latency(2)<0.05)
+        idx_latency = 'direct'; % direct
+    elseif ~(p_latency(1)<0.05) && p_latency(2)<0.05
+        idx_latency = 'indirect';
+    elseif p_latency(1)< 0.05 && p_latency(2)<0.05
+        idx_latency = 'double';
+    else
+        idx_latency = 'nosig';
+    end
+    save([cellName,'.mat'],'p_latency','idx_latency','-append');
+    
 %% increase / decreasea / no change
     if (freq_base1hz < freq_light1hz) && (p_spike(1)<pValue)
         idx_light1hz = 1;

@@ -243,6 +243,17 @@ else(regexp(filePath,'noRun')); % Nolight session (control session for DRun)
             end
     end
 end
+
+%% Lap light time
+if(regexp(filePath,'Run'))
+    sensorOn = sensor.S6;
+    sensorOff = sensor.S9;
+else
+    sensorOn = sensor.S10;
+    SensorOff = sensor.S11;
+end
+lightTimeLap = sensorOff-sensorOn;
+
 %% Save variables
         save('Events.mat',...
         'baseTime','preTime','stmTime','postTime','taskTime','plfmTime','reward2','reward4',...

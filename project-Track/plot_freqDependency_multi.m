@@ -276,6 +276,24 @@ for iFile = 1:nFile
     ylabel('Spike P, %','fontSize',fontL);
     xlabel('Frequency (Hz)','fontSize',fontL);
     
+    
+%% 8 Hz PSTH
+    hPETH = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,5:6,4,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+%     barPETH = bar(pethtimeLight, pethLight
+    pLight = patch([0 10 10 0],[0 0 max(pethLight8hz)*1.2 max(pethLight8hz)*1.2],colorLLightBlue);
+    hold on;
+    hbar = bar(pethtimeLight8hz, pethLight8hz, 'histc');
+    text(30,max(pethLight8hz)*0.9,['latency: ',num2str(latency,3),' ms'],'fontSize',fontM);
+    
+    set(hbar, 'FaceColor','k','EdgeAlpha',0);
+    set(hPETH, 'TickDir','out','Box','off','XLim',[-20 70],'YLim',[0, max(pethLight8hz)*1.2],'fontSize',fontM);
+    set(pLight,'LineStyle','none');
+    
+    hPLatency = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,5:6,5,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+    text(0.5,2,['p-010: ',num2str(p_latency(1),3),' ms'],'fontSize',fontM);
+    text(0.5,1,['p-020: ',num2str(p_latency(2),3),' ms'],'fontSize',fontM);
+    set(hPLatency,'visible','off','fontSize',fontM,'XLim',[0,4],'YLim',[0,3]);
+    
     cd(saveDir);
 %     print('-painters','-r300','-dtiff',[cellFigName{1},'.tif']);
     print('-painters','-r300','-dtiff',['cellID_',num2str(cellID(iFile)),'.tif']);

@@ -29,8 +29,8 @@ for iCell = 1:nCell
     cd(rtDir);
 
     %%
-    nCol = 6;
-    nRow = 7;
+    nCol = 7;
+    nRow = 8;
     fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});
     figSize = [0.10 0.1 0.80 0.80];
     lightDur = 1000;

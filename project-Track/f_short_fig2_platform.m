@@ -92,7 +92,9 @@ sem_8hz_T = std(lightProb8hzT)/sqrt(nCellT);
 sem_20hz_T = std(lightProb20hzT)/sqrt(nCellT);
 sem_50hz_T = std(lightProb50hzT)/sqrt(nCellT);
 
-% p = anova1([lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],{'1Hz','2Hz','8Hz','20Hz','50Hz'},'display','off');
+% [p,~,stats] = kruskalwallis([lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],{'1Hz','2Hz','8Hz','20Hz','50Hz'},'off');
+% [~,~,result] = multcompare(stats,'ctype','bonferroni');
+% p_KW = result(:,end);
 
 hPlot = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
 plot([1,2,3,4,5],[lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],'-o','color',colorGray,'markerSize',markerS-1.5,'markerEdgeColor',colorGray,'markerFaceColor',colorLightGray);

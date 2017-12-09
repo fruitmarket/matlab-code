@@ -2,6 +2,7 @@ clearvars;
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 winCri_ori = [-5, 20];
 nTrial_ori = 300;
+fontS = 8;
 
 formatOut = 'yymmdd';
 saveDir = 'D:\Dropbox\SNL\P2_Track';
@@ -241,7 +242,7 @@ ylabel('Spike fidelity (%)','fontSize',fontS);
 title('cell# 120','fontSize',fontS);
 
 %% Average data
-hPlot_mean(3) = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1:2,3,[0.1 0.1 0.80 0.85],midInterval),midInterval));
+hPlot_mean(3) = axes('Position',axpt(1,5,1,1:4,axpt(nCol,nRow,1,3,[0.1 0.1 0.80 0.85],midInterval),midInterval));
 % 1hz
 errorbarJun(xpt,m_detoSpike1hz(1:5),sem_detoSpike1hz(1:5),eBarM,0.6,color1);
 hold on;

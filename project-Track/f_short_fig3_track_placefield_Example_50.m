@@ -4,8 +4,7 @@ cd(rtDir);
 %%%%%% version 1 %%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 % load neuronList_ori_170909.mat
-% cellID = [173 731 557 28 176 849]; % for DRun sessions 170909.
-% cellID = []; % dor DRw sessions
+
 
 load myParameters.mat;
 load neuronList_ori50hz_171014.mat

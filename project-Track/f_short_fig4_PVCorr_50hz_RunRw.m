@@ -2,8 +2,8 @@ clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
 Txls = readtable('neuronList_ori50hz_171014.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
-% load('neuronList_ori50hz_171014.mat');
-load('neuronList_ori50hz_171129.mat');
+load('neuronList_ori50hz_171014.mat');
+% load('neuronList_ori50hz_171129.mat');
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 
 formatOut = 'yymmdd';

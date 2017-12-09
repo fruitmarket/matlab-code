@@ -247,4 +247,55 @@ end
         save('Events.mat',...
         'baseTime','preTime','stmTime','postTime','taskTime','plfmTime','reward2','reward4',...
         'sensor','fields','nTrial','nSensor','trialIndex','psdlightPre','psdlightPost','lightTime');
+    
+%% Location calibration
+% absolute position
+    abso_reward2Posi = [3/6 4/6]*20*pi;
+    abso_reward4Posi = [9/6 10/6]*20*pi;
+    if(regexp(cellPath,'Run'))
+       abso_light = [5/6 8/6]*20*pi;
+    else
+       abso_light = [9/6 10/6]*20*pi;
+    end
+
+% Actual stimulation position
+lapStartLightIdx = [1;find(diff(lightTime.Track8hz)>1000)+1];
+temp_lightOnLoci = zeros(30,1);
+for iIdx = 1:30
+    [~, lightOnIdx] = min(abs(lightTime.Track8hz(lapStartLightIdx(iIdx))-taskTime));
+    temp_lightOnLoci(iIdx) = theta(lightOnIdx)*20;
+end
+lightOnLoc = floor(mean(temp_lightOnLoci)*10)/10;
+    
+lapEndLightIdx = [find(diff(lightTime.Track8hz)>1000);length(lightTime.Track8hz)];
+temp_lightOffLoci = zeros(30,1);
+for iIdx = 1:30
+    [~, lightOffIdx] = min(abs(lightTime.Track8hz(lapEndLightIdx(iIdx))-timeTrack));
+    temp_lightOffLoci(iIdx) = theta(lightOffIdx)*20;
+end
+lightOffLoc = ceil(mean(temp_lightOffLoci)*10)/10;
+lightLoc = [lightOnLoc, lightOffLoc];
+
+[temp_reward2on, temp_reward2off,temp_reward4on,temp_reward4off] = deal(zeros(90,1));
+% Actual reward position
+    for iReward = 1:90
+            [~,reward2on_idx] = min(abs(sensor.S4(iReward)-timeTrack));
+            temp_reward2on(iReward) = theta(reward2on_idx)*20;
+            [~,reward2off_idx] = min(abs(sensor.S5(iReward)-timeTrack));
+            temp_reward2off(iReward) = theta(reward2off_idx)*20;
+            [~,reward4on_idx] = min(abs(sensor.S10(iReward)-timeTrack));
+            temp_reward4on(iReward) = theta(reward4on_idx)*20;
+            [~,reward4off_idx] = min(abs(sensor.S11(iReward)-timeTrack));
+            temp_reward4off(iReward) = theta(reward4off_idx)*20;     
+    end
+    reward2Loc = [round(mean(temp_reward2on)*10)/10 round(mean(temp_reward2off)*10)/10];
+    reward4Loc = [round(mean(temp_reward4on)*10)/10 round(mean(temp_reward4off)*10)/10];
+    rewardLoc = [reward2Loc; reward4Loc];
+
+    diff_light = abso_light - lightLoc;
+    diff_reward2 = abso_reward2Posi - reward2Loc;
+    diff_reward4 = abso_reward4Posi - reward4Loc;
+    calib_distance = round(mean([diff_light, diff_reward2, diff_reward4])); % calib_distance is an integer
+    
+    save('Events.mat','lightLoc','rewardLoc','calib_distance','-append');
 end

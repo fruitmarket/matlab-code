@@ -7,7 +7,8 @@ if nargin == 1
 else
     ref = base;
 end
-time = -0.02:0.001:0.099; % [-20 ms, 99 ms]   %% -0.9:0.01:6.9; 
+% time = -0.02:0.001:0.099; % [-20 ms, 99 ms]   %% -0.9:0.01:6.9; 
+time = 0:0.001:0.039; % [-20 ms, 99 ms]   %% -0.9:0.01:6.9; 
 NoS  = size(test,1); % Number of NoSect
 
 %% Parameter setting
@@ -34,7 +35,8 @@ Cond2Mat.dimord     = 'subj_chan_time';
 
 cfg                  = [];
 cfg.channel          = 1; 
-cfg.latency          = [-0.02 0.099]; %[0 6]; % Time of interest
+% cfg.latency          = [-0.02 0.099]; %[0 6]; % Time of interest
+cfg.latency          = [0 0.039]; %[0 6]; % Time of interest
 cfg.parameter        = 'individual';
 cfg.method           = 'montecarlo';
 cfg.statistic        = 'depsamplesT';

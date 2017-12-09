@@ -3,29 +3,29 @@
 % 3. The function calculatesspatial information (bits/spike)
 
 % Variables for PETH & raster
-winLinear = [1,125]; % 1 to 125 cm / since the radius is 20 cm (ID: 17.5cm)
+winLinear = [1,125]; % total length of the track (r: 20 cm (ID: 17.5cm))
 winSpace = [0,124];
-binSize = 1; % 1 [unit: cm]
+binSizeSpace = 1; % 1 [unit: cm]
 resolution = 2;
 dot = 1;
 
-% Load files
+%% Load files
 [vtTime, vtPosition, vtList] = vtLoad;
 [tData, tList] = tLoad;
 nCell = length(tList);
 
-load('Events.mat','sensor','trialIndex','lightTime','reward2','reward4');
+load('Events.mat','sensor','trialIndex','lightTime','reward2','reward4','calib_distance');
 
-% Linearize position data
-[realDist, theta, timeTrack, eventPosition, numOccu, numOccuPRE] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
-numOccu = numOccu';
-numOccuPRE = numOccuPRE';
+%% Linearize position data
+[realDist, theta, timeTrack, eventPosition, numOccu, numOccuPRE, numOccuPOST] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
+
 % align spike time to position time
 for iCell = 1:nCell
     disp(['### Spatial raster analysis: ',tList{iCell},'...']);
     [cellPath,cellName,~] = fileparts(tList{iCell});
     cd(cellPath);
-    
+
+%% Change spike time to spike position
     spikeData = tData{iCell}(sensor.S1(1)<tData{iCell} & tData{iCell}<sensor.S12(end));
     nSpike = length(spikeData);
     
@@ -40,52 +40,7 @@ for iCell = 1:nCell
         spkPositionIdx(iSpike) = find((timeTrack == newSpikeData(iSpike)));
     end
 
-% stimulation zone
-    lapStartLightIdx = [1;find(diff(lightTime.Track8hz)>1000)+1];
-    temp_lightOnLoci = zeros(30,1);
-    for iIdx = 1:30
-        [~, lightOnIdx] = min(abs(lightTime.Track8hz(lapStartLightIdx(iIdx))-timeTrack));
-        temp_lightOnLoci(iIdx) = theta(lightOnIdx)*20;
-    end
-    lightOnLoc = floor(mean(temp_lightOnLoci)*10)/10;
-    
-    lapEndLightIdx = [find(diff(lightTime.Track8hz)>1000);length(lightTime.Track8hz)];
-    temp_lightOffLoci = zeros(30,1);
-    ci = zeros(30,1);
-    for iIdx = 1:30
-        [~, lightOffIdx] = min(abs(lightTime.Track8hz(lapEndLightIdx(iIdx))-timeTrack));
-        temp_lightOffLoci(iIdx) = theta(lightOffIdx)*20;
-    end
-    lightOffLoc = ceil(mean(temp_lightOffLoci)*10)/10;
-    lightLoc = [lightOnLoc, lightOffLoc];
-
-% Reward zone
-    for iReward = 1:90
-            [~,reward2on_idx] = min(abs(sensor.S4(iReward)-timeTrack));
-            temp_reward2on_idx = theta(reward2on_idx)*20;
-            [~,reward2off_idx] = min(abs(sensor.S5(iReward)-timeTrack));
-            temp_reward2off_idx = theta(reward2off_idx)*20;
-            [~,reward4on_idx] = min(abs(sensor.S10(iReward)-timeTrack));
-            temp_reward4on_idx = theta(reward4on_idx)*20;
-            [~,reward4off_idx] = min(abs(sensor.S11(iReward)-timeTrack));
-            temp_reward4off_idx = theta(reward4off_idx)*20;     
-    end
-    reward2Loc = [round(mean(temp_reward2on_idx)*10)/10 round(mean(temp_reward2off_idx)*10)/10];
-    reward4Loc = [round(mean(temp_reward4on_idx)*10)/10 round(mean(temp_reward4off_idx)*10)/10];
-    rewardLoc = [reward2Loc; reward4Loc];
-
-    abso_reward2Posi = [3/6 4/6]*20*pi;
-    abso_reward4Posi = [9/6 10/6]*20*pi;
-    if(regexp(cellPath,'Run'))
-       abso_light = [5/6 8/6]*20*pi;
-    else
-       abso_light = [9/6 10/6]*20*pi;
-    end
-    diff_light = abso_light - lightLoc;
-    diff_reward2 = abso_reward2Posi - reward2Loc;
-    diff_reward4 = abso_reward4Posi - reward4Loc;
-    calib_distance = mean([diff_light, diff_reward2, diff_reward4]);
-    calib_distance = round(calib_distance);
+%% location calibration 
     if calib_distance > 0
         eventPosition_calib = eventPosition - calib_distance;
         temp_numOccu = numOccu(:,1:end-1);
@@ -99,7 +54,7 @@ for iCell = 1:nCell
 % Spike location
     spikeLocation = realDist(spkPositionIdx); % position data of each spike
     spikePosition = spikeWin(spikeLocation,eventPosition_calib,winSpace); % spikeLocation is re-organized by each lap
-    [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu_cali, winSpace, binSize, resolution, dot);
+    [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu_cali, winSpace, binSizeSpace, resolution, dot);
     peakFR1D_track = max(pethconvSpatial,[],2);
     save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','peakFR1D_track','lightLoc','rewardLoc','-append');
     
@@ -121,7 +76,7 @@ for iCell = 1:nCell
     A = [1,0];
     B = [0,1];
     trialIndexPRE = logical([repmat(A,15,1);repmat(B,15,1)]);
-    [~, ~, ~, ~, pethconvSpatialPRE, ~] = spatialrasterPETH(spikePositionPRE, trialIndexPRE, numOccu(:,end-1), winSpace, binSize, resolution, dot);
+    [~, ~, ~, ~, pethconvSpatialPRE, ~] = spatialrasterPETH(spikePositionPRE, trialIndexPRE, numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
     rateMap1D_PRE1 = pethconvSpatialPRE(1,:);
     rateMap1D_PRE2 = pethconvSpatialPRE(2,:);
     [rCorr1D_preXpre, pCorr1D_preXpre] = corr(rateMap1D_PRE1',rateMap1D_PRE2','type','Pearson','rows','pairwise');
@@ -133,13 +88,13 @@ for iCell = 1:nCell
 
 %% Smoothing correlation
     spikePositionBase = spikePosition(1:30);
-    [~,~,~,~,pethconvSpatialBase,~] = spatialrasterPETH(spikePositionBase, true(30,1), numOccu(:,end-1), winSpace, binSize, resolution, dot);
+    [~,~,~,~,pethconvSpatialBase,~] = spatialrasterPETH(spikePositionBase, true(30,1), numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
     
     nTest = 81;
     rCorr1D_total = zeros(81,1);
     for iTest = 1: nTest
         spikePositionTest = spikePosition(iTest:iTest+9);
-        [~,~,~,~,pethconvSpatialTest,~] = spatialrasterPETH(spikePositionTest, true(10,1), numOccu(:,end-1), winSpace, binSize, resolution, dot);
+        [~,~,~,~,pethconvSpatialTest,~] = spatialrasterPETH(spikePositionTest, true(10,1), numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
         rCorr1D_total(iTest) = corr(pethconvSpatialBase',pethconvSpatialTest','type','Pearson','rows','pairwise');
     end
     save([cellName,'.mat'],'rCorr1D_total','-append');
@@ -153,7 +108,7 @@ for iCell = 1:nCell
     numOccuSI = numOccu; % unit [sec]
     numOccuSI(:,end) = []; % delete last bin
     if meanFRPRE ~= 0
-        spikePRE = reshape(histc(cell2mat(spikePosition(1:30)),winLinear(1):winLinear(2)),1,125);
+        spikePRE = reshape(histc(cell2mat(spikePosition(1:30)),winLinear(1):binSizeSpace:winLinear(2)),1,length(winLinear(1):binSizeSpace:winLinear(2))); % originally 125
         spikePRE(end) = [];
         PspikePRE = spikePRE./numOccuSI(1,:);
         PposiPRE = numOccuSI(1,:)/sum(numOccuSI(1,:));        
@@ -166,7 +121,7 @@ for iCell = 1:nCell
         infoSecondPRE = NaN;
     end
     if meanFRSTM ~= 0
-        spikeSTM = reshape(histc(cell2mat(spikePosition(31:60)),winLinear(1):winLinear(2)),1,125);
+        spikeSTM = reshape(histc(cell2mat(spikePosition(31:60)),winLinear(1):binSizeSpace:winLinear(2)),1,length(winLinear(1):binSizeSpace:winLinear(2)));
         spikeSTM(end) = [];
         PspikeSTM = spikeSTM./numOccuSI(2,:);
         PposiSTM = numOccuSI(2,:)/sum(numOccuSI(2,:));
@@ -179,7 +134,7 @@ for iCell = 1:nCell
         infoSecondSTM = NaN;
     end
     if meanFRPOST ~= 0
-        spikePOST = reshape(histc(cell2mat(spikePosition(61:90)),winLinear(1):winLinear(2)),1,125);
+        spikePOST = reshape(histc(cell2mat(spikePosition(61:90)),winLinear(1):binSizeSpace:winLinear(2)),1,length(winLinear(1):binSizeSpace:winLinear(2)));
         spikePOST(end) = [];
         PspikePOST = spikePOST./numOccuSI(3,:);
         PposiPOST = numOccuSI(3,:)/sum(numOccuSI(3,:));
@@ -192,7 +147,7 @@ for iCell = 1:nCell
         infoSecondPOST = NaN;
     end   
     if meanFRTotal ~= 0
-        spikeTotal = reshape(histc(cell2mat(spikePosition),winLinear(1):winLinear(2)),1,125);
+        spikeTotal = reshape(histc(cell2mat(spikePosition),winLinear(1):binSizeSpace:winLinear(2)),1,length(winLinear(1):binSizeSpace:winLinear(2)));
         spikeTotal(end) = [];
         PspikeTotal = spikeTotal./sum(numOccuSI,1);
         PposiTotal = sum(numOccuSI,1)/sum(numOccuSI(:));

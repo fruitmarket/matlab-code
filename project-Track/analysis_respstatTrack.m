@@ -1,6 +1,7 @@
 function analysis_respstatTrack()
-%tagstatCC calculates statistical significance using log-rank test
+% tagstatCC calculates statistical significance using log-rank test
 % Variables for log-rank test & salt test
+% The code calculates light response significance based on spikes from PRE and STIM blocks.
 
 testRange8hz = 8;
 baseRange8hz = 100;
@@ -40,7 +41,6 @@ for iCell = 1:nCell
         [pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd, timeLR_Track, H1_Track, H2_Track, calibTrack] = deal(NaN);
     else
         for iWin = 1:length(movingWin)
-%             [pLR_TrackTemp,timeLR_TrackT{iWin,1},H1_TrackT{iWin,1},H2_TrackT{iWin,1}] = logRankTest(timeTrack, censorTrack);
             [baseTime, baseCensor] = tagDataLoad(spikeData, psdlightPre+movingWin(iWin), testRange8hz, baseRange8hz);
             base = [reshape(baseTime(1:(end-1),:),1,[]);reshape(baseCensor(1:(end-1),:),1,[])]';
             [timeTrack, censorTrack] = tagDataLoad(spikeData, lightTime.Track8hz+movingWin(iWin), testRange8hz, baseRange8hz);

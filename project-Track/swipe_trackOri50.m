@@ -57,7 +57,7 @@ for iPath = 1:nPath
 %             sensorMeanFR;
 %             analysis_burst6ms;
 %             analysis_wvformCrosscor50hz;
-%             analysis_spatialRaster50hz;
+            analysis_spatialRaster50hz;
 %             analysis_plfm_laserIntTest;
 %             laserFreqCheck50hz;
 %             analysis_detoSpike50hz;
@@ -67,6 +67,7 @@ for iPath = 1:nPath
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
 %             analysis_lap1stlight50hz;
+%             analysis_spatialRaster50hz_pvCorr;
         case 'm'
             analysis_indexTrack50hz
 %             plot_Track_sin_v50hz;

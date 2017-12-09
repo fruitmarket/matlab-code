@@ -92,30 +92,17 @@ sem_lapFrTotalzone(3) = std(lapFrTotal(61:80))/sqrt(30);
 % Statistics
     group = {'PRE','STM','POST'};
     [~,~,stats_inFr] = kruskalwallis([lapFrInzone(1:30),lapFrInzone(31:60),lapFrInzone(61:90)],group,'off');
-    result_inFr = multcompare(stats_inFr,'Alpha',0.05,'Display','off');
+    result_inFr = multcompare(stats_inFr,'ctype','bonferroni','Alpha',0.05,'Display','off');
     p_ttest(:,1) = result_inFr(:,end); % p-value of in-zone
 
     [~,~,stats_outFr] = kruskalwallis([lapFrOutzone(1:30),lapFrOutzone(31:60),lapFrOutzone(61:90)],group,'off');
-    result_outFr = multcompare(stats_outFr,'Alpha',0.05,'Display','off');
+    result_outFr = multcompare(stats_outFr,'ctype','bonferroni','Alpha',0.05,'Display','off');
     p_ttest(:,2) = result_outFr(:,end); % p-value of in-zone
     
     [~,~,stats_totalFr] = kruskalwallis([lapFrTotal(1:30),lapFrTotal(31:60),lapFrTotal(61:90)],group,'off');
-    result_totalFr = multcompare(stats_totalFr,'Alpha',0.05,'Display','off');
+    result_totalFr = multcompare(stats_totalFr,'ctype','bonferroni','Alpha',0.05,'Display','off');
     p_ttest(:,3) = result_totalFr(:,end); % p-value of in-zone
 
-% % Inzone    
-%     [~, ~, stats_ttest_inSpk] = anova1([lapFrInzone(1:30),lapFrInzone(31:60),lapFrInzone(61:90)],group,'off');
-%     result_inZoneFR = multcompare(stats_ttest_inSpk,'Alpha',0.05,'CType','bonferroni','Display','off');
-%     p_ttest(:,1) = result_inZoneFR(:,end); % p-value of in-zone
-% % Outzone
-%     [~, ~, stats_ttest_outSpk] = anova1([lapFrOutzone(1:30),lapFrOutzone(31:60),lapFrOutzone(61:90)],group,'off');
-%     result_outZoneFR = multcompare(stats_ttest_outSpk,'Alpha',0.05,'CType','bonferroni','Display','off');
-%     p_ttest(:,2) = result_outZoneFR(:,end); % p-value of out-zone
-% % Total
-%     [~, ~, stats_ttest_tSpk] = anova1([totalSpike(1:30),totalSpike(31:60),totalSpike(61:90)],group,'off');
-%     result_totalZoneFR = multcompare(stats_ttest_tSpk,'Alpha',0.05,'CType','bonferroni','Display','off');
-%     p_ttest(:,3) = result_totalZoneFR(:,end); % p-value of total-zone
-    
 % stay time in stm zone
     temp_dTime = sensorOff-sensorOn;
     diffTime = [mean(temp_dTime(1:30)), mean(temp_dTime(31:60)), mean(temp_dTime(61:90))]/mean(temp_dTime(1:30)); % normalized by PRE time

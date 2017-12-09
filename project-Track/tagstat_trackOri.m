@@ -74,12 +74,7 @@ for iCell = 1:nCell
         if isempty(idxH_Plfm2hz)
             idxH_Plfm2hz = 1;
         end        
-%         H1Start = cellfun(@(x) x(1), H1_PlfmT(idxH1_Plfm,1));
-%         H1End = cellfun(@(x) x(end), H1_PlfmT(idxH1_Plfm,1));
-%         H2Start = cellfun(@(x) x(1), H2_PlfmT(idxH2_Plfm,1));
-%         H2End = cellfun(@(x) x(end), H2_PlfmT(idxH2_Plfm,1));
-%         HproductPlfm = (H1Start-H1End).*(H2Start-H2End);
-%         idxHPlfm = find(HproductPlfm~=-1,1,'first');
+
         if idxPlfm2hz >= idxH_Plfm2hz
             pLR_Plfm2hz = pLR_Plfm2hzT(idxPlfm2hz);
             timeLR_Plfm2hz = timeLR_Plfm2hzT{idxPlfm2hz};        
@@ -94,21 +89,6 @@ for iCell = 1:nCell
             calibPlfm2hz = movingWin(idxH_Plfm2hz);
         end
         
-% Modulation direction (Platform)
-    % v1.0 (based on spike counts)
-%         spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm2hz+movingWin(idxPlfm2hz),winTest);
-%         [xptPlfm2hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm2hz)),winTest,binSize,resolution,1);
-%         if ~iscell(xptPlfm2hz)
-%              xptPlfm2hz = {xptPlfm2hz};
-%         end
-%         if sum(winTest(1)<xptPlfm2hz{1} & xptPlfm2hz{1}<0)*1.1 < sum(0 <= xptPlfm2hz{1} & xptPlfm2hz{1}<winTest(2)) % activation (10%)
-%             statDir_Plfm2hz = 1;
-%         elseif sum(winTest(1)<xptPlfm2hz{1} & xptPlfm2hz{1}<0) > sum(0 <= xptPlfm2hz{1} & xptPlfm2hz{1}<winTest(2))*0.9 % inactivation (10%)
-%             statDir_Plfm2hz = -1;
-%         else % no change
-%             statDir_Plfm2hz = 0;
-%         end
-
 % v2.0 (based on H1, H2)
         if H1_Plfm2hz(end)>H2_Plfm2hz(end)
             statDir_Plfm2hz = 1;
@@ -198,21 +178,7 @@ for iCell = 1:nCell
                 calibPlfm8hz = movingWin(idxH_Plfm8hz);
             end
 
-% Modulation direction (Platform)
-    % v1.0 (based on spike counts)
-%             spkPlfmChETA = spikeWin(spikeData,lightTime.Plfm8hz+movingWin(idxPlfm8hz),winTest);
-%             [xptPlfm8hz,~,~,~,~,~] = rasterPETH(spkPlfmChETA,true(size(lightTime.Plfm8hz)),winTest,binSize,resolution,1);
-%             if ~iscell(xptPlfm8hz)
-%                  xptPlfm8hz = {xptPlfm8hz};
-%             end
-%             if sum(winTest(1)<xptPlfm8hz{1} & xptPlfm8hz{1}<0)*1.1 < sum(0 <= xptPlfm8hz{1} & xptPlfm8hz{1}<winTest(2)) % activation (10%)
-%                 statDir_Plfm8hz = 1;
-%             elseif sum(winTest(1)<xptPlfm8hz{1} & xptPlfm8hz{1}<0) > sum(0 <= xptPlfm8hz{1} & xptPlfm8hz{1}<winTest(2))*0.9 % inactivation (10%)
-%                 statDir_Plfm8hz = -1;
-%             else % no change
-%                 statDir_Plfm8hz = 0;
-%             end
-            
+
 % v2.0 (based on H1, H2)
             if H1_Plfm8hz(end)>H2_Plfm8hz(end)
                 statDir_Plfm8hz = 1;
@@ -285,12 +251,6 @@ for iCell = 1:nCell
             testTrack(iTest) = all((H1_TrackT{iTest,:}-H2_TrackT{iTest,:})>= -max(H1_TrackT{iTest,:})*allowance) | all((H2_TrackT{iTest,:}-H1_TrackT{iTest,:})>= -max(H2_TrackT{iTest,:})*allowance);
         end
         idxH_Track = idxcom_Track(find(testTrack==1,1,'first'));
-%         H1Start = cellfun(@(x) x(1), H1_TrackT(idxH1_Track,1));
-%         H1End = cellfun(@(x) x(end), H1_TrackT(idxH1_Track,1));
-%         H2Start = cellfun(@(x) x(1), H2_TrackT(idxH2_Track,1));
-%         H2End = cellfun(@(x) x(end), H2_TrackT(idxH2_Track,1));
-%         Hproduct = (H1Start-H1End).*(H2Start-H2End);
-%         idxH = find(Hproduct~=-1,1,'first');
         if isempty(idxH_Track)
             idxH_Track = 1;
         end
@@ -307,21 +267,6 @@ for iCell = 1:nCell
             H2_Track = H2_TrackT{idxH_Track};
             calibTrack = movingWin(idxH_Track);
         end
-
-% Modulation direction (for moving window)_Track
-    % v1.0 (Based on spike counts)
-%         spkTrackChETA = spikeWin(spikeData,lightTime.Track8hz+movingWin(idxTrack),winTest);
-%         [xptTrack,~,~,~,~,~] = rasterPETH(spkTrackChETA,true(size(lightTime.Track8hz)),winTest,binSize,resolution,1);
-%         if ~iscell(xptTrack)
-%             xptTrack = {xptTrack};
-%         end
-%         if sum(winTest(1)<xptTrack{1} & xptTrack{1}<0)*1.1 < sum(0 <= xptTrack{1} & xptTrack{1}<winTest(2)) % activation
-%             statDir_Track = 1;
-%         elseif sum(winTest(1)<xptTrack{1} & xptTrack{1}<0) > sum(0 <= xptTrack{1} & xptTrack{1}<winTest(2))*0.9 % inactivation
-%             statDir_Track = -1;
-%         else
-%             statDir_Track = 0;
-%         end
 
 % v2.0 (Based on H1, H2)
         if H1_Track(end) > H2_Track(end)

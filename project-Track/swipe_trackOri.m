@@ -63,29 +63,30 @@ for iPath = 1:nPath
         case 'e'
             event2mat_trackori;
         case 't'
-%             pethSensor;
+            pethSensor;
 %             pethLight;
 %             waveform;
 %             heatMap;
-%             tagstat_trackOri; %
-%             analysis_respstatTrack; % log-rank test 8hz has been changed
-%             mapCorr; % PreStm, PrePost, StmPost
-%             mapCorrEvOd; % For Even lap, odd lap of Pre-stm
-%             sensorMeanFR;
+%             tagstat_trackOri; % (long-rank test: original)
+%             analysis_respstatTrack; % (log-rank test: PRE vs. STIM)
 %             analysis_burst6ms;
 %             analysis_wvformCrosscor;
-            analysis_spatialRaster;
+%             analysis_spatialRaster;
 %             analysis_lightPlaceSeparation; % sensor 6-7/7-8/8-9
 %             analysis_plfm_laserIntTest;
 %             analysis_track_peth1stLight;
-%             laserFreqCheck;
 %             analysis_detoSpike8hz;
 %             analysis_stmzoneSpike;
 %             analysis_laserSpikeChange;
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
+%             analysis_spatialRaster_pvCorr;
+% #### code not using ####
+%             laserFreqCheck;
+%             mapCorr; % PreStm, PrePost, StmPost
+%             mapCorrEvOd; % For Even lap, odd lap of Pre-stm
         case 'm'
-            analysis_indexTrack;
+%             analysis_indexTrack;
 %             plot_Track_sin_v3;
     end
     fclose('all');

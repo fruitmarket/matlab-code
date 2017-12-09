@@ -1,4 +1,4 @@
-function [thetaDist, theta, timeTrack, refPosition, numOccu, numOccuPRE] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win)
+function [thetaDist, theta, timeTrack, refPosition, numOccu, numOccuPRE, numOccuPOST] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win)
 %
 % outputs
 % thetaDist: cumulative position expressed in radian (2*pi is added for each lap)
@@ -66,30 +66,28 @@ for iTheta = 1:nPosition
 end
 theta = abs(theta);
 
-% theta = atan2(vSample(:,2),vSample(:,1));
-% theta = atan2(vSample(:,2),vSample(:,1))-atan2(vRef(2),vRef(1));
-
-% theta = atan2(vRef(1)*vSample(:,2)-vRef(2)*vSample(:,1),vRef(1)*vSample(:,1)+vRef(2)*vSample(:,2)); % angle between sensor1 to each position
-
-% theta = atan2d(vRef(2),vRef(1))-atan2d(vSample(:,2),vSample(:,1));
-% if abs(theta) > 180
-%     theta = theta - 360*sign(theta);
-% end
-
 %%
- theta2cmPre = theta(refSensorIdx(1):(refSensorIdx(31)-1))*radius;
- theta2cmStm = theta(refSensorIdx(31):(refSensorIdx(61)-1))*radius;
- theta2cmPost = theta(refSensorIdx(61):end)*radius;
- numOccu(:,1) = histc(theta2cmPre,spatialBin);
- numOccu(:,2) = histc(theta2cmStm,spatialBin);
- numOccu(:,3) = histc(theta2cmPost,spatialBin);
- numOccu = numOccu/30; % devid by video tracking frequency (30Hz)
+theta2cmPre = theta(refSensorIdx(1):(refSensorIdx(31)-1))*radius;
+theta2cmStm = theta(refSensorIdx(31):(refSensorIdx(61)-1))*radius;
+theta2cmPost = theta(refSensorIdx(61):end)*radius;
+numOccu(:,1) = histc(theta2cmPre,spatialBin);
+numOccu(:,2) = histc(theta2cmStm,spatialBin);
+numOccu(:,3) = histc(theta2cmPost,spatialBin);
+numOccu = (numOccu/30)'; % devid by video tracking frequency (30Hz)
+
+
+theta2cmPRE1 = theta(refSensorIdx(1):(refSensorIdx(16)-1))*radius;
+theta2cmPRE2 = theta(refSensorIdx(16):(refSensorIdx(31)-1))*radius;
+numOccuPRE(:,1) = histc(theta2cmPRE1,spatialBin);
+numOccuPRE(:,2) = histc(theta2cmPRE2,spatialBin);
+numOccuPRE = (numOccuPRE/30)';
  
- theta2cmPRE1 = theta(refSensorIdx(1):(refSensorIdx(16)-1))*radius;
- theta2cmPRE2 = theta(refSensorIdx(16):(refSensorIdx(61)-1))*radius;
- numOccuPRE(:,1) = histc(theta2cmPRE1,spatialBin);
- numOccuPRE(:,2) = histc(theta2cmPRE2,spatialBin);
- numOccuPRE = numOccuPRE/30;
+theta2cmPOST1 = theta(refSensorIdx(61):(refSensorIdx(76)-1))*radius;
+theta2cmPOST2 = theta(refSensorIdx(76):end)*radius;
+numOccuPOST(:,1) = histc(theta2cmPOST1,spatialBin);
+numOccuPOST(:,2) = histc(theta2cmPOST2,spatialBin);
+numOccuPOST = (numOccuPOST/30)';
+ 
 
 addDist = [];
 difTime = diff(refSensorIdx);

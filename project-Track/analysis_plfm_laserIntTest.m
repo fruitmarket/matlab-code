@@ -26,8 +26,7 @@ for iCell = 1:nCell
     lightProbPlfm10mw = sum(double(~cellfun(@isempty,spkTime10mw)))/(nPlfmLight/3)*100;
     evoSpike10mw = sum(cellfun(@length, spkTime10mw));
     
-    save([cellName,'.mat'],'lightProbPlfm5mw','lightProbPlfm8mw','lightProbPlfm10mw',...
-        'evoSpike5mw','evoSpike8mw','evoSpike10mw','-append');
+    save([cellName,'.mat'],'lightProbPlfm5mw','lightProbPlfm8mw','lightProbPlfm10mw','evoSpike5mw','evoSpike8mw','evoSpike10mw','-append');
 end
 disp('### Laser Intensity Check is done!');
 

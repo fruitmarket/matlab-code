@@ -26,10 +26,10 @@ for iCell = 1:nCell
     % Load Spike data
     spikeData = tData{iCell}; % unit: msec
     
-    % Mean firing rate (base, track)
+%% Mean firing rate (base, track)
     meanFR_base = sum(histc(spikeData,baseTime))/(diff(baseTime)/1000);
     meanFR_task = sum(histc(spikeData,taskTime))/(diff(taskTime)/1000);
-    
+        
     % Mean firing rate (block)
     time_post = [sensor.S1(61), sensor.S1(90)]; % for the case when light stimulation existed after sensor12(90)
     meanFR_pre = sum(histc(spikeData,preTime))/(diff(preTime)/1000);
@@ -40,7 +40,11 @@ for iCell = 1:nCell
         meanFR_post = sum(histc(spikeData,postTime))/(diff(postTime)/1000);
     end
     
-    % Busrst index (Ref: Hyunjung's paper)
+%% between sensor firing rate
+    sensorMeanFR_Run = meanFiringRate(sensor.S6, sensor.S9, spikeData);
+    sensorMeanFR_Rw = meanFiringRate(sensor.S10, sensor.S11, spikeData);
+    
+%% Busrst index (Ref: Hyunjung's paper)
     spikeIdx = [taskTime(1)<spikeData & spikeData<taskTime(2)];
     spikeISI = diff(spikeData(spikeIdx));
     burstIdx = length(find(spikeISI<mean(spikeISI)/4))/length(spikeISI);
@@ -57,7 +61,9 @@ for iCell = 1:nCell
     end
 
     save([cellName,'.mat'],...
-        'meanFR_base','meanFR_task','meanFR_pre','meanFR_stm','meanFR_post','burstIdx','spikeTime','win','xpt','ypt','pethtime','pethbar','pethconv','pethconvz');
+        'meanFR_base','meanFR_task','meanFR_pre','meanFR_stm','meanFR_post',...
+        'sensorMeanFR_Run','sensorMeanFR_Rw',...
+        'burstIdx','spikeTime','win','xpt','ypt','pethtime','pethbar','pethconv','pethconvz');
 end
 disp('### Making Raster, PETH is done!');
 

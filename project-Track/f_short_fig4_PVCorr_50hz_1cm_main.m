@@ -251,29 +251,29 @@ result_Rw = multcompare(stats,'Alpha',0.05,'Display','off');
 p_kw_Rw(:,3) = result_Rw(:,end);
 
 %% z-tramsformation & Anova
-z_pvCorr_inRun_preXstm = fisherZ(pvCorr_inRun_preXstm);
-z_pvCorr_inRun_preXpost = fisherZ(pvCorr_inRun_preXpost);
-z_pvCorr_inRun_stmXpost = fisherZ(pvCorr_inRun_stmXpost);
+pvCorr_inRun_preXstm = fisherZ(pvCorr_inRun_preXstm)';
+pvCorr_inRun_preXpost = fisherZ(pvCorr_inRun_preXpost)';
+pvCorr_inRun_stmXpost = fisherZ(pvCorr_inRun_stmXpost)';
 
-z_pvCorr_outRun_preXstm = fisherZ(pvCorr_outRun_preXstm);
-z_pvCorr_outRun_preXpost = fisherZ(pvCorr_outRun_preXpost);
-z_pvCorr_outRun_stmXpost = fisherZ(pvCorr_outRun_stmXpost);
+pvCorr_outRun_preXstm = fisherZ(pvCorr_outRun_preXstm)';
+pvCorr_outRun_preXpost = fisherZ(pvCorr_outRun_preXpost)';
+pvCorr_outRun_stmXpost = fisherZ(pvCorr_outRun_stmXpost)';
 
-z_pvCorr_inRw_preXstm = fisherZ(pvCorr_inRw_preXstm);
-z_pvCorr_inRw_preXpost = fisherZ(pvCorr_inRw_preXpost);
-z_pvCorr_inRw_stmXpost = fisherZ(pvCorr_inRw_stmXpost);
+pvCorr_inRw_preXstm = fisherZ(pvCorr_inRw_preXstm)';
+pvCorr_inRw_preXpost = fisherZ(pvCorr_inRw_preXpost)';
+pvCorr_inRw_stmXpost = fisherZ(pvCorr_inRw_stmXpost)';
 
-z_pvCorr_outRw_preXstm = fisherZ(pvCorr_outRw_preXstm);
-z_pvCorr_outRw_preXpost = fisherZ(pvCorr_outRw_preXpost);
-z_pvCorr_outRw_stmXpost = fisherZ(pvCorr_outRw_stmXpost);
+pvCorr_outRw_preXstm = fisherZ(pvCorr_outRw_preXstm)';
+pvCorr_outRw_preXpost = fisherZ(pvCorr_outRw_preXpost)';
+pvCorr_outRw_stmXpost = fisherZ(pvCorr_outRw_stmXpost)';
 
-z_pvCorr_noRun_preXstm = fisherZ(pvCorr_noRun_preXstm);
-z_pvCorr_noRun_preXpost = fisherZ(pvCorr_noRun_preXpost);
-z_pvCorr_noRun_stmXpost = fisherZ(pvCorr_noRun_stmXpost);
+pvCorr_noRun_preXstm = fisherZ(pvCorr_noRun_preXstm)';
+pvCorr_noRun_preXpost = fisherZ(pvCorr_noRun_preXpost)';
+pvCorr_noRun_stmXpost = fisherZ(pvCorr_noRun_stmXpost)';
 
-z_pvCorr_noRw_preXstm = fisherZ(pvCorr_noRw_preXstm);
-z_pvCorr_noRw_preXpost = fisherZ(pvCorr_noRw_preXpost);
-z_pvCorr_noRw_stmXpost = fisherZ(pvCorr_noRw_stmXpost);
+pvCorr_noRw_preXstm = fisherZ(pvCorr_noRw_preXstm)';
+pvCorr_noRw_preXpost = fisherZ(pvCorr_noRw_preXpost)';
+pvCorr_noRw_stmXpost = fisherZ(pvCorr_noRw_stmXpost)';
 
 % Run session
 [p_anovaRun(1), table, stats] = anova1([pvCorr_inRun_preXstm,pvCorr_outRun_preXstm,pvCorr_noRun_preXstm],group_Run,'off');

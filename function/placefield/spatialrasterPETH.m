@@ -15,7 +15,7 @@ if isempty(spikePosition) || isempty(trialIndex) || length(spikePosition) ~= siz
 end;
 
 spikeBin = win(1):binSize:win(2); % unit: cm
-nSpikeBin = length(spikeBin)-1; % 124 bin
+nSpikeBin = length(spikeBin)-1; % drop the last bin
 
 nTrial = length(spikePosition);
 nCue = size(trialIndex,2);

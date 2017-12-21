@@ -15,8 +15,7 @@ for iFile = 1:nFile
     disp(['### analyzing peak location:',matFile{iFile},'...']);
     [cellDir, cellName, ~] = fileparts(matFile{iFile});
     cd(cellDir);
-%     clear('meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_TrackN','pLR_Plfm8hz','p_ttest','lightLoc','m_lapFrInzone','m_lapFrOutzone','m_lapFrTotalzone');
-    load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_TrackN','pLR_Plfm8hz','p_ttest','lightLoc','m_lapFrInzone','m_lapFrOutzone','m_lapFrTotalzone');
+    load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_TrackN','pLR_Plfm8hz','p_ttest','m_lapFrInzone','m_lapFrOutzone','m_lapFrTotalzone');
     
 %% condi1: meanFR
     if cMeanFRLow < meanFR_task & meanFR_task < cMeanFRPeak & spkpvr > cSpkpvr
@@ -74,7 +73,12 @@ for iFile = 1:nFile
     end
 %% Is place field in the stimulation zone? Yes:1 No:0
 % block-wize comparison. If at least one block has a place field in a stimulation zone, count it as 1.
-    stmZone = round(lightLoc(1):lightLoc(2));
+    if(regexp(cellDir,'Run'))
+       abso_light = [5/6 8/6]*20*pi;
+    else
+       abso_light = [9/6 10/6]*20*pi;
+    end
+    stmZone = round(abso_light(1):abso_light(2));
     cOverLapLength = length(stmZone)*0.5;
     
     idxAreaPRE = [tempValuePRE.Area]>cPixelLength;
@@ -194,6 +198,6 @@ for iFile = 1:nFile
         idxmFrTotal = 0;
     end
 
-    save([cellName,'.mat'],'idxNeurontype','idxPeakFR','idxPlaceField','idxTotalSpikeNum','idxpLR_Track','idxpLR_Plfm8hz','idxmFrIn','idxmFrOut','idxmFrTotal','idxZoneInOut','idxZoneInOutPRE','idxZoneInOutSTM','overLapLength','-append');
+    save([cellName,'.mat'],'idxNeurontype','idxPeakFR','idxPlaceField','idxTotalSpikeNum','idxpLR_Track','idxpLR_Plfm8hz','idxmFrIn','idxmFrOut','idxmFrTotal','idxZoneInOut','idxZoneInOutPRE','idxZoneInOutSTM','overLapLength','idxOverLap','-append');
 end
 disp('### analysis: index calculation completed! ###')

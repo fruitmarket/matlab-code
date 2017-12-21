@@ -249,10 +249,14 @@ end
         'sensor','fields','nTrial','nSensor','trialIndex','psdlightPre','psdlightPost','lightTime');
     
 %% Location calibration
+[vtTime, vtPosition, ~] = vtLoad;
+winLinear = [1,125];
+[~, theta, timeTrack, ~, ~, ~, ~] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
+
 % absolute position
     abso_reward2Posi = [3/6 4/6]*20*pi;
     abso_reward4Posi = [9/6 10/6]*20*pi;
-    if(regexp(cellPath,'Run'))
+    if(regexp(filePath,'Run'))
        abso_light = [5/6 8/6]*20*pi;
     else
        abso_light = [9/6 10/6]*20*pi;
@@ -262,7 +266,7 @@ end
 lapStartLightIdx = [1;find(diff(lightTime.Track8hz)>1000)+1];
 temp_lightOnLoci = zeros(30,1);
 for iIdx = 1:30
-    [~, lightOnIdx] = min(abs(lightTime.Track8hz(lapStartLightIdx(iIdx))-taskTime));
+    [~, lightOnIdx] = min(abs(lightTime.Track8hz(lapStartLightIdx(iIdx))-timeTrack));
     temp_lightOnLoci(iIdx) = theta(lightOnIdx)*20;
 end
 lightOnLoc = floor(mean(temp_lightOnLoci)*10)/10;

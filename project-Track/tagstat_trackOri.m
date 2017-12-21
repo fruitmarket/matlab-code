@@ -240,77 +240,81 @@ for iCell = 1:nCell
             end
             pLR_TrackT(iWin,1) = pLR_TrackTemp;
         end
-        idxTrack = find(pLR_TrackT<alpha,1,'first');
-        if isempty(idxTrack)
-            idxTrack = 1;
-        end
-        idxH1_Track = find(~cellfun(@isempty,H1_TrackT));
-        idxH2_Track = find(~cellfun(@isempty,H2_TrackT));
-        idxcom_Track = idxH1_Track(idxH1_Track == idxH2_Track);
-        for iTest = 1:length(idxcom_Track)
-            testTrack(iTest) = all((H1_TrackT{iTest,:}-H2_TrackT{iTest,:})>= -max(H1_TrackT{iTest,:})*allowance) | all((H2_TrackT{iTest,:}-H1_TrackT{iTest,:})>= -max(H2_TrackT{iTest,:})*allowance);
-        end
-        idxH_Track = idxcom_Track(find(testTrack==1,1,'first'));
-        if isempty(idxH_Track)
-            idxH_Track = 1;
-        end
-        if idxTrack >= idxH_Track
-            pLR_Track = pLR_TrackT(idxTrack);
-            timeLR_Track = timeLR_TrackT{idxTrack};
-            H1_Track = H1_TrackT{idxTrack};
-            H2_Track = H2_TrackT{idxTrack};
-            calibTrack = movingWin(idxTrack);
+        if sum(double(isnan(pLR_TrackT))) == 5
+            [pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd, timeLR_Track, H1_Track, H2_Track, calibTrack] = deal(NaN);
         else
-            pLR_Track = pLR_TrackT(idxH_Track);
-            timeLR_Track = timeLR_TrackT{idxH_Track};
-            H1_Track = H1_TrackT{idxH_Track};
-            H2_Track = H2_TrackT{idxH_Track};
-            calibTrack = movingWin(idxH_Track);
-        end
+            idxTrack = find(pLR_TrackT<alpha,1,'first');
+            if isempty(idxTrack)
+                idxTrack = 1;
+            end
+            idxH1_Track = find(~cellfun(@isempty,H1_TrackT));
+            idxH2_Track = find(~cellfun(@isempty,H2_TrackT));
+            idxcom_Track = idxH1_Track(idxH1_Track == idxH2_Track);
+            for iTest = 1:length(idxcom_Track)
+                testTrack(iTest) = all((H1_TrackT{iTest,:}-H2_TrackT{iTest,:})>= -max(H1_TrackT{iTest,:})*allowance) | all((H2_TrackT{iTest,:}-H1_TrackT{iTest,:})>= -max(H2_TrackT{iTest,:})*allowance);
+            end
+            idxH_Track = idxcom_Track(find(testTrack==1,1,'first'));
+            if isempty(idxH_Track)
+                idxH_Track = 1;
+            end
+            if idxTrack >= idxH_Track
+                pLR_Track = pLR_TrackT(idxTrack);
+                timeLR_Track = timeLR_TrackT{idxTrack};
+                H1_Track = H1_TrackT{idxTrack};
+                H2_Track = H2_TrackT{idxTrack};
+                calibTrack = movingWin(idxTrack);
+            else
+                pLR_Track = pLR_TrackT(idxH_Track);
+                timeLR_Track = timeLR_TrackT{idxH_Track};
+                H1_Track = H1_TrackT{idxH_Track};
+                H2_Track = H2_TrackT{idxH_Track};
+                calibTrack = movingWin(idxH_Track);
+            end
 
-% v2.0 (Based on H1, H2)
-        if H1_Track(end) > H2_Track(end)
-            statDir_Track = 1;
-        elseif H1_Track(end) < H2_Track(end)
-            statDir_Track = -1;
-        else
-            statDir_Track = 0;
-        end
-        
-% Latency (Moving win)
-        [pksTrack,locTrack] = findpeaks(pethTrackLight,'minpeakheight',15); % check whether there are two peaks or not. if there are two peaks, calculate each peaek.
-        switch (statDir_Track)
-            case 1                
-                if length(locTrack) >= 2
-                    spkLatency_Track1st = spikeWin(spikeData,lightTime.Track8hz,[0 9]);
-                    temp_latencyTrack1st = cellfun(@min,spkLatency_Track1st,'UniformOutput',false);
-                    temp_latencyTrack1st = nanmedian(cell2mat(temp_latencyTrack1st));
+    % v2.0 (Based on H1, H2)
+            if H1_Track(end) > H2_Track(end)
+                statDir_Track = 1;
+            elseif H1_Track(end) < H2_Track(end)
+                statDir_Track = -1;
+            else
+                statDir_Track = 0;
+            end
 
-                    spkLatency_Track2nd = spikeWin(spikeData,lightTime.Track8hz,[11 20]);
-                    temp_latencyTrack2nd = cellfun(@min,spkLatency_Track2nd,'UniformOutput',false);
-                    temp_latencyTrack2nd = nanmedian(cell2mat(temp_latencyTrack2nd));
-                else
+    % Latency (Moving win)
+            [pksTrack,locTrack] = findpeaks(pethTrackLight,'minpeakheight',15); % check whether there are two peaks or not. if there are two peaks, calculate each peaek.
+            switch (statDir_Track)
+                case 1                
+                    if length(locTrack) >= 2
+                        spkLatency_Track1st = spikeWin(spikeData,lightTime.Track8hz,[0 9]);
+                        temp_latencyTrack1st = cellfun(@min,spkLatency_Track1st,'UniformOutput',false);
+                        temp_latencyTrack1st = nanmedian(cell2mat(temp_latencyTrack1st));
+
+                        spkLatency_Track2nd = spikeWin(spikeData,lightTime.Track8hz,[11 20]);
+                        temp_latencyTrack2nd = cellfun(@min,spkLatency_Track2nd,'UniformOutput',false);
+                        temp_latencyTrack2nd = nanmedian(cell2mat(temp_latencyTrack2nd));
+                    else
+                        spkLatency_Track = spikeWin(spikeData,lightTime.Track8hz,winLatency);
+                        temp_latencyTrack = cellfun(@min,spkLatency_Track,'UniformOutput',false);
+                        temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
+                    end
+                case -1
                     spkLatency_Track = spikeWin(spikeData,lightTime.Track8hz,winLatency);
-                    temp_latencyTrack = cellfun(@min,spkLatency_Track,'UniformOutput',false);
+                    temp_latencyTrack = cellfun(@max,spkLatency_Track,'UniformOutput',false);
                     temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
-                end
-            case -1
-                spkLatency_Track = spikeWin(spikeData,lightTime.Track8hz,winLatency);
-                temp_latencyTrack = cellfun(@max,spkLatency_Track,'UniformOutput',false);
-                temp_latencyTrack = nanmedian(cell2mat(temp_latencyTrack));
-            case 0
-                spkLatency_Track = spikeWin(spikeData,lightTime.Track8hz,winLatency);
-                temp_latencyTrack = 0;
-        end
-        if exist('temp_latencyTrack1st','var') & ~isnan(temp_latencyTrack1st)
-            latencyTrack1st = temp_latencyTrack1st;
-            latencyTrack2nd = temp_latencyTrack2nd;
-        elseif exist('temp_latencyTrack1st','var') & isnan(temp_latencyTrack1st)
-            latencyTrack1st = temp_latencyTrack2nd;
-            latencyTrack2nd = NaN;
-        else
-            latencyTrack1st = temp_latencyTrack;
-            latencyTrack2nd = NaN;
+                case 0
+                    spkLatency_Track = spikeWin(spikeData,lightTime.Track8hz,winLatency);
+                    temp_latencyTrack = 0;
+            end
+            if exist('temp_latencyTrack1st','var') & ~isnan(temp_latencyTrack1st)
+                latencyTrack1st = temp_latencyTrack1st;
+                latencyTrack2nd = temp_latencyTrack2nd;
+            elseif exist('temp_latencyTrack1st','var') & isnan(temp_latencyTrack1st)
+                latencyTrack1st = temp_latencyTrack2nd;
+                latencyTrack2nd = NaN;
+            else
+                latencyTrack1st = temp_latencyTrack;
+                latencyTrack2nd = NaN;
+            end
         end
     end
 

@@ -1,4 +1,4 @@
-function [thetaDist, theta, timeTrack, refPosition, numOccu, numOccuPRE, numOccuPOST] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win)
+function [thetaDist, theta, timeTrack, refPosition, numOccu, numOccuPRE, numOccuPOST] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win, binSizeSpace)
 %
 % outputs
 % thetaDist: cumulative position expressed in radian (2*pi is added for each lap)
@@ -13,9 +13,8 @@ function [thetaDist, theta, timeTrack, refPosition, numOccu, numOccuPRE, numOccu
 % timeOnTrack should contain two elements [startTime, endTime]
 %
 
-binSize = 1; % binSize: 1cm
-spatialBin = win(1):binSize:win(2);
-narginchk(6,6);
+spatialBin = win(1):binSizeSpace:win(2);
+narginchk(7,7);
 if isempty(vtPositionX);isempty(vtPositionY);isempty(vtTime);isempty(refSensor);isempty(timeOnTrack); return; end;
 
 %% laserOnTime

@@ -17,7 +17,7 @@ nCell = length(tList);
 load('Events.mat','sensor','trialIndex','lightTime','reward2','reward4','calib_distance');
 
 %% Linearize position data
-[realDist, theta, timeTrack, eventPosition, numOccu, numOccuPRE, numOccuPOST] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
+[realDist, theta, timeTrack, eventPosition, numOccu, numOccuPRE, numOccuPOST] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear, binSizeSpace);
 
 % align spike time to position time
 for iCell = 1:nCell
@@ -56,7 +56,7 @@ for iCell = 1:nCell
     spikePosition = spikeWin(spikeLocation,eventPosition_calib,winSpace); % spikeLocation is re-organized by each lap
     [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu_cali, winSpace, binSizeSpace, resolution, dot);
     peakFR1D_track = max(pethconvSpatial,[],2);
-    save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','peakFR1D_track','lightLoc','rewardLoc','-append');
+    save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','peakFR1D_track','-append');
     
 %% spatial correlation 1D
     rateMap1D_PRE = pethconvSpatial(1,:);

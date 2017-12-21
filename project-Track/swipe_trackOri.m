@@ -63,7 +63,7 @@ for iPath = 1:nPath
         case 'e'
             event2mat_trackori;
         case 't'
-            pethSensor;
+%             pethSensor;
 %             pethLight;
 %             waveform;
 %             heatMap;
@@ -71,7 +71,7 @@ for iPath = 1:nPath
 %             analysis_respstatTrack; % (log-rank test: PRE vs. STIM)
 %             analysis_burst6ms;
 %             analysis_wvformCrosscor;
-%             analysis_spatialRaster;
+            analysis_spatialRaster;
 %             analysis_lightPlaceSeparation; % sensor 6-7/7-8/8-9
 %             analysis_plfm_laserIntTest;
 %             analysis_track_peth1stLight;
@@ -86,7 +86,7 @@ for iPath = 1:nPath
 %             mapCorr; % PreStm, PrePost, StmPost
 %             mapCorrEvOd; % For Even lap, odd lap of Pre-stm
         case 'm'
-%             analysis_indexTrack;
+            analysis_indexTrack;
 %             plot_Track_sin_v3;
     end
     fclose('all');

@@ -1,11 +1,11 @@
 clearvars;
 
 cd('D:\Dropbox\SNL\P2_Track'); % win version
-Txls = readtable('neuronList_ori_171018.xlsx');
-load('neuronList_ori_171018.mat');
 load myParameters.mat;
-Txls.latencyIndex = categorical(Txls.latencyIndex);
 formatOut = 'yymmdd';
+Txls = readtable('neuronList_ori_171229.xlsx');
+load('neuronList_ori_171229.mat');
+Txls.latencyIndex = categorical(Txls.latencyIndex);
 
 % total population (RunPN / RwPN / RunPN / RwPN) with light responsiveness (light activated)
 % Run_PN_act = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxpLR_Track & T.statDir_TrackN == 1;
@@ -14,22 +14,22 @@ formatOut = 'yymmdd';
 % Run_PN_actDouble = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxpLR_Track & T.statDir_TrackN == 1 & Txls.latencyIndex == 'double';
 % Run_PN_ina = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxpLR_Track & T.statDir_TrackN == -1;
 % Run_PN_noresp = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & ~T.idxpLR_Track;
+% Run_PN_actDirect = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'direct';
+% Run_PN_actIndirect = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'indirect';
+% Run_PN_actDouble = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'double';
 Run_PN_act = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1;
-Run_PN_actDirect = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'direct';
-Run_PN_actIndirect = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'indirect';
-Run_PN_actDouble = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'double';
 Run_PN_ina = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == -1;
 Run_PN_noresp = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 0;
 
 % latency time
-direct = mean(T.latencyTrack1stN(Run_PN_actDirect));
-indirect = mean(T.latencyTrack1stN(Run_PN_actIndirect));
+% direct = mean(T.latencyTrack1stN(Run_PN_actDirect));
+% indirect = mean(T.latencyTrack1stN(Run_PN_actIndirect));
 
 %% PETH
 RunPN_act_pethTrack = T.pethTrackLight(Run_PN_act,:);
-RunPN_actRapid_pethTrack = T.pethTrackLight(Run_PN_actDirect,:);
-RunPN_actDelay_pethTrack = T.pethTrackLight(Run_PN_actIndirect,:);
-RunPN_actDouble_pethTrack = T.pethTrackLight(Run_PN_actDouble,:);
+% RunPN_actRapid_pethTrack = T.pethTrackLight(Run_PN_actDirect,:);
+% RunPN_actDelay_pethTrack = T.pethTrackLight(Run_PN_actIndirect,:);
+% RunPN_actDouble_pethTrack = T.pethTrackLight(Run_PN_actDouble,:);
 RunPN_ina_pethTrack = T.pethTrackLight(Run_PN_ina,:);
 RunPN_no_pethTrack = T.pethTrackLight(Run_PN_noresp,:);
 
@@ -38,17 +38,17 @@ n_RunPN_act_pethTrack = size(RunPN_act_pethTrack,1);
 m_RunPN_act_pethTrack = mean(RunPN_act_pethTrack,1);
 sem_RunPN_act_pethTrack = std(RunPN_act_pethTrack,1)/sqrt(n_RunPN_act_pethTrack);
 
-n_RunPN_actRapid_pethTrack = size(RunPN_actRapid_pethTrack,1);
-m_RunPN_actRapid_pethTrack = mean(RunPN_actRapid_pethTrack,1);
-sem_RunPN_actRapid_pethTrack = std(RunPN_actRapid_pethTrack,1)/sqrt(n_RunPN_actRapid_pethTrack);
-
-n_RunPN_actDelay_pethTrack = size(RunPN_actDelay_pethTrack,1);
-m_RunPN_actDelay_pethTrack = mean(RunPN_actDelay_pethTrack,1);
-sem_RunPN_actDelay_pethTrack = std(RunPN_actDelay_pethTrack,1)/sqrt(n_RunPN_actDelay_pethTrack);
-
-n_RunPN_actDouble_pethTrack = size(RunPN_actDouble_pethTrack,1);
-m_RunPN_actDouble_pethTrack = mean(RunPN_actDouble_pethTrack,1);
-sem_RunPN_actDouble_pethTrack = std(RunPN_actDouble_pethTrack,1)/sqrt(n_RunPN_actDouble_pethTrack);
+% n_RunPN_actRapid_pethTrack = size(RunPN_actRapid_pethTrack,1);
+% m_RunPN_actRapid_pethTrack = mean(RunPN_actRapid_pethTrack,1);
+% sem_RunPN_actRapid_pethTrack = std(RunPN_actRapid_pethTrack,1)/sqrt(n_RunPN_actRapid_pethTrack);
+% 
+% n_RunPN_actDelay_pethTrack = size(RunPN_actDelay_pethTrack,1);
+% m_RunPN_actDelay_pethTrack = mean(RunPN_actDelay_pethTrack,1);
+% sem_RunPN_actDelay_pethTrack = std(RunPN_actDelay_pethTrack,1)/sqrt(n_RunPN_actDelay_pethTrack);
+% 
+% n_RunPN_actDouble_pethTrack = size(RunPN_actDouble_pethTrack,1);
+% m_RunPN_actDouble_pethTrack = mean(RunPN_actDouble_pethTrack,1);
+% sem_RunPN_actDouble_pethTrack = std(RunPN_actDouble_pethTrack,1)/sqrt(n_RunPN_actDouble_pethTrack);
 
 n_RunPN_ina_pethTrack = size(RunPN_ina_pethTrack,1);
 m_RunPN_ina_pethTrack = mean(RunPN_ina_pethTrack,1);
@@ -169,9 +169,9 @@ for iBin = 1:120
     [~, pBin_Run(iBin,3)] = ttest(spikeSmthNorespPre(:,iBin), spikeSmthNorespStm(:,iBin));
 end
 %% CBP test
-sigArea_PNact_Run = [4 19];
+sigArea_PNact_Run = [4 15];
 sigArea_PNina_Run = [3 24];
-sigArea_PNnoresp_Run = [20 26];
+sigArea_PNnoresp_Run = [20 29];
 % sigArea_PNact = statCBP_v2(spikeSmthActStm,spikeSmthActPre);
 % sigArea_PNina = statCBP_v2(spikeSmthInaStm,spikeSmthInaPre);
 % sigArea_PNnoresp = statCBP_v2(spikeSmthNorespStm,spikeSmthNorespPre);
@@ -192,13 +192,13 @@ plot(xpt,norm_m_spikeInaStm,'-o','color',colorBlue,'MarkerFaceColor',colorDarkBl
 hold on;
 plot(xpt,norm_m_spikeNorespStm,'-o','color',colorBlack,'MarkerFaceColor',colorDarkGray,'markerSize',markerSS,'LineWidth',lineM);
 hold on;
-line([sigArea_PNact_Run(1), sigArea_PNact_Run(end)],[15, 15],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
+line([sigArea_PNact_Run(1), sigArea_PNact_Run(end)],[17,17],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
 hold on;
 line([sigArea_PNina_Run(1), sigArea_PNina_Run(end)],[-1.5,-1.5],'color',colorBlue,'lineWidth', 2, 'lineStyle','-');
 hold on;
 line([sigArea_PNnoresp_Run(1), sigArea_PNnoresp_Run(end)],[-2.5,-2.5],'color',colorDarkGray,'lineWidth', 2, 'lineStyle','-');
-set(hPlotTrace,'Box','off','TickDIr','out','XLim',[-20,100],'XTick',[-20:20:40,100],'YLim',[-4, 17],'fontSize',fontM);
-set(hPlotTrace,'TickLength',[0.03 0.03]);
+set(hPlotTrace(1),'Box','off','TickDIr','out','XLim',[-20,100],'XTick',[-20:20:40,100],'YLim',[-4, 20],'fontSize',fontM);
+set(hPlotTrace(1),'TickLength',[0.03 0.03]);
 text(30, 6, ['Activated (n = ',num2str(nAct),')'],'color',colorRed,'fontSize',fontM);
 text(30, 4.5, ['Inactivated (n = ',num2str(nIna),')'],'color',colorBlue,'fontSize',fontM);
 text(30, 3, ['No response (n = ',num2str(nNoresp),')'],'color',colorBlack,'fontSize',fontM);
@@ -217,41 +217,41 @@ ylabel('Normalized mean spike','fontSize',fontM);
 % Rw_PN_Direct = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxpLR_Track & Txls.latencyIndex == 'direct';
 % Rw_PN_Indirect = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxpLR_Track & Txls.latencyIndex == 'indirect';
 % RW_PN_Double = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxpLR_Track & Txls.latencyIndex == 'double';
+% Rw_PN_Direct = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'direct';
+% Rw_PN_Indirect = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'indirect';
+% RW_PN_Double = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'double';
 Rw_PN_act = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1;
 Rw_PN_ina = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == -1;
 Rw_PN_no = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 0;
-Rw_PN_Direct = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'direct';
-Rw_PN_Indirect = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'indirect';
-RW_PN_Double = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idx_evoSpikeDir == 1 & Txls.latencyIndex == 'double';
 
 % latency time
 % direct = mean(T.latencyTrack1stN(PN_actDirect));
 % indirect = mean(T.latencyTrack1stN(PN_actIndirect));
 
 %% PETH
+% DRwPN_actRapid_pethTrack = T.pethTrackLight(Rw_PN_Direct,:);
+% DRwPN_actDelay_pethTrack = T.pethTrackLight(Rw_PN_Indirect,:);
+% DRwPN_actDouble_pethTrack = T.pethTrackLight(RW_PN_Double,:);
 DRwPN_act_pethTrack = T.pethTrackLight(Rw_PN_act,:);
-DRwPN_actRapid_pethTrack = T.pethTrackLight(Rw_PN_Direct,:);
-DRwPN_actDelay_pethTrack = T.pethTrackLight(Rw_PN_Indirect,:);
-DRwPN_actDouble_pethTrack = T.pethTrackLight(RW_PN_Double,:);
 DRwPN_ina_pethTrack = T.pethTrackLight(Rw_PN_ina,:);
 DRwPN_no_pethTrack = T.pethTrackLight(Rw_PN_no,:);
 
 %% Mean & Sem
+% n_DRwPN_actRapid_pethTrack = size(DRwPN_actRapid_pethTrack,1);
+% m_DRwPN_actRapid_pethTrack = mean(DRwPN_actRapid_pethTrack,1);
+% sem_DRwPN_actRapid_pethTrack = std(DRwPN_actRapid_pethTrack,1)/sqrt(n_DRwPN_actRapid_pethTrack);
+% 
+% n_DRwPN_actDelay_pethTrack = size(DRwPN_actDelay_pethTrack,1);
+% m_DRwPN_actDelay_pethTrack = mean(DRwPN_actDelay_pethTrack,1);
+% sem_DRwPN_actDelay_pethTrack = std(DRwPN_actDelay_pethTrack,1)/sqrt(n_DRwPN_actDelay_pethTrack);
+% 
+% n_DRwPN_actDouble_pethTrack = size(DRwPN_actDouble_pethTrack,1);
+% m_DRwPN_actDouble_pethTrack = mean(DRwPN_actDouble_pethTrack,1);
+% sem_DRwPN_actDouble_pethTrack = std(DRwPN_actDouble_pethTrack,1)/sqrt(n_DRwPN_actDouble_pethTrack);
+
 n_DRwPN_act_pethTrack = size(DRwPN_act_pethTrack,1);
 m_DRwPN_act_pethTrack = mean(DRwPN_act_pethTrack,1);
 sem_DRwPN_act_pethTrack = std(DRwPN_act_pethTrack,1)/sqrt(n_DRwPN_act_pethTrack);
-
-n_DRwPN_actRapid_pethTrack = size(DRwPN_actRapid_pethTrack,1);
-m_DRwPN_actRapid_pethTrack = mean(DRwPN_actRapid_pethTrack,1);
-sem_DRwPN_actRapid_pethTrack = std(DRwPN_actRapid_pethTrack,1)/sqrt(n_DRwPN_actRapid_pethTrack);
-
-n_DRwPN_actDelay_pethTrack = size(DRwPN_actDelay_pethTrack,1);
-m_DRwPN_actDelay_pethTrack = mean(DRwPN_actDelay_pethTrack,1);
-sem_DRwPN_actDelay_pethTrack = std(DRwPN_actDelay_pethTrack,1)/sqrt(n_DRwPN_actDelay_pethTrack);
-
-n_DRwPN_actDouble_pethTrack = size(DRwPN_actDouble_pethTrack,1);
-m_DRwPN_actDouble_pethTrack = mean(DRwPN_actDouble_pethTrack,1);
-sem_DRwPN_actDouble_pethTrack = std(DRwPN_actDouble_pethTrack,1)/sqrt(n_DRwPN_actDouble_pethTrack);
 
 n_DRwPN_ina_pethTrack = size(DRwPN_ina_pethTrack,1);
 m_DRwPN_ina_pethTrack = mean(DRwPN_ina_pethTrack,1);
@@ -369,9 +369,9 @@ for iBin = 1:120
 end
 
 %% CBP test
-sigArea_PNact_Rw = [2 20];
-sigArea_PNina_Rw = [5 27];
-sigArea_PNnoresp_Rw = [5 38];
+sigArea_PNact_Rw = [3 17];
+sigArea_PNina_Rw = [6 27];
+sigArea_PNnoresp_Rw = [9 27];
 % sigArea_PNact_Rw = statCBP_v2(spikeSmthActStm_Rw(:,21:60),spikeSmthActPre_Rw(:,21:60));
 % sigArea_PNina_Rw = statCBP_v2(spikeSmthInaStm_Rw(:,21:60),spikeSmthInaPre_Rw(:,21:60));
 % sigArea_PNnoresp_Rw = statCBP_v2(spikeSmthNorespStm_Rw(:,21:60),spikeSmthNorespPre_Rw(:,21:60));
@@ -381,20 +381,20 @@ sigArea_PNnoresp_Rw = [5 38];
 %%
 xpt = -20:99;
 
-hPlotTrace(1) = axes('Position',axpt(2,4,2,4,axpt(nCol,nRow,1:2,1:2,[0.15 0.1 0.85 0.85],midInterval),(wideInterval-[0,0.07])));
+hPlotTrace(2) = axes('Position',axpt(2,4,2,4,axpt(nCol,nRow,1:2,1:2,[0.15 0.1 0.85 0.85],midInterval),(wideInterval-[0,0.07])));
 plot(xpt,norm_m_spikeActStm,'-o','color',colorRed,'MarkerFaceColor',colorDarkRed,'markerSize',markerSS,'LineWidth',lineM);
 hold on;
 plot(xpt,norm_m_spikeInaStm,'-o','color',colorBlue,'MarkerFaceColor',colorDarkBlue,'markerSize',markerSS,'LineWidth',lineM);
 hold on;
 plot(xpt,norm_m_spikeNorespStm,'-o','color',colorBlack,'MarkerFaceColor',colorDarkGray,'markerSize',markerSS,'LineWidth',lineM);
 hold on;
-line([sigArea_PNact_Rw(1), sigArea_PNact_Rw(end)],[8.5,8.5],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
+line([sigArea_PNact_Rw(1), sigArea_PNact_Rw(end)],[8.5 8.5],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
 hold on;
 line([sigArea_PNina_Rw(1), sigArea_PNina_Rw(end)],[-1.5,-1.5],'color',colorBlue,'lineWidth', 2, 'lineStyle','-');
 hold on;
 line([sigArea_PNnoresp_Rw(1), sigArea_PNnoresp_Rw(end)],[-2.5,-2.5],'color',colorDarkGray,'lineWidth', 2, 'lineStyle','-');
-set(hPlotTrace,'Box','off','TickDIr','out','XLim',[-20,100],'XTick',[-20:20:40,100],'YLim',[-4, 10],'fontSize',fontM);
-set(hPlotTrace,'TickLength',[0.03 0.03]);
+set(hPlotTrace(2),'Box','off','TickDIr','out','XLim',[-20,100],'XTick',[-20:20:40,100],'YLim',[-4, 10],'fontSize',fontM);
+set(hPlotTrace(2),'TickLength',[0.03 0.03]);
 text(30, 6, ['Aactivated (n = ',num2str(nAct),')'],'color',colorRed,'fontSize',fontM);
 text(30, 4.5, ['Inactivated (n = ',num2str(nIna),')'],'color',colorBlue,'fontSize',fontM);
 text(30, 3, ['No response (n = ',num2str(nNoresp),')'],'color',colorBlack,'fontSize',fontM);

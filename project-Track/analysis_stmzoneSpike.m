@@ -91,17 +91,32 @@ sem_lapFrTotalzone(2) = std(lapFrTotal(31:60))/sqrt(30);
 sem_lapFrTotalzone(3) = std(lapFrTotal(61:80))/sqrt(30);
 % Statistics
     group = {'PRE','STM','POST'};
-    [~,~,stats_inFr] = kruskalwallis([lapFrInzone(1:30),lapFrInzone(31:60),lapFrInzone(61:90)],group,'off');
-    result_inFr = multcompare(stats_inFr,'ctype','bonferroni','Alpha',0.05,'Display','off');
-    p_ttest(:,1) = result_inFr(:,end); % p-value of in-zone
-
-    [~,~,stats_outFr] = kruskalwallis([lapFrOutzone(1:30),lapFrOutzone(31:60),lapFrOutzone(61:90)],group,'off');
-    result_outFr = multcompare(stats_outFr,'ctype','bonferroni','Alpha',0.05,'Display','off');
-    p_ttest(:,2) = result_outFr(:,end); % p-value of in-zone
+    p_ttest(1,1) = ranksum(lapFrInzone(1:30),lapFrInzone(31:60));
+    p_ttest(2,1) = ranksum(lapFrInzone(1:30),lapFrInzone(61:90));
+    p_ttest(3,1) = ranksum(lapFrInzone(31:60),lapFrInzone(61:90));
     
-    [~,~,stats_totalFr] = kruskalwallis([lapFrTotal(1:30),lapFrTotal(31:60),lapFrTotal(61:90)],group,'off');
-    result_totalFr = multcompare(stats_totalFr,'ctype','bonferroni','Alpha',0.05,'Display','off');
-    p_ttest(:,3) = result_totalFr(:,end); % p-value of in-zone
+    p_ttest(1,2) = ranksum(lapFrOutzone(1:30),lapFrOutzone(31:60));
+    p_ttest(2,2) = ranksum(lapFrOutzone(1:30),lapFrOutzone(61:90));
+    p_ttest(3,2) = ranksum(lapFrOutzone(31:60),lapFrOutzone(61:90));
+    
+    p_ttest(1,3) = ranksum(lapFrTotal(1:30),lapFrTotal(31:60));
+    p_ttest(2,3) = ranksum(lapFrTotal(1:30),lapFrTotal(61:90));
+    p_ttest(3,3) = ranksum(lapFrTotal(31:60),lapFrTotal(61:90));
+
+%     [~,~,stats_inFr] = friedman([lapFrInzone(1:30),lapFrInzone(31:60),lapFrInzone(61:90)],1,'off');
+%     [~,~,stats_inFr] = kruskalwallis([lapFrInzone(1:30),lapFrInzone(31:60),lapFrInzone(61:90)],group,'off');
+%     result_inFr = multcompare(stats_inFr,'Display','off');
+%     p_ttest(:,1) = result_inFr(:,end); % p-value of in-zone
+
+%     [~,~,stats_outFr] = friedman([lapFrOutzone(1:30),lapFrOutzone(31:60),lapFrOutzone(61:90)],1,'off');    
+%     [~,~,stats_outFr] = kruskalwallis([lapFrOutzone(1:30),lapFrOutzone(31:60),lapFrOutzone(61:90)],group,'off');
+%     result_outFr = multcompare(stats_outFr,'Display','off');
+%     p_ttest(:,2) = result_outFr(:,end); % p-value of in-zone
+    
+%     [~,~,stats_totalFr] = friedman([lapFrOutzone(1:30),lapFrOutzone(31:60),lapFrOutzone(61:90)],1,'off');    
+%     [~,~,stats_totalFr] = kruskalwallis([lapFrTotal(1:30),lapFrTotal(31:60),lapFrTotal(61:90)],group,'off');
+%     result_totalFr = multcompare(stats_totalFr,'Display','off');
+%     p_ttest(:,3) = result_totalFr(:,end); % p-value of in-zone
 
 % stay time in stm zone
     temp_dTime = sensorOff-sensorOn;

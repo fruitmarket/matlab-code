@@ -24,7 +24,7 @@ for iLap = 1:nLap
 end
 
 for iCell = 1:nCell
-    disp(['### detoSpike analysis: ',tList{iCell},'...']);
+    disp(['### Analysis: Lap 1st light 50Hz: ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     
@@ -41,7 +41,7 @@ for iCell = 1:nCell
         'xptPre1st', 'yptPre1st', 'pethtimePre1st', 'pethPre1st', 'pethPre1stConv', 'pethPre1stConvZ',...
         'xptPost1st', 'yptPost1st', 'pethtimePost1st', 'pethPost1st', 'pethPost1stConv', 'pethPost1stConvZ','-append');
 end
-disp('### detonate spike calculation is done! ###')
+disp('### analysis_lap1stlight50hz is done! ###')
 
 function spikeTime = spikeWin(spikeData, eventTime, win)
 % spikeWin makes raw spikeData to eventTime aligned data

@@ -54,10 +54,9 @@ for iPath = 1:nPath
 %             tagstat_trackOri50hz; % newest version
 %             mapCorr; % PreStm, PrePost, StmPost
 %             mapCorrEvOd; % For Even lap, odd lap of Pre-stm
-%             sensorMeanFR;
 %             analysis_burst6ms;
 %             analysis_wvformCrosscor50hz;
-            analysis_spatialRaster50hz;
+%             analysis_spatialRaster50hz;
 %             analysis_plfm_laserIntTest;
 %             laserFreqCheck50hz;
 %             analysis_detoSpike50hz;
@@ -67,11 +66,13 @@ for iPath = 1:nPath
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
 %             analysis_lap1stlight50hz;
-%             analysis_spatialRaster50hz_pvCorr;
+            analysis_spatialRaster50hz_pvCorr;
+% code not using
+
         case 'm'
             analysis_indexTrack50hz
 %             plot_Track_sin_v50hz;
-            plot_Track_sin_v50hz_lightraster;
+%             plot_Track_sin_v50hz_lightraster;
     end
     fclose('all');
     close all;

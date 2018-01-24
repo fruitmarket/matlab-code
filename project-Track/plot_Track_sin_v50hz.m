@@ -413,7 +413,7 @@ rewardLoc2 = [20*pi*9/6 20*pi*10/6];
 %         pRw(2) = patch([rewardLoc(2)+2.5, rewardLoc(2)+6.5, rewardLoc(2)+6.5, rewardLoc(2)+2.5],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
 %         hold on;
         for iType = 1:3
-            plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
+            plot(pethSpatial(1:124),pethconvSpatial(iType,1:124),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
         ylabel('Rate (Hz)','FontSize',fontM);
         xlabel('Position (cm)','FontSize',fontM);

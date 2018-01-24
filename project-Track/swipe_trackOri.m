@@ -71,7 +71,7 @@ for iPath = 1:nPath
 %             analysis_respstatTrack; % (log-rank test: PRE vs. STIM)
 %             analysis_burst6ms;
 %             analysis_wvformCrosscor;
-            analysis_spatialRaster;
+%             analysis_spatialRaster;
 %             analysis_lightPlaceSeparation; % sensor 6-7/7-8/8-9
 %             analysis_plfm_laserIntTest;
 %             analysis_track_peth1stLight;
@@ -80,7 +80,7 @@ for iPath = 1:nPath
 %             analysis_laserSpikeChange;
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
-%             analysis_spatialRaster_pvCorr;
+            analysis_spatialRaster_pvCorr;
 % #### code not using ####
 %             laserFreqCheck;
 %             mapCorr; % PreStm, PrePost, StmPost

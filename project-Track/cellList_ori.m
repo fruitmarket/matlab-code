@@ -162,7 +162,22 @@ for iFile = 1:nFile
     evoSpkTrack8hz = {evoSpkTrack8hz};
     evoSpkPlfm8hz = {evoSpkPlfm8hz};
     
-    rCorr1D_total = {rCorr1D_total}; % analysis_spatialRaster
+% analysis_spatialRaster50hz_pvCorr
+    rateMap1D_PRE1 = {rateMap1D_PRE1};
+    rateMap1D_PRE2 = {rateMap1D_PRE2};
+    rateMap1D_POST1 = {rateMap1D_POST1};
+    rateMap1D_POST2 = {rateMap1D_POST2};
+    rateMapRaw_PRE = {rateMapRaw_PRE};
+    rateMapRaw_STIM = {rateMapRaw_STIM};
+    rateMapRaw_POST = {rateMapRaw_POST};
+    rateMapRaw10_PRE = {rateMapRaw10_PRE};
+    rateMapRaw10_STIM = {rateMapRaw10_STIM};
+    rateMapRaw10_POST = {rateMapRaw10_POST};
+    rateMapRaw_eachLap = {rateMapRaw_eachLap};
+    rCorrRawLap_basePRE = {rCorrRawLap_basePRE};
+    rCorrRawLap_baseSTIM = {rCorrRawLap_baseSTIM};
+    rCorrRawLap_basePOST = {rCorrRawLap_basePOST};
+    rCorrMoving1D_total = {rCorrMoving1D_total};
     
     inzoneSpike = {inzoneSpike};
     sum_inzoneSpike = {sum_inzoneSpike};
@@ -198,13 +213,13 @@ for iFile = 1:nFile
         pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...
         pLR_TrackN,statDir_TrackN, latencyTrack1stN, latencyTrack2ndN,... % analysis_respstatTrack
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
+        rCorr1D_preXpre, rCorr1D_preXstm, rCorr1D_preXpost, rCorr1D_stmXpost, fCorr1D_preXpre, fCorr1D_preXstm, fCorr1D_preXpost, fCorr1D_stmXpost, rCorrRaw1D_preXstm, rCorrRaw1D_preXpost, rCorrRaw1D_stmXpost,... % analysis_pvCorr
+        rateMap1D_PRE1,rateMap1D_PRE2,rateMap1D_POST1,rateMap1D_POST2,...
+        rateMapRaw_PRE,rateMapRaw_STIM,rateMapRaw_POST,rateMapRaw10_PRE, rateMapRaw10_STIM, rateMapRaw10_POST, rateMapRaw_eachLap,rCorrRawLap_basePRE,rCorrRawLap_baseSTIM,rCorrRawLap_basePOST,rCorrMoving1D_total,... % analysis_spatialRaster50hz_pvCorr
         lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % analysis_plfm_laserIntTest
         evoSpike5mw,evoSpike8mw,evoSpike10mw,...
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
         lightProbTrack_2hz,lightProbTrack_8hz,lightProbPlfm_2hz,lightProbPlfm_8hz,...
-        rCorr1D_preXstm, pCorr1D_preXstm, rCorr1D_preXpost, pCorr1D_preXpost, rCorr1D_stmXpost, pCorr1D_stmXpost, rCorr1D_preXpre, pCorr1D_preXpre,...% analysis_CrossCorr1D // r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,...
-        fCorr1D_preXstm, fCorr1D_preXpost, fCorr1D_stmXpost, fCorr1D_preXpre,...
-        rCorr1D_total,...
         infoSpikePRE,infoSpikeSTM,infoSpikePOST,infoSpikeTotal,...
         infoSecondPRE,infoSecondSTM,infoSecondPOST,infoSecondTotal,...
         xptPlfm2hz,yptPlfm2hz,pethtimePlfm2hz,pethPlfm2hz,pethPlfm2hzConv,pethPlfm2hzConvZ,...
@@ -245,4 +260,4 @@ end
 cd(rtPath);
 formatOut = 'yymmdd';
 save(['neuronList_ori_',datestr(now,formatOut),'.mat'],'T');
-% writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);
+writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);

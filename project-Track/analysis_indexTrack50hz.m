@@ -5,14 +5,14 @@ nFile = length(matFile);
 
 cMeanFRLow = 0.1;
 cMeanFRPeak = 9;
-cPeakFR = 4;
+cPeakFR = 0.5;
 cSpkpvr = 1.2;
 cPixelLength = 5;
 cOverLapLength = 5;
 alpha = 0.01;
 
 for iFile = 1:nFile
-    disp(['### analyzing peak location:',matFile{iFile},'...']);
+    disp(['### analyzing Index:',matFile{iFile},'...']);
     [cellDir, cellName, ~] = fileparts(matFile{iFile});
     cd(cellDir);
     load(matFile{iFile},'meanFR_task','spkpvr','peakFR1D_track','pethconvSpatial','totalSpike','pLR_Track','pLR_Plfm50hz','p_ttest','m_lapFrInzone','m_lapFrOutzone','m_lapFrTotalzone');
@@ -37,7 +37,6 @@ for iFile = 1:nFile
 % a continuous region of at least 5 bins (5cm)in which the firing rate
 % was above 60% of the peak rate in the maze, containing at least one bin above 80% of the peak rate in the mze.
 % block-wise calculation --> if there is a place field in at least one block(PRE, STM, POST) consider there is a place field.
-    
     peakFR = max(pethconvSpatial,[],2);
     pethPRE = pethconvSpatial(1,:);
     tempValuePRE = regionprops(pethPRE>peakFR(1)*0.6,'PixelIdxList','Area');
@@ -149,7 +148,7 @@ for iFile = 1:nFile
     end
 
 %% Total spike number?
-    if sum(totalSpike) > 200
+    if sum(totalSpike) > 100
         idxTotalSpikeNum = true;
     else
         idxTotalSpikeNum = false;
@@ -177,7 +176,6 @@ for iFile = 1:nFile
     else
         idxmFrIn = 0;
     end
-    
     if p_ttest(1,2)<0.05 & (m_lapFrOutzone(2) > m_lapFrOutzone(1))
         idxmFrOut = 1;
     elseif p_ttest(1,2)<0.05 & (m_lapFrOutzone(2) < m_lapFrOutzone(1))

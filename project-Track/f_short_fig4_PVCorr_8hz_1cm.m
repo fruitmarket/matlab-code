@@ -1,6 +1,6 @@
 clearvars;
 cd('D:\Dropbox\SNL\P2_Track');
-load('neuronList_ori_171205.mat');
+load('neuronList_ori_171227.mat');
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 
 formatOut = 'yymmdd';

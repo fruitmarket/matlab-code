@@ -1,4 +1,4 @@
-function [thetaDist, theta, timeTrack, refPosition, numOccu, numOccuPRE, numOccuPOST] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win, binSizeSpace)
+function [thetaDist, theta, timeTrack, refPosition, numOccu, numOccuPRE, numOccuPOST, numOccuLap] = track2linear(vtPositionX, vtPositionY, vtTime, refSensor, timeOnTrack, win, binSizeSpace)
 %
 % outputs
 % thetaDist: cumulative position expressed in radian (2*pi is added for each lap)
@@ -74,7 +74,6 @@ numOccu(:,2) = histc(theta2cmStm,spatialBin);
 numOccu(:,3) = histc(theta2cmPost,spatialBin);
 numOccu = (numOccu/30)'; % devid by video tracking frequency (30Hz)
 
-
 theta2cmPRE1 = theta(refSensorIdx(1):(refSensorIdx(16)-1))*radius;
 theta2cmPRE2 = theta(refSensorIdx(16):(refSensorIdx(31)-1))*radius;
 numOccuPRE(:,1) = histc(theta2cmPRE1,spatialBin);
@@ -86,7 +85,14 @@ theta2cmPOST2 = theta(refSensorIdx(76):end)*radius;
 numOccuPOST(:,1) = histc(theta2cmPOST1,spatialBin);
 numOccuPOST(:,2) = histc(theta2cmPOST2,spatialBin);
 numOccuPOST = (numOccuPOST/30)';
- 
+
+theta2cmLap = [];
+for iLap = 1:89
+    theta2cmLap = theta(refSensorIdx(iLap):(refSensorIdx(iLap+1)-1))*radius;
+    numOccuLap(iLap,:) = histc(theta2cmLap,spatialBin);
+end
+numOccuLap(90,:) = histc((theta(refSensorIdx(end):end)*radius),spatialBin);
+numOccuLap = (numOccuLap/30);
 
 addDist = [];
 difTime = diff(refSensorIdx);

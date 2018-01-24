@@ -28,8 +28,8 @@ for iFile = 1:nFile
     taskType = categorical(cellstr(fileSeg{9}));
     taskProb = categorical(cellstr(fileSeg{10}));
     spkwv = {spkwv};
-    sensorMeanFR_DRun = {sensorMeanFR_DRun};
-    sensorMeanFR_DRw = {sensorMeanFR_DRw};
+    sensorMeanFR_Run = {sensorMeanFR_Run};
+    sensorMeanFR_Rw = {sensorMeanFR_Rw};
 
     m_spont_wv = {m_spont_wv};
     m_evoked_wv = {m_evoked_wv};
@@ -83,6 +83,19 @@ for iFile = 1:nFile
     m_lapFrTotalzone = {m_lapFrTotalzone};
     p_ttestFR = {p_ttest};
     
+% analysis_spatialRaster50hz_pvCorr
+    rateMapRaw_PRE = {rateMapRaw_PRE};
+    rateMapRaw_STIM = {rateMapRaw_STIM};
+    rateMapRaw_POST = {rateMapRaw_POST};
+    rateMapRaw10_PRE = {rateMapRaw10_PRE};
+    rateMapRaw10_STIM = {rateMapRaw10_STIM};
+    rateMapRaw10_POST = {rateMapRaw10_POST};
+    rateMapRaw_eachLap = {rateMapRaw_eachLap};
+    rCorrRawLap_basePRE = {rCorrRawLap_basePRE};
+    rCorrRawLap_baseSTIM = {rCorrRawLap_baseSTIM};
+    rCorrRawLap_basePOST = {rCorrRawLap_basePOST};
+    rCorrMoving1D_total = {rCorrMoving1D_total};
+    
     peakloci_total = {peakloci_total};
     peakloci_stm = {peakloci_stm};
     fieldArea_total = {fieldArea_total};
@@ -96,13 +109,14 @@ for iFile = 1:nFile
         spkwv,spkwth,hfvwth,spkpvr,...  % waveform
         peakFR2D_track,peakFR2D_plfm,...    % heatMap
         peakFR1D_track,... % analysis_spatialRaster
-        sensorMeanFR_DRun,sensorMeanFR_DRw,... % sensorMeanFR
+        sensorMeanFR_Run,sensorMeanFR_Rw,... % sensorMeanFR
         xptTrackLight, xptPsdPre, xptPsdPost,...
         pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd,...
         pLR_Plfm50hz, statDir_Plfm50hz, latencyPlfm50hz1st, latencyPlfm50hz2nd,...
         pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
-        rCorr1D_preXstm, pCorr1D_preXstm, rCorr1D_preXpost, pCorr1D_preXpost, rCorr1D_stmXpost, pCorr1D_stmXpost,...% analysis_CrossCorr1D // r_CorrPrePre,p_CorrPrePre,r_CorrPreStm,p_CorrPreStm,r_CorrPrePost,p_CorrPrePost,r_CorrStmPost,p_CorrStmPost,... % mapCorr
+        rCorr1D_preXpre, rCorr1D_preXstm, rCorr1D_preXpost, rCorr1D_stmXpost, fCorr1D_preXpre, fCorr1D_preXstm, fCorr1D_preXpost, fCorr1D_stmXpost,rCorrRaw1D_preXstm, rCorrRaw1D_preXpost, rCorrRaw1D_stmXpost,... % analysis_pvCorr
+        rateMapRaw_PRE, rateMapRaw_STIM, rateMapRaw_POST, rateMapRaw10_PRE, rateMapRaw10_STIM, rateMapRaw10_POST, rateMapRaw_eachLap,rCorrRawLap_basePRE,rCorrRawLap_baseSTIM,rCorrRawLap_basePOST,rCorrMoving1D_total,... % analysis_spatialRaster50hz_pvCorr
         lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % analysis_plfm_laserIntTest
         evoSpike5mw,evoSpike8mw,evoSpike10mw,...
         lightPlfmSpk2hz8mw, lightPlfmSpk50hz, lightTrackSpk2hz8mw, lightTrackSpk50hz,... % laserFreqCheck
@@ -128,6 +142,6 @@ end
 cd(rtPath);
 formatOut = 'yymmdd';
 save(['neuronList_ori50hz_',datestr(now,formatOut),'.mat'],'T');
-writetable(Txls,['neuronList_ori50hz_',datestr(date,formatOut),'.xlsx']);
+% writetable(Txls,['neuronList_ori50hz_',datestr(date,formatOut),'.xlsx']);
 clearvars;
 disp('### neuron list file is generated! ###');

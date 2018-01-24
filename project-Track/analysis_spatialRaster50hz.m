@@ -1,7 +1,7 @@
 % Variables for PETH & raster
 winLinear = [1,125]; % 1 to 125 cm / since the radius is 20 cm (ID: 17.5cm)
 winSpace = [0,124];
-binSizeSpace = 4; % 1 [unit: cm]
+binSizeSpace = 1; % 1 [unit: cm]
 resolution = 2;
 dot = 1;
 
@@ -13,7 +13,7 @@ nCell = length(tList);
 load('Events.mat','sensor','trialIndex','lightTime','reward2','reward4','calib_distance');
 
 % Linearize position data
-[realDist, theta, timeTrack, eventPosition, numOccu, numOccuPRE] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear, binSizeSpace);
+[realDist, theta, timeTrack, eventPosition, numOccu, numOccuPRE, numOccuPost, numOccuLap] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear, binSizeSpace);
     
 % align spike time to position time
 for iCell = 1:nCell
@@ -34,56 +34,6 @@ for iCell = 1:nCell
     for iSpike = 1:nSpike
         spkPositionIdx(iSpike) = find((timeTrack == newSpikeData(iSpike)));
     end
-
-% % stimulation zone
-%     lapStartLightIdx = [1;find(diff(lightTime.Track50hz)>1000)+1];
-%     temp_lightOnLoci = zeros(30,1);
-%     for iIdx = 1:30
-%         [~, lightOnIdx] = min(abs(lightTime.Track50hz(lapStartLightIdx(iIdx))-timeTrack));
-%         temp_lightOnLoci(iIdx) = theta(lightOnIdx)*20;
-%     end
-%     lightOnLoc = floor(mean(temp_lightOnLoci)*10)/10;
-%     
-%     lapEndLightIdx = [find(diff(lightTime.Track50hz)>1000);length(lightTime.Track50hz)];
-%     temp_lightOffLoci = zeros(30,1);
-%     for iIdx = 1:30
-%         [~, lightOffIdx] = min(abs(lightTime.Track50hz(lapEndLightIdx(iIdx))-timeTrack));
-%         temp_lightOffLoci(iIdx) = theta(lightOffIdx)*20;
-%     end
-%     lightOffLoc = ceil(mean(temp_lightOffLoci)*10)/10;
-%     lightLoc = [lightOnLoc, lightOffLoc];
-% 
-% % Reward zone
-%     for iReward = 1:90
-%             [~,reward2on_idx] = min(abs(sensor.S4(iReward)-timeTrack));
-%             temp_reward2on_idx = theta(reward2on_idx)*20;
-%             [~,reward2off_idx] = min(abs(sensor.S5(iReward)-timeTrack));
-%             temp_reward2off_idx = theta(reward2off_idx)*20;
-%             [~,reward4on_idx] = min(abs(sensor.S10(iReward)-timeTrack));
-%             temp_reward4on_idx = theta(reward4on_idx)*20;
-%             [~,reward4off_idx] = min(abs(sensor.S11(iReward)-timeTrack));
-%             temp_reward4off_idx = theta(reward4off_idx)*20;     
-%     end
-%     reward2Loc = [round(mean(temp_reward2on_idx)*10)/10 round(mean(temp_reward2off_idx)*10)/10];
-%     reward4Loc = [round(mean(temp_reward4on_idx)*10)/10 round(mean(temp_reward4off_idx)*10)/10];
-%     rewardLoc = [reward2Loc; reward4Loc];
-% 
-%     abso_reward2Posi = [3/6 4/6]*20*pi;
-%     abso_reward4Posi = [9/6 10/6]*20*pi;
-%     if(regexp(cellPath,'Run'))
-%        abso_light = [5/6 8/6]*20*pi;
-%     else
-%        abso_light = [9/6 10/6]*20*pi;
-%     end
-%     diff_light = abso_light - lightLoc;
-%     diff_reward2 = abso_reward2Posi - reward2Loc;
-%     diff_reward4 = abso_reward4Posi - reward4Loc;
-%     calib_distance = mean([diff_light, diff_reward2, diff_reward4]);
-%     calib_distance = round(calib_distance);
-%     eventPosition_calib = eventPosition - calib_distance;
-%     
-%     temp_numOccu = numOccu(:,1:end-1);
-%     numOccu_cali = [temp_numOccu(:,end-calib_distance+1:end), temp_numOccu(:,1:end-calib_distance)];
     
 %% location calibration 
     if calib_distance > 0
@@ -103,47 +53,6 @@ for iCell = 1:nCell
     peakFR1D_track = max(pethconvSpatial,[],2);
     
     save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','peakFR1D_track','-append');
-
-    %% spatial correlation 1D
-    rateMap1D_PRE = pethconvSpatial(1,:);
-    rateMap1D_STM = pethconvSpatial(2,:);
-    rateMap1D_POST = pethconvSpatial(3,:);
-    idxCompare = min([sum(double(isfinite(rateMap1D_PRE))), sum(double(isfinite(rateMap1D_STM))), sum(double(isfinite(rateMap1D_POST)))]);
-       
-    [rCorr1D_preXstm, pCorr1D_preXstm] = corr(rateMap1D_PRE(1:idxCompare)',rateMap1D_STM(1:idxCompare)','type','Pearson'); % corr calculates based on column vectors
-    [rCorr1D_preXpost, pCorr1D_preXpost] = corr(rateMap1D_PRE(1:idxCompare)',rateMap1D_POST(1:idxCompare)','type','Pearson');
-    [rCorr1D_stmXpost, pCorr1D_stmXpost] = corr(rateMap1D_STM(1:idxCompare)',rateMap1D_POST(1:idxCompare)','type','Pearson');
-    fCorr1D_preXstm = fisherZ(rCorr1D_preXstm);
-    fCorr1D_preXpost = fisherZ(rCorr1D_preXpost);
-    fCorr1D_stmXpost = fisherZ(rCorr1D_stmXpost);
-    save([cellName,'.mat'],'rateMap1D_PRE','rateMap1D_STM','rateMap1D_POST','rCorr1D_preXstm','pCorr1D_preXstm','rCorr1D_preXpost','pCorr1D_preXpost','rCorr1D_stmXpost','pCorr1D_stmXpost','fCorr1D_preXstm','fCorr1D_preXpost','fCorr1D_stmXpost','-append');
-    
-    spikePositionPRE = spikePosition(1:30);
-    A = [1,0];
-    B = [0,1];
-    trialIndexPRE = logical([repmat(A,15,1);repmat(B,15,1)]);
-    [~, ~, ~, ~, pethconvSpatialPRE, ~] = spatialrasterPETH(spikePositionPRE, trialIndexPRE, numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
-    rateMap1D_PRE1 = pethconvSpatialPRE(1,:);
-    rateMap1D_PRE2 = pethconvSpatialPRE(2,:);
-    [rCorr1D_preXpre, pCorr1D_preXpre] = corr(rateMap1D_PRE1',rateMap1D_PRE2','type','Pearson','rows','pairwise');
-    fCorr1D_preXpre = fisherZ(rCorr1D_preXpre);
-    if isnan(fCorr1D_preXpre)
-        fCorr1D_preXpre = 0;
-    end
-    save([cellName,'.mat'],'rCorr1D_preXpre','pCorr1D_preXpre','fCorr1D_preXpre','-append');
-
-%% Smoothing correlation
-    spikePositionBase = spikePosition(1:30);
-    [~,~,~,~,pethconvSpatialBase,~] = spatialrasterPETH(spikePositionBase, true(30,1), numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
-    
-    nTest = 81;
-    rCorr1D_total = zeros(81,1);
-    for iTest = 1: nTest
-        spikePositionTest = spikePosition(iTest:iTest+9);
-        [~,~,~,~,pethconvSpatialTest,~] = spatialrasterPETH(spikePositionTest, true(10,1), numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
-        rCorr1D_total(iTest) = corr(pethconvSpatialBase',pethconvSpatialTest','type','Pearson','rows','pairwise');
-    end
-    save([cellName,'.mat'],'rCorr1D_total','-append');
     
 %% Spatial information (spikePosition, occupancy are required)
     meanFRPRE = length(cell2mat(spikePosition(1:30)))/(sensor.S1(30)-sensor.S1(1))*1000;

@@ -5,7 +5,7 @@ nFile = length(matFile);
 
 cMeanFRLow = 0.1;
 cMeanFRPeak = 9;
-cPeakFR = 4;
+cPeakFR = 0.5;
 cSpkpvr = 1.2;
 cPixelLength = 5;
 % cOverLapLength = 5;
@@ -153,7 +153,7 @@ for iFile = 1:nFile
     end
 
 %% Total spike number?
-    if sum(totalSpike) > 200
+    if sum(totalSpike) > 100
         idxTotalSpikeNum = true;
     else
         idxTotalSpikeNum = false;

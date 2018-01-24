@@ -2,7 +2,7 @@ rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 load myParameters.mat;
-load neuronList_ori50hz_171014.mat
+load neuronList_ori50hz_171227.mat
 formatOut = 'yymmdd';
 
 fontM = 7;
@@ -19,14 +19,14 @@ idx_inc = m_lapFrInPRE < m_lapFrInSTM;
 idx_dec = m_lapFrInPRE > m_lapFrInSTM; % STM block decreased neurons (inactivation)
 min_lapFrRun = min(m_lapFrInPRE(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & idx_dec & idx_pPRExSTM));
 min_lapFrRw = min(m_lapFrInPRE(T.taskType == 'DRw' & T.idxNeurontype == 'PN' & idx_dec & idx_pPRExSTM));
-idx_FrRun = m_lapFrInPRE>min_lapFrRun; % min firing rate that can be detected by inactivation
-idx_FrRw = m_lapFrInPRE>min_lapFrRw; % min firing rate that can be detected by inactivation
+idx_FrRun = m_lapFrInPRE>=min_lapFrRun; % min firing rate that can be detected by inactivation
+idx_FrRw = m_lapFrInPRE>=min_lapFrRw; % min firing rate that can be detected by inactivation
 
 
 % cellID = T.cellID(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & idx_pPRExSTM & idx_inc);
 % saveDir = 'D:\Dropbox\SNL\P2_Track\example_short_supple_PC\RunAct';
-% cellID = T.cellID(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & idx_pPRExSTM & idx_dec);
-% saveDir = 'D:\Dropbox\SNL\P2_Track\example_short_supple_PC\RunIna';
+cellID = T.cellID(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & idx_pPRExSTM & idx_dec);
+saveDir = 'D:\Dropbox\SNL\P2_Track\example_short_supple_PC\RunIna';
 % cellID = T.cellID(T.taskType == 'DRun' & T.idxNeurontype == 'PN' & ~idx_pPRExSTM);
 % saveDir = 'D:\Dropbox\SNL\P2_Track\example_short_supple_PC\RunNo';
 

@@ -15,7 +15,7 @@ nRow = 6;
 load('D:\Projects\Track_161130-3_Rbp64freq\170304_DV2.05_1hz2hz8hz20hz50hz_T3\TT3_1.mat');
 load('D:\Projects\Track_161130-3_Rbp64freq\170304_DV2.05_1hz2hz8hz20hz50hz_T3\Events.mat');
 
-hLightNormal(1) = axes('Position',axpt(5,4,1,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+hLightNormal(1) = axes('Position',axpt(5,4,1,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.90 0.85],midInterval),midInterval+[0.015 0]));
 hLBarNor(1) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt1hz_ori{1},ypt1hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFaceColor','k','markerEdgeColor','none');
@@ -23,36 +23,36 @@ ylabel('Light pulse #','FontSize',fontM);
 % xlabel('Time (ms)','FontSize',fontS);
 title('1 Hz','fontSize',fontM);
 
-hLightNormal(2) = axes('Position',axpt(5,4,2,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+hLightNormal(2) = axes('Position',axpt(5,4,2,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.90 0.85],midInterval),midInterval+[0.015 0]));
 hLBarNor(2) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt2hz_ori{1},ypt2hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFaceColor','k','markerEdgeColor','none');
 % xlabel('Time (ms)','FontSize',fontS);
 title('2 Hz','fontSize',fontM);
 
-hLightNormal(3) = axes('Position',axpt(5,4,3,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+hLightNormal(3) = axes('Position',axpt(5,4,3,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.90 0.85],midInterval),midInterval+[0.015 0]));
 hLBarNor(3) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt8hz_ori{1},ypt8hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFace','k','markerEdgeColor','none');
 xlabel('Time (ms)','FontSize',fontM);
 title('8 Hz','fontSize',fontM);
 
-hLightNormal(4) = axes('Position',axpt(5,4,4,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+hLightNormal(4) = axes('Position',axpt(5,4,4,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.90 0.85],midInterval),midInterval+[0.015 0]));
 hLBarNor(4) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt20hz_ori{1},ypt20hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFaceColor','k','markerEdgeColor','none');
 title('20 Hz','fontSize',fontM);
 
-hLightNormal(5) = axes('Position',axpt(5,4,5,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+hLightNormal(5) = axes('Position',axpt(5,4,5,1:4,axpt(nCol,nRow,1,1,[0.1 0.1 0.90 0.85],midInterval),midInterval+[0.015 0]));
 hLBarNor(5) = rectangle('Position',[0,0,10,nTrial_ori],'LineStyle','none','FaceColor',colorLLightBlue);
 hold on;
 plot(xpt50hz_ori{1},ypt50hz_ori{1},'LineStyle','none','Marker','o','MarkerSize',markerSS,'markerFaceColor','k','markerEdgeColor','none');
 % xlabel('Time (ms)','FontSize',fontS);
 title('50 Hz','fontSize',fontM);
 
-set(hLightNormal,'XLim',winCri_ori,'XTick',[],'YLim',[0, nTrial_ori],'YTick',[]);
+set(hLightNormal,'XLim',winCri_ori,'XTick',[0, 20],'YLim',[0, nTrial_ori],'YTick',[]);
 set(hLightNormal(1),'YTick',[0:100:300]);
-set(hLightNormal(3),'XTick',[0 20]);
+% set(hLightNormal(3),'XTickLabel',[0 20]);
 set(hLightNormal,'Box','off','TickDir','out','fontSize',fontM);
 set(hLightNormal,'TickLength',[0.03, 0.03]);
 
@@ -91,8 +91,8 @@ sem_2hz_T = std(lightProb2hzT)/sqrt(nCellT);
 sem_8hz_T = std(lightProb8hzT)/sqrt(nCellT);
 sem_20hz_T = std(lightProb20hzT)/sqrt(nCellT);
 sem_50hz_T = std(lightProb50hzT)/sqrt(nCellT);
-
-% [p,~,stats] = kruskalwallis([lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],{'1Hz','2Hz','8Hz','20Hz','50Hz'},'off');
+a = [lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT];
+[p,tbl,stats] = friedman(a,1,'off');
 % [~,~,result] = multcompare(stats,'ctype','bonferroni');
 % p_KW = result(:,end);
 
@@ -109,7 +109,7 @@ xlabel('Frequency (Hz)','fontSize',fontM);
 
 set(hPlot,'TickDir','out','Box','off','TickLength',[0.03,0.03]);
 set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontM);
-set(hPlot,'YLim',[-1,60]);
+set(hPlot,'YLim',[-1,65]);
 
 %%
 pop_1hz_act = listPN & (T.idx_light1hz == 1);

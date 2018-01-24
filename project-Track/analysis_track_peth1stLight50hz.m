@@ -17,7 +17,7 @@ lightOnPre = psdlightPre([1; (find(diff(psdlightPre)>1000)+1)]);
 lightOnPost = psdlightPost([1; (find(diff(psdlightPost)>1000)+1)]);
 
 for iCell = 1:nCell
-    disp(['### pethLight analysis: ',tList{iCell},'...']);
+    disp(['### Analysis PETH 1st Light 50hz: ',tList{iCell},'...']);
     [cellPath, cellName, ~] = fileparts(tList{iCell});
     cd(cellPath);
     

@@ -123,9 +123,9 @@ for iCell = 1:nCell
     spikePositionBaseSTIM = spikePosition(41:50);
     spikePositionBasePOST = spikePosition(71:80);
 
-    [~,~,~,pethLapRawBase10_PRE,rateMapConvBase10_PRE,~] = spatialrasterPETH(spikePositionBasePRE,true(10,1),sum(numOccuLap_cali(11:20,:),1),winSpace, binSize, resolution, dot);
-    [~,~,~,pethLapRawBase10_STIM,rateMapConvBase10_STIM,~] = spatialrasterPETH(spikePositionBaseSTIM,true(10,1),sum(numOccuLap_cali(41:50,:),1),winSpace, binSize, resolution, dot);
-    [~,~,~,pethLapRawBase10_POST,rateMapConvBase10_POST,~] = spatialrasterPETH(spikePositionBasePOST,true(10,1),sum(numOccuLap_cali(71:80,:),1),winSpace, binSize, resolution, dot);
+    [~,~,~,pethLapRawBase10_PRE,rateMapConv10_PRE,~] = spatialrasterPETH(spikePositionBasePRE,true(10,1),sum(numOccuLap_cali(11:20,:),1),winSpace, binSize, resolution, dot);
+    [~,~,~,pethLapRawBase10_STIM,rateMapConv10_STIM,~] = spatialrasterPETH(spikePositionBaseSTIM,true(10,1),sum(numOccuLap_cali(41:50,:),1),winSpace, binSize, resolution, dot);
+    [~,~,~,pethLapRawBase10_POST,rateMapConv10_POST,~] = spatialrasterPETH(spikePositionBasePOST,true(10,1),sum(numOccuLap_cali(71:80,:),1),winSpace, binSize, resolution, dot);
     rateMapRaw10_PRE = pethLapRawBase10_PRE;
     rateMapRaw10_STIM = pethLapRawBase10_STIM;
     rateMapRaw10_POST = pethLapRawBase10_POST;
@@ -136,9 +136,9 @@ for iCell = 1:nCell
         rCorrRawLap_basePRE(1,iLap) = corr(pethLapRawBase10_PRE', pethLapRawSpatial(iLap,:)','rows','pairwise');
         rCorrRawLap_baseSTIM(1,iLap) = corr(pethLapRawBase10_STIM', pethLapRawSpatial(iLap,:)','rows','pairwise');
         rCorrRawLap_basePOST(1,iLap) = corr(pethLapRawBase10_POST', pethLapRawSpatial(iLap,:)','rows','pairwise');
-        rCorrConvLap_basePRE(1,iLap) = corr(rateMapConvBase10_PRE', rateMapConv_eachLap(iLap,:)','rows','pairwise');
-        rCorrConvLap_baseSTIM(1,iLap) = corr(rateMapConvBase10_STIM', rateMapConv_eachLap(iLap,:)','rows','pairwise');
-        rCorrConvLap_basePOST(1,iLap) = corr(rateMapConvBase10_POST', rateMapConv_eachLap(iLap,:)','rows','pairwise');        
+        rCorrConvLap_basePRE(1,iLap) = corr(rateMapConv10_PRE', rateMapConv_eachLap(iLap,:)','rows','pairwise');
+        rCorrConvLap_baseSTIM(1,iLap) = corr(rateMapConv10_STIM', rateMapConv_eachLap(iLap,:)','rows','pairwise');
+        rCorrConvLap_basePOST(1,iLap) = corr(rateMapConv10_POST', rateMapConv_eachLap(iLap,:)','rows','pairwise');        
     end
     save([cellName,'.mat'],'rateMapRaw10_PRE','rateMapRaw10_STIM','rateMapRaw10_POST','rCorrRawLap_basePRE','rCorrRawLap_baseSTIM','rCorrRawLap_basePOST',...
         'rateMapConv10_PRE','rateMapConv10_STIM','rateMapConv10_POST','rCorrConvLap_basePRE','rCorrConvLap_baseSTIM','rCorrConvLap_basePOST','-append');

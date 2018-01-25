@@ -1,7 +1,7 @@
 clearvars;
-cd('D:\Dropbox\SNL\P2_Track');
+cd('E:\Dropbox\SNL\P2_Track');
 
-load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
+load('E:\Dropbox\SNL\P2_Track\myParameters.mat');
 formatOut = 'yymmdd';
 
 markerS = 1.5;
@@ -11,7 +11,8 @@ colorLightGray = [240 240 240]./255;
 colorDarkGray = [170 170 170]./255;
 
 % 1cm win
-load('neuronList_ori_171229.mat');
+% load('neuronList_ori50hz_171229.mat');
+load('neuronList_ori50hz_180125.mat');
 lightLoc_Run = [floor(20*pi*5/6) ceil(20*pi*8/6)];
 lightLoc_Rw = [floor(20*pi*9/6) ceil(20*pi*10/6)];
 
@@ -30,9 +31,8 @@ cri_meanFR = 1;
 %%
 % TN: track neuron
 % tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN';
-tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField;
 % tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
+tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
 % tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 
 ntPC_DRun = sum(double(tPC_DRun));
@@ -77,9 +77,8 @@ end
 
 %%
 % tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN';
-tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField;
 % tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
+tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
 % tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 
 ntPC_DRw = sum(double(tPC_DRw));
@@ -122,15 +121,15 @@ end
 
 %% noLight 
 % load('neuronList_ori_171205.mat');
-load('neuronList_ori_171229.mat');
+% load('neuronList_ori_171229.mat');
+load('neuronList_ori_180125.mat');
 % load('neuronList_ori_171219_2cm.mat');
 % load('neuronList_ori_171219_4cm.mat');
 
 %%%% noRun %%%%
 % tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN';
-tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField;
 % tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
+tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
 % tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 
 ntPC_noRun = sum(double(tPC_noRun));
@@ -153,9 +152,8 @@ end
 
 %%%% noRw %%%%
 % tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN';
-% tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField;
 % tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
+tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
 % tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 ntPC_noRw = sum(double(tPC_noRw));
 
@@ -203,40 +201,34 @@ sem_pvCorr_noRw = [std(pvCorr_noRw_preXstm,0,2)/sqrt(nBin_ctrl), std(pvCorr_noRw
 
 % Run session
 [p_totalRun(1), table, stats] = kruskalwallis([pvCorr_inRun_preXstm,pvCorr_outRun_preXstm,pvCorr_noRun_preXstm],group_Run,'off');
-result_Run = multcompare(stats,'ctype','hsd','Display','off');
 % result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Run = multcompare(stats,'ctype','lsd','Display','off');
+result_Run = multcompare(stats,'ctype','lsd','Display','off');
 p_Run(:,1) = result_Run(:,end);
 
 [p_totalRun(2), table, stats] = kruskalwallis([pvCorr_inRun_preXpost,pvCorr_outRun_preXpost,pvCorr_noRun_preXpost],group_Run,'off');
-result_Run = multcompare(stats,'ctype','hsd','Display','off');
 % result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Run = multcompare(stats,'ctype','lsd','Display','off');
+result_Run = multcompare(stats,'ctype','lsd','Display','off');
 p_Run(:,2) = result_Run(:,end);
 
 [p_totalRun(3), table, stats] = kruskalwallis([pvCorr_inRun_stmXpost,pvCorr_outRun_stmXpost,pvCorr_noRun_stmXpost],group_Run,'off');
-result_Run = multcompare(stats,'ctype','hsd','Display','off');
 % result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Run = multcompare(stats,'ctype','lsd','Display','off');
+result_Run = multcompare(stats,'ctype','lsd','Display','off');
 p_Run(:,3) = result_Run(:,end);
 
 % Rw session
 [p_totalRw(1), table, stats] = kruskalwallis([pvCorr_inRw_preXstm,pvCorr_outRw_preXstm,pvCorr_noRw_preXstm],group_Rw,'off');
-result_Rw = multcompare(stats,'ctype','hsd','Display','off');
 % result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Rw = multcompare(stats,'ctype','lsd','Display','off');
+result_Rw = multcompare(stats,'ctype','lsd','Display','off');
 p_Rw(:,1) = result_Rw(:,end);
 
 [p_totalRw(2), table, stats] = kruskalwallis([pvCorr_inRw_preXpost,pvCorr_outRw_preXpost,pvCorr_noRw_preXpost],group_Rw,'off');
-result_Rw = multcompare(stats,'ctype','hsd','Display','off');
 % result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Rw = multcompare(stats,'ctype','lsd','Display','off');
+result_Rw = multcompare(stats,'ctype','lsd','Display','off');
 p_Rw(:,2) = result_Rw(:,end);
 
 [p_totalRw(3), table, stats] = kruskalwallis([pvCorr_inRw_stmXpost,pvCorr_outRw_stmXpost,pvCorr_noRw_stmXpost],group_Rw,'off');
-result_Rw = multcompare(stats,'ctype','hsd','Display','off');
 % result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Rw = multcompare(stats,'ctype','lsd','Display','off');
+result_Rw = multcompare(stats,'ctype','lsd','Display','off');
 p_Rw(:,3) = result_Rw(:,end);
 
 %%

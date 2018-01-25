@@ -2,7 +2,7 @@
 winLinear = [1,125]; % 1 to 125 cm / since the radius is 20 cm (ID: 17.5cm)
 winSpace = [0,124];
 binSizeSpace = 1; % 1 [unit: cm]
-resolution = 2;
+resolution = 1;
 dot = 1;
 
 % Load files

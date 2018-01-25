@@ -80,7 +80,7 @@ for iCell = 1:nCell
     fCorr1D_preXstm = fisherZ(rCorr1D_preXstm);
     fCorr1D_preXpost = fisherZ(rCorr1D_preXpost);
     fCorr1D_stmXpost = fisherZ(rCorr1D_stmXpost);
-    save([cellName,'.mat'],'rCorr1D_preXstm','pCorr1D_preXstm','rCorr1D_preXpost','pCorr1D_preXpost','rCorr1D_stmXpost','pCorr1D_stmXpost','fCorr1D_preXstm','fCorr1D_preXpost','fCorr1D_stmXpost','-append');
+    save([cellName,'.mat'],'rateMap1D_PRE','rateMap1D_STM','rateMap1D_POST','rCorr1D_preXstm','pCorr1D_preXstm','rCorr1D_preXpost','pCorr1D_preXpost','rCorr1D_stmXpost','pCorr1D_stmXpost','fCorr1D_preXstm','fCorr1D_preXpost','fCorr1D_stmXpost','-append');
     
     spikePositionPRE = spikePosition(1:30);
     A = [1,0];

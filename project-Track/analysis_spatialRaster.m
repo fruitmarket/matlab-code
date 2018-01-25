@@ -12,7 +12,7 @@ load('Events.mat','sensor','trialIndex','lightTime','reward2','reward4','calib_d
 winLinear = [1,125]; %-calib_distance; % [1,125] total length of the track (r: 20 cm (ID: 17.5cm))
 winSpace = [0,124]; % [0,124]
 binSizeSpace = 1; % 1 [unit: cm]
-resolution = 2;
+resolution = 1;
 dot = 1;
 
 %% Linearize position data

@@ -5,7 +5,7 @@ winSpace = [0,124];
 % winSpace = [0,110];
 % binSize = 4; % 1 [unit: cm]
 binSize = 1; % 1 [unit: cm]
-resolution = 2;
+resolution = 1;
 dot = 1;
 
 % Load files

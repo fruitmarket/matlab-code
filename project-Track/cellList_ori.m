@@ -177,7 +177,14 @@ for iFile = 1:nFile
     rCorrRawLap_basePRE = {rCorrRawLap_basePRE};
     rCorrRawLap_baseSTIM = {rCorrRawLap_baseSTIM};
     rCorrRawLap_basePOST = {rCorrRawLap_basePOST};
-    rCorrMoving1D_total = {rCorrMoving1D_total};
+    
+    rateMapConv10_PRE = {rateMapConv10_PRE};
+    rateMapConv10_STIM = {rateMapConv10_STIM};
+    rateMapConv10_POST = {rateMapConv10_POST};
+    rateMapConv_eachLap = {rateMapConv_eachLap};
+    rCorrConvLap_basePRE = {rCorrConvLap_basePRE};
+    rCorrConvLap_baseSTIM = {rCorrConvLap_baseSTIM};
+    rCorrConvLap_basePOST = {rCorrConvLap_basePOST};
     
     inzoneSpike = {inzoneSpike};
     sum_inzoneSpike = {sum_inzoneSpike};
@@ -215,7 +222,9 @@ for iFile = 1:nFile
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
         rCorr1D_preXpre, rCorr1D_preXstm, rCorr1D_preXpost, rCorr1D_stmXpost, fCorr1D_preXpre, fCorr1D_preXstm, fCorr1D_preXpost, fCorr1D_stmXpost, rCorrRaw1D_preXstm, rCorrRaw1D_preXpost, rCorrRaw1D_stmXpost,... % analysis_pvCorr
         rateMap1D_PRE1,rateMap1D_PRE2,rateMap1D_POST1,rateMap1D_POST2,...
-        rateMapRaw_PRE,rateMapRaw_STIM,rateMapRaw_POST,rateMapRaw10_PRE, rateMapRaw10_STIM, rateMapRaw10_POST, rateMapRaw_eachLap,rCorrRawLap_basePRE,rCorrRawLap_baseSTIM,rCorrRawLap_basePOST,rCorrMoving1D_total,... % analysis_spatialRaster50hz_pvCorr
+        rateMapRaw_PRE,rateMapRaw_STIM,rateMapRaw_POST,...
+        rateMapRaw10_PRE, rateMapRaw10_STIM, rateMapRaw10_POST, rateMapRaw_eachLap,rCorrRawLap_basePRE,rCorrRawLap_baseSTIM,rCorrRawLap_basePOST,rCorrMoving1D_total,... % analysis_spatialRaster50hz_pvCorr
+        rateMapConv10_PRE, rateMapConv10_STIM, rateMapConv10_POST, rateMapConv_eachLap,rCorrConvLap_basePRE,rCorrConvLap_baseSTIM,rCorrConvLap_basePOST,...
         lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % analysis_plfm_laserIntTest
         evoSpike5mw,evoSpike8mw,evoSpike10mw,...
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
@@ -260,4 +269,4 @@ end
 cd(rtPath);
 formatOut = 'yymmdd';
 save(['neuronList_ori_',datestr(now,formatOut),'.mat'],'T');
-writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);
+% writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);

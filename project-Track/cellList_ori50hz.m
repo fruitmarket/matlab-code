@@ -94,7 +94,15 @@ for iFile = 1:nFile
     rCorrRawLap_basePRE = {rCorrRawLap_basePRE};
     rCorrRawLap_baseSTIM = {rCorrRawLap_baseSTIM};
     rCorrRawLap_basePOST = {rCorrRawLap_basePOST};
-    rCorrMoving1D_total = {rCorrMoving1D_total};
+    
+    rateMapConv10_PRE = {rateMapConv10_PRE};
+    rateMapConv10_STIM = {rateMapConv10_STIM};
+    rateMapConv10_POST = {rateMapConv10_POST};
+    rateMapConv_eachLap = {rateMapConv_eachLap};
+    rCorrConvLap_basePRE = {rCorrConvLap_basePRE};
+    rCorrConvLap_baseSTIM = {rCorrConvLap_baseSTIM};
+    rCorrConvLap_basePOST = {rCorrConvLap_basePOST};
+    
     
     peakloci_total = {peakloci_total};
     peakloci_stm = {peakloci_stm};
@@ -116,7 +124,9 @@ for iFile = 1:nFile
         pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...  % tagstatTrack_poster
         pLR_Track_pre,pLR_Track_post,...    % tagststTrack_poster
         rCorr1D_preXpre, rCorr1D_preXstm, rCorr1D_preXpost, rCorr1D_stmXpost, fCorr1D_preXpre, fCorr1D_preXstm, fCorr1D_preXpost, fCorr1D_stmXpost,rCorrRaw1D_preXstm, rCorrRaw1D_preXpost, rCorrRaw1D_stmXpost,... % analysis_pvCorr
-        rateMapRaw_PRE, rateMapRaw_STIM, rateMapRaw_POST, rateMapRaw10_PRE, rateMapRaw10_STIM, rateMapRaw10_POST, rateMapRaw_eachLap,rCorrRawLap_basePRE,rCorrRawLap_baseSTIM,rCorrRawLap_basePOST,rCorrMoving1D_total,... % analysis_spatialRaster50hz_pvCorr
+        rateMapRaw_PRE, rateMapRaw_STIM, rateMapRaw_POST,...
+        rateMapRaw10_PRE, rateMapRaw10_STIM, rateMapRaw10_POST, rateMapRaw_eachLap,rCorrRawLap_basePRE,rCorrRawLap_baseSTIM,rCorrRawLap_basePOST,... % analysis_spatialRaster50hz_pvCorr
+        rateMapConv10_PRE, rateMapConv10_STIM, rateMapConv10_POST, rateMapConv_eachLap,rCorrConvLap_basePRE,rCorrConvLap_baseSTIM,rCorrConvLap_basePOST,...
         lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % analysis_plfm_laserIntTest
         evoSpike5mw,evoSpike8mw,evoSpike10mw,...
         lightPlfmSpk2hz8mw, lightPlfmSpk50hz, lightTrackSpk2hz8mw, lightTrackSpk50hz,... % laserFreqCheck

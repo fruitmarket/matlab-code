@@ -5,7 +5,7 @@ function [xpt,ypt,spikeBin,spikeRaw,spikeConv,spikeConvZ] = spatialrasterPETH(sp
 %   Occupancy: visit time
 %   win: window range of xpt. should be 2 numbers. unit is msec.
 %   binsize: unit is msec.
-%   resolution: sigma for convolution = binsize * resolution.
+%   resolution: sigma for convolution  sigma = binsize * resolution.
 %   dot: 1-dot, 0-line
 %   unit of xpt will be msec.
 narginchk(6, 7);

@@ -1,28 +1,6 @@
 function plot_Track_multi_v50hz(fileList, cellID, saveDir)
 % function trackPlot_v4_multifig_v3()
 % Plot properties
-lineWth = [1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75 1 0.75];
-fontS = 4; fontM = 5; fontL = 7; % font size large
-lineS = 0.2; lineM = 0.5; lineL = 1; % line width large
-
-colorBlue = [33 150 243] ./ 255;
-colorLightBlue = [100 181 246] ./ 255;
-colorLLightBlue = [187, 222, 251]./255;
-colorRed = [237 50 52] ./ 255;
-colorLightRed = [242 138 130] ./ 255;
-colorGray = [189 189 189] ./ 255;
-colorLightGray = [238, 238, 238] ./255;
-colorDarkGray = [117, 117, 117] ./255;
-colorYellow = [255 243 3] ./ 255;
-colorLightYellow = [255 249 196] ./ 255;
-colorBlack = [0, 0, 0];
-
-lineColor = {colorGray;colorBlue;colorBlack}; % Pre, Stm, Post
-
-markerS = 2.2; markerM = 4.4; markerL = 6.6; markerXL = 8.8;
-tightInterval = [0.02 0.02]; wideInterval = [0.07 0.07];
-width = 0.7;
-
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 fontM = 7;
 paperSize = {[0 0 21.0 29.7]; % A4_portrait
@@ -108,7 +86,6 @@ ypt_lightT = ypt_lightT(:);
     text(0.3, 0.1,['STM x POST:',num2str(round(rCorr1D_stmXpost*100)/100)],'fontSize',fontS);
     set(hCrosscorr,'Box','off','visible','off');
 
-    
 % Light response spike probability
     hTextSpkProb = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,2,[0.05 0.10 0.85 0.87],tightInterval),wideInterval));
     text(0.1,0.9,'Spike probability (%)','fontSize',fontM,'fontWeight','bold');
@@ -129,14 +106,14 @@ ypt_lightT = ypt_lightT(:);
     
 % Smoothing correlation 
     hSCorr = axes('Position',axpt(1,5,1,2:4,axpt(nCol,nRow,8:10,1:2,[0.1 0.10 0.85 0.87],tightInterval),wideInterval));
-    plot(rCorr1D_total','color',colorBlack,'lineWidth',1)
+    plot(rCorrConvMov1D','color',colorBlack,'lineWidth',1)
     hold on;
-    patch([21,61,61,21],[0.05,0.05,0.1,0.1],colorLightBlue,'LineStyle','none')
+    patch([31,60,60,31],[-0.98, -0.98, -0.90, -0.90],colorLightBlue,'LineStyle','none')
     grid on;
     xlabel('Smoothed lap','fontSize',fontS);
     ylabel('r','fontSize',fontS);
     title('Smoothed crossCorr','fontSize',fontM,'fontWeight','bold');
-    set(hSCorr,'Box','off','TickDir','out','XLim',[1,81],'XTick',[1,21,31,51,61,81],'YLim',[0,1.2],'YTick',[0:0.2:1],'fontSize',fontS);    
+    set(hSCorr,'Box','off','TickDir','out','XLim',[0,90],'XTick',[0,30,60,90],'YLim',[-1,1],'YTick',[-1:0.5:1],'fontSize',fontS);    
 
 % Response check: Platform
       % Activation or Inactivation?
@@ -411,7 +388,7 @@ rewardLoc2 = [20*pi*9/6 20*pi*10/6];
         end
         ylabel('Rate (Hz)','FontSize',fontS);
         xlabel('Position (cm)','FontSize',fontS);
-        uistack(rec,'bottom');
+        uistack(pLight,'bottom');
 % Temporal raster plot
         hTRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:10,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         plot([xpt.(fields{iSensor1}){:}],[ypt.(fields{iSensor1}){:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
@@ -450,12 +427,12 @@ rewardLoc2 = [20*pi*9/6 20*pi*10/6];
         text(115,ylimpethSpatial*0.8,[num2str(peakFR_track),' Hz'],'fontSize',fontS);
         ylabel('Rate (Hz)','FontSize',fontS);
         xlabel('Position (cm)','FontSize',fontS);
-        uistack(rec,'bottom');  
+        uistack(pLight,'bottom');  
 % Temporal raster plot
         hTRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:10,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
         hold on;
         plot([xpt.(fields{iSensor1}){:}],[ypt.(fields{iSensor1}){:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[0 31 lightDur 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
+        pLight = patch(xpt_lightT,ypt_lightT,colorLightGray);
         ylabel('Trial','FontSize',fontS);
         title(['Temporal Raster & PETH at ',fields{iSensor1}],'FontSize',fontS,'FontWeight','bold');
         hTPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:10,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));

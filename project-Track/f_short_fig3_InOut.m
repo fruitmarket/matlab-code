@@ -9,7 +9,9 @@ formatOut = 'yymmdd';
 markerS = markerS-1;
 
 % load('neuronList_ori50hz_171224.mat');
-load('neuronList_ori50hz_171229.mat');
+% load('neuronList_ori50hz_171229.mat');
+load('D:\Dropbox\SNL\P2_Track\neuronList_ori50hz_180207.mat');
+
 DRunPN = T.taskType == 'DRun' & T.idxNeurontype == 'PN';
 
 % inzone
@@ -77,8 +79,8 @@ xScatter50hzIn_ina_Run = (rand(nInzone_ina_Run,1)-0.5)*0.85*barWidth;
 xScatter50hzIn_no_Run = (rand(nInzone_no_Run,1)-0.5)*0.85*barWidth;
 
 %%
-fHandle = figure('PaperUnits','centimeters','Paperposition',[0 0 8.5 14]);
-hPlot(1) = axes('Position',axpt(3,2,1:2,1,[0.15 0.1 0.85 0.85],wideInterval));
+fHandle = figure('PaperUnits','centimeters','Paperposition',[0 0 4.5 6.5]);
+hPlot(1) = axes('Position',axpt(3,2,1:2,1,[0.25 0.1 0.85 0.85],wideInterval));
 bar(xBar,m_frInZone_Run,'BarWidth',0.6,'LineStyle','-','edgeColor',colorBlack,'FaceColor',colorDarkGray,'lineWidth',1);
 hold on;
 for iBlock = 1:3
@@ -118,7 +120,6 @@ title('In-zone (DRunPN)','fontSize',fontM,'fontWeight','bold');
 %% Rw
 DRwPN = T.taskType == 'DRw' & T.idxNeurontype == 'PN';
 min_lapFrInPRE_Rw = min(m_lapFrInPRE(DRwPN & idx_dec & idx_pPRExSTM));
-
 idx_Fr_Rw = m_lapFrInPRE>=min_lapFrInPRE_Rw; % min firing rate that can be detected by inactivation
 
 fr_Inzone_Rw = [m_lapFrInPRE(DRwPN & idx_Fr_Rw), m_lapFrInSTM(DRwPN & idx_Fr_Rw), m_lapFrInPOST(DRwPN & idx_Fr_Rw)];
@@ -165,7 +166,7 @@ xScatter50hzIn_ina_Rw = (rand(nInzone_ina_Rw,1)-0.5)*0.85*barWidth;
 xScatter50hzIn_no_Rw = (rand(nInzone_no_Rw,1)-0.5)*0.85*barWidth;
 
 %%
-hPlot(2) = axes('Position',axpt(3,2,1:2,2,[0.15 0.1 0.85 0.85],wideInterval));
+hPlot(2) = axes('Position',axpt(3,2,1:2,2,[0.25 0.1 0.85 0.85],wideInterval));
 bar(xBar,m_frInZone_Rw,'BarWidth',0.6,'LineStyle','-','edgeColor',colorBlack,'FaceColor',colorDarkGray,'lineWidth',1);
 hold on;
 for iBlock = 1:3
@@ -208,5 +209,5 @@ set(hPlot(1),'YLim',[0,yLim(1)],'YTick',[0:5:yLim(1)]);
 set(hPlot(2),'YLim',[0,yLim(2)],'YTick',[0:5:yLim(1)]);
 
 % print('-painters','-r300','-dtiff',['f_short_fig2_InOutZone_50hz_',datestr(now,formatOut),'.tif']);
-% print('-painters','-r300','-depsc',['f_short_fig2_InOutZone_50hz_',datestr(now,formatOut),'.ai']);
-% close;
+print('-painters','-r300','-depsc',['f_short_fig2_InOutZone_50hz_',datestr(now,formatOut),'.ai']);
+close;

@@ -1,7 +1,7 @@
 clearvars;
-cd('E:\Dropbox\SNL\P2_Track');
+cd('D:\Dropbox\SNL\P2_Track');
 
-load('E:\Dropbox\SNL\P2_Track\myParameters.mat');
+load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 formatOut = 'yymmdd';
 
 markerS = 1.5;
@@ -12,7 +12,7 @@ colorDarkGray = [170 170 170]./255;
 
 % 1cm win
 % load('neuronList_ori50hz_171229.mat');
-load('neuronList_ori50hz_180125.mat');
+load('neuronList_ori50hz_180125_bin5sd2.mat');
 lightLoc_Run = [floor(20*pi*5/6) ceil(20*pi*8/6)];
 lightLoc_Rw = [floor(20*pi*9/6) ceil(20*pi*10/6)];
 
@@ -122,7 +122,7 @@ end
 %% noLight 
 % load('neuronList_ori_171205.mat');
 % load('neuronList_ori_171229.mat');
-load('neuronList_ori_180125.mat');
+load('neuronList_ori_180125_bin5sd2.mat');
 % load('neuronList_ori_171219_2cm.mat');
 % load('neuronList_ori_171219_4cm.mat');
 
@@ -286,17 +286,17 @@ hold on;
 title('Run','fontSize',fontM);
 ylabel('PV correlation','fontSize',fontM);
 
-text(-2, -0.7,['p12 = ',num2str(p_Run(1,1))],'fontSize',fontM,'color',colorBlack);
-text(-2, -0.9,['p13 = ',num2str(p_Run(2,1))],'fontSize',fontM,'color',colorBlack);
-text(-2, -1.1,['p23 = ',num2str(p_Run(3,1))],'fontSize',fontM,'color',colorBlack);
+text(0.5, -1.9,['p12 = ',num2str(p_Run(1,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.1,['p13 = ',num2str(p_Run(2,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.3,['p23 = ',num2str(p_Run(3,1),3)],'fontSize',fontM,'color',colorBlack);
 
-text(5.5, -0.7,[num2str(p_Run(1,2))],'fontSize',fontM,'color',colorBlack);
-text(5.5, -0.9,[num2str(p_Run(2,2))],'fontSize',fontM,'color',colorBlack);
-text(5.5, -1.1,[num2str(p_Run(3,2))],'fontSize',fontM,'color',colorBlack);
+text(5.5, -1.9,[num2str(p_Run(1,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.1,[num2str(p_Run(2,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.3,[num2str(p_Run(3,2),3)],'fontSize',fontM,'color',colorBlack);
 
-text(11, -0.7,[num2str(p_Run(1,3))],'fontSize',fontM,'color',colorBlack);
-text(11, -0.9,[num2str(p_Run(2,3))],'fontSize',fontM,'color',colorBlack);
-text(11, -1.1,[num2str(p_Run(3,3))],'fontSize',fontM,'color',colorBlack);
+text(9.5, -1.9,[num2str(p_Run(1,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.1,[num2str(p_Run(2,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.3,[num2str(p_Run(3,3),3)],'fontSize',fontM,'color',colorBlack);
 
 
 hPVCorr(2) = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,2,1,[0.15 0.1 0.85 0.85],midInterval),wideInterval));
@@ -337,22 +337,22 @@ hold on;
 title('Rw','fontSize',fontM);
 ylabel('PV correlation','fontSize',fontM);
 
-text(-2, -0.7,['p12 = ',num2str(p_Rw(1,1))],'fontSize',fontM,'color',colorBlack);
-text(-2, -0.9,['p13 = ',num2str(p_Rw(2,1))],'fontSize',fontM,'color',colorBlack);
-text(-2, -1.1,['p23 = ',num2str(p_Rw(3,1))],'fontSize',fontM,'color',colorBlack);
+text(0.5, -1.9,['p12 = ',num2str(p_Rw(1,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.1,['p13 = ',num2str(p_Rw(2,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.3,['p23 = ',num2str(p_Rw(3,1),3)],'fontSize',fontM,'color',colorBlack);
 
-text(5.5, -0.7,[num2str(p_Rw(1,2))],'fontSize',fontM,'color',colorBlack);
-text(5.5, -0.9,[num2str(p_Rw(2,2))],'fontSize',fontM,'color',colorBlack);
-text(5.5, -1.1,[num2str(p_Rw(3,2))],'fontSize',fontM,'color',colorBlack);
+text(5.5, -1.9,[num2str(p_Rw(1,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.1,[num2str(p_Rw(2,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.3,[num2str(p_Rw(3,2),3)],'fontSize',fontM,'color',colorBlack);
 
-text(11, -0.7,[num2str(p_Rw(1,3))],'fontSize',fontM,'color',colorBlack);
-text(11, -0.9,[num2str(p_Rw(2,3))],'fontSize',fontM,'color',colorBlack);
-text(11, -1.1,[num2str(p_Rw(3,3))],'fontSize',fontM,'color',colorBlack);
+text(9.5, -1.9,[num2str(p_Rw(1,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.1,[num2str(p_Rw(2,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.3,[num2str(p_Rw(3,3),3)],'fontSize',fontM,'color',colorBlack);
 
-set(hPVCorr(1),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-0.2 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'PRExSTIM','PRExPOST','STIMxPOST'}],'fontSize',fontM);
-set(hPVCorr(2),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-0.2 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'PRExSTIM','PRExPOST','STIMxPOST'}],'fontSize',fontM);
+set(hPVCorr(1),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-1.15 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'PRExSTIM','PRExPOST','STIMxPOST'}],'fontSize',fontM);
+set(hPVCorr(2),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-1.15 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'PRExSTIM','PRExPOST','STIMxPOST'}],'fontSize',fontM);
 set(hPVCorr,'TickLength',[0.03, 0.03]);
 
-% print('-painters','-r300','-dtiff',['f_short_suppleXX_PVCorr_InOutTotalZone_',datestr(now,formatOut),'_1cm1HzNormKW_withCC_dot.tif']);
+print('-painters','-r300','-dtiff',['f_Neuron_PVCorr_',datestr(now,formatOut),'_50Hz_block_bin5sd2','.tif']);
 % print('-painters','-r300','-depsc',['f_short_suppleXX_PVCorr_InOutTotalZone_',datestr(now,formatOut),'_1cm1HzNormKW_withCC_dot.ai']);
-% close;
+close;

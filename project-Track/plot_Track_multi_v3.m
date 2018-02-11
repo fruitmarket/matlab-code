@@ -2,7 +2,7 @@ function plot_Track_multi_v3(fileList, cellID, saveDir)
 % function trackPlot_v4_multifig_v3()
 % Plot properties
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
-
+fontM = 7;
 paperSize = {[0 0 21.0 29.7]; % A4_portrait
              [0 0 29.7 21.0]; % A4_landscape
              [0 0 15.7 21.0]; % A4_half landscape
@@ -89,15 +89,15 @@ for iFile = 1:nFile
 
 % Smoothing correlation 
     hSCorr = axes('Position',axpt(1,5,1,2:4,axpt(nCol,nRow,8:10,1:2,[0.1 0.10 0.85 0.87],tightInterval),wideInterval));
-    plot(rCorr1D_total','color',colorBlack,'lineWidth',1)
+    plot(rCorrConvMov1D','color',colorBlack,'lineWidth',1)
     hold on;
-    patch([21,61,61,21],[0.05,0.05,0.1,0.1],colorLightBlue,'LineStyle','none')
+    patch([31,60,60,31],[-0.98, -0.98, -0.90, -0.90],colorLightBlue,'LineStyle','none')
     grid on;
     xlabel('Smoothed lap','fontSize',fontS);
     ylabel('r','fontSize',fontS);
     title('Smoothed crossCorr','fontSize',fontM,'fontWeight','bold');
-    set(hSCorr,'Box','off','TickDir','out','XLim',[1,81],'XTick',[1,21,31,51,61,81],'YLim',[0,1.2],'YTick',[0:0.2:1],'fontSize',fontS);
-    
+    set(hSCorr,'Box','off','TickDir','out','XLim',[0,90],'XTick',[0,30,60,90],'YLim',[-1,1],'YTick',[-1:0.5:1],'fontSize',fontS);  
+
 % Response check: Platform
       % Activation or Inactivation?
     if isfield(lightTime,'Plfm2hz') && exist('xptPlfm2hz','var');
@@ -352,17 +352,31 @@ if ~isempty(strfind(cellDir,'DRw')) | ~isempty(strfind(cellDir,'noRw'))
 end
 
 % Spatial raster plot
+    if(regexp(cellDir,'Run'))
+        sensorOn = sensor.S6(31:60);
+        sensorOff = sensor.S9(31:60);
+    lightLoc = [20*pi*5/6 20*pi*8/6];
+    else
+        sensorOn = sensor.S10(31:60);
+        sensorOff = sensor.S11(31:60);
+        lightLoc = [20*pi*9/6 20*pi*10/6];
+    end
+    rewardLoc1 = [20*pi*3/6 20*pi*4/6]+[2, -2];
+    rewardLoc2 = [20*pi*9/6 20*pi*10/6]+[2, -2];
+
     if ~isempty(strfind(cellDir,'DRun')) | ~isempty(strfind(cellDir,'DRw')) % Light session
         hSRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[lightLoc(1), 31, lightLoc(2)-lightLoc(1), 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
+%         rec = rectangle('Position',[lightLoc(1), 31, lightLoc(2)-lightLoc(1), 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
+        pLight = patch([lightLoc(1) lightLoc(2) lightLoc(2) lightLoc(1)],[31 31 60 60], colorLLightBlue,'lineStyle','none');
         ylabel('Trial','FontSize',fontS);
         title('Spatial Raster & PETH','FontSize',fontM,'FontWeight','bold');
+        
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        pRw(1) = patch([rewardLoc(1)+2, rewardLoc(1)+6, rewardLoc(1)+6, rewardLoc(1)+2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(1) = patch([rewardLoc1(1), rewardLoc1(2), rewardLoc1(2), rewardLoc1(1)],[0, 0, 90, 90],colorLightRed);
         hold on;
-        pRw(2) = patch([rewardLoc(2)+2.5, rewardLoc(2)+6.5, rewardLoc(2)+6.5, rewardLoc(2)+2.5],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(2) = patch([rewardLoc2(1), rewardLoc2(2), rewardLoc2(2), rewardLoc2(1)],[0, 0, 90, 90],colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
@@ -371,11 +385,11 @@ end
         text(115,ylimpethSpatial*0.8,[num2str(peakFR_track),' Hz'],'fontSize',fontS);
         ylabel('Rate (Hz)','FontSize',fontS);
         xlabel('Position (cm)','FontSize',fontS);
-        uistack(rec,'bottom');
+        uistack(pLight,'bottom');
 % Temporal raster plot
         hTRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:10,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         plot([xpt1stLPre{1},xpt1stLStm{1},xpt1stLPost{1}],[ypt1stLPre{1},30+ypt1stLStm{1},60+ypt1stLPost{1}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[0 31 lightDur 30], 'LineStyle','none','FaceColor',lightDurationColor{1});
+        pLight = patch([0 lightDur lightDur 0],[31 31 60 60], colorLLightBlue,'lineStyle','none');
         ylabel('Trial','FontSize',fontS);
         title(['Temporal Raster & PETH aligned on light onset'],'FontSize',fontM,'FontWeight','bold');
         hTPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:10,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
@@ -397,7 +411,7 @@ end
 %         end
         ylabel('Rate (Hz)','FontSize',fontS);
         xlabel('Time (ms)','FontSize',fontS);
-        uistack(rec,'bottom');
+        uistack(pLight,'bottom');
     end
 
     if ~isempty(strfind(cellDir,'noRun')) | ~isempty(strfind(cellDir,'noRw')) % No light session
@@ -405,25 +419,25 @@ end
         hSRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,1:4,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
         hold on;
         plot([xptSpatial{:}],[yptSpatial{:}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[lightLoc(1), 31, lightLoc(2)-lightLoc(1), 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
+        pLight = patch([lightLoc(1) lightLoc(2) lightLoc(2) lightLoc(1)],[31 31 60 60], colorLightGray,'lineStyle','none');
         ylabel('Trial','FontSize',fontS);
         title('Spatial Raster & PETH','FontSize',fontM,'FontWeight','bold');
         hSPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,1:4,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
         ylimpethSpatial = ceil(max(pethconvSpatial(pethconvSpatial<inf))*1.1+0.0001);
-        pRw(1) = patch([rewardLoc(1)+2, rewardLoc(1)+6, rewardLoc(1)+6, rewardLoc(1)+2],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(1) = patch([rewardLoc1(1), rewardLoc1(2), rewardLoc1(2), rewardLoc1(1)],[0, 0, 90, 90],colorLightRed);
         hold on;
-        pRw(2) = patch([rewardLoc(2)+2.5, rewardLoc(2)+6.5, rewardLoc(2)+6.5, rewardLoc(2)+2.5],[0, 0, ylimpethSpatial, ylimpethSpatial],colorLightRed);
+        pRw(2) = patch([rewardLoc2(1), rewardLoc2(2), rewardLoc2(2), rewardLoc2(1)],[0, 0, 90, 90],colorLightRed);
         hold on;
         for iType = 1:3
             plot(pethSpatial(1:124),pethconvSpatial(iType,:),'LineStyle','-','LineWidth',lineM,'Color',lineColor{iType})
         end
         ylabel('Rate (Hz)','FontSize',fontS);
         xlabel('Position (cm)','FontSize',fontS);
-        uistack(rec,'bottom');  
+        uistack(pLight,'bottom');  
 % Temporal raster plot
         hTRaster(1) = axes('Position',axpt(1,2,1,1,axpt(nCol,nRow,7:10,8:9,[0.1 0.10 0.85 0.75],tightInterval),wideInterval));
         plot([xpt1stLPre{1},xpt1stLStm{1},xpt1stLPost{1}],[ypt1stLPre{1},30+ypt1stLStm{1},60+ypt1stLPost{1}],'Marker','.','MarkerSize',markerS,'LineStyle','none','Color','k');
-        rec = rectangle('Position',[0 31 lightDur 30], 'LineStyle','none','FaceColor',lightDurationColor{2});
+        pLight = patch([0 lightDur lightDur 0],[31 31 60 60], colorLightGray,'lineStyle','none');
         ylabel('Trial','FontSize',fontS);
         title(['Temporal Raster & PETH aligned on light onset'],'FontSize',fontM,'FontWeight','bold');
         hTPsth(1) = axes('Position',axpt(1,2,1,2,axpt(nCol,nRow,7:10,8:9,[0.10 0.10 0.85 0.75],tightInterval),wideInterval));
@@ -445,7 +459,7 @@ end
 %         end
         ylabel('Rate (Hz)','FontSize',fontS);
         xlabel('Time (ms)','FontSize',fontS);
-        uistack(rec,'bottom');
+        uistack(pLight,'bottom');
     end
     align_ylabel([hSRaster,hSPsth]);
     align_ylabel([hTRaster,hTPsth]);

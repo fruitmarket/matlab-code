@@ -81,6 +81,10 @@ for iFile = 1:nFile
     m_lapFrInzone = {m_lapFrInzone};
     m_lapFrOutzone = {m_lapFrOutzone};
     m_lapFrTotalzone = {m_lapFrTotalzone};
+    inzoneSpike_half = {inzoneSpike_half};
+    outzoneSpike_half = {outzoneSpike_half};
+    lapFrInzone = {lapFrInzone};
+    lapFrOutzone = {lapFrOutzone};
     p_ttestFR = {p_ttest};
     
 % analysis_spatialRaster50hz_pvCorr
@@ -102,8 +106,12 @@ for iFile = 1:nFile
     rCorrConvLap_basePRE = {rCorrConvLap_basePRE};
     rCorrConvLap_baseSTIM = {rCorrConvLap_baseSTIM};
     rCorrConvLap_basePOST = {rCorrConvLap_basePOST};
-    
-    
+    rCorrRawMov1D = {rCorrRawMov1D};
+    rCorrConvMov1D = {rCorrConvMov1D};
+    rCorrRawMov1D_Inzone = {rCorrRawMov1D_Inzone};
+    rCorrConvMov1D_Inzone = {rCorrConvMov1D_Inzone};
+    rCorrRawMov1D_Outzone = {rCorrRawMov1D_Outzone};
+    rCorrConvMov1D_Outzone = {rCorrConvMov1D_Outzone};
     peakloci_total = {peakloci_total};
     peakloci_stm = {peakloci_stm};
     fieldArea_total = {fieldArea_total};
@@ -127,6 +135,7 @@ for iFile = 1:nFile
         rateMapRaw_PRE, rateMapRaw_STIM, rateMapRaw_POST,...
         rateMapRaw10_PRE, rateMapRaw10_STIM, rateMapRaw10_POST, rateMapRaw_eachLap,rCorrRawLap_basePRE,rCorrRawLap_baseSTIM,rCorrRawLap_basePOST,... % analysis_spatialRaster50hz_pvCorr
         rateMapConv10_PRE, rateMapConv10_STIM, rateMapConv10_POST, rateMapConv_eachLap,rCorrConvLap_basePRE,rCorrConvLap_baseSTIM,rCorrConvLap_basePOST,...
+        rCorrRawMov1D,rCorrConvMov1D,rCorrRawMov1D_Inzone,rCorrConvMov1D_Inzone,rCorrRawMov1D_Outzone,rCorrConvMov1D_Outzone,...
         lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % analysis_plfm_laserIntTest
         evoSpike5mw,evoSpike8mw,evoSpike10mw,...
         lightPlfmSpk2hz8mw, lightPlfmSpk50hz, lightTrackSpk2hz8mw, lightTrackSpk50hz,... % laserFreqCheck
@@ -137,7 +146,7 @@ for iFile = 1:nFile
         pethconvSpatial,...
         rateMap1D_PRE,rateMap1D_STM,rateMap1D_POST,...    
         r_wv,m_spont_wv,m_evoked_wv,...
-        inzoneSpike,sum_inzoneSpike,m_inzoneSpike,sem_inzoneSpike,timeIn_inzone,totalSpike,sum_totalSpike,outzoneSpike,sum_outzoneSpike,m_outzoneSpike,sem_outzoneSpike,m_lapFrInzone,m_lapFrOutzone,m_lapFrTotalzone,p_ttestFR,...
+        inzoneSpike,sum_inzoneSpike,m_inzoneSpike,sem_inzoneSpike,timeIn_inzone,totalSpike,sum_totalSpike,outzoneSpike,sum_outzoneSpike,m_outzoneSpike,sem_outzoneSpike,m_lapFrInzone,m_lapFrOutzone,m_lapFrTotalzone,p_ttestFR,inzoneSpike_half,outzoneSpike_half,lapFrInzone,lapFrOutzone,...
         peakloci_total,peakloci_stm,normTrackFR_total,fieldArea_total,... % analysis_findPeakLoci
         m_deto_spkPlfm50hz,m_deto_spkTrack50hz,evoSpkTrack50hz,evoSpkPlfm50hz,... %analysis_detoSpike50hz
         LRatio,ID,...

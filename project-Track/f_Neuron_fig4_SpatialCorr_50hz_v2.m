@@ -11,7 +11,8 @@ colorLightGray = [240 240 240]./255;
 colorDarkGray = [170 170 170]./255;
 
 % 1cm win
-load('neuronList_ori50hz_180117.mat');
+% load('neuronList_ori50hz_180117.mat');
+load('neuronList_ori50hz_180128_bin5sd2.mat');
 lightLoc_Run = [floor(20*pi*5/6) ceil(20*pi*8/6)];
 lightLoc_Rw = [floor(20*pi*9/6) ceil(20*pi*10/6)];
 
@@ -154,7 +155,8 @@ end
 
 %% noLight 
 % load('neuronList_ori_171205.mat');
-load('neuronList_ori_171229.mat');
+% load('neuronList_ori_171229.mat');
+load('neuronList_ori_180128_bin5sd2.mat');
 % load('neuronList_ori_171219_2cm.mat');
 % load('neuronList_ori_171219_4cm.mat');
 
@@ -306,21 +308,22 @@ hold on;
 
 plot(1+xScatterRunIn, rCorr_inRun_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
-plot(2+xScatterRunOut, rCorr_outRun_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(2+xScatterRunIn, rCorr_inRun_preXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
-plot(3+xScatterNoRun, rCorr_noRun_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(3+xScatterRunIn, rCorr_inRun_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
 
-plot(5+xScatterRunIn, rCorr_inRun_preXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(5+xScatterRunOut, rCorr_outRun_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
 plot(6+xScatterRunOut, rCorr_outRun_preXpost,'.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
-plot(7+xScatterNoRun, rCorr_noRun_preXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(7+xScatterRunOut, rCorr_outRun_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
 
-plot(9+xScatterRunIn, rCorr_inRun_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+
+plot(9+xScatterNoRun, rCorr_noRun_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
-plot(10+xScatterRunOut, rCorr_outRun_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(10+xScatterNoRun, rCorr_noRun_preXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
 plot(11+xScatterNoRun, rCorr_noRun_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
@@ -328,17 +331,17 @@ hold on;
 title('Run','fontSize',fontM);
 ylabel('Spatial correlation','fontSize',fontM);
 
-text(-2, -0.7,['p12 = ',num2str(p_Run(1,1))],'fontSize',fontM,'color',colorBlack);
-text(-2, -0.9,['p13 = ',num2str(p_Run(2,1))],'fontSize',fontM,'color',colorBlack);
-text(-2, -1.1,['p23 = ',num2str(p_Run(3,1))],'fontSize',fontM,'color',colorBlack);
+text(0.5, -1.9,['p12 = ',num2str(p_Run(1,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.1,['p13 = ',num2str(p_Run(2,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.3,['p23 = ',num2str(p_Run(3,1),3)],'fontSize',fontM,'color',colorBlack);
 
-text(5.5, -0.7,[num2str(p_Run(1,2))],'fontSize',fontM,'color',colorBlack);
-text(5.5, -0.9,[num2str(p_Run(2,2))],'fontSize',fontM,'color',colorBlack);
-text(5.5, -1.1,[num2str(p_Run(3,2))],'fontSize',fontM,'color',colorBlack);
+text(5.5, -1.9,[num2str(p_Run(1,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.1,[num2str(p_Run(2,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.3,[num2str(p_Run(3,2),3)],'fontSize',fontM,'color',colorBlack);
 
-text(11, -0.7,[num2str(p_Run(1,3))],'fontSize',fontM,'color',colorBlack);
-text(11, -0.9,[num2str(p_Run(2,3))],'fontSize',fontM,'color',colorBlack);
-text(11, -1.1,[num2str(p_Run(3,3))],'fontSize',fontM,'color',colorBlack);
+text(9.5, -1.9,[num2str(p_Run(1,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.1,[num2str(p_Run(2,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.3,[num2str(p_Run(3,3),3)],'fontSize',fontM,'color',colorBlack);
 
 
 hPVCorr(2) = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,2,1,[0.15 0.1 0.85 0.85],midInterval),wideInterval));
@@ -357,21 +360,21 @@ hold on;
 
 plot(1+xScatterRwIn, rCorr_inRw_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
-plot(2+xScatterRwOut, rCorr_outRw_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(2+xScatterRwIn, rCorr_inRw_preXpost,'.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
-plot(3+xScatterNoRw, rCorr_noRw_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(3+xScatterRwIn, rCorr_inRw_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
 
-plot(5+xScatterRwIn, rCorr_inRw_preXpost,'.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(5+xScatterRwOut, rCorr_outRw_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
 plot(6+xScatterRwOut, rCorr_outRw_preXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
-plot(7+xScatterNoRw, rCorr_noRw_preXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(7+xScatterRwOut, rCorr_outRw_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
 
-plot(9+xScatterRwIn, rCorr_inRw_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(9+xScatterNoRw, rCorr_noRw_preXstm, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
-plot(10+xScatterRwOut, rCorr_outRw_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
+plot(10+xScatterNoRw, rCorr_noRw_preXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
 plot(11+xScatterNoRw, rCorr_noRw_stmXpost, '.','markerSize',dotS,'markerFaceColor',colorWhite,'markerEdgeColor',colorGray);
 hold on;
@@ -379,22 +382,22 @@ hold on;
 title('Rw','fontSize',fontM);
 ylabel('Spatial correlation','fontSize',fontM);
 
-text(-2, -0.7,['p12 = ',num2str(p_Rw(1,1))],'fontSize',fontM,'color',colorBlack);
-text(-2, -0.9,['p13 = ',num2str(p_Rw(2,1))],'fontSize',fontM,'color',colorBlack);
-text(-2, -1.1,['p23 = ',num2str(p_Rw(3,1))],'fontSize',fontM,'color',colorBlack);
+text(0.5, -1.9,['p12 = ',num2str(p_Rw(1,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.1,['p13 = ',num2str(p_Rw(2,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.3,['p23 = ',num2str(p_Rw(3,1),3)],'fontSize',fontM,'color',colorBlack);
 
-text(5.5, -0.7,[num2str(p_Rw(1,2))],'fontSize',fontM,'color',colorBlack);
-text(5.5, -0.9,[num2str(p_Rw(2,2))],'fontSize',fontM,'color',colorBlack);
-text(5.5, -1.1,[num2str(p_Rw(3,2))],'fontSize',fontM,'color',colorBlack);
+text(5.5, -1.9,[num2str(p_Rw(1,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.1,[num2str(p_Rw(2,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.3,[num2str(p_Rw(3,2),3)],'fontSize',fontM,'color',colorBlack);
 
-text(11, -0.7,[num2str(p_Rw(1,3))],'fontSize',fontM,'color',colorBlack);
-text(11, -0.9,[num2str(p_Rw(2,3))],'fontSize',fontM,'color',colorBlack);
-text(11, -1.1,[num2str(p_Rw(3,3))],'fontSize',fontM,'color',colorBlack);
+text(9.5, -1.9,[num2str(p_Rw(1,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.1,[num2str(p_Rw(2,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.3,[num2str(p_Rw(3,3),3)],'fontSize',fontM,'color',colorBlack);
 
 set(hPVCorr(1),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-1.15 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'In-zone','Out-zone','Control'}],'fontSize',fontM);
 set(hPVCorr(2),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-1.15 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'In-zone','Out-zone','Control'}],'fontSize',fontM);
 set(hPVCorr,'TickLength',[0.03, 0.03]);
-% 
-% print('-painters','-r300','-dtiff',['f_CellReports_SpatialCorr_50Hz_v2_hsd_',datestr(now,formatOut),'.tif']);
+
+print('-painters','-r300','-dtiff',['f_Neuron_SpatialCorr_',datestr(now,formatOut),'_50Hz_zone_bin5sd2','.tif']);
 % print('-painters','-r300','-depsc',['f_CellRepors_PVCorr_8Hz_',datestr(now,formatOut),'.ai']);
-% close;
+close;

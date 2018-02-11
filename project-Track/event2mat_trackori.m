@@ -251,7 +251,8 @@ end
 %% Location calibration
 [vtTime, vtPosition, ~] = vtLoad;
 winLinear = [1,125];
-[~, theta, timeTrack, ~, ~, ~, ~] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear);
+binSizeSpace = 1;
+[~, theta, timeTrack, ~, ~, ~, ~] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2), vtTime{1}, sensor.S1, [sensor.S1(1), sensor.S12(end)], winLinear, binSizeSpace);
 
 % absolute position
     abso_reward2Posi = [3/6 4/6]*20*pi;

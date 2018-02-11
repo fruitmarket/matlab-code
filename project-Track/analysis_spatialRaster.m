@@ -12,7 +12,7 @@ load('Events.mat','sensor','trialIndex','lightTime','reward2','reward4','calib_d
 winLinear = [1,125]; %-calib_distance; % [1,125] total length of the track (r: 20 cm (ID: 17.5cm))
 winSpace = [0,124]; % [0,124]
 binSizeSpace = 1; % 1 [unit: cm]
-resolution = 1;
+resolution = 2;
 dot = 1;
 
 %% Linearize position data
@@ -61,7 +61,6 @@ for iCell = 1:nCell
     rateMap1D_PRE = pethconvSpatial(1,:);
     rateMap1D_STM = pethconvSpatial(2,:);
     rateMap1D_POST = pethconvSpatial(3,:);
-    save([cellName,'.mat'],'rateMap1D_PRE','rateMap1D_STM','rateMap1D_POST','-append');
     
     [rCorr1D_preXstm, pCorr1D_preXstm] = corr(rateMap1D_PRE',rateMap1D_STM','rows','pairwise'); % corr calculates based on column vectors
     [rCorr1D_preXpost, pCorr1D_preXpost] = corr(rateMap1D_PRE',rateMap1D_POST','rows','pairwise');
@@ -70,33 +69,6 @@ for iCell = 1:nCell
     fCorr1D_preXpost = fisherZ(rCorr1D_preXpost);
     fCorr1D_stmXpost = fisherZ(rCorr1D_stmXpost);
     
-%     spikePositionPRE = spikePosition(1:30);
-%     A = [1,0];
-%     B = [0,1];
-%     trialIndexPRE = logical([repmat(A,15,1);repmat(B,15,1)]);
-%     [~, ~, ~, ~, pethconvSpatialPRE, ~] = spatialrasterPETH(spikePositionPRE, trialIndexPRE, numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
-%     rateMap1D_PRE1 = pethconvSpatialPRE(1,:);
-%     rateMap1D_PRE2 = pethconvSpatialPRE(2,:);
-%     [rCorr1D_preXpre, pCorr1D_preXpre] = corr(rateMap1D_PRE1',rateMap1D_PRE2','type','Pearson','rows','pairwise');
-%     fCorr1D_preXpre = fisherZ(rCorr1D_preXpre);
-%     if isnan(fCorr1D_preXpre)
-%         fCorr1D_preXpre = 0;
-%     end
-%     save([cellName,'.mat'],'rCorr1D_preXpre','pCorr1D_preXpre','fCorr1D_preXpre','-append');
-% 
-% %% Smoothing correlation
-%     spikePositionBase = spikePosition(1:30);
-%     [~,~,~,~,pethconvSpatialBase,~] = spatialrasterPETH(spikePositionBase, true(30,1), numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
-%     
-%     nTest = 81;
-%     rCorr1D_total = zeros(81,1);
-%     for iTest = 1: nTest
-%         spikePositionTest = spikePosition(iTest:iTest+9);
-%         [~,~,~,~,pethconvSpatialTest,~] = spatialrasterPETH(spikePositionTest, true(10,1), numOccu(:,end-1), winSpace, binSizeSpace, resolution, dot);
-%         rCorr1D_total(iTest) = corr(pethconvSpatialBase',pethconvSpatialTest','type','Pearson','rows','pairwise');
-%     end
-%     save([cellName,'.mat'],'rCorr1D_total','-append');
-
 %% Spatial information (spikePosition, occupancy are required)
     meanFRPRE = length(cell2mat(spikePosition(1:30)))/(sensor.S1(30)-sensor.S1(1))*1000;
     meanFRSTM = length(cell2mat(spikePosition(31:60)))/(sensor.S1(60)-sensor.S1(31))*1000;

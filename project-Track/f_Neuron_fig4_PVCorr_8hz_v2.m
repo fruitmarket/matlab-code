@@ -11,7 +11,8 @@ colorLightGray = [240 240 240]./255;
 colorDarkGray = [170 170 170]./255;
 
 % 1cm win
-load('neuronList_ori_171229.mat');
+% load('neuronList_ori_171229.mat');
+load('neuronList_ori_180128_bin5sd2.mat');
 lightLoc_Run = [floor(20*pi*5/6) ceil(20*pi*8/6)];
 lightLoc_Rw = [floor(20*pi*9/6) ceil(20*pi*10/6)];
 
@@ -31,8 +32,8 @@ cri_meanFR = 1;
 % TN: track neuron
 % tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN';
 % tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField;
-tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
+% tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
 % tPC_DRun = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 
 ntPC_DRun = sum(double(tPC_DRun));
@@ -78,8 +79,8 @@ end
 %%
 % tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN';
 % tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField;
-tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
+% tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
 % tPC_DRw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 
 ntPC_DRw = sum(double(tPC_DRw));
@@ -122,15 +123,16 @@ end
 
 %% noLight 
 % load('neuronList_ori_171205.mat');
-load('neuronList_ori_171229.mat');
+% load('neuronList_ori_171229.mat');
+% load('neuronList_ori_180125_bin3sd2.mat');
 % load('neuronList_ori_171219_2cm.mat');
 % load('neuronList_ori_171219_4cm.mat');
 
 %%%% noRun %%%%
 % tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN';
 % tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField;
-tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
+% tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
 % tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 
 ntPC_noRun = sum(double(tPC_noRun));
@@ -154,8 +156,8 @@ end
 %%%% noRw %%%%
 % tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN';
 % tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField;
-tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
+% tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & cellfun(@(x) max(max(x)), T.pethconvSpatial)>cri_meanFR; % mean firing rate > 1hz
 % tPC_noRw = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 ntPC_noRw = sum(double(tPC_noRw));
 
@@ -202,47 +204,47 @@ m_pvCorr_noRw = [mean(pvCorr_noRw_preXstm), mean(pvCorr_noRw_preXpost), mean(pvC
 sem_pvCorr_noRw = [std(pvCorr_noRw_preXstm,0,2)/sqrt(nBin_ctrl), std(pvCorr_noRw_preXpost,0,2)/sqrt(nBin_ctrl), std(pvCorr_noRw_stmXpost,0,2)/sqrt(nBin_ctrl)];
 
 % Run session
-[p_totalRun(1), table, stats] = kruskalwallis([pvCorr_inRun_preXstm,pvCorr_inRun_preXpost,pvCorr_inRun_stmXpost],group_InRun,'off');
-% [p_totalRun(1), table, stats] = kruskalwallis([pvCorr_inRun_preXstm,pvCorr_outRun_preXstm,pvCorr_noRun_preXstm],group_Run,'off');
+[p_totalRun(1), table, stats] = friedman([pvCorr_inRun_preXstm',pvCorr_inRun_preXpost',pvCorr_inRun_stmXpost'],1,'off');
+% [p_totalRun(1), table, stats] = friedman([pvCorr_inRun_preXstm,pvCorr_outRun_preXstm,pvCorr_noRun_preXstm],group_Run,'off');
 % result_Run = multcompare(stats,'ctype','hsd','Display','off');
-result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Run = multcompare(stats,'ctype','lsd','Display','off');
+% result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
+result_Run = multcompare(stats,'ctype','lsd','Display','off');
 p_Run(:,1) = result_Run(:,end);
 
-[p_totalRun(2), table, stats] = kruskalwallis([pvCorr_outRun_preXstm,pvCorr_outRun_preXpost,pvCorr_outRun_stmXpost],group_OutRun,'off');
-% [p_totalRun(2), table, stats] = kruskalwallis([pvCorr_inRun_preXpost,pvCorr_outRun_preXpost,pvCorr_noRun_preXpost],group_Run,'off');
+[p_totalRun(2), table, stats] = friedman([pvCorr_outRun_preXstm',pvCorr_outRun_preXpost',pvCorr_outRun_stmXpost'],1,'off');
+% [p_totalRun(2), table, stats] = friedman([pvCorr_inRun_preXpost,pvCorr_outRun_preXpost,pvCorr_noRun_preXpost],group_Run,'off');
 % result_Run = multcompare(stats,'ctype','hsd','Display','off');
-result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Run = multcompare(stats,'ctype','lsd','Display','off');
+% result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
+result_Run = multcompare(stats,'ctype','lsd','Display','off');
 p_Run(:,2) = result_Run(:,end);
 
-[p_totalRun(3), table, stats] = kruskalwallis([pvCorr_noRun_preXstm,pvCorr_noRun_preXpost,pvCorr_noRun_stmXpost],group_ctrl,'off');
-% [p_totalRun(3), table, stats] = kruskalwallis([pvCorr_noRun_preXstm,pvCorr_noRun_preXpost,pvCorr_noRun_stmXpost],group_ctrl,'off');
+[p_totalRun(3), table, stats] = friedman([pvCorr_noRun_preXstm',pvCorr_noRun_preXpost',pvCorr_noRun_stmXpost'],1,'off');
+% [p_totalRun(3), table, stats] = friedman([pvCorr_noRun_preXstm,pvCorr_noRun_preXpost,pvCorr_noRun_stmXpost],group_ctrl,'off');
 % result_Run = multcompare(stats,'ctype','hsd','Display','off');
-result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Run = multcompare(stats,'ctype','lsd','Display','off');
+% result_Run = multcompare(stats,'ctype','bonferroni','Display','off');
+result_Run = multcompare(stats,'ctype','lsd','Display','off');
 p_Run(:,3) = result_Run(:,end);
 
 % Rw session
-[p_totalRw(1), table, stats] = kruskalwallis([pvCorr_inRw_preXstm,pvCorr_inRw_preXpost,pvCorr_inRw_stmXpost],group_InRw,'off');
-% [p_totalRw(1), table, stats] = kruskalwallis([pvCorr_inRw_preXstm,pvCorr_outRw_preXstm,pvCorr_noRw_preXstm],group_Rw,'off');
+[p_totalRw(1), table, stats] = friedman([pvCorr_inRw_preXstm',pvCorr_inRw_preXpost',pvCorr_inRw_stmXpost'],1,'off');
+% [p_totalRw(1), table, stats] = friedman([pvCorr_inRw_preXstm,pvCorr_outRw_preXstm,pvCorr_noRw_preXstm],group_Rw,'off');
 % result_Rw = multcompare(stats,'ctype','hsd','Display','off');
-result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Rw = multcompare(stats,'ctype','lsd','Display','off');
+% result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
+result_Rw = multcompare(stats,'ctype','lsd','Display','off');
 p_Rw(:,1) = result_Rw(:,end);
 
-[p_totalRw(2), table, stats] = kruskalwallis([pvCorr_outRw_preXstm,pvCorr_outRw_preXpost,pvCorr_outRw_stmXpost],group_OutRw,'off');
-% [p_totalRw(2), table, stats] = kruskalwallis([pvCorr_inRw_preXpost,pvCorr_outRw_preXpost,pvCorr_noRw_preXpost],group_Rw,'off');
+[p_totalRw(2), table, stats] = friedman([pvCorr_outRw_preXstm',pvCorr_outRw_preXpost',pvCorr_outRw_stmXpost'],1,'off');
+% [p_totalRw(2), table, stats] = friedman([pvCorr_inRw_preXpost,pvCorr_outRw_preXpost,pvCorr_noRw_preXpost],group_Rw,'off');
 % result_Rw = multcompare(stats,'ctype','hsd','Display','off');
-result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Rw = multcompare(stats,'ctype','lsd','Display','off');
+% result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
+result_Rw = multcompare(stats,'ctype','lsd','Display','off');
 p_Rw(:,2) = result_Rw(:,end);
 
-[p_totalRw(3), table, stats] = kruskalwallis([pvCorr_noRw_preXstm,pvCorr_noRw_preXpost,pvCorr_noRw_stmXpost],group_ctrl,'off');
-% [p_totalRw(3), table, stats] = kruskalwallis([pvCorr_inRw_stmXpost,pvCorr_outRw_stmXpost,pvCorr_noRw_stmXpost],group_Rw,'off');
+[p_totalRw(3), table, stats] = friedman([pvCorr_noRw_preXstm',pvCorr_noRw_preXpost',pvCorr_noRw_stmXpost'],1,'off');
+% [p_totalRw(3), table, stats] = friedman([pvCorr_inRw_stmXpost,pvCorr_outRw_stmXpost,pvCorr_noRw_stmXpost],group_Rw,'off');
 % result_Rw = multcompare(stats,'ctype','hsd','Display','off');
-result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
-% result_Rw = multcompare(stats,'ctype','lsd','Display','off');
+% result_Rw = multcompare(stats,'ctype','bonferroni','Display','off');
+result_Rw = multcompare(stats,'ctype','lsd','Display','off');
 p_Rw(:,3) = result_Rw(:,end);
 
 
@@ -301,17 +303,17 @@ hold on;
 title('Run','fontSize',fontM);
 ylabel('PV correlation','fontSize',fontM);
 
-text(-1, -0.7,['p12 = ',num2str(p_Run(1,1))],'fontSize',fontM,'color',colorBlack);
-text(-1, -0.9,['p13 = ',num2str(p_Run(2,1))],'fontSize',fontM,'color',colorBlack);
-text(-1, -1.1,['p23 = ',num2str(p_Run(3,1))],'fontSize',fontM,'color',colorBlack);
+text(0.5, -1.9,['p12 = ',num2str(p_Run(1,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.1,['p13 = ',num2str(p_Run(2,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.3,['p23 = ',num2str(p_Run(3,1),3)],'fontSize',fontM,'color',colorBlack);
 
-text(5, -0.7,[num2str(p_Run(1,2))],'fontSize',fontM,'color',colorBlack);
-text(5, -0.9,[num2str(p_Run(2,2))],'fontSize',fontM,'color',colorBlack);
-text(5, -1.1,[num2str(p_Run(3,2))],'fontSize',fontM,'color',colorBlack);
+text(5.5, -1.9,[num2str(p_Run(1,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.1,[num2str(p_Run(2,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.3,[num2str(p_Run(3,2),3)],'fontSize',fontM,'color',colorBlack);
 
-text(10, -0.7,[num2str(p_Run(1,3))],'fontSize',fontM,'color',colorBlack);
-text(10, -0.9,[num2str(p_Run(2,3))],'fontSize',fontM,'color',colorBlack);
-text(10, -1.1,[num2str(p_Run(3,3))],'fontSize',fontM,'color',colorBlack);
+text(9.5, -1.9,[num2str(p_Run(1,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.1,[num2str(p_Run(2,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.3,[num2str(p_Run(3,3),3)],'fontSize',fontM,'color',colorBlack);
 
 
 hPVCorr(2) = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,2,1,[0.15 0.1 0.85 0.85],midInterval),wideInterval));
@@ -352,22 +354,22 @@ hold on;
 title('Rw','fontSize',fontM);
 ylabel('PV correlation','fontSize',fontM);
 
-text(-1, -0.7,['p12 = ',num2str(p_Rw(1,1))],'fontSize',fontM,'color',colorBlack);
-text(-1, -0.9,['p13 = ',num2str(p_Rw(2,1))],'fontSize',fontM,'color',colorBlack);
-text(-1, -1.1,['p23 = ',num2str(p_Rw(3,1))],'fontSize',fontM,'color',colorBlack);
+text(0.5, -1.9,['p12 = ',num2str(p_Rw(1,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.1,['p13 = ',num2str(p_Rw(2,1),3)],'fontSize',fontM,'color',colorBlack);
+text(0.5, -2.3,['p23 = ',num2str(p_Rw(3,1),3)],'fontSize',fontM,'color',colorBlack);
 
-text(5, -0.7,[num2str(p_Rw(1,2))],'fontSize',fontM,'color',colorBlack);
-text(5, -0.9,[num2str(p_Rw(2,2))],'fontSize',fontM,'color',colorBlack);
-text(5, -1.1,[num2str(p_Rw(3,2))],'fontSize',fontM,'color',colorBlack);
+text(5.5, -1.9,[num2str(p_Rw(1,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.1,[num2str(p_Rw(2,2),3)],'fontSize',fontM,'color',colorBlack);
+text(5.5, -2.3,[num2str(p_Rw(3,2),3)],'fontSize',fontM,'color',colorBlack);
 
-text(10, -0.7,[num2str(p_Rw(1,3))],'fontSize',fontM,'color',colorBlack);
-text(10, -0.9,[num2str(p_Rw(2,3))],'fontSize',fontM,'color',colorBlack);
-text(10, -1.1,[num2str(p_Rw(3,3))],'fontSize',fontM,'color',colorBlack);
+text(9.5, -1.9,[num2str(p_Rw(1,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.1,[num2str(p_Rw(2,3),3)],'fontSize',fontM,'color',colorBlack);
+text(9.5, -2.3,[num2str(p_Rw(3,3),3)],'fontSize',fontM,'color',colorBlack);
 
-set(hPVCorr(1),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-0.2 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'In-zone','Out-zone','Control'}],'fontSize',fontM);
-set(hPVCorr(2),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-0.2 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'In-zone','Out-zone','Control'}],'fontSize',fontM);
+set(hPVCorr(1),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-1.15 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'In-zone','Out-zone','Control'}],'fontSize',fontM);
+set(hPVCorr(2),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-1.15 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'In-zone','Out-zone','Control'}],'fontSize',fontM);
 set(hPVCorr,'TickLength',[0.03, 0.03]);
-% 
-% print('-painters','-r300','-dtiff',['f_CellRepors_PVCorr_8Hz_v2_lsd_',datestr(now,formatOut),'.tif']);
+
+print('-painters','-r300','-dtiff',['f_Neuron_PVCorr_',datestr(now,formatOut),'_8Hz_zone_bin5sd2','.tif']);
 % print('-painters','-r300','-depsc',['f_CellRepors_PVCorr_8Hz_',datestr(now,formatOut),'.ai']);
-% close;
+close;

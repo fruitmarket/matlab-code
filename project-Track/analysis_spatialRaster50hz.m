@@ -1,8 +1,8 @@
 % Variables for PETH & raster
 winLinear = [1,125]; % 1 to 125 cm / since the radius is 20 cm (ID: 17.5cm)
 winSpace = [0,124];
-binSizeSpace = 1; % 1 [unit: cm]
-resolution = 1;
+binSizeSpace = 2; % 1 [unit: cm]
+resolution = 2;
 dot = 1;
 
 % Load files
@@ -51,8 +51,13 @@ for iCell = 1:nCell
     spikePosition = spikeWin(spikeLocation,eventPosition_calib,winSpace);
     [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu_cali, winSpace, binSizeSpace, resolution, dot);
     peakFR1D_track = max(pethconvSpatial,[],2);
-    
     save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','peakFR1D_track','-append');
+
+%% spatial correlation 1D
+%     rateMap1D_PRE = pethconvSpatial(1,:);
+%     rateMap1D_STM = pethconvSpatial(2,:);
+%     rateMap1D_POST = pethconvSpatial(3,:);
+%     save([cellName,'.mat'],'rateMap1D_PRE','rateMap1D_STM','rateMap1D_POST','-append');
     
 %% Spatial information (spikePosition, occupancy are required)
     meanFRPRE = length(cell2mat(spikePosition(1:30)))/(sensor.S1(30)-sensor.S1(1))*1000;

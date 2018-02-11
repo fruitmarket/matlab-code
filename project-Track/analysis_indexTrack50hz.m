@@ -5,7 +5,7 @@ nFile = length(matFile);
 
 cMeanFRLow = 0.1;
 cMeanFRPeak = 9;
-cPeakFR = 0.5;
+cPeakFR = 0.1; % but how about 3
 cSpkpvr = 1.2;
 cPixelLength = 5;
 cOverLapLength = 5;

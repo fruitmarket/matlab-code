@@ -39,9 +39,11 @@ for iFile = 1:nFile
     tetLocation = categorical(cellstr(tetLocation{2}));
     fileSeg = strsplit(matFile{iFile},{'\','_'});
     cellID = iFile;
-%     mouseLine = categorical(cellstr(fileSeg{5}));
+    mouseLine = categorical(cellstr(fileSeg{5}));
+    sessionOrder = categorical(cellstr(fileSeg{8}));
     taskType = categorical(cellstr(fileSeg{9}));
     taskProb = categorical(cellstr(fileSeg{10}));
+    
     spkwv = {spkwv};
     sensorMeanFR_Run = {sensorMeanFR_Run};
     sensorMeanFR_Rw = {sensorMeanFR_Rw};
@@ -185,6 +187,12 @@ for iFile = 1:nFile
     rCorrConvLap_basePRE = {rCorrConvLap_basePRE};
     rCorrConvLap_baseSTIM = {rCorrConvLap_baseSTIM};
     rCorrConvLap_basePOST = {rCorrConvLap_basePOST};
+    rCorrRawMov1D = {rCorrRawMov1D};
+    rCorrConvMov1D = {rCorrConvMov1D};
+    rCorrRawMov1D_Inzone = {rCorrRawMov1D_Inzone};
+    rCorrConvMov1D_Inzone = {rCorrConvMov1D_Inzone};
+    rCorrRawMov1D_Outzone = {rCorrRawMov1D_Outzone};
+    rCorrConvMov1D_Outzone = {rCorrConvMov1D_Outzone};
     
     inzoneSpike = {inzoneSpike};
     sum_inzoneSpike = {sum_inzoneSpike};
@@ -200,6 +208,10 @@ for iFile = 1:nFile
     m_lapFrInzone = {m_lapFrInzone};
     m_lapFrOutzone = {m_lapFrOutzone};
     m_lapFrTotalzone = {m_lapFrTotalzone};
+    inzoneSpike_half = {inzoneSpike_half};
+    outzoneSpike_half = {outzoneSpike_half};
+    lapFrInzone = {lapFrInzone};
+    lapFrOutzone = {lapFrOutzone};
     p_ttestFR = {p_ttest};
     
     peakloci_total = {peakloci_total};
@@ -209,9 +221,8 @@ for iFile = 1:nFile
     idxNeurontype = categorical({idxNeurontype});
     idxOverLap = categorical({idxOverLap});
 
-    temT = table(path,cellID,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % event2mat, pethSensor (droped preTime, stmTime, postTime)
-        lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight
-        spkwv,spkwth,hfvwth,spkpvr,...  % waveform
+    temT = table(path,cellID,sessionOrder,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % event2mat, pethSensor (droped preTime, stmTime, postTime)
+        lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight        spkwv,spkwth,hfvwth,spkpvr,...  % waveform
         peakFR2D_track,peakFR2D_plfm,...    % heatMap
         peakFR1D_track,... % analysis_spatialRaster
         sensorMeanFR_Run,sensorMeanFR_Rw,... % sensorMeanFR
@@ -225,6 +236,7 @@ for iFile = 1:nFile
         rateMapRaw_PRE,rateMapRaw_STIM,rateMapRaw_POST,...
         rateMapRaw10_PRE, rateMapRaw10_STIM, rateMapRaw10_POST, rateMapRaw_eachLap,rCorrRawLap_basePRE,rCorrRawLap_baseSTIM,rCorrRawLap_basePOST,rCorrMoving1D_total,... % analysis_spatialRaster50hz_pvCorr
         rateMapConv10_PRE, rateMapConv10_STIM, rateMapConv10_POST, rateMapConv_eachLap,rCorrConvLap_basePRE,rCorrConvLap_baseSTIM,rCorrConvLap_basePOST,...
+        rCorrRawMov1D,rCorrConvMov1D,rCorrRawMov1D_Inzone,rCorrConvMov1D_Inzone,rCorrRawMov1D_Outzone,rCorrConvMov1D_Outzone,...
         lightProbPlfm5mw,lightProbPlfm8mw,lightProbPlfm10mw,... % analysis_plfm_laserIntTest
         evoSpike5mw,evoSpike8mw,evoSpike10mw,...
         lightPlfmSpk2hz8mw, lightPlfmSpk8hz, lightTrackSpk2hz8mw, lightTrackSpk8hz,... % laserFreqCheck
@@ -246,7 +258,7 @@ for iFile = 1:nFile
         rateMap1D_PRE,rateMap1D_STM,rateMap1D_POST,...
         spikePsdPreD,spikePsdStmD,spikePsdPostD,...
         r_wv,m_spont_wv,m_evoked_wv,...
-        inzoneSpike,sum_inzoneSpike,m_inzoneSpike,sem_inzoneSpike,timeIn_inzone,totalSpike,sum_totalSpike,outzoneSpike,sum_outzoneSpike,m_outzoneSpike,sem_outzoneSpike,m_lapFrInzone,m_lapFrOutzone,m_lapFrTotalzone,p_ttestFR,...
+        inzoneSpike,sum_inzoneSpike,m_inzoneSpike,sem_inzoneSpike,timeIn_inzone,totalSpike,sum_totalSpike,outzoneSpike,sum_outzoneSpike,m_outzoneSpike,sem_outzoneSpike,m_lapFrInzone,m_lapFrOutzone,m_lapFrTotalzone,p_ttestFR,inzoneSpike_half,outzoneSpike_half,lapFrInzone,lapFrOutzone,...
         peakloci_total,normTrackFR_total,... % analysis_findPeakLoci
         m_deto_spkPlfm8hz,m_deto_spkTrack8hz,evoSpkTrack8hz,evoSpkPlfm8hz,...%analysis_detoSpike8hz
         evoSpike_preEarly, evoSpike_preLate, evoSpike_stmEarly, evoSpike_stmLate, evoSpike_postEarly, evoSpike_postLate,...
@@ -256,11 +268,7 @@ for iFile = 1:nFile
         idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxpLR_Plfm8hz,idxmFrIn,idxmFrOut,idxmFrTotal,idxZoneInOut,idxZoneInOutPRE,overLapLength);
     T = [T; temT];
     
-    temp_Txls = table(path,cellID,taskType,tetLocation,...
-        pLR_Plfm2hz, statDir_Plfm2hz, latencyPlfm2hz1st, latencyPlfm2hz2nd,...
-        pLR_Plfm8hz, statDir_Plfm8hz, latencyPlfm8hz1st, latencyPlfm8hz2nd,...
-        pLR_Track, statDir_Track, latencyTrack1st, latencyTrack2nd,...
-        pLR_TrackN,statDir_TrackN, latencyTrack1stN, latencyTrack2ndN,...
+    temp_Txls = table(path,cellID,mouseLine,taskType,tetLocation,...
         idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxZoneInOut);
     Txls = [Txls; temp_Txls];
     
@@ -269,4 +277,4 @@ end
 cd(rtPath);
 formatOut = 'yymmdd';
 save(['neuronList_ori_',datestr(now,formatOut),'.mat'],'T');
-% writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);
+writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);

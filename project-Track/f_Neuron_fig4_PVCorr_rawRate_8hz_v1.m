@@ -353,6 +353,6 @@ set(hPVCorr(1),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-1.15 1.15],'XT
 set(hPVCorr(2),'TickDir','out','Box','off','XLim',[0,12],'YLim',[-1.15 1.15],'XTick',[2, 6, 10],'XTickLabel',[{'PRExSTIM','PRExPOST','STIMxPOST'}],'fontSize',fontM);
 set(hPVCorr,'TickLength',[0.03, 0.03]);
 
-% print('-painters','-r300','-dtiff',['f_Neuron_PVCorr_',datestr(now,formatOut),'_8Hz_block','.tif']);
+print('-painters','-r300','-dtiff',['f_Neuron_PVCorr_',datestr(now,formatOut),'_8Hz_block','.tif']);
 % print('-painters','-r300','-depsc',['f_short_suppleXX_PVCorr_InOutTotalZone_',datestr(now,formatOut),'_1cm1HzNormKW_withCC_dot.ai']);
 % close;

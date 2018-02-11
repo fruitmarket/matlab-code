@@ -60,13 +60,13 @@ for iPath = 1:nPath
 %             analysis_plfm_laserIntTest;
 %             laserFreqCheck50hz;
 %             analysis_detoSpike50hz;
-%             analysis_stmzoneSpike;
+            analysis_stmzoneSpike;
 %             analysis_laserSpikeChange50hz;
 %             analysis_track_peth1stLight50hz;
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
 %             analysis_lap1stlight50hz;
-            analysis_spatialRaster50hz_pvCorr;
+%             analysis_spatialRaster50hz_pvCorr;
 % code not using
 
         case 'm'

@@ -15,7 +15,7 @@ lightBand = 3;
 % load('neuronList_ori_171018.mat');
 % Txls = readtable('neuronList_ori_171018.xlsx');
 % Txls.taskType = categorical(Txls.taskType);
-load('neuronList_ori_171205.mat');
+load('neuronList_ori_180128_bin5sd2.mat');
 formatOut = 'yymmdd';
 
 %% separation of place cells from non place cell
@@ -507,15 +507,15 @@ formatOut = 'yymmdd';
 % plot_Track_multi_v3(fileName, cellID, path);
 
 %% All neurons separated by sessions (DRun, DRw, noRun, noRw)
-DRunPN = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-DRwPN = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+% DRunPN = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+% DRwPN = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
 
-noRunPN = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-noRwPN = T.taskType == 'noRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
+noRunPN = T.taskType == 'noRun';
+noRwPN = T.taskType == 'noRw';
 
-fileName = T.path(DRunPN);
-cellID = T.cellID(DRunPN);
-plot_Track_multi_v3(fileName, cellID, 'C:\Users\Jun\Desktop\test');
+% fileName = T.path(DRunPN);
+% cellID = T.cellID(DRunPN);
+% plot_Track_multi_v3(fileName, cellID, 'C:\Users\Jun\Desktop\test');
 
 % fileName = T.path(DRunIN);
 % cellID = Txls.cellID(DRunIN);
@@ -530,7 +530,20 @@ plot_Track_multi_v3(fileName, cellID, 'C:\Users\Jun\Desktop\test');
 % plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRw\IN');
 
 % fileName = T.path(noRunPN);
-% cellID = Txls.cellID(noRunPN);
+% nFile = length(fileName);
+% for iFile = 1:nFile
+%     [cellPath,~,~] = fileparts(fileName{iFile});
+%     filePath{iFile,1} = cellPath;
+% end
+% filePath = unique(filePath);
+% nPath = length(filePath);
+% 
+% for iPath = 1:nPath
+%     cd(filePath{iPath});
+%     delete('*.tif');
+%     delete('*.tiff');
+%     plot_Track_sin_v3;
+% end
 % plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_noRunPC');
 
 % fileName = T.path(noRunIN);
@@ -538,8 +551,21 @@ plot_Track_multi_v3(fileName, cellID, 'C:\Users\Jun\Desktop\test');
 % plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalnoRun\IN');
 
 fileName = T.path(noRwPN);
-cellID = Txls.cellID(noRwPN);
-plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_noRwPC');
+nFile = length(fileName);
+for iFile = 1:nFile
+    [cellPath,~,~] = fileparts(fileName{iFile});
+    filePath{iFile,1} = cellPath;
+end
+filePath = unique(filePath);
+nPath = length(filePath);
+
+for iPath = 1:nPath
+    cd(filePath{iPath});
+    delete('*.tif');
+    delete('*.tiff');
+    plot_Track_sin_v3;
+end
+% plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_noRwPC');
 
 % fileName = T.path(noRwIN);
 % cellID = Txls.cellID(noRwIN);

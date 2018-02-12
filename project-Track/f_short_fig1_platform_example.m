@@ -1,4 +1,4 @@
-function f_fig1_platform_example_v2
+function f_short_fig1_platform_example
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
@@ -53,7 +53,7 @@ f_cscLight = bandpassFilter(m_cscLight8hz,sFreq,1,20);
 xptCSC = [win(1):0.5:win(2)];
 
 fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1});
-nCol = 2;
+nCol = 3;
 nRow = 2;
 %% individual light
 hFreq8hz(1) = axes('Position',axpt(3,8,1:2,1:2,axpt(nCol,nRow,1,1,[0.1 0.1 0.85 0.85],midInterval),wideInterval));

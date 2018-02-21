@@ -28,6 +28,8 @@ lightNoPN = condiPN & (T.idx_light8hz == 0);
 % plot_freqDependency_multi(T.path(lightActPN),T.cellID(lightActPN),'C:\Users\Jun\Desktop\Exam_freqAct');
 latency_dir = mean(T.latency8hz(lightActDirectPN));
 latency_ind = mean(T.latency8hz(lightActIndirectPN));
+% latency_dir =  nanmean(T.plfm8hzLatency1(lightActDirectPN));
+% latency_ind = nanmean(T.plfm8hzLatency2(lightActIndirectPN));
 %%
 
 % Pyramidal neuron

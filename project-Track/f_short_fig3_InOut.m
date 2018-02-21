@@ -47,6 +47,10 @@ nInzone_ina_Run = size(fr_Inzone_ina_Run,1);
 nInzone_no_Run = size(fr_Inzone_no_Run,1);
 
 % population change
+Run_a = sum(double(DRunPN & idx_inc & idx_pPRExSTM));
+Run_b = sum(double(DRunPN & idx_dec & idx_pPRExSTM));
+Run_c = sum(double(DRunPN & ~idx_pPRExSTM));
+
 popul_inzone_inc_50hz_Run = sum(double(DRunPN & idx_Fr_Run & idx_inc & idx_pPRExSTM));
 popul_inzone_dec_50hz_Run = sum(double(DRunPN & idx_Fr_Run & idx_dec & idx_pPRExSTM));
 popul_inzone_no_50hz_Run = sum(double(DRunPN & idx_Fr_Run & ~idx_pPRExSTM));
@@ -79,7 +83,7 @@ xScatter50hzIn_ina_Run = (rand(nInzone_ina_Run,1)-0.5)*0.85*barWidth;
 xScatter50hzIn_no_Run = (rand(nInzone_no_Run,1)-0.5)*0.85*barWidth;
 
 %%
-fHandle = figure('PaperUnits','centimeters','Paperposition',[0 0 4.5 6.5]);
+fHandle = figure('PaperUnits','centimeters','Paperposition',[0 0 4.5 10]);
 hPlot(1) = axes('Position',axpt(3,2,1:2,1,[0.25 0.1 0.85 0.85],wideInterval));
 bar(xBar,m_frInZone_Run,'BarWidth',0.6,'LineStyle','-','edgeColor',colorBlack,'FaceColor',colorDarkGray,'lineWidth',1);
 hold on;
@@ -108,14 +112,14 @@ for iLine = 1:nInzone_ina_Run
 end
 
 errorbarJun(xBar,m_frInZone_Run,sem_frInZone_Run,0.4,eBarWidth,colorBlack);
-text(7,9,['p_all = ',num2str(round(p_Run*1000)/1000)],'fontSize',fontM,'interpreter','none');
-text(7,7,['p_12 = ',num2str(round(result_Run(1,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
-text(7,5,['p_13 = ',num2str(round(result_Run(2,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
-text(7,3,['p_23 = ',num2str(round(result_Run(3,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
-text(1,yLim(1)*0.9,['FR threshold: ',num2str(min_lapFrInPRE_Run,3),' Hz'],'color',colorRed,'fontSize',fontM);
-text(5, yLim(1)*0.8,['n = ',num2str(nInzone_Run)],'fontSize',fontM);
+% text(7,9,['p_all = ',num2str(round(p_Run*1000)/1000)],'fontSize',fontM,'interpreter','none');
+% text(7,7,['p_12 = ',num2str(round(result_Run(1,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
+% text(7,5,['p_13 = ',num2str(round(result_Run(2,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
+% text(7,3,['p_23 = ',num2str(round(result_Run(3,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
+% text(1,yLim(1)*0.9,['FR threshold: ',num2str(min_lapFrInPRE_Run,3),' Hz'],'color',colorRed,'fontSize',fontM);
+text(5, yLim(1)*0.9,['n = ',num2str(nInzone_Run)],'fontSize',fontM);
 ylabel('Firing rate (Hz)','fontSize',fontM);
-title('In-zone (DRunPN)','fontSize',fontM,'fontWeight','bold');
+% title('In-zone (DRunPN)','fontSize',fontM,'fontWeight','bold');
 
 %% Rw
 DRwPN = T.taskType == 'DRw' & T.idxNeurontype == 'PN';
@@ -128,6 +132,10 @@ m_frInZone_Rw = mean(fr_Inzone_Rw,1);
 sem_frInZone_Rw = std(fr_Inzone_Rw,0,1)/sqrt(nInzone_Rw);
 
 % population change
+Rw_a = sum(double(DRwPN & idx_inc & idx_pPRExSTM));
+Rw_b = sum(double(DRwPN & idx_dec & idx_pPRExSTM));
+Rw_c = sum(double(DRwPN & ~idx_pPRExSTM));
+
 popul_inzone_inc_50hz_Rw = sum(double(DRwPN & idx_Fr_Rw & idx_inc & idx_pPRExSTM));
 popul_inzone_dec_50hz_Rw = sum(double(DRwPN & idx_Fr_Rw & idx_dec & idx_pPRExSTM));
 popul_inzone_no_50hz_Rw = sum(double(DRwPN & idx_Fr_Rw & ~idx_pPRExSTM));
@@ -194,14 +202,14 @@ for iLine = 1:nInzone_ina_Rw
 end
 
 errorbarJun(xBar,m_frInZone_Rw,sem_frInZone_Rw,0.4,eBarWidth,colorBlack);
-text(7,9,['p_all = ',num2str(round(p_Rw*10000)/10000)],'fontSize',fontM,'interpreter','none');
-text(7,7,['p_12 = ',num2str(round(result_Rw(1,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
-text(7,5,['p_13 = ',num2str(round(result_Rw(2,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
-text(7,3,['p_23 = ',num2str(round(result_Rw(3,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
-text(1,yLim(2)*0.9,['FR threshold: ',num2str(min_lapFrInPRE_Rw,3),' Hz'],'color',colorRed,'fontSize',fontM);
-text(5, yLim(2)*0.8,['n = ',num2str(nInzone_Rw)],'fontSize',fontM);
+% text(7,9,['p_all = ',num2str(round(p_Rw*10000)/10000)],'fontSize',fontM,'interpreter','none');
+% text(7,7,['p_12 = ',num2str(round(result_Rw(1,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
+% text(7,5,['p_13 = ',num2str(round(result_Rw(2,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
+% text(7,3,['p_23 = ',num2str(round(result_Rw(3,end)*10000)/10000)],'fontSize',fontM,'interpreter','none');
+% text(1,yLim(2)*0.9,['FR threshold: ',num2str(min_lapFrInPRE_Rw,3),' Hz'],'color',colorRed,'fontSize',fontM);
+text(5, yLim(2)*0.9,['n = ',num2str(nInzone_Rw)],'fontSize',fontM);
 ylabel('Firing rate (Hz)','fontSize',fontM);
-title('In-zone (DRwPN)','fontSize',fontM,'fontWeight','bold');
+% title('In-zone (DRwPN)','fontSize',fontM,'fontWeight','bold');
 
 set(hPlot,'TickLength',[0.03 0.03]);
 set(hPlot,'Box','off','TickDir','out','XLim',[0,6],'XTick',[1,3,5],'XTickLabel',{'PRE','STIM','POST'},'fontSize',fontM);
@@ -209,5 +217,5 @@ set(hPlot(1),'YLim',[0,yLim(1)],'YTick',[0:5:yLim(1)]);
 set(hPlot(2),'YLim',[0,yLim(2)],'YTick',[0:5:yLim(1)]);
 
 % print('-painters','-r300','-dtiff',['f_short_fig2_InOutZone_50hz_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['f_short_fig2_InOutZone_50hz_',datestr(now,formatOut),'.ai']);
-close;
+% print('-painters','-r300','-depsc',['f_short_fig2_InOutZone_50hz_',datestr(now,formatOut),'.ai']);
+% close;

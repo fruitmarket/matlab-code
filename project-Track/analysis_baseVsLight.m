@@ -94,22 +94,20 @@ for iCell = 1:nCell
     spikeTime_light010 = spikeWin(tData{iCell},lightTime.Plfm8hz,winLight2);
     spikeLight010 = cellfun(@length,spikeTime_light010);
 
-    spikeTime_light020 = spikeWin(tData{iCell},lightTime.Plfm8hz,winLight3);
-    spikeLight020 = cellfun(@length,spikeTime_light020);
+    spikeTime_light1020 = spikeWin(tData{iCell},lightTime.Plfm8hz,winLight3);
+    spikeLight1020 = cellfun(@length,spikeTime_light1020);
     
-    spikeTime_light1020 = spikeWin(tData{iCell},lightTime.Plfm8hz,[10 20]);
-
     p_latency(1) = ranksum(spikeBase010/10,spikeLight010/diff(winLight2));
-    p_latency(2) = ranksum(spikeBase010/10,spikeLight020/diff(winLight3));
+    p_latency(2) = ranksum(spikeBase010/10,spikeLight1020/diff(winLight3));
     
     if p_latency(1)<0.05 && ~(p_latency(2)<0.05)
         idx_latency = 'direct'; % direct
-        temp_latency = cellfun(@min, spikeTime_light020,'UniformOutput',false);
+        temp_latency = cellfun(@min, spikeTime_light1020,'UniformOutput',false);
         latency1 = mean(cell2mat(temp_latency));
         latency2 = NaN;
     elseif ~(p_latency(1)<0.05) && p_latency(2)<0.05
         idx_latency = 'indirect';
-        temp_latency = cellfun(@min, spikeTime_light020,'UniformOutput',false);
+        temp_latency = cellfun(@min, spikeTime_light1020,'UniformOutput',false);
         latency1 = NaN;
         latency2 = mean(cell2mat(temp_latency));
     elseif p_latency(1)< 0.05 && p_latency(2)<0.05

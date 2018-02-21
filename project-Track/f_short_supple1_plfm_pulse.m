@@ -6,13 +6,19 @@ load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 load('neuronList_width_171127.mat');
 Txls = readtable('neuronList_width_171127.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
-
 formatOut = 'yymmdd';
-
+% CommonIndex = logical([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,1,0,0,1,1,1,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0])';
 cSpkpvr = 1.2;
 listPN = T.spkpvr > cSpkpvr;
 
 % plot_widthT_multi(T.path(listPN & T.idx_light10ms == 1),T.cellID(listPN & T.idx_light10ms == 1),'C:\Users\Jun\Desktop\pulseT');
+
+% actPN_peth10_direct = cell2mat(T.peth10ms(listPN & Txls.latencyIndex == 'direct' & CommonIndex));
+% actPN_peth50_direct = cell2mat(T.peth50ms(listPN & Txls.latencyIndex == 'direct' & CommonIndex));
+% actPN_peth10_indirect = cell2mat(T.peth10ms(listPN & Txls.latencyIndex == 'indirect' & CommonIndex));
+% actPN_peth50_indirect = cell2mat(T.peth50ms(listPN & Txls.latencyIndex == 'indirect' & CommonIndex));
+% actPN_peth10_double = cell2mat(T.peth10ms(listPN & Txls.latencyIndex == 'double' & CommonIndex));
+% actPN_peth50_double = cell2mat(T.peth50ms(listPN & Txls.latencyIndex == 'double' & CommonIndex));
 
 actPN_peth10_direct = cell2mat(T.peth10ms(listPN & Txls.latencyIndex == 'direct'));
 actPN_peth50_direct = cell2mat(T.peth50ms(listPN & Txls.latencyIndex == 'direct'));
@@ -107,6 +113,6 @@ set(hPlotWidth(6),'YLim',[0 yLimWidth(6)]);
 set(hPlotWidth(1:6),'XTick',[-10 0 10 20 50 75]);
 set(pLight,'LineStyle','none');
 
-print('-painters','-r300','-depsc',['f_short_supple1_plfm_pulseWidth_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-depsc',['f_short_supple1_plfm_pulseWidth_',datestr(now,formatOut),'.ai']);
 print('-painters','-r300','-dtiff',['f_short_supple1_plfm_pulseWidth_',datestr(now,formatOut),'.tif']);
 close;

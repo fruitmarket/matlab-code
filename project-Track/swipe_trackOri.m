@@ -76,11 +76,12 @@ for iPath = 1:nPath
 %             analysis_plfm_laserIntTest;
 %             analysis_track_peth1stLight;
 %             analysis_detoSpike8hz;
-            analysis_stmzoneSpike;
+%             analysis_stmzoneSpike;
 %             analysis_laserSpikeChange;
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
 %             analysis_spatialRaster_pvCorr;
+            analysis_baseVsLightTrack8hz;
 % #### code not using ####
 %             laserFreqCheck;
 %             mapCorr; % PreStm, PrePost, StmPost

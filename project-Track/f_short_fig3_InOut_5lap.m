@@ -52,7 +52,7 @@ sem_norm_lapMean_Rw = std(norm_lapMean_Rw)/sqrt(nRw);
 xpt = 1:18;
 yLimRun = [0 2];
 yLimRw = [0 2];
-fHandle = figure('PaperUnits','centimeters','Paperposition',[0 0 4.5 6.5]);
+fHandle = figure('PaperUnits','centimeters','Paperposition',[0 0 4.5 4]);
 hPlot(1) = axes('Position',axpt(3,2,1:2,1,[0.25 0.1 0.85 0.85],wideInterval));
 patch([xpt, fliplr(xpt)],[m_norm_lapMean_Run+sem_norm_lapMean_Run, fliplr(m_norm_lapMean_Run-sem_norm_lapMean_Run)],colorGray,'lineStyle','none');
 hold on;
@@ -73,6 +73,6 @@ set(hPlot,'Box','off','TickDir','out','XLim',[0,19],'XTick',[3.5 9.5 15.5],'XTic
 set(hPlot(1),'YLim',yLimRun);
 set(hPlot(2),'YLim',yLimRw);
 
-% print('-painters','-r300','-dtiff',['f_Neuron_fig2_InOutZoneLap_50hz_',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-dtiff',['f_Neuron_fig2_InOutZoneLap_50hz_',datestr(now,formatOut),'.tif']);
 print('-painters','-r300','-depsc',['f_Neuron_fig2_InOutZoneLap_50hz_',datestr(now,formatOut),'.ai']);
 close;

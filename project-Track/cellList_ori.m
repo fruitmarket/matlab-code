@@ -218,11 +218,15 @@ for iFile = 1:nFile
     pethconvSpatial = {pethconvSpatial};
     normTrackFR_total = {normTrackFR_total};
     
+    plfmLightSpike8hz = {plfmLightSpike8hz};
+    plfmBaseSpike8hz = {plfmBaseSpike8hz};
+    idx_plfm8hzLatency = categorical({idx_plfm8hzLatency});
+    
     idxNeurontype = categorical({idxNeurontype});
     idxOverLap = categorical({idxOverLap});
 
     temT = table(path,cellID,sessionOrder,taskType,tetLocation,meanFR_base,meanFR_task,meanFR_pre,meanFR_stm,meanFR_post,burstIdx,...    % event2mat, pethSensor (droped preTime, stmTime, postTime)
-        lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,... % pethLight        spkwv,spkwth,hfvwth,spkpvr,...  % waveform
+        lightSpk,lightPreSpk,lightPostSpk,psdPreSpk,psdPostSpk,lightSpkPlfm2hz,lightSpkPlfm2hz_pre,lightSpkPlfm2hz_post,spkpvr,... % pethLight        spkwv,spkwth,hfvwth,spkpvr,...  % waveform
         peakFR2D_track,peakFR2D_plfm,...    % heatMap
         peakFR1D_track,... % analysis_spatialRaster
         sensorMeanFR_Run,sensorMeanFR_Rw,... % sensorMeanFR
@@ -265,6 +269,7 @@ for iFile = 1:nFile
         evoXptTrackLight,evoXptPsdPre,evoXptPsdPost,...
         idx_evoSpikeDir,...
         LRatio,ID,...
+        plfmLightSpike8hz,plfmBaseSpike8hz,freq_light8hz,freq_base8hz,p_Plfm8hzResp,idx_plfm8hzLatency,plfm8hzLatency1,plfm8hzLatency2,idx_plfm8hz,...
         idxNeurontype,idxPeakFR,idxPlaceField,idxTotalSpikeNum,idxpLR_Track,idxpLR_Plfm8hz,idxmFrIn,idxmFrOut,idxmFrTotal,idxZoneInOut,idxZoneInOutPRE,overLapLength);
     T = [T; temT];
     
@@ -277,4 +282,4 @@ end
 cd(rtPath);
 formatOut = 'yymmdd';
 save(['neuronList_ori_',datestr(now,formatOut),'.mat'],'T');
-writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);
+% writetable(Txls,['neuronList_ori_',datestr(now,formatOut),'.xlsx']);

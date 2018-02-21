@@ -1,7 +1,9 @@
 clearvars;
-cd('D:\Dropbox\SNL\P2_Track');
+% cd('D:\Dropbox\SNL\P2_Track');
+cd('E:\Dropbox\SNL\P2_Track');
 
-load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
+% load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
+load('E:\Dropbox\SNL\P2_Track\myParameters.mat');
 formatOut = 'yymmdd';
 
 markerS = 1.5;
@@ -132,6 +134,12 @@ tPC_noRun = ((T.taskType == 'noRun' & isundefined(T.compIdxControl)) | (T.taskTy
 
 % tPC_noRun = T.taskType == 'noRun' & T.idxNeurontype == 'PN' & T.idxPeakFR;
 ntPC_noRun = sum(double(tPC_noRun));
+
+a = T.path(tPC_noRun);
+for iCell = 1:ntPC_noRun
+    [filePath{iCell,1},~,~] = fileparts(a{iCell});
+end
+nSessions = unique(filePath);
 
 noRun_PRE = cell2mat(T.rateMap1D_PRE(tPC_noRun));
 noRun_STM = cell2mat(T.rateMap1D_STM(tPC_noRun));

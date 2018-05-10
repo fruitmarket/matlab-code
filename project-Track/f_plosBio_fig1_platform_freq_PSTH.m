@@ -25,14 +25,17 @@ lightActDoublePN = condiPN & (T.idx_light8hz == 1) & T.idx_latency == 'double';
 lightInaPN = condiPN & (T.idx_light8hz == -1);
 lightNoPN = condiPN & (T.idx_light8hz == 0);
 
-% plot_freqDependency_multi(T.path(lightActPN),T.cellID(lightActPN),'C:\Users\Jun\Desktop\Exam_freqAct');
 latency_dir = mean(T.latency8hz(lightActDirectPN));
 latency_ind = mean(T.latency8hz(lightActIndirectPN));
-% latency_dir =  nanmean(T.plfm8hzLatency1(lightActDirectPN));
-% latency_ind = nanmean(T.plfm8hzLatency2(lightActIndirectPN));
-%%
 
-% Pyramidal neuron
+%% finding threshold fr
+thresholdFr = min(T.freq_base8hz(lightInaPN));
+idx_thresholdFR = T.freq_base8hz >= thresholdFr;
+nThreshold_ActPN = sum(double(condiPN & (T.idx_light8hz==1) & idx_thresholdFR));
+nThreshold_InaPN = sum(double(condiPN & (T.idx_light8hz==-1) & idx_thresholdFR));
+nThreshold_NoPN = sum(double(condiPN & (T.idx_light8hz==0) & idx_thresholdFR));
+
+%% Pyramidal neuron
 actPN_peth = cell2mat(T.peth8hz_ori(lightActPN));
 actPN_peth_direct = cell2mat(T.peth8hz_ori(lightActDirectPN));
 actPN_peth_indirect = cell2mat(T.peth8hz_ori(lightActIndirectPN));
@@ -164,6 +167,6 @@ set(hPlotPN(1:6),'XTick',[-10 0 10 20 75]);
 set(hPlotPN,'TickLength',[0.03, 0.03]);
 % set(hPlotPN(5),'XTick',[-10 0 10 20 75],'XTickLabel',[-10 0 10 20 75]);
 
-% print('-painters','-r300','-depsc',['final_fig1_platform_8hz_pulseWidth_v4_',datestr(now,formatOut),'.ai']);
-% print('-painters','-r300','-dtiff',['final_fig1_platform_8hz_pulseWidth_v4_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['f_plosBio_fig1_platform_8hz_pulseWidth_v4_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-dtiff',['f_plosBio_fig1_platform_8hz_pulseWidth_v4_',datestr(now,formatOut),'.tif']);
 % close;

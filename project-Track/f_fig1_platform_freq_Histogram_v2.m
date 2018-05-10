@@ -149,5 +149,5 @@ set(hPlotPN(3),'XLim',[-10, 55],'YLim',[0 yLim(3)],'fontSize',fontL);
 set(hPlotPN(4),'YLim',[0 yLim(4)],'fontSize',fontL);
 set(hPlotPN(5),'YLim',[0 yLim(5)],'fontSize',fontL);
 
-print('-painters','-r300','-dtiff',['final_fig2_platform_8hzHistogram',datestr(now,formatOut),'_v2.tif']);
+% print('-painters','-r300','-dtiff',['final_fig2_platform_8hzHistogram',datestr(now,formatOut),'_v2.tif']);
 % print('-painters','-r300','-depsc',[datestr(now,formatOut),'_plot_freqTest_totalPETH_','.ai']);

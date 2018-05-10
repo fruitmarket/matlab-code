@@ -275,6 +275,6 @@ set(hPlotWidth(6),'YLim',[0 yLimWidth(6)]);
 set(hPlotWidth(1:6),'XTick',[-10 0 10 20 50 75]);
 % set(hPlotWidth(6),'XTick',[-10 0 10 20 50 75],'XTickLabel',[-10 0 10 20 50 75]);
 
-print('-painters','-r300','-depsc',['final_fig2_platform_8hz_pulseWidth_v3_',datestr(now,formatOut),'.ai']);
-print('-painters','-r300','-dtiff',['final_fig2_platform_8hz_pulseWidth_v3_',datestr(now,formatOut),'.tif']);
-close;
+% print('-painters','-r300','-depsc',['final_fig2_platform_8hz_pulseWidth_v3_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-dtiff',['final_fig2_platform_8hz_pulseWidth_v3_',datestr(now,formatOut),'.tif']);
+% close;

@@ -15,7 +15,7 @@ lightBand = 3;
 % load('neuronList_ori_171018.mat');
 % Txls = readtable('neuronList_ori_171018.xlsx');
 % Txls.taskType = categorical(Txls.taskType);
-load('neuronList_ori_180128_bin5sd2.mat');
+load('neuronList_ori_180202.mat');
 formatOut = 'yymmdd';
 
 %% separation of place cells from non place cell
@@ -84,36 +84,36 @@ formatOut = 'yymmdd';
 % plot_Track_multi_v3(fileName,cellID,path);
 
 % interneuron
-% dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_placefield\total_IN';
-% rmdir(dirParent,'s');
-% 
-% group = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
-% fileName = T.path(group);
-% cellID = T.cellID(group);
-% mkdir(dirParent,'DRun');
-% path = strcat(dirParent,'\DRun');
-% plot_Track_multi_v3(fileName,cellID,path);
-% 
-% group = T.taskType == 'DRw' & T.idxNeurontype == 'IN';
-% fileName = T.path(group);
-% cellID = T.cellID(group);
-% mkdir(dirParent,'DRw');
-% path = strcat(dirParent,'\DRw');
-% plot_Track_multi_v3(fileName,cellID,path);
-% 
-% group = T.taskType == 'noRun' & T.idxNeurontype == 'IN';
-% fileName = T.path(group);
-% cellID = T.cellID(group);
-% mkdir(dirParent,'noRun');
-% path = strcat(dirParent,'\noRun');
-% plot_Track_multi_v3(fileName,cellID,path);
-% 
-% group = T.taskType == 'noRw' & T.idxNeurontype == 'IN';
-% fileName = T.path(group);
-% cellID = T.cellID(group);
-% mkdir(dirParent,'noRw');
-% path = strcat(dirParent,'\noRw');
-% plot_Track_multi_v3(fileName,cellID,path);
+dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_placefield\total_IN';
+rmdir(dirParent,'s');
+
+group = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
+fileName = T.path(group);
+cellID = T.cellID(group);
+mkdir(dirParent,'DRun');
+path = strcat(dirParent,'\DRun');
+plot_Track_multi_v3(fileName,cellID,path);
+
+group = T.taskType == 'DRw' & T.idxNeurontype == 'IN';
+fileName = T.path(group);
+cellID = T.cellID(group);
+mkdir(dirParent,'DRw');
+path = strcat(dirParent,'\DRw');
+plot_Track_multi_v3(fileName,cellID,path);
+
+group = T.taskType == 'noRun' & T.idxNeurontype == 'IN';
+fileName = T.path(group);
+cellID = T.cellID(group);
+mkdir(dirParent,'noRun');
+path = strcat(dirParent,'\noRun');
+plot_Track_multi_v3(fileName,cellID,path);
+
+group = T.taskType == 'noRw' & T.idxNeurontype == 'IN';
+fileName = T.path(group);
+cellID = T.cellID(group);
+mkdir(dirParent,'noRw');
+path = strcat(dirParent,'\noRw');
+plot_Track_multi_v3(fileName,cellID,path);
 
 % unclassified
 % dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_placefield\total_UNC';
@@ -550,21 +550,21 @@ noRwPN = T.taskType == 'noRw';
 % cellID = Txls.cellID(noRunIN);
 % plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalnoRun\IN');
 
-fileName = T.path(noRwPN);
-nFile = length(fileName);
-for iFile = 1:nFile
-    [cellPath,~,~] = fileparts(fileName{iFile});
-    filePath{iFile,1} = cellPath;
-end
-filePath = unique(filePath);
-nPath = length(filePath);
-
-for iPath = 1:nPath
-    cd(filePath{iPath});
-    delete('*.tif');
-    delete('*.tiff');
-    plot_Track_sin_v3;
-end
+% fileName = T.path(noRwPN);
+% nFile = length(fileName);
+% for iFile = 1:nFile
+%     [cellPath,~,~] = fileparts(fileName{iFile});
+%     filePath{iFile,1} = cellPath;
+% end
+% filePath = unique(filePath);
+% nPath = length(filePath);
+% 
+% for iPath = 1:nPath
+%     cd(filePath{iPath});
+%     delete('*.tif');
+%     delete('*.tiff');
+%     plot_Track_sin_v3;
+% end
 % plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_noRwPC');
 
 % fileName = T.path(noRwIN);

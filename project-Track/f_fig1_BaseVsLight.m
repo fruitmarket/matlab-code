@@ -100,5 +100,5 @@ set(hBar(1),'faceColor',colorLightBlue);
 set(hBar(2),'faceColor',colorLightRed);
 set(hBar(3),'faceColor',colorGray);
 
-set(hBaseLight,'Box','off','TickDir','out','XLim',[0 6],'XTick',[1:5],'XTickLabel',{'1 Hz','2 Hz','8 Hz','20 Hz','50 Hz'},'fontSize',fontM,'YLim',[0,105]);
-print('-painters','-r300','-dtiff',['final_figXX_plfm_BaseVsLight_',datestr(now,formatOut),'_v2.tif']);
+% set(hBaseLight,'Box','off','TickDir','out','XLim',[0 6],'XTick',[1:5],'XTickLabel',{'1 Hz','2 Hz','8 Hz','20 Hz','50 Hz'},'fontSize',fontM,'YLim',[0,105]);
+% print('-painters','-r300','-dtiff',['final_figXX_plfm_BaseVsLight_',datestr(now,formatOut),'_v2.tif']);

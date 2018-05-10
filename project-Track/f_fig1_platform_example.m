@@ -93,9 +93,9 @@ set(hFreq8hz(1),'YLim',yLimSpike,'YTick',[0:10:30]);
 set(hFreq8hz(2),'Box','off','visible','off','YLim',yLimCSC,'YTick',[]);
 set(hFreq8hz(3),'XLim',winBlue,'XTick',[-25,0,10,20,100],'YLim',[0 nLight],'YTick',[0 nLight],'YTickLabel',{0, nLight});
 
-print('-painters','-r300','-dtiff',['final_fig1_example_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['final_fig1_example_',datestr(now,formatOut),'.ai']);
-close;
+% print('-painters','-r300','-dtiff',['final_fig1_example_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['final_fig1_example_',datestr(now,formatOut),'.ai']);
+% close;
 function [xpt,ypt,spikeBin,spikeHist,spikeConv,spikeConvZ] = rasterPETH(spikeTime, trialIndex, win, binSize, resolution, dot)
 % raterPSTH converts spike time into raster plot
 %   spikeTime: cell array. Each cell contains vector array of spike times per each trial unit is ms.

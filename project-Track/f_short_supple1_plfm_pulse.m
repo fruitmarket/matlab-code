@@ -114,5 +114,5 @@ set(hPlotWidth(1:6),'XTick',[-10 0 10 20 50 75]);
 set(pLight,'LineStyle','none');
 
 % print('-painters','-r300','-depsc',['f_short_supple1_plfm_pulseWidth_',datestr(now,formatOut),'.ai']);
-print('-painters','-r300','-dtiff',['f_short_supple1_plfm_pulseWidth_',datestr(now,formatOut),'.tif']);
-close;
+% print('-painters','-r300','-dtiff',['f_short_supple1_plfm_pulseWidth_',datestr(now,formatOut),'.tif']);
+% close;

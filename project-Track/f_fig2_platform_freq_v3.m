@@ -192,6 +192,6 @@ set(hPlot,'TickDir','out','Box','off');
 set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontS);
 set(hPlot,'YLim',[-1,35]);
 
-print('-painters','-r300','-dtiff',['final_fig2_platform_freqTest_v2_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['final_fig2_platform_freqTest_v2_',datestr(now,formatOut),'.ai']);
-close;
+% print('-painters','-r300','-dtiff',['final_fig2_platform_freqTest_v2_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['final_fig2_platform_freqTest_v2_',datestr(now,formatOut),'.ai']);
+% close;

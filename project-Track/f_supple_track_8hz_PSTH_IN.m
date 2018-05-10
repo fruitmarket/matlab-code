@@ -2,12 +2,9 @@ clearvars;
 
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
-load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
-% load('neuronList_freq_170921.mat');
-% Txls = readtable('neuronList_freq_170921.xlsx');
-load('neuronList_freq_171127.mat');
-Txls = readtable('neuronList_freq_171127.xlsx');
-Txls.latencyIndex = categorical(Txls.latencyIndex);
+load('neuronList_ori_180206.mat');
+Txls = readtable('neuronList_ori_180206.xlsx');
+
 formatOut = 'yymmdd';
 fontS = 6;
 
@@ -15,23 +12,24 @@ fontS = 6;
 cSpkpvr = 1.2;
 alpha = 0.01;
 
-condiPN = T.spkpvr>cSpkpvr;
-condiIN = ~condiPN;
+listPN = T.spkpvr > cSpkpvr;
+listIN = ~listPN & T.meanFR_task>9;
+listUNC = ~(listPN | listIN);
 
-lightActPN = condiPN & (T.idx_light8hz == 1);
-lightActDirectPN = condiPN & (T.idx_light8hz == 1) & T.idx_latency == 'direct';
-lightActIndirectPN = condiPN & (T.idx_light8hz == 1) & T.idx_latency == 'indirect';
-lightActDoublePN = condiPN & (T.idx_light8hz == 1) & T.idx_latency == 'double';
-lightInaPN = condiPN & (T.idx_light8hz == -1);
-lightNoPN = condiPN & (T.idx_light8hz == 0);
+lightActIN = listIN & (T.idx_light8hz == 1);
+lightActDirectIN = listIN & (T.idx_light8hz == 1) & T.idx_latency == 'direct';
+lightActIndirectIN = listIN & (T.idx_light8hz == 1) & T.idx_latency == 'indirect';
+lightActDoubleIN = listIN & (T.idx_light8hz == 1) & T.idx_latency == 'double';
+lightInaIN = listIN & (T.idx_light8hz == -1);
+lightNoIN = listIN & (T.idx_light8hz == 0);
 
 % Pyramidal neuron
-actPN_peth = cell2mat(T.peth8hz_ori(lightActPN));
-actPN_peth_direct = cell2mat(T.peth8hz_ori(lightActDirectPN));
-actPN_peth_indirect = cell2mat(T.peth8hz_ori(lightActIndirectPN));
-actDBPN_peth = cell2mat(T.peth8hz_ori(lightActDoublePN));
-inactPN_peth = cell2mat(T.peth8hz_ori(lightInaPN));
-noPN_peth = cell2mat(T.peth8hz_ori(lightNoPN));
+actPN_peth = cell2mat(T.peth8hz_ori(lightActIN));
+actPN_peth_direct = cell2mat(T.peth8hz_ori(lightActDirectIN));
+actPN_peth_indirect = cell2mat(T.peth8hz_ori(lightActIndirectIN));
+actDBPN_peth = cell2mat(T.peth8hz_ori(lightActDoubleIN));
+inactPN_peth = cell2mat(T.peth8hz_ori(lightInaIN));
+noIN_peth = cell2mat(T.peth8hz_ori(lightNoIN));
 
 
 %% Mean & SEM
@@ -55,9 +53,9 @@ ninactPN = size(inactPN_peth,1);
 m_inactPN_peth = mean(inactPN_peth,1);
 sem_inactPN_peth = std(inactPN_peth,0,1)/sqrt(ninactPN);
 
-nnoPN = size(noPN_peth,1);
-m_noPN_peth = mean(noPN_peth,1);
-sem_noPN_peth = std(noPN_peth,0,1)/sqrt(nnoPN);
+nnoPN = size(noIN_peth,1);
+m_noPN_peth = mean(noIN_peth,1);
+sem_noPN_peth = std(noIN_peth,0,1)/sqrt(nnoPN);
 
 %% Plot
 % Pyramidal neuron
@@ -161,15 +159,15 @@ Txls = readtable('neuronList_width_171127.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 
 %% Population separation
-listPN = T.spkpvr>cSpkpvr;
-actPN_peth10_direct = cell2mat(T.peth10ms(listPN & Txls.latencyIndex == 'direct'));
-actPN_peth50_direct = cell2mat(T.peth50ms(listPN & Txls.latencyIndex == 'direct'));
 
-actPN_peth10_indirect = cell2mat(T.peth10ms(listPN & Txls.latencyIndex == 'indirect'));
-actPN_peth50_indirect = cell2mat(T.peth50ms(listPN & Txls.latencyIndex == 'indirect'));
+actPN_peth10_direct = cell2mat(T.peth10ms(listIN & Txls.latencyIndex == 'direct'));
+actPN_peth50_direct = cell2mat(T.peth50ms(listIN & Txls.latencyIndex == 'direct'));
 
-actPN_peth10_double = cell2mat(T.peth10ms(listPN & Txls.latencyIndex == 'double'));
-actPN_peth50_double = cell2mat(T.peth50ms(listPN & Txls.latencyIndex == 'double'));
+actPN_peth10_indirect = cell2mat(T.peth10ms(listIN & Txls.latencyIndex == 'indirect'));
+actPN_peth50_indirect = cell2mat(T.peth50ms(listIN & Txls.latencyIndex == 'indirect'));
+
+actPN_peth10_double = cell2mat(T.peth10ms(listIN & Txls.latencyIndex == 'double'));
+actPN_peth50_double = cell2mat(T.peth50ms(listIN & Txls.latencyIndex == 'double'));
 
 xpt = -100:2:400;
 yLimWidth = [70 60 60 40 120 80];

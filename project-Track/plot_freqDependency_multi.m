@@ -267,12 +267,12 @@ for iFile = 1:nFile
     set(hFreq50hz,'Box','off','TickDir','out','fontSize',fontL);
 
 %% Light probability
-    hFrequency = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,6,1:2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+    hFrequency = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,5:6,1:2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
 %     plot([1,2,3,4,5],[lightProb1hz_dr,lightProb2hz_dr,lightProb8hz_dr,lightProb20hz_dr,lightProb50hz_dr],'o','MarkerEdgeColor','k','MarkerSize',markerL);
     plot([1,2,3,4,5],[lightProb1hz,lightProb2hz,lightProb8hz,lightProb20hz,lightProb50hz],'o','MarkerEdgeColor','k','MarkerSize',markerL);
     
     set(hFrequency,'Box','off','TickDir','out','fontSize',fontL);
-    set(hFrequency,'XLim',[0,6],'XTick',1:4,'XTickLabel',{'1 hz'; '2 hz'; '8 hz'; '20 hz'; '50 hz'},'YLim',[0,60]);
+    set(hFrequency,'XLim',[0,6],'XTick',1:5,'XTickLabel',{'1'; '2'; '8'; '20'; '50'},'YLim',[0,60]);
     ylabel('Spike P, %','fontSize',fontL);
     xlabel('Frequency (Hz)','fontSize',fontL);
     
@@ -283,10 +283,14 @@ for iFile = 1:nFile
     pLight = patch([0 10 10 0],[0 0 max(pethLight8hz)*1.2 max(pethLight8hz)*1.2],colorLLightBlue);
     hold on;
     hbar = bar(pethtimeLight8hz, pethLight8hz, 'histc');
-    text(30,max(pethLight8hz)*0.9,['latency: ',num2str(latency,3),' ms'],'fontSize',fontM);
-    
     set(hbar, 'FaceColor','k','EdgeAlpha',0);
-    set(hPETH, 'TickDir','out','Box','off','XLim',[-20 70],'YLim',[0, max(pethLight8hz)*1.2],'fontSize',fontM);
+    if max(pethLight8hz) ~= 0
+        text(30,max(pethLight8hz)*0.9,['latency: ',num2str(latency,3),' ms'],'fontSize',fontM);
+        set(hPETH, 'TickDir','out','Box','off','XLim',[-20 70],'YLim',[0, max(pethLight8hz)*1.2],'fontSize',fontM); 
+    else
+        text(30,0.8,['latency: ',num2str(latency,3),' ms'],'fontSize',fontM);
+        set(hPETH, 'TickDir','out','Box','off','XLim',[-20 70],'YLim',[0, 1],'fontSize',fontM); 
+    end
     set(pLight,'LineStyle','none');
     
     hPLatency = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,5:6,5,[0.1 0.1 0.85 0.85],midInterval),midInterval));

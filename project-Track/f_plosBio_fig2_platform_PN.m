@@ -1,4 +1,5 @@
 clearvars;
+cd('D:\Dropbox\SNL\P2_Track');
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
 winCri_ori = [-5, 20];
 nTrial_ori = 300;
@@ -95,10 +96,15 @@ a = [lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT
 [p,tbl,stats] = friedman(a,1,'off');
 % [~,~,result] = multcompare(stats,'ctype','bonferroni');
 % p_KW = result(:,end);
+lightProb = [lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT];
 
 hPlot = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,2,[0.1 0.1 0.85 0.85],midInterval),midInterval));
-plot([1,2,3,4,5],[lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],'-o','color',colorGray,'markerSize',markerS-1.5,'markerEdgeColor',colorGray,'markerFaceColor',colorLightGray);
-hold on;
+for iCycle = 1:size(lightProb,1)
+    plot(lightProb(iCycle,:),'-o','color',colorGray,'markerSize',markerS-1.5,'markerEdgeColor',colorGray,'markerFaceColor',colorLightGray);
+    hold on;
+end
+% plot([1,2,3,4,5],[lightProb1hzT, lightProb2hzT, lightProb8hzT, lightProb20hzT, lightProb50hzT],'-o','color',colorGray,'markerSize',markerS-1.5,'markerEdgeColor',colorGray,'markerFaceColor',colorLightGray);
+% hold on;
 plot([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],'o','color',colorBlack,'markerSize',markerS-0.5,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
 hold on;
 errorbarJun([1,2,3,4,5],[m_1hz_T, m_2hz_T, m_8hz_T, m_20hz_T, m_50hz_T],[sem_1hz_T,sem_2hz_T,sem_8hz_T,sem_20hz_T,sem_50hz_T],0.2, 0.8, colorBlack);
@@ -111,7 +117,47 @@ set(hPlot,'TickDir','out','Box','off','TickLength',[0.03,0.03]);
 set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontM);
 set(hPlot,'YLim',[-1,65]);
 
-%%
+%% plot_firingRate
+lightFr1hzT = T.freq_light1hz(lightAct);
+lightFr2hzT = T.freq_light2hz(lightAct);
+lightFr8hzT = T.freq_light8hz(lightAct);
+lightFr20hzT = T.freq_light20hz(lightAct);
+lightFr50hzT = T.freq_light50hz(lightAct);
+
+mFR_1hz_T = mean(lightFr1hzT);
+mFR_2hz_T = mean(lightFr2hzT);
+mFR_8hz_T = mean(lightFr8hzT);
+mFR_20hz_T = mean(lightFr20hzT);
+mFR_50hz_T = mean(lightFr50hzT);
+
+semFR_1hz_T = std(lightFr1hzT)/sqrt(nCellT);
+semFR_2hz_T = std(lightFr2hzT)/sqrt(nCellT);
+semFR_8hz_T = std(lightFr8hzT)/sqrt(nCellT);
+semFR_20hz_T = std(lightFr20hzT)/sqrt(nCellT);
+semFR_50hz_T = std(lightFr50hzT)/sqrt(nCellT);
+a = [lightFr1hzT, lightFr2hzT, lightFr8hzT, lightFr20hzT, lightFr50hzT];
+[p,tbl,stats] = friedman(a,1,'off');
+lightFrProb = [lightFr1hzT, lightFr2hzT, lightFr8hzT, lightFr20hzT, lightFr50hzT];
+
+hPlot = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+for iCycle = 1:size(lightFrProb,1)
+    plot(lightFrProb(iCycle,:),'-o','color',colorGray,'markerSize',markerS-1.5,'markerEdgeColor',colorGray,'markerFaceColor',colorLightGray);
+    hold on;
+end
+plot([1,2,3,4,5],[mFR_1hz_T, mFR_2hz_T, mFR_8hz_T, mFR_20hz_T, mFR_50hz_T],'o','color',colorBlack,'markerSize',markerS-0.5,'markerEdgeColor',colorBlack,'markerFaceColor',colorBlack);
+hold on;
+errorbarJun([1,2,3,4,5],[mFR_1hz_T, mFR_2hz_T, mFR_8hz_T, mFR_20hz_T, mFR_50hz_T],[semFR_1hz_T,semFR_2hz_T,semFR_8hz_T,semFR_20hz_T,semFR_50hz_T],0.2, 0.8, colorBlack);
+text(1,35,['n = ',num2str(nCellT)],'fontSize',fontM);
+ylabel('Mean firing rate (Hz)','fontSize',fontM);
+xlabel('Frequency (Hz)','fontSize',fontM);
+% title('Total activated neuron','fontSize',fontS);
+
+set(hPlot,'TickDir','out','Box','off','TickLength',[0.03,0.03]);
+set(hPlot,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'fontSize',fontM);
+set(hPlot,'YLim',[-1,40]);
+
+
+%% plot_Proportion ratio
 pop_1hz_act = listPN & (T.idx_light1hz == 1);
 pop_1hz_ina = listPN & (T.idx_light1hz == -1);
 pop_1hz_no = listPN & (T.idx_light1hz == 0);
@@ -141,7 +187,7 @@ popul_50hz = [sum(double(pop_50hz_act)), sum(double(pop_50hz_ina)), sum(double(p
 pop_total = [popul_1hz; popul_2hz; popul_8hz; popul_20hz; popul_50hz];
 pop_total_ratio = pop_total/122*100;
 
-hProp = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,3,[0.1 0.1 0.85 0.85],midInterval),midInterval));
+hProp = axes('Position',axpt(1,1,1,1,axpt(nCol,nRow,1,4,[0.1 0.1 0.85 0.85],midInterval),midInterval));
 plot([1,2,3,4,5],pop_total_ratio(:,1),'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightRed);
 hold on;
 plot([1,2,3,4,5],pop_total_ratio(:,2),'-o','color',colorDarkGray,'markerSize',markerS,'markerEdgeColor',colorDarkGray,'markerFaceColor',colorLightBlue);
@@ -154,6 +200,6 @@ set(hProp,'XLim',[0,6],'XTick',[1:5],'XTickLabel',{'1';'2';'8';'20';'50'},'YTick
 set(hProp,'YLim',[-1,20]);
 set(hProp,'TickLength',[0.03, 0.03]);
 
-% print('-painters','-r300','-dtiff',['final_fig2_platform_total_',datestr(now,formatOut),'_v2.tif']);
+print('-painters','-r300','-dtiff',['f_plosBio_fig2_platform_PN_',datestr(now,formatOut),'_v2.tif']);
 % print('-painters','-r300','-depsc',['final_fig2_platform_total_',datestr(now,formatOut),'_v2.ai']);
-% close;
+close;

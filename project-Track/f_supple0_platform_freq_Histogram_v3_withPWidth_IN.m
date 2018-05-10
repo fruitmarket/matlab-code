@@ -3,8 +3,8 @@ clearvars;
 rtDir = 'D:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
-load('neuronList_freq_170921.mat');
-Txls = readtable('neuronList_freq_170921.xlsx');
+Txls = readtable('neuronList_freq_171127.xlsx');
+load('neuronList_freq_171127.mat');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
 formatOut = 'yymmdd';
 
@@ -12,7 +12,11 @@ formatOut = 'yymmdd';
 cSpkpvr = 1.2;
 alpha = 0.01;
 
-condiIN = ~(T.spkpvr>cSpkpvr);
+listPN = T.spkpvr>cSpkpvr;
+listIN = ~listPN & T.meanFR>9;
+listUNC = (~listPN | listIN);
+
+condiIN = listIN;
 
 lightActIN = condiIN & (Txls.statDir_visual == 1);
 lightInaIN = condiIN & (Txls.statDir_visual == -1);
@@ -151,6 +155,6 @@ set(hPlotWidth(1),'YLim',[0 yLimWidth(1)]);
 set(hPlotWidth(2),'YLim',[0 yLimWidth(2)]);
 set(hPlotWidth(1:2),'XTick',[-10 0 10 20 50 75]);
 
-print('-painters','-r300','-depsc',['final_supple1_platform_8hz_pulseWidth_v3_IN_',datestr(now,formatOut),'.ai']);
-print('-painters','-r300','-dtiff',['final_supple1_platform_8hz_pulseWidth_v3_IN_',datestr(now,formatOut),'.tif']);
-close;
+% print('-painters','-r300','-depsc',['final_supple1_platform_8hz_pulseWidth_v3_IN_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-dtiff',['final_supple1_platform_8hz_pulseWidth_v3_IN_',datestr(now,formatOut),'.tif']);
+% close;

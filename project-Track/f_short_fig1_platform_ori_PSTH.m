@@ -165,6 +165,6 @@ set(hPlotPN(1:6),'XTick',[-10 0 10 20 75]);
 set(hPlotPN,'TickLength',[0.03, 0.03]);
 % set(hPlotPN(5),'XTick',[-10 0 10 20 75],'XTickLabel',[-10 0 10 20 75]);
 
-print('-painters','-r300','-depsc',['final_Neuron_fig1_platform_ori8hz_v4_Control_',datestr(now,formatOut),'.ai']);
-print('-painters','-r300','-dtiff',['final_Neuron_fig1_platform_ori8hz_v4_Control_',datestr(now,formatOut),'.tif']);
-close;
+% print('-painters','-r300','-depsc',['final_Neuron_fig1_platform_ori8hz_v4_Control_',datestr(now,formatOut),'.ai']);
+% print('-painters','-r300','-dtiff',['final_Neuron_fig1_platform_ori8hz_v4_Control_',datestr(now,formatOut),'.tif']);
+% close;

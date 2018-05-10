@@ -26,7 +26,7 @@ set(hArea,'Box','off','TickDir','out','fontSize',fontM,'XLim',[0,1.2],'XTick',[]
 set(hArea,'TickLength',[0.03, 0.03]);
 
 formatOut = 'yymmdd';
-print('-painters','-r300','-dtiff',['final_fig1_plot_expChETA_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['final_fig1_plot_expChETA_',datestr(now,formatOut),'.ai']);
-close;
+% print('-painters','-r300','-dtiff',['final_fig1_plot_expChETA_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['final_fig1_plot_expChETA_',datestr(now,formatOut),'.ai']);
+% close;
 end

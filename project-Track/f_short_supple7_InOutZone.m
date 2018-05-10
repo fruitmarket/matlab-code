@@ -30,31 +30,16 @@ fr_Inzone_act_Run = [m_lapFrInPRE(RunPN & idx_Fr_Run & idx_inc & idx_pPRExSTM), 
 fr_Inzone_ina_Run = [m_lapFrInPRE(RunPN & idx_Fr_Run & idx_dec & idx_pPRExSTM), m_lapFrInSTM(RunPN & idx_Fr_Run & idx_dec & idx_pPRExSTM), m_lapFrInPOST(RunPN & idx_Fr_Run & idx_dec & idx_pPRExSTM)];
 fr_Inzone_no_Run = [m_lapFrInPRE(RunPN & idx_Fr_Run & ~idx_pPRExSTM), m_lapFrInSTM(RunPN & idx_Fr_Run & ~idx_pPRExSTM), m_lapFrInPOST(RunPN & idx_Fr_Run & ~idx_pPRExSTM)];
 
-% fr_Inzone = [m_lapFrInPRE(RunPN & idx_Fr), m_lapFrInSTM(RunPN & idx_Fr), m_lapFrInPOST(RunPN & idx_Fr)]./repmat(m_lapFrInPRE(RunPN & idx_Fr),1,3);
-% fr_Inzone_act = [m_lapFrInPRE(RunPN & idx_Fr & idx_inc & idx_pPRExSTM), m_lapFrInSTM(RunPN & idx_Fr & idx_inc & idx_pPRExSTM), m_lapFrInPOST(RunPN & idx_Fr & idx_inc & idx_pPRExSTM)]./repmat(m_lapFrInPRE(RunPN & idx_Fr & idx_inc & idx_pPRExSTM),1,3); 
-% fr_Inzone_ina = [m_lapFrInPRE(RunPN & idx_Fr & idx_dec & idx_pPRExSTM), m_lapFrInSTM(RunPN & idx_Fr & idx_dec & idx_pPRExSTM), m_lapFrInPOST(RunPN & idx_Fr & idx_dec & idx_pPRExSTM)]./repmat(m_lapFrInPRE(RunPN & idx_Fr & idx_dec & idx_pPRExSTM),1,3);
-% fr_Inzone_no = [m_lapFrInPRE(RunPN & idx_Fr & ~idx_pPRExSTM), m_lapFrInSTM(RunPN & idx_Fr & ~idx_pPRExSTM), m_lapFrInPOST(RunPN & idx_Fr & ~idx_pPRExSTM)]./repmat(m_lapFrInPRE(RunPN & idx_Fr & ~idx_pPRExSTM),1,3);
-
-nInzone_act_Run = length(fr_Inzone_act_Run);
+nInzone_act_Run = length(fr_Inzone_act_Run); % after threshold applied
 nInzone_ina_Run = length(fr_Inzone_ina_Run);
 nInzone_no_Run = length(fr_Inzone_no_Run);
 
-% population change
-% popul_inzone_inc_8hz = sum(double(RunPN & idx_Fr & idx_inc & idx_pPRExSTM));
-% popul_inzone_dec_8hz = sum(double(RunPN & idx_Fr & idx_dec & idx_pPRExSTM));
-% popul_inzone_no_8hz = sum(double(RunPN & idx_Fr & ~idx_pPRExSTM));
+Run_a = sum(double(RunPN & idx_inc & idx_pPRExSTM)); % before threshold applied
+Run_b = sum(double(RunPN & idx_dec & idx_pPRExSTM));
+Run_c = sum(double(RunPN & ~idx_pPRExSTM));
 
 group = {'PRE','STIM','POST'};
 [p_Run, tbl_Run, stats_Run] = friedman(fr_Inzone_Run,1,'off');
-% [result_Run(1,1),~,stat] = signrank(fr_Inzone_Run(:,1),fr_Inzone_Run(:,2),'method','approximate');
-% [result_Run(2,1),~,stat] = signrank(fr_Inzone_Run(:,1),fr_Inzone_Run(:,3),'method','approximate');
-% [result_Run(3,1),~,stat] = signrank(fr_Inzone_Run(:,2),fr_Inzone_Run(:,3),'method','approximate');
-% result_Run = result_Run*3;
-% result_Run_signT(1,1) = signtest(fr_Inzone_Run(:,1),fr_Inzone_Run(:,2))*3;
-% result_Run_signT(2,1) = signtest(fr_Inzone_Run(:,1),fr_Inzone_Run(:,3))*3;
-% result_Run_signT(3,1) = signtest(fr_Inzone_Run(:,2),fr_Inzone_Run(:,3))*3;
-% result_Run_tukey = multcompare(stats_Run,'display','off');
-% result_Run_bonf = multcompare(stats_Run,'display','off','cType','bonferroni');
 result_Run_lsd = multcompare(stats_Run,'display','off','cType','lsd');
 result_Run = result_Run_lsd(:,end);
 %%
@@ -66,7 +51,7 @@ xBar = [1,3,5];
 eBarWidth = 1;
 
 fHandle = figure('PaperUnits','centimeters','PaperPosition',paperSize{1}); % for journal figure
-yLim = [27 15];
+yLim = [27 27];
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,30 +71,16 @@ sem_frInZone_Rw = std(fr_Inzone_Rw,0,1)/sqrt(nInzone_Rw);
 fr_Inzone_act_Rw = [m_lapFrInPRE(RwPN & idx_Fr_Rw & idx_inc & idx_pPRExSTM), m_lapFrInSTM(RwPN & idx_Fr_Rw & idx_inc & idx_pPRExSTM), m_lapFrInPOST(RwPN & idx_Fr_Rw & idx_inc & idx_pPRExSTM)]; 
 fr_Inzone_ina_Rw = [m_lapFrInPRE(RwPN & idx_Fr_Rw & idx_dec & idx_pPRExSTM), m_lapFrInSTM(RwPN & idx_Fr_Rw & idx_dec & idx_pPRExSTM), m_lapFrInPOST(RwPN & idx_Fr_Rw & idx_dec & idx_pPRExSTM)];
 fr_Inzone_no_Rw = [m_lapFrInPRE(RwPN & idx_Fr_Rw & ~idx_pPRExSTM), m_lapFrInSTM(RwPN & idx_Fr_Rw & ~idx_pPRExSTM), m_lapFrInPOST(RwPN & idx_Fr_Rw & ~idx_pPRExSTM)];
-% fr_Inzone = [m_lapFrInPRE(RwPN & idx_Fr), m_lapFrInSTM(RwPN & idx_Fr), m_lapFrInPOST(RwPN & idx_Fr)]./repmat(m_lapFrInPRE(RwPN & idx_Fr),1,3);
-% fr_Inzone_act = [m_lapFrInPRE(RwPN & idx_Fr & idx_inc & idx_pPRExSTM), m_lapFrInSTM(RwPN & idx_Fr & idx_inc & idx_pPRExSTM), m_lapFrInPOST(RwPN & idx_Fr & idx_inc & idx_pPRExSTM)]./repmat(m_lapFrInPRE(RwPN & idx_Fr & idx_inc & idx_pPRExSTM),1,3); 
-% fr_Inzone_ina = [m_lapFrInPRE(RwPN & idx_Fr & idx_dec & idx_pPRExSTM), m_lapFrInSTM(RwPN & idx_Fr & idx_dec & idx_pPRExSTM), m_lapFrInPOST(RwPN & idx_Fr & idx_dec & idx_pPRExSTM)]./repmat(m_lapFrInPRE(RwPN & idx_Fr & idx_dec & idx_pPRExSTM),1,3);
-% fr_Inzone_no = [m_lapFrInPRE(RwPN & idx_Fr & ~idx_pPRExSTM), m_lapFrInSTM(RwPN & idx_Fr & ~idx_pPRExSTM), m_lapFrInPOST(RwPN & idx_Fr & ~idx_pPRExSTM)]./repmat(m_lapFrInPRE(RwPN & idx_Fr & ~idx_pPRExSTM),1,3);
 
 nInzone_act_Rw = length(fr_Inzone_act_Rw);
 nInzone_ina_Rw = length(fr_Inzone_ina_Rw);
 nInzone_no_Rw = length(fr_Inzone_no_Rw);
 
-% population change
-% popul_inzone_inc_8hz = sum(double(RwPN & idx_Fr & idx_inc & idx_pPRExSTM));
-% popul_inzone_dec_8hz = sum(double(RwPN & idx_Fr & idx_dec & idx_pPRExSTM));
-% popul_inzone_no_8hz = sum(double(RwPN & idx_Fr & ~idx_pPRExSTM));
+Rw_a = sum(double(RwPN & idx_inc & idx_pPRExSTM)); % before threshold applied
+Rw_b = sum(double(RwPN & idx_dec & idx_pPRExSTM));
+Rw_c = sum(double(RwPN & ~idx_pPRExSTM));
 
 [p_Rw, tbl_Rw, stats_Rw] = friedman(fr_Inzone_Rw,1,'off');
-% [result_Rw(1,1),~,stat] = signrank(fr_Inzone_Rw(:,1),fr_Inzone_Rw(:,2),'method','approximate');
-% [result_Rw(2,1),~,stat] = signrank(fr_Inzone_Rw(:,1),fr_Inzone_Rw(:,3),'method','approximate');
-% [result_Rw(3,1),~,stat] = signrank(fr_Inzone_Rw(:,2),fr_Inzone_Rw(:,3),'method','approximate');
-% result_Rw = result_Rw*3;
-% result_Rw_signT(1,1) = signtest(fr_Inzone_Rw(:,1),fr_Inzone_Rw(:,2))*3;
-% result_Rw_signT(2,1) = signtest(fr_Inzone_Rw(:,1),fr_Inzone_Rw(:,3))*3;
-% result_Rw_signT(3,1) = signtest(fr_Inzone_Rw(:,2),fr_Inzone_Rw(:,3))*3;
-% result_Rw_tukey = multcompare(stats_Rw,'display','off');
-% result_Rw_bonf = multcompare(stats_Rw,'display','off','cType','bonferroni');
 result_Rw_lsd = multcompare(stats_Rw,'display','off','cType','lsd');
 result_Rw = result_Rw_lsd(:,end);
 %% 8 Hz
@@ -193,9 +164,16 @@ text(1,yLim(2)*0.9,['FR threshold: ',num2str(min_lapFrInPRE_Rw,3),' Hz'],'color'
 text(5, yLim(2)*0.8,['n = ',num2str(nInzone_Rw)],'fontSize',fontM);
 ylabel('Firing rate (Hz)','fontSize',fontM);
 
+%% Proportion
+hPlot(3) = axes('Position',axpt(nCol,nRow,1:4,3,[0.1 0.1 0.85 0.85],wideInterval));
+text(0,0.4,['Run (Before Th): ',num2str(Run_a),'/',num2str(Run_b),'/',num2str(Run_c)],'fontSize',fontM,'interpreter','none');
+text(0,0.3,['Run (After Th): ',num2str(nInzone_act_Run),'/',num2str(nInzone_ina_Run),'/',num2str(nInzone_no_Run)],'fontSize',fontM,'interpreter','none');
+text(0,0.2,['Rw (Before Th): ',num2str(Rw_a),'/',num2str(Rw_b),'/',num2str(Rw_c)],'fontSize',fontM,'interpreter','none');
+text(0,0.1,['Rw (After Th): ',num2str(nInzone_act_Rw),'/',num2str(nInzone_ina_Rw),'/',num2str(nInzone_no_Rw)],'fontSize',fontM,'interpreter','none');
+
 set(hPlot(1),'YLim',[0,yLim(1)],'YTick',[0:5:yLim(1)]);
 set(hPlot(2),'YLim',[0 yLim(2)],'YTick',[0:5:yLim(2)]);
-
+set(hPlot(3),'visible','off');
 set(hPlot,'TickDir','out','Box','off','TickLength',[0.03 0.03],'fontSize',fontM,'XTickLabel',group,'XLim',[0,6]);
 
 % print('-painters','-r300','-dtiff',['f_short_supple5_InOutZone_',datestr(now,formatOut),'.tif']);

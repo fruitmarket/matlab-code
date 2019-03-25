@@ -12,7 +12,7 @@ narginchk(6, 7);
 if isempty(spikePosition) || isempty(trialIndex) || length(spikePosition) ~= size(trialIndex,1) || length(win) ~= 2
     xpt = []; ypt = []; spikeBin = []; spikeRaw = []; spikeConv = []; spikeConvZ = [];
     return;
-end;
+end
 
 spikeBin = win(1):binSize:win(2); % unit: cm
 nSpikeBin = length(spikeBin)-1; % drop the last bin

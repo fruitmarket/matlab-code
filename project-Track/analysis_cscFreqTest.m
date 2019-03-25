@@ -15,7 +15,7 @@ win50hz = [-1 5]*sFreq;
 lightIdx = 1:15:300;
 
 [cscTime,cscSample,cscList] = cscLoad;
-if isempty(cscList); return; end;
+if isempty(cscList); return; end
 
 nCSC = length(cscList);
 for iCSC = 1:nCSC

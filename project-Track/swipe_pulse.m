@@ -43,7 +43,6 @@ for iDir = 1:nDir
             end
     end
 end
-
 filePath = unique(filePath);
 nPath = length(filePath);
 

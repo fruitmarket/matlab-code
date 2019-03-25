@@ -11,8 +11,11 @@ for iCell = 1:nCell
     
     load('Events.mat');
     spikeData = tData{iCell};
+    if ~exist('timeTask')
+        timeTask = taskTime;
+    end
     
-    spikeTask = (taskTime(1)<spikeData & spikeData<taskTime(2));
+    spikeTask = (timeTask(1)<spikeData & spikeData<timeTask(2));
     spikeISI = diff(spikeData(spikeTask));
     burstIdx_6ms = sum(double(spikeISI<6))/length(spikeISI);
     

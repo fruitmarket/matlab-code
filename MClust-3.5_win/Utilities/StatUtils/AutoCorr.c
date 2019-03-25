@@ -51,7 +51,7 @@ void mexFunction(
     mexErrMsgTxt("nbins must be scalar");
 
   /* unpack inputs */
-  nt1 = mxGetM(pINP[0]) * mxGetN(pINP[0]);
+  nt1 = mxGetM(pINP[0]) * mxGetN(pINP[0]); / nt1: # of spikes
   t1 = mxGetPr(pINP[0]);
   nt2 = nt1;
   binsize = mxGetScalar(pINP[1]);

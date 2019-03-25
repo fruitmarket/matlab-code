@@ -74,15 +74,15 @@ function spikeTime = spikeWin(spikeData, eventTime, win)
 %   win: spike within windows will be included. unit must be ms.
 narginchk(3,3);
 
-if isempty(eventTime); spikeTime =[]; return; end;
+if isempty(eventTime); spikeTime =[]; return; end
 nEvent = size(eventTime);
 spikeTime = cell(nEvent);
 for iEvent = 1:nEvent(1)
     for jEvent = 1:nEvent(2)
         timeIndex = [];
-        if isnan(eventTime(iEvent,jEvent)); continue; end;
+        if isnan(eventTime(iEvent,jEvent)); continue; end
         [~,timeIndex] = histc(spikeData,eventTime(iEvent,jEvent)+win);
-        if isempty(timeIndex); continue; end;
+        if isempty(timeIndex); continue; end
         spikeTime{iEvent,jEvent} = spikeData(logical(timeIndex))-eventTime(iEvent,jEvent);
     end
 end
@@ -98,7 +98,7 @@ narginchk(5,6);
 if isempty(spikeTime) || isempty(trialIndex) || length(spikeTime) ~= size(trialIndex,1) || length(win) ~= 2
     xpt = []; ypt = []; spikeBin = []; spikeHist = []; spikeConv = []; spikeConvZ = [];
     return;
-end;
+end
 
 spikeBin = win(1):binSize:win(2); % unit: msec
 nSpikeBin = length(spikeBin);
@@ -118,7 +118,7 @@ for iCue = 1:nCue
     % raster
     nSpikePerTrial = cellfun(@length,spikeTime(trialIndex(:,iCue)));
     nSpikeTotal = sum(nSpikePerTrial);
-    if nSpikeTotal == 0; continue; end;
+    if nSpikeTotal == 0; continue; end
     
     spikeTemp = cell2mat(spikeTime(trialIndex(:,iCue)))';
     

@@ -10,15 +10,15 @@ for iFile = 1:nFile
     load(matFile{iFile},'pethSpatial','pethconvSpatial');
     
     infoTotal = analysis_pcInfo1D(mean(pethconvSpatial,1));
-    infoPre = analysis_pcInfo1D(pethconvSpatial(1,:));
-    infoStm = analysis_pcInfo1D(pethconvSpatial(2,:));
-    infoPost = analysis_pcInfo1D(pethconvSpatial(3,:));
+    infoTaskPre = analysis_pcInfo1D(pethconvSpatial(1,:));
+    infoTaskStm = analysis_pcInfo1D(pethconvSpatial(2,:));
+    infoTaskPost = analysis_pcInfo1D(pethconvSpatial(3,:));
     
     peakloci_total = infoTotal.peakloci;
     normTrackFR_total = infoTotal.normTrackfr;
-    peakloci_pre = infoPre.peakloci;
-    peakloci_stm = infoStm.peakloci;
-    peakloci_post = infoPost.peakloci;
+    peakloci_pre = infoTaskPre.peakloci;
+    peakloci_stm = infoTaskStm.peakloci;
+    peakloci_post = infoTaskPost.peakloci;
     fieldArea_total = infoTotal.area;
     
     save([cellName,'.mat'],'peakloci_total','normTrackFR_total','peakloci_pre','peakloci_stm','peakloci_post','fieldArea_total','-append');

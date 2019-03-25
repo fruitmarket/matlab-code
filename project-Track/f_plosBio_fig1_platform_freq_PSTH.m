@@ -1,8 +1,8 @@
 clearvars;
 
-rtDir = 'D:\Dropbox\SNL\P2_Track';
+rtDir = 'E:\Dropbox\SNL\P2_Track';
 cd(rtDir);
-load('D:\Dropbox\SNL\P2_Track\myParameters.mat');
+load('E:\Dropbox\SNL\P2_Track\myParameters.mat');
 load('neuronList_freq_171127.mat');
 Txls = readtable('neuronList_freq_171127.xlsx');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
@@ -167,6 +167,7 @@ set(hPlotPN(1:6),'XTick',[-10 0 10 20 75]);
 set(hPlotPN,'TickLength',[0.03, 0.03]);
 % set(hPlotPN(5),'XTick',[-10 0 10 20 75],'XTickLabel',[-10 0 10 20 75]);
 
-% print('-painters','-r300','-depsc',['f_plosBio_fig1_platform_8hz_pulseWidth_v4_',datestr(now,formatOut),'.ai']);
+cd('E:\Dropbox\SNL\P2_Track\format_PlosBio');
+print('-painters','-r300','-depsc',['f_plosBio_fig1_platform_8hz_pulseWidth_v4_',datestr(now,formatOut),'.ai']);
 % print('-painters','-r300','-dtiff',['f_plosBio_fig1_platform_8hz_pulseWidth_v4_',datestr(now,formatOut),'.tif']);
 % close;

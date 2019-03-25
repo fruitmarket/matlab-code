@@ -23,7 +23,7 @@ startingDir = {'D:\Projects\Track_151029-5_Rbp8';
            % 'D:\Projects\Track_170115-4_Rbp74ori' excluede because of no expression
 nDir = size(startingDir,1);
 [matFile, tFile, cscFile] = deal([]);
-typeName = input('Enter file type (e, m, t, c): ', 's');
+typeName = input('Enter file type (e, t, c, m): ', 's');
 
 for iDir = 1:nDir
     switch typeName
@@ -43,7 +43,7 @@ for iDir = 1:nDir
                 [cellPath, ~, ~] = fileparts(tFile{ifile});
                 filePath{ifile,1} = cellPath;
             end
-        case 'e' %% Event file
+        case 'e' || 'c' %% Event file
             tempEventFile = FindFiles('Events.nev','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
             matFile = [matFile;tempEventFile];
             nFile = length(matFile);
@@ -80,12 +80,14 @@ for iPath = 1:nPath
 %             analysis_laserSpikeChange;
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
-%             analysis_spatialRaster_pvCorr;
-            analysis_baseVsLightTrack8hz;
+%             analysis_spatialRaster_mapCorr;
+%             analysis_baseVsLightTrack8hz;
 % #### code not using ####
 %             laserFreqCheck;
 %             mapCorr; % PreStm, PrePost, StmPost
 %             mapCorrEvOd; % For Even lap, odd lap of Pre-stm
+        case 'c'
+            analysis_cscPETH_8hz;
         case 'm'
             analysis_indexTrack;
 %             plot_Track_sin_v3;

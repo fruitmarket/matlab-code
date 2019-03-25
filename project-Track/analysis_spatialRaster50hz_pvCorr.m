@@ -45,7 +45,7 @@ for iCell = 1:nCell
         temp_numOccuLap = numOccuLap(:,1:end-1);
         numOccuLap_cali = [temp_numOccuLap(:,end-calib_distance+1:end), temp_numOccuLap(:,1:end-calib_distance)];
     else
-        eventPosition_calib = eventPosition + calib_distance;
+        eventPosition_calib = eventPosition + abs(calib_distance);
         temp_numOccu = numOccu(:,1:end-1);
         numOccu_cali = [temp_numOccu(:,abs(calib_distance)+1:end), temp_numOccu(:,1:abs(calib_distance))];
         temp_numOccuLap = numOccuLap(:,1:end-1);
@@ -126,8 +126,6 @@ for iCell = 1:nCell
 %% Moving correlation
     lightLoc_Run = [floor(20*pi*5/6) ceil(20*pi*8/6)]; % 1 cm bin
     lightLoc_Rw = [floor(20*pi*9/6) ceil(20*pi*10/6)]; % 1 cm bin
-%     lightLoc_Run = [floor(20*pi*5/6/2) ceil(20*pi*8/6/2)]; % 2 cm bin
-%     lightLoc_Rw = [floor(20*pi*9/6/2) ceil(20*pi*10/6/2)]; % 2 cm bin
     nBaseLap = 10;
 
     spikePositionBase = spikePosition(1:nBaseLap);

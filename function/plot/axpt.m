@@ -23,7 +23,7 @@ if nargin <= 5
 end
 if isempty(positionVector)
 %     positionVector = [0.1 0.1 0.85 0.85]; %default
-    positionVector = [0.1 0.1 0.95 0.85];
+    positionVector = [0.1 0.1 0.85 0.85];
 
 end
 

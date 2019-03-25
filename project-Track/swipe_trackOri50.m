@@ -35,6 +35,14 @@ for iDir = 1:nDir
                 [cellPath, ~, ~] = fileparts(matFile{ifile});
                 filePath{ifile,1} = cellPath;
             end
+        case 'c' %% Event file
+            tempEventFile = FindFiles('Events.mat','StartingDirectory',startingDir{iDir},'CheckSubdirs',1); % Modifying event files
+            matFile = [matFile;tempEventFile];
+            nFile = length(matFile);
+            for ifile = 1:nFile
+                [cellPath, ~, ~] = fileparts(matFile{ifile});
+                filePath{ifile,1} = cellPath;
+            end
     end
 end
 
@@ -49,30 +57,36 @@ for iPath = 1:nPath
         case 't'
 %             pethSensor;
 %             pethLight50hz;
-%             waveform;
+%             analysis_waveform;
 %             heatMap;
 %             tagstat_trackOri50hz; % newest version
-%             mapCorr; % PreStm, PrePost, StmPost
-%             mapCorrEvOd; % For Even lap, odd lap of Pre-stm
 %             analysis_burst6ms;
 %             analysis_wvformCrosscor50hz;
 %             analysis_spatialRaster50hz;
 %             analysis_plfm_laserIntTest;
 %             laserFreqCheck50hz;
 %             analysis_detoSpike50hz;
-            analysis_stmzoneSpike;
+%             analysis_stmzoneSpike;
 %             analysis_laserSpikeChange50hz;
 %             analysis_track_peth1stLight50hz;
 %             analysis_LRatioID;
 %             analysis_findPeakLoci;
 %             analysis_lap1stlight50hz;
-%             analysis_spatialRaster50hz_pvCorr;
+%             analysis_spatialRaster_mapCorr;
+%             analysis_spikeAutoCorr;
+            analysis_interSpikeInterval;
 % code not using
-
+%             mapCorr; % PreStm, PrePost, StmPost
+%             mapCorrEvOd; % For Even lap, odd lap of Pre-stm
+        case 'c'
+%             analysis_cscPETH_sensor;
+%             analysis_cscPETH_50hz;
+            analysis_spectrumTime;
         case 'm'
-            analysis_indexTrack50hz
+%             analysis_indexTrack50hz;
 %             plot_Track_sin_v50hz;
 %             plot_Track_sin_v50hz_lightraster;
+%             plot_Track_cscTrace;
     end
     fclose('all');
     close all;

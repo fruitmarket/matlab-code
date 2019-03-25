@@ -37,15 +37,23 @@ fieldThrSize = 3;
         end
         emptyIdx = cellfun(@isempty, field_pre(:,1));
         field_pre(emptyIdx,:) = [];
-        field_pre = sortrows(field_pre,-3); % sort the cell based on peak firing rate
-
-        pcInfo1D.normTrackfr = spikeBins/max(spikeBins);
-        pcInfo1D.fr = field_pre(:,1);
-        pcInfo1D.area = field_pre(:,2);
-        pcInfo1D.peakfr = cell2mat(field_pre(:,3));
-        pcInfo1D.peakloci = cell2mat(field_pre(:,4));
-        pcInfo1D.centerloci = cell2mat(field_pre(:,5));
-        pcInfo1D.size = cell2mat(field_pre(:,6));
+        if isempty(field_pre)
+            pcInfo1D.normTrackfr = spikeBins/max(spikeBins);
+            pcInfo1D.area = {NaN};
+            pcInfo1D.peakfr = NaN;
+            pcInfo1D.peakloci = NaN;
+            pcInfo1D.centerloci = NaN;
+            pcInfo1D.size = NaN;
+        else            
+            field_pre = sortrows(field_pre,-3); % sort the cell based on peak firing rate
+            pcInfo1D.normTrackfr = spikeBins/max(spikeBins);
+            pcInfo1D.fr = field_pre(:,1);
+            pcInfo1D.area = field_pre(:,2);
+            pcInfo1D.peakfr = cell2mat(field_pre(:,3));
+            pcInfo1D.peakloci = cell2mat(field_pre(:,4));
+            pcInfo1D.centerloci = cell2mat(field_pre(:,5));
+            pcInfo1D.size = cell2mat(field_pre(:,6));
+        end
     else
         pcInfo1D.normTrackfr = spikeBins/max(spikeBins);
         pcInfo1D.area = {NaN};

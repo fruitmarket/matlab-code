@@ -1,5 +1,5 @@
 clearvars;
-rtDir = 'D:\Dropbox\SNL\P2_Track';
+rtDir = 'E:\Dropbox\SNL\P2_Track';
 cd(rtDir);
 
 alpha = 0.01;
@@ -15,9 +15,47 @@ lightBand = 3;
 % load('neuronList_ori_171018.mat');
 % Txls = readtable('neuronList_ori_171018.xlsx');
 % Txls.taskType = categorical(Txls.taskType);
-load('neuronList_ori_180202.mat');
+% load('neuronList_ori_180202.mat');
+load('neuronList_ori_180517.mat');
 formatOut = 'yymmdd';
 
+%% place field overlap analysis
+Run = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPlaceField & T.idxTotalSpikeNum & T.idxPeakFR;
+Rw = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPlaceField & T.idxTotalSpikeNum & T.idxPeakFR;
+Run_IdxOverLap = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPlaceField & T.idxTotalSpikeNum & T.idxOverLap == 'Inzone' & T.idxPeakFR;
+Rw_IdxOverLap = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPlaceField & T.idxTotalSpikeNum & T.idxOverLap == 'Inzone' & T.idxPeakFR;
+
+% dirParent = 'E:\Dropbox\SNL\P2_Track\example_track8hz_plosBio_PFoverLap';
+% rmdir(dirParent,'s');
+% 
+% fileName = T.path(Run);
+% cellID = T.cellID(Run);
+% mkdir(dirParent,'\Run');
+% path = strcat(dirParent,'\Run');
+% plot_Track_multi_v3(fileName,cellID,path);
+% 
+% fileName = T.path(Rw);
+% cellID = T.cellID(Rw);
+% mkdir(dirParent,'\Rw');
+% path = strcat(dirParent,'\Rw');
+% plot_Track_multi_v3(fileName,cellID,path);
+% 
+% fileName = T.path(Run_IdxOverLap);
+% cellID = T.cellID(Run_IdxOverLap);
+% mkdir(dirParent,'\RunIn');
+% path = strcat(dirParent,'\RunIn');
+% plot_Track_multi_v3(fileName, cellID,path);
+%  
+% fileName = T.path(Rw_IdxOverLap);
+% cellID = T.cellID(Rw_IdxOverLap);
+% mkdir(dirParent,'\RwIn');
+% path = strcat(dirParent,'\RwIn');
+% plot_Track_multi_v3(fileName, cellID,path);
+
+nRunPF = sum(double(Run))
+nRunPF_OverLap = sum(double(Run_IdxOverLap))
+nRwPF = sum(double(Rw))
+nRwPF_overLap = sum(double(Rw_IdxOverLap))
 %% separation of place cells from non place cell
 % place cell
 % dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_placefield\total_PF';
@@ -83,39 +121,42 @@ formatOut = 'yymmdd';
 % path = strcat(dirParent,'\noRw');
 % plot_Track_multi_v3(fileName,cellID,path);
 
+%%%%%%%%%%%%%%%%%%%%%%%
 % interneuron
-dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_placefield\total_IN';
-rmdir(dirParent,'s');
-
-group = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
-fileName = T.path(group);
-cellID = T.cellID(group);
-mkdir(dirParent,'DRun');
-path = strcat(dirParent,'\DRun');
-plot_Track_multi_v3(fileName,cellID,path);
-
-group = T.taskType == 'DRw' & T.idxNeurontype == 'IN';
-fileName = T.path(group);
-cellID = T.cellID(group);
-mkdir(dirParent,'DRw');
-path = strcat(dirParent,'\DRw');
-plot_Track_multi_v3(fileName,cellID,path);
-
-group = T.taskType == 'noRun' & T.idxNeurontype == 'IN';
-fileName = T.path(group);
-cellID = T.cellID(group);
-mkdir(dirParent,'noRun');
-path = strcat(dirParent,'\noRun');
-plot_Track_multi_v3(fileName,cellID,path);
-
-group = T.taskType == 'noRw' & T.idxNeurontype == 'IN';
-fileName = T.path(group);
-cellID = T.cellID(group);
-mkdir(dirParent,'noRw');
-path = strcat(dirParent,'\noRw');
-plot_Track_multi_v3(fileName,cellID,path);
-
+%%%%%%%%%%%%%%%%%%%%%%%
+% dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_placefield\total_IN';
+% rmdir(dirParent,'s');
+% 
+% group = T.taskType == 'DRun' & T.idxNeurontype == 'IN';
+% fileName = T.path(group);
+% cellID = T.cellID(group);
+% mkdir(dirParent,'DRun');
+% path = strcat(dirParent,'\DRun');
+% plot_Track_multi_v3(fileName,cellID,path);
+% 
+% group = T.taskType == 'DRw' & T.idxNeurontype == 'IN';
+% fileName = T.path(group);
+% cellID = T.cellID(group);
+% mkdir(dirParent,'DRw');
+% path = strcat(dirParent,'\DRw');
+% plot_Track_multi_v3(fileName,cellID,path);
+% 
+% group = T.taskType == 'noRun' & T.idxNeurontype == 'IN';
+% fileName = T.path(group);
+% cellID = T.cellID(group);
+% mkdir(dirParent,'noRun');
+% path = strcat(dirParent,'\noRun');
+% plot_Track_multi_v3(fileName,cellID,path);
+% 
+% group = T.taskType == 'noRw' & T.idxNeurontype == 'IN';
+% fileName = T.path(group);
+% cellID = T.cellID(group);
+% mkdir(dirParent,'noRw');
+% path = strcat(dirParent,'\noRw');
+% plot_Track_multi_v3(fileName,cellID,path);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % unclassified
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % dirParent = 'D:\Dropbox\SNL\P2_Track\analysis_placefield\total_UNC';
 % rmdir(dirParent,'s');
 % 
@@ -507,27 +548,37 @@ plot_Track_multi_v3(fileName,cellID,path);
 % plot_Track_multi_v3(fileName, cellID, path);
 
 %% All neurons separated by sessions (DRun, DRw, noRun, noRw)
-% DRunPN = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-% DRwPN = T.taskType == 'DRw' & T.idxNeurontype == 'PN' & T.idxPeakFR & T.idxPlaceField & T.idxTotalSpikeNum;
-
-noRunPN = T.taskType == 'noRun';
-noRwPN = T.taskType == 'noRw';
-
-% fileName = T.path(DRunPN);
-% cellID = T.cellID(DRunPN);
-% plot_Track_multi_v3(fileName, cellID, 'C:\Users\Jun\Desktop\test');
-
-% fileName = T.path(DRunIN);
-% cellID = Txls.cellID(DRunIN);
-% plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRun\IN');
-
-% fileName = T.path(DRwPN);
-% cellID = Txls.cellID(DRwPN);
-% plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\example_DRwPC');
-
-% fileName = T.path(DRwIN);
-% cellID = Txls.cellID(DRwIN);
-% plot_Track_multi_v3(fileName, cellID, 'D:\Dropbox\SNL\P2_Track\analysis_totalDRw\IN');
+% Run = T.taskType == 'DRun';
+% Rw = T.taskType == 'DRw';
+% noRun = T.taskType == 'noRun';
+% noRw = T.taskType == 'noRw';
+% 
+% dirParent = 'E:\Dropbox\SNL\P2_Track\example_track8hzTotal';
+% rmdir(dirParent,'s');
+% 
+% fileName = T.path(Run);
+% cellID = T.cellID(Run);
+% mkdir(dirParent,'\Run');
+% path = strcat(dirParent,'\Run');
+% plot_Track_multi_v3(fileName, cellID,path);
+% 
+% fileName = T.path(Rw);
+% cellID = T.cellID(Rw);
+% mkdir(dirParent,'\Rw');
+% path = strcat(dirParent,'\Rw');
+% plot_Track_multi_v3(fileName, cellID,path);
+% 
+% fileName = T.path(noRun);
+% cellID = T.cellID(noRun);
+% mkdir(dirParent,'\noRun');
+% path = strcat(dirParent,'\noRun');
+% plot_Track_multi_v3(fileName, cellID,path);
+% 
+% fileName = T.path(noRw);
+% cellID = T.cellID(noRw);
+% mkdir(dirParent,'\noRw');
+% path = strcat(dirParent,'\noRw');
+% plot_Track_multi_v3(fileName, cellID,path);
 
 % fileName = T.path(noRunPN);
 % nFile = length(fileName);
@@ -639,31 +690,6 @@ noRwPN = T.taskType == 'noRw';
 % plot_Track_multi_v3(fileName, cellID, fd_neuronRapid);
 % cd('D:\Dropbox\SNL\P2_Track');
 
-%% Task Type
-% total_DRun = T.taskType == 'DRun';
-% fd_totalDRun = [folder, 'v9_DRun'];
-% fileName = T.path(total_DRun);
-% cellID = T.cellID(total_DRun);
-% plot_Track_multi_v3(fileName, cellID, fd_totalDRun);
-% 
-% total_noRun = T.taskType == 'noRun';
-% fd_totalnoRun = [folder, 'v9_noRun'];
-% fileName = T.path(total_noRun);
-% cellID = T.cellID(total_noRun);
-% plot_Track_multi_v3(fileName, cellID, fd_totalnoRun);
-% 
-% total_DRw = T.taskType == 'DRw';
-% fd_totalDRw = [folder, 'v9_DRw'];
-% fileName = T.path(total_DRw);
-% cellID = T.cellID(total_DRw);
-% plot_Track_multi_v3(fileName, cellID, fd_totalDRw);
-% 
-% total_noRw = T.taskType == 'noRw';
-% fd_totalnoRw = [folder, 'v9_noRw'];
-% fileName = T.path(total_noRw);
-% cellID = T.cellID(total_noRw);
-% plot_Track_multi_v3(fileName, cellID, fd_totalnoRw);
-% cd('D:\Dropbox\SNL\P2_Track');
 
 %% ##### State dependent light modulation population #####
 % Only 2hz on platform
@@ -851,35 +877,3 @@ noRwPN = T.taskType == 'noRw';
 % cellID = Txls1ss.cellID(nosig_DRw);
 % plot_Track_multi_v3(fileName, cellID, fd_nosigDRw);
 % cd('D:\Dropbox\SNL\P2_Track');
-
-%% 50hz sessions
-% load('neuronList_ori50hz_170612.mat');
-% condiTN = (cellfun(@max, T.peakFR1D_track) > cMaxPeakFR) & ~(cellfun(@(x) any(isnan(x)),T.peakloci_total));
-% condiPN = T.spkpvr>cSpkpvr & T.meanFR_task<cMeanFR;
-% condiIN = ~condiPN;
-% alpha = 0.01;
-% fd_parent = 'D:\Dropbox\SNL\P2_Track\analysis_50hz\';
-% fd_child = {'DRunPN';
-%             'DRunIN';
-%             'DRwPN';
-%             'DRwIN';};
-%         
-% DRunPN = (T.taskType == 'DRun') & condiPN;
-% fileName = T.path(DRunPN);
-% cellID = T.cellID(DRunPN);
-% plot_Track_multi_v50hz(fileName, cellID, [fd_parent,fd_child{1}]);
-% 
-% DRwPN = (T.taskType == 'DRw') & condiPN;
-% fileName = T.path(DRwPN);
-% cellID = T.cellID(DRwPN);
-% plot_Track_multi_v50hz(fileName, cellID, [fd_parent,fd_child{2}]);
-% 
-% DRunIN = (T.taskType == 'DRun') & condiIN;
-% fileName = T.path(DRunIN);
-% cellID = T.cellID(DRunIN);
-% plot_Track_multi_v50hz(fileName, cellID, [fd_parent,fd_child{3}]);
-% 
-% DRwIN = (T.taskType == 'DRw') & condiIN;
-% fileName = T.path(DRwIN);
-% cellID = T.cellID(DRwIN);
-% plot_Track_multi_v50hz(fileName, cellID, [fd_parent,fd_child{4}]);

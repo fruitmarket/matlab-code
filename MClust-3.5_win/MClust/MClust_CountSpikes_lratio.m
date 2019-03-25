@@ -25,7 +25,7 @@ end
 
 LoadingEngineDirectory = fullfile(MClust_Directory, 'LoadingEngines');
 % LoadingEngine = MClust_NeuralLoadingFunction; % original code
-LoadingEngine = 'C:\Users\Jun\Documents\MATLAB\MClust-3.5-JL-Windows\MClust\LoadingEngines\LoadTT_NeuralynxNT.mexw64';
+LoadingEngine = 'E:\GitHub\matlab-code\MClust-3.5_win\MClust\LoadingEngines\LoadTT_NeuralynxNT.mexw64';
 
 switch exist(LoadingEngine) %#ok<EXIST>
 case {0,1,4,5,7}

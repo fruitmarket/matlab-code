@@ -5,7 +5,7 @@ nFile = length(matFile);
 
 cMeanFRLow = 0.1;
 cMeanFRPeak = 9;
-cPeakFR = 0.1; % but how about 3
+cPeakFR = 4; % but how about 3
 cSpkpvr = 1.2;
 cPixelLength = 5;
 cOverLapLength = 5;
@@ -73,54 +73,66 @@ for iFile = 1:nFile
 %% Is place field in the stimulation zone? Yes:1 No:0
 % block-wize comparison. If at least one block has a place field in a stimulation zone, count it as 1.
     if(regexp(cellDir,'Run'))
-        lightLoc = [20*pi*5/6 20*pi*8/6];
+        lightLoc = [ceil(20*pi*5/6) floor(20*pi*8/6)];
     else
-        lightLoc = [20*pi*9/6 20*pi*10/6];
+        lightLoc = [ceil(20*pi*9/6) floor(20*pi*10/6)];
     end
-    stmZone = [lightLoc(1) lightLoc(2)];
-
+    stmZone = [lightLoc(1):lightLoc(2)];
+    cOverLapLength = length(stmZone)*0.5;
+    
     idxAreaPRE = [tempValuePRE.Area]>cPixelLength;
     pixelPRE = {tempValuePRE.PixelIdxList};
     fieldPixelPRE = pixelPRE(idxAreaPRE)';
     nLociPRE = size(pixelPRE(idxAreaPRE)',1);
+    [overLapPRE, overLapSTM, overLapPOST] = deal({});
+    centerPRE = [];
+    
     if nLociPRE == 0
         idxZoneInOutPRE = false;
+        overLapLength = 0;               %% calculate overlapping area between stm zone & place field
+        idxOverLap = 'Nofield';
     else
         for iLoci = 1:nLociPRE
-            overLapPRE{iLoci,1} = intersect(stmZone,fieldPixelPRE{iLoci});
+            overLapPRE{iLoci,1} = intersect(stmZone,fieldPixelPRE{iLoci}); % length of place field and stm-zone
+            centerPRE(iLoci,1) = mean(fieldPixelPRE{iLoci});
         end
-        if ~cellfun(@isempty,overLapPRE)
+        if sum(double(lightLoc(1)<=centerPRE & centerPRE<=lightLoc(2)))
+            idxOverLap = 'Inzone';
+        else
+            idxOverLap = 'Outzone';
+        end
+        
+        if sum(double(~cellfun(@isempty,overLapPRE)))>0
             idxZoneInOutPRE = true;
         else
             idxZoneInOutPRE = false;
         end
+        overLapLength = cellfun(@length,overLapPRE);
+        if length(overLapLength) ~= 1
+            overLapLength = max(overLapLength); % find biggest overlap length
+        end
+%         if overLapLength > cOverLapLength
+%             idxOverLap = 'Inzone';
+%         elseif 0 < overLapLength & overLapLength <= cOverLapLength
+%             idxOverLap = 'UNC';
+%         else
+%             idxOverLap = 'Outzone';
+%         end
     end
-
     idxAreaSTM = [tempValueSTM.Area]>cPixelLength;
     pixelSTM = {tempValueSTM.PixelIdxList};
     fieldPixelSTM = pixelSTM(idxAreaSTM)';
     nLociSTM = size(pixelSTM(idxAreaSTM)',1);
     if nLociSTM == 0
         idxZoneInOutSTM = false;
-        overLapLengthSTM = 0;               %% calculate overlapping area between stm zone & place field
-        idxOverLapLengthSTM = false;
     else
         for iLoci = 1:nLociSTM
             overLapSTM{iLoci,1} = intersect(stmZone,fieldPixelSTM{iLoci});
         end
-        if ~cellfun(@isempty,overLapSTM)
+        if sum(double(~cellfun(@isempty,overLapSTM)))>0
             idxZoneInOutSTM = true;
         else
             idxZoneInOutSTM = false;
-        end
-        overLapLengthSTM = cellfun(@length,overLapSTM);
-        if length(overLapLengthSTM) ~= 1
-            overLapLengthSTM = sum(overLapLengthSTM);
-        end
-        if overLapLengthSTM >= cOverLapLength
-            idxOverLapLengthSTM = true;
-        else
-            idxOverLapLengthSTM = false;
         end
     end
 
@@ -134,7 +146,7 @@ for iFile = 1:nFile
         for iLoci = 1:nLociPOST
             overLapPOST{iLoci,1} = intersect(stmZone,fieldPixelPOST{iLoci});
         end
-        if ~cellfun(@isempty,overLapPOST)
+        if sum(double(~cellfun(@isempty,overLapPOST)))>0
             idxZoneInOutPOST = true;
         else
             idxZoneInOutPOST = false;
@@ -192,6 +204,6 @@ for iFile = 1:nFile
         idxmFrTotal = 0;
     end
 
-    save([cellName,'.mat'],'idxNeurontype','idxPeakFR','idxPlaceField','idxTotalSpikeNum','idxpLR_Track','idxpLR_Plfm50hz','idxmFrIn','idxmFrOut','idxmFrTotal','idxZoneInOut','idxZoneInOut','overLapLengthSTM','idxOverLapLengthSTM','-append');
+    save([cellName,'.mat'],'idxNeurontype','idxPeakFR','idxPlaceField','idxTotalSpikeNum','idxpLR_Track','idxpLR_Plfm50hz','idxmFrIn','idxmFrOut','idxmFrTotal','idxOverLap','idxZoneInOut','overLapLength','-append');
 end
 disp('### analysis: index calculation completed! ###')

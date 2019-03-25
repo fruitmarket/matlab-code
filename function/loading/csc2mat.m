@@ -6,13 +6,14 @@ function [timestamp, sample] = csc2mat(fileName)
 %
 %   Author: Junyeop Lee
 %   Version 1.0 (Oct/12/2016)
+%   Revised (Jul/17/2018)
 
 % Import csc data
 voltageConvFactor = 10^3; % 1 means output in volts, 1000 in mV, 10^6 in uV
 [timestamps_ori, ~, ~, ~, sample, header] = Nlx2MatCSC(fileName, [1,1,1,1,1],1,1,[]);
 % [timeStamps, channelNumbers, sampleFreq, numberofValidSamples, samples, header] = Nlx2MatCSC(fileName, [1,1,1,1,1],1,1,[]);
 % numberofValidSamples: 512
-% sampling frequency is 2000 hz;
+% sampling frequency is 2000 Hz;
 sample = sample(:);
 
 % ADBitVolts correction
@@ -22,32 +23,13 @@ bitVolt = str2double(voltTemp{2});
 
 sample = sample(:)*bitVolt*voltageConvFactor; % unit: mVolt
 
-% timestamps rearrange
-dT = diff(timestamps_ori);
-idx = find(dT > 256000);
-
-switch length(idx)+1
-    case 1
-        timestamp = [timestamps_ori(1) + (0:512*(size(timestamps_ori,2))-1)*500]'; % continuous recording
-    case 2
-        disp('Check the recording note!');
-    case 3 % three sessions
-        subtime1 = timestamps_ori(1)+(0:(512*idx(1)-1))*500;
-        subtime2 = timestamps_ori(idx(1)+1)+(0:(512*(idx(2)-idx(1))-1))*500;
-        subtime3 = timestamps_ori(idx(2)+1)+(0:(512*(length(timestamps_ori)-idx(2))-1))*500;
-        timestamp = [subtime1';subtime2';subtime3'];
-    case 4 % four sessions
-        subtime1 = timestamps_ori(1)+(0:(512*idx(1)-1))*500;
-        subtime2 = timestamps_ori(idx(1)+1)+(0:(512*(idx(2)-idx(1))-1))*500;
-        subtime3 = timestamps_ori(idx(2)+1)+(0:(512*(idx(3)-idx(2))-1))*500;
-        subtime4 = timestamps_ori(idx(3)+1)+(0:(512*(length(timestamps_ori)-idx(3))-1))*500;
-        timestamp = [subtime1';subtime2';subtime3';subtime4'];
-    case 5 % five sessions
-        subtime1 = timestamps_ori(1)+(0:(512*idx(1)-1))*500;
-        subtime2 = timestamps_ori(idx(1)+1)+(0:(512*(idx(2)-idx(1))-1))*500;
-        subtime3 = timestamps_ori(idx(2)+1)+(0:(512*(idx(3)-idx(2))-1))*500;
-        subtime4 = timestamps_ori(idx(3)+1)+(0:(512*(idx(4)-idx(3))-1))*500;
-        subtime5 = timestamps_ori(idx(4)+1)+(0:(512*(length(timestamps_ori)-idx(4))-1))*500;
-        timestamp = [subtime1';subtime2';subtime3';subtime4';subtime5'];
+idxRecStart = [1,find(diff(timestamps_ori)>256000)+1]';
+nRec = length(idxRecStart);
+timestamp = [];
+for iRec = 1:nRec-1
+    tempTime = timestamps_ori(idxRecStart(iRec))+[0:(512*(idxRecStart(iRec+1)-idxRecStart(iRec))-1)]*500;
+    timestamp = [timestamp, tempTime];
 end
+tempTime = timestamps_ori(idxRecStart(end))+[0:512*(length(timestamps_ori)-idxRecStart(end)+1)-1]*500;
+timestamp = [timestamp, tempTime]';
 end

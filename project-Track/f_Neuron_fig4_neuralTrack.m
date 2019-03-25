@@ -1,11 +1,11 @@
 clearvars;
 
-cd('D:\Dropbox\SNL\P2_Track'); % win version
+cd('E:\Dropbox\SNL\P2_Track'); % win version
 load myParameters.mat;
 formatOut = 'yymmdd';
 Txls = readtable('neuronList_ori_171227.xlsx');
-load('neuronList_ori_171227.mat');
 Txls.latencyIndex = categorical(Txls.latencyIndex);
+load('neuronList_ori_171227.mat');
 
 % total population (RunPN / RwPN / RunPN / RwPN) with light responsiveness (light activated)
 % Run_PN_act = T.taskType == 'DRun' & T.idxNeurontype == 'PN' & T.idxpLR_Track & T.statDir_TrackN == 1;
@@ -402,6 +402,6 @@ xlabel('Time (ms)','fontSize',fontM);
 ylabel('Normalized mean spike','fontSize',fontM);
 
 %%
-print('-painters','-r300','-dtiff',['f_CellReport_lightPETH_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['f_CellReport_lightPETH_',datestr(now,formatOut),'.ai']);
-close;
+% print('-painters','-r300','-dtiff',['f_CellReport_lightPETH_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['f_CellReport_lightPETH_',datestr(now,formatOut),'.ai']);
+% close;

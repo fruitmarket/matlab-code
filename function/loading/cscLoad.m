@@ -10,7 +10,7 @@ function [cscTime, cscSample, cscList] = cscLoad(cscFile)
 % Author: Joonyeup Lee (cited Dohoung Kim's code)
 % Version 1.0 (Oct, 13, 2016)
 
-if nargin == 0;
+if nargin == 0
     cscList = FindFiles('CSC*.ncs','CheckSubdirs',0);
 else
     if ~iscell(cscFile)
@@ -49,7 +49,7 @@ switch outputIdx
         for iCSC = 1:nCSC
             [timestamp{iCSC},cscSample{iCSC}] = csc2mat(cscList{iCSC});
         end
-        cscTime = cellfun(@(x) x/1000, timestamp,'UniformOutput',false);
+        cscTime = cellfun(@(x) x/1000, timestamp,'UniformOutput',false); % cscTime unit: msec
     case 1 % merge all csc files to one matfile
         for iCSC = 1:nCSC
             [timestamp, cscSample(:,iCSC)] = csc2mat(cscList{iCSC});

@@ -25,6 +25,7 @@ lightInput = lightWin*2*10^3;
 
 load('Events.mat');
 [timestamp, sample, cscList] = cscLoad;
+timestamp = timestamp{1};
 % nFile = length(cscList);
 nFile = 1;
 
@@ -33,7 +34,7 @@ for iFile = 1:nFile
     [filePath, ~, ~] = fileparts(cscList{iFile});
     fileName = 'CSC';
 %     channelSample = sample{iFile}; % calculate EEG from each tetrode
-    channelSample = sample;
+    channelSample = sample{iFile};
 
     if ~isempty(strfind(filePath,'DRun')) | ~isempty(strfind(filePath,'noRun'))
         iSensor = 6;

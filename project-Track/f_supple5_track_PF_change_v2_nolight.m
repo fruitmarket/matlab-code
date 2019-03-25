@@ -1,14 +1,8 @@
-rtDir = 'D:\Dropbox\SNL\P2_Track';
+rtDir = 'E:\Dropbox\SNL\P2_Track';
 cd(rtDir);
-%%%%%%%%%%%%%%%%%%%%%%
-%%%%%% version 1 %%%%%
-%%%%%%%%%%%%%%%%%%%%%%
-% load neuronList_ori_170909.mat
-% cellID = [173 731 557 28 176 849]; % for DRun sessions 170909.
-% cellID = []; % dor DRw sessions
-
-load myParameters.mat;
-load neuronList_ori_171018.mat
+load('E:\Dropbox\SNL\P2_Track\myParameters.mat');
+load('E:\Dropbox\SNL\P2_Track\neuronList_ori_180511.mat');
+% load('E:\Dropbox\SNL\P2_Track\neuronList_ori50hz_180511.mat');
 formatOut = 'yymmdd';
 
 % cellID = [172 173 193 520 935];
@@ -77,7 +71,7 @@ for iCell = 1:nCell
 %     set(hPlot(4),'XLim',[0,124],'XTick',[0:20:120],'YLim',[0, ylimpethSpatial]);
     set(pRw,'LineStyle','none','FaceAlpha',0.2);
     
-    cd('D:\Dropbox\SNL\P2_Track\example_track_PF_change_v2_nolight');
+    cd('E:\Dropbox\SNL\P2_Track\example_track_placefield_example_placefieldchange_PlosBiofig');
     print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_placeCellExample_',num2str(iCell),'.tif']);
     print('-painters','-r300','-depsc',[datestr(now,formatOut),'_placeCellExample_',num2str(iCell),'.ai']);
     close;

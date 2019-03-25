@@ -16,7 +16,7 @@ resolution = 2;
 dot = 1;
 
 %% Linearize position data
-[realDist, theta, timeTrack, eventPosition, numOccu, numOccuPRE, numOccuPOST] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear, binSizeSpace);
+[realDist, theta, timeTrack, eventPosition, ~, numOccu] = track2linear(vtPosition{1}(:,1), vtPosition{1}(:,2),vtTime{1},sensor.S1, [sensor.S1(1), sensor.S12(end)],winLinear, binSizeSpace);
 
 % align spike time to position time
 for iCell = 1:nCell
@@ -29,14 +29,11 @@ for iCell = 1:nCell
     nSpike = length(spikeData);
     
     newSpikeData = zeros(nSpike,1); % spike time conversion to video tracking time
+    spkPositionIdx = zeros(nSpike,1);
     for iSpike = 1:nSpike
         [~,timeIndex] = min(abs(spikeData(iSpike)-timeTrack));
         newSpikeData(iSpike) = timeTrack(timeIndex);
-    end
-
-    spkPositionIdx = zeros(nSpike,1);
-    for iSpike = 1:nSpike
-        spkPositionIdx(iSpike) = find((timeTrack == newSpikeData(iSpike)));
+        spkPositionIdx(iSpike) = timeIndex;
     end
 
 %% location calibration 
@@ -45,16 +42,21 @@ for iCell = 1:nCell
         temp_numOccu = numOccu(:,1:end-1);
         numOccu_cali = [temp_numOccu(:,end-calib_distance+1:end), temp_numOccu(:,1:end-calib_distance)];
     else
-        eventPosition_calib = eventPosition + calib_distance;
+        eventPosition_calib = eventPosition + abs(calib_distance);
         temp_numOccu = numOccu(:,1:end-1);
         numOccu_cali = [temp_numOccu(:,abs(calib_distance)+1:end), temp_numOccu(:,1:abs(calib_distance))];
     end
+    numOccu_cali = [sum(numOccu_cali(1:30,:)); sum(numOccu_cali(31:60,:)); sum(numOccu_cali(61:90,:))];
 
 % Spike location
     spikeLocation = realDist(spkPositionIdx); % position data of each spike
     spikePosition = spikeWin(spikeLocation,eventPosition_calib,winSpace); % spikeLocation is re-organized by each lap
     [xptSpatial,yptSpatial,pethSpatial,pethbarSpatial,pethconvSpatial,pethconvZSpatial] = spatialrasterPETH(spikePosition, trialIndex, numOccu_cali, winSpace, binSizeSpace, resolution, dot);
     peakFR1D_track = max(pethconvSpatial,[],2);
+    if calib_distance > 0
+        
+    else
+    end
     save([cellName,'.mat'],'xptSpatial','yptSpatial','pethSpatial','pethbarSpatial','pethconvSpatial','pethconvZSpatial','peakFR1D_track','-append');
     
 %% spatial correlation 1D
@@ -75,7 +77,7 @@ for iCell = 1:nCell
     meanFRPOST = length(cell2mat(spikePosition(61:90)))/(sensor.S12(90)-sensor.S1(61))*1000;
     meanFRTotal = length(cell2mat(spikePosition))/(sensor.S12(end)-sensor.S1(1))*1000; %  spikes/sec
     
-    numOccuSI = numOccu; % unit [sec]
+    numOccuSI = numOccu_cali; % unit [sec]
     numOccuSI(:,end) = []; % delete last bin
     if meanFRPRE ~= 0
         spikePRE = reshape(histc(cell2mat(spikePosition(1:30)),winLinear(1):binSizeSpace:winLinear(2)),1,length(winLinear(1):binSizeSpace:winLinear(2))); % originally 125

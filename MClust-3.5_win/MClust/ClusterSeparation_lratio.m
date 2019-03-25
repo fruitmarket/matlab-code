@@ -81,7 +81,8 @@ if isempty(FD)  % If no feature data matrix was supplied
 		
 		if ~isempty(MClust_ClusterSeparationFeatures)
 			FeaturesToGet = MClust_ClusterSeparationFeatures;
-%             FeaturesToGet = {'peak','energy','wavepc1'};
+%             FeaturesToGet = {'Energy'};
+            FeaturesToGet = {'peak','energy','wavepc1'}; %original code
 		else
 			disp('No MClust_ClusterSeparationFeatures variable found: using default features')
 			FeaturesToGet = {'Energy'};

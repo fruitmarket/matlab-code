@@ -256,13 +256,13 @@ uicontrol('Parent', figHandle, ...
     'Style', 'slider', 'Tag', 'ScrollClusters', 'Callback', 'MClustCutterCallbacks', ...
     'Value', 0', 'Min', -99, 'Max', 0, ...
     'TooltipString', 'Scroll clusters');
-
-curchildren = get(figHandle, 'children');
-for i = 1:length(curchildren);
-    set(curchildren(i), 'Fontname', 'Ariel');
-    set(curchildren(i), 'Fontsize', 8);
-end;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% annotated by Joonyeup Lee 05/13/2018. Because of error in Window10
+% curchildren = get(figHandle, 'children');
+% for i = 1:length(curchildren);
+%     set(curchildren(i), 'FontName', 'Arial');
+%     set(curchildren(i), 'Fontsize', 8);
+% end;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % added code by Jaeeon Lee. 2015/06/07
 set(gcf,'WindowKeyPressFcn',@Shortcuts);
-% addlistener(gcf,'WindowKeyPress',@Shortcuts);
-

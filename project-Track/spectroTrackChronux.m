@@ -6,24 +6,26 @@ function spectroTrackChronux()
 % Author: Joonyeup Lee
 % Version 1.0 (Oct, 17, 2016)
 
-sensorWin = [-1 1]; % the number in the bracket should be in sec unit
-lightWin = [-1 1];
-sensorInput = sensorWin*2*10^3; % unit of sensorInput: usec
-lightInput = lightWin*2*10^3;
+sensorInput = [-1,4]*2000; % unit to sec (since sampling frequency is 2Khz, multiply 2000)
+lightInput = [-1 1]*2*10^3;
 
-mvWinSensor = [0.5 0.05]; % unit: sec (100ms window, 10ms moving)
-mvWinLightPlfm = [0.5 0.01];
-mvWinLightTrack = [0.5 0.01];
+mvWinSensor = [1 0.01]; % unit: sec (1000ms window, 10ms moving)
+mvWinLightPlfm = [0.5 0.02];
+mvWinLightTrack = [0.5 0.02];
 params.Fs = 2000; % unit: Hz
-params.fpass = [0, 200];
-params.pad = 2; % padding: 2 (better visualization)
-params.tapers = [5, 5];
+params.fpass = [1 100];
+params.pad = 1; % padding: 2 (better visualization)
+% params.tapers = [5, 9];
+params.tapers = [3, 5];
 params.trialave = 0; % 0: no average, 1: average trials
-p = 0.05;
-params.err = [1, p];
+params.err = 0;
+% p = 0.05;
+% params.err = [1, p];
+
 
 load('Events.mat');
 [timestamp, sample, cscList] = cscLoad;
+timestamp = timestamp{1};
 % nFile = length(cscList);
 nFile = 1;
 
@@ -32,36 +34,33 @@ for iFile = 1:nFile
     [filePath, ~, ~] = fileparts(cscList{iFile});
     filaName = 'CSC';
     
-    channelSample = sample;
+    channelSample = sample{6};
 
-    if ~isempty(strfind(filePath,'DRun')|strfind(filePath,'noRun'))
-        iSensor = 6;      
-    else
-        iSensor = 10;
-    end
+    iSensor = 1;
 
 % Spectrum aligned on sensor
     idxSensor = zeros(nTrial,1);
-    sampleSensor = zeros((sum(abs(sensorInput))+1),nTrial);
+%     sampleSensor = zeros((sum(abs(sensorInput))+1),nTrial);
     for iTrial = 1:nTrial
         idxSensor(iTrial,1) = find(sensor.(fields{iSensor})(iTrial)<timestamp,1,'first');
         sampleSensor(:,iTrial) = channelSample((idxSensor(iTrial,1)+sensorInput(1)):(idxSensor(iTrial,1)+sensorInput(2)));
+        [specSensor(:,:,iTrial), timeSensor, freqSensor] = mtspecgramc(sampleSensor(:,iTrial),mvWinSensor,params);
     end
-    [specSensor, timeSensor, freqSensor, ~] = mtspecgramc(sampleSensor,mvWinSensor,params);
-    specSensor_pre = specSensor(:,:,1:30);
-    specSensor_stm = specSensor(:,:,31:60);
-    specSensor_post = specSensor(:,:,61:90);
-    save([fileName,'.mat'],'specSensor_pre','specSensor_stm','specSensor_post','timeSensor','freqSensor');
+    specSensor_PRE = mean(specSensor(:,:,1:30),3)';
+    specSensor_STIM = mean(specSensor(:,:,31:60),3)';
+    specSensor_POST = mean(specSensor(:,:,61:90),3)';
+    specSensor_Total = mean(specSensor,3);
+%     save([fileName,'.mat'],'specSensor_pre','specSensor_stm','specSensor_post','timeSensor','freqSensor');
 
 % Spectrum aligned on Platform light
-    nLightPlfm = length(lightTime.Tag);
+    nLightPlfm = length(lightTime.Plfm2hz);
     idxLightPlfm = zeros(nLightPlfm,1);
     sampleLightPlfm = zeros((sum(abs(lightInput))+1),nLightPlfm);
     for iLight = 1:nLightPlfm
-        idxLightPlfm(iLight,1) = find(lightTime.Tag(iLight)<timestamp,1,'first');
+        idxLightPlfm(iLight,1) = find(lightTime.Plfm2hz(iLight)<timestamp,1,'first');
         sampleLightPlfm(:,iLight) = channelSample((idxLightPlfm(iLight,1)+lightInput(1)):(idxLightPlfm(iLight,1)+lightInput(2)));
+        [specLightPlfm(:,:,iTrial), timeLightPlfm, freqLightPlfm] = mtspecgramc(sampleLightPlfm(:,iTrial),mvWinLightPlfm,params);
     end
-    [specLightPlfm, timeLightPlfm, freqLightPlfm,~] = mtspecgramc(sampleLightPlfm,mvWinLightPlfm,params);
     specLightPlfm = mean(specLightPlfm,3);
     save([fileName,'.mat'],'specLightPlfm','timeLightPlfm','freqLightPlfm','-append');
     

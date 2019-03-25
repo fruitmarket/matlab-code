@@ -429,7 +429,7 @@ text(30, 3, ['Light inactivated (n = ',num2str(nIna),')'],'color',colorRed,'font
 text(30, 2, ['No response (n = ',num2str(nNoresp),')'],'color',colorBlack,'fontSize',fontS);
 xlabel('Time (ms)','fontSize',fontS);
 ylabel('Normalized mean spike','fontSize',fontS);
-
-print('-painters','-r300','-dtiff',['final_fig4_track_lightPETH_DRun_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['final_fig4_track_lightPETH_DRun_',datestr(now,formatOut),'.ai']);
-close;
+% 
+% print('-painters','-r300','-dtiff',['final_fig4_track_lightPETH_DRun_',datestr(now,formatOut),'.tif']);
+% print('-painters','-r300','-depsc',['final_fig4_track_lightPETH_DRun_',datestr(now,formatOut),'.ai']);
+% close;

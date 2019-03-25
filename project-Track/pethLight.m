@@ -35,7 +35,7 @@ for iCell = 1:nCell
     % tData{iCell} unit: msec
 
 %% Light - ontrack
-    if ~isempty(lightTime.Track8hz); % ChETA
+    if ~isempty(lightTime.Track8hz) % ChETA
         spikeTimeTrackLight = spikeWin(tData{iCell},lightTime.Track8hz,winTrack);
         [xptTrackLight, yptTrackLight, pethtimeTrackLight, pethTrackLight,pethTrackLightConv,pethTrackLightConvZ] = rasterPETH(spikeTimeTrackLight,true(size(lightTime.Track8hz)),winTrack,binSizeBlue,resolution,1);     
         lightSpk = sum(0<xptTrackLight{1} & xptTrackLight{1}<winCri);

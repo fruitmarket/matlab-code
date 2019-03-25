@@ -63,14 +63,16 @@ for iPath = 1:nPath % 1hz,2hz,8hz,20hz,50hz from
             event2mat_freq;
         case 't'
 %             analysis_freq_rasterLight; % calculate raster for each frequency
-            analysis_freq_pethLight; % calculate based on all lights
+%             analysis_freq_pethLight; % calculate based on all lights
 %             analysis_baseVsLight;
 %             analysis_meanFRfreqTest;
-            analysis_freq_evokeProb; % calculate spike probability
+%             analysis_freq_evokeProb; % calculate spike probability
 %             analysis_respstatFreqTest;
 %             analysis_freq_detoSpike;
-%             waveform;
+%             analysis_waveform
 %             analysis_cscFreqTest;
+%             analysis_plfm_wvformCrosscor;
+            analysis_freq_evokeProb_hippocampus_response;
         case 'm'            
 %             plot_cscLightStm;
             plot_freqDependency_single;

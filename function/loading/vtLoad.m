@@ -49,7 +49,7 @@ for iVT = 1:nVT
     zero = find(diff(timestamp)<0); % Delete error timestamp (timestamp should always increase)
     timestamp(zero-1) = [];
     vtTime{iVT} = timestamp;
-    position(zero-1) = [];
+    position(zero-1,:) = [];
     vtPosition{iVT} = position;
 end
 

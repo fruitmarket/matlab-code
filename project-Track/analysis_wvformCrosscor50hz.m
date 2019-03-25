@@ -24,9 +24,6 @@ for iC = 1:nCell
             cFile{iC} = regexprep(mList{iC},preext2,curext1);
             ntFile{iC} = regexprep(mList{iC},preext2,curext2);
             tFile{iC} = regexprep(mList{iC},preext1,curext3);
-%             tFile{iC} = cellfun(@(x) regexprep(x,preext1,curext3), mList{iC}, 'UniformOutput',false);
-%             cFile{iC} = cellfun(@(x) regexprep(x,preext2,curext1), mList{iC}, 'UniformOutput',false);
-%             ntFile{iC} = cellfun(@(x) regexprep(x,preext2,curext2), mList{iC}, 'UniformOutput',false);
         case 6 % clusters bigger than 9
             preext1 = '.mat';
             preext2 = '_\d\d.mat';
@@ -80,9 +77,9 @@ for iCell = 1:nCell
     [tData,~] = tLoad;
     nspike = length(tData{iCell});
     
-    % Load light time (only on the track 8hz)
-    load(eFile{iCell}, 'lightTime','baseTime','preTime');
-    lighttime = lightTime.Track50hz;
+    % Load light time (only on the track)
+    load(eFile{iCell}, 'lightTime','timePre');
+    lighttime = lightTime.Track; 
     nT = length(lighttime);
     
     % Find spike within the range of light stimulation
@@ -90,7 +87,7 @@ for iCell = 1:nCell
     evoked_idx = zeros(nspike,1);
     
     % Spontaneous spikes
-    [~,spont_temp] = histc(tData{iCell},[preTime(1) preTime(2)]);
+    [~,spont_temp] = histc(tData{iCell},[timePre(1) timePre(2)]);
     spont_idx(spont_temp==1) = 1;
     
     % Evoked spikes

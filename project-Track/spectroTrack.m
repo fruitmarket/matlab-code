@@ -8,22 +8,22 @@ function spectroTrack()
 % Author: Joonyeup Lee
 % Version 1.0 (Oct, 17, 2016)
 
-sensorWin = [-1, 1]; % the number in the bracket should be in sec unit
+sensorWin = [-2, 4]; % the number in the bracket should be in sec unit
 lightWin2hz = [-1, 1]; % 0.2 (= 200 usec)
 lightWin8hz = [-1, 1]; % 0.05 (= 200 usec)
 
-sensorInput = sensorWin*2*10^3; % unit of sensorInput: usec
+sensorInput = sensorWin*2000; % unit of sensorInput: usec
 lightInput2hz = lightWin2hz*2*10^3;
 lightInput8hz = lightWin8hz*2*10^3;
 
-winSize = 500;
 fs = 2000; % 2kHz
-window = hanning(winSize);
-nfft = 5000;
-noverlap = winSize*0.98;
+nfft = [1:2:200];
+window = 100; % 200 = 100ms window
+noverlap = 20; % 40 = 20ms overlap
 
 load('Events.mat','sensor','lightTime','nTrial','fields');
 [timestamp, sample, cscList] = cscLoad;
+timestamp = timestamp{1};
 % nFile = length(cscList);
 nFile = 1;
 
@@ -32,13 +32,9 @@ for iFile = 1:nFile
     [filePath, ~, ~] = fileparts(cscList{iFile});
     fileName = 'CSC';
 %     channelSample = sample{iFile}; % calculate EEG from each tetrode
-    channelSample = sample;
+    channelSample = sample{iFile};
 
-    if ~isempty(strfind(filePath,'DRun')) | ~isempty(strfind(filePath,'noRun'))
-        iSensor = 6;
-    else
-        iSensor = 10;
-    end
+    iSensor = 10;
 
 %% Spectrum aligned on sensor
     idxSensor = zeros(nTrial,1);
@@ -46,8 +42,12 @@ for iFile = 1:nFile
     for iTrial = 1:nTrial
         idxSensor(iTrial,1) = find(sensor.(fields{iSensor})(iTrial)<timestamp,1,'first');
         sampleSensor(:,iTrial) = channelSample((idxSensor(iTrial,1)+sensorInput(1)):(idxSensor(iTrial,1)+sensorInput(2)));
-        [~, freqSensor, timeSensor,psdSensor(:,:,iTrial)] = spectrogram(sampleSensor(:,iTrial),window,noverlap,nfft,fs);     
+%         [~, freqSensor, timeSensor,psdSensor(:,:,iTrial)] = spectrogram(sampleSensor(:,iTrial),window,noverlap,nfft,fs);
+        [specSensor(:,:,iTrial), freqSensor, timeSensor,psdSensor(:,:,iTrial)] = spectrogram(sampleSensor(:,iTrial),window,noverlap,nfft,fs);
     end
+    specSensor_PRE = mean(specSensor(:,:,1:30),3);
+    specSensor_STIM = mean(specSensor(:,:,31:60),3);
+    specSensor_POST = mean(specSensor(:,:,61:90),3);
     psdSensor_pre = mean(psdSensor(:,:,1:30),3);
     psdSensor_stm = mean(psdSensor(:,:,31:60),3);
     psdSensor_post = mean(psdSensor(:,:,61:90),3);

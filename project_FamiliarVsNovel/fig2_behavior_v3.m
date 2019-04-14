@@ -2,14 +2,14 @@ clearvars; close all;
 
 %% Data load
 % Novel
-rtDir = 'E:\Dropbox\SNL\P4_FamiliarNovel';
-load('E:\Dropbox\Lab_mwjung\P2_Track\myParameters.mat');
+rtDir = 'D:\Dropbox\SNL\P4_FamiliarNovel';
+load('D:\Dropbox\Lab_mwjung\P2_Track\myParameters.mat');
 formatOut = 'yymmdd';
-load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\behaviorList_novel_190219.mat');
+load('D:\Dropbox\Lab_mwjung\P4_FamiliarNovel\behaviorList_novel_190219.mat');
 T_nov = T;
 
 % Familiar
-load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\behaviorList_familiar_190219.mat');
+load('D:\Dropbox\Lab_mwjung\P4_FamiliarNovel\behaviorList_familiar_190219.mat');
 T_fam = T;
 sess_nov = [1:7,9:12,14];
 sess_fam = [4:6,10,11,13:17,19,20];

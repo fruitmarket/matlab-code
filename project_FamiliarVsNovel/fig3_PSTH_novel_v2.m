@@ -1,9 +1,9 @@
 % plot_FN_lightAct
 clearvars;
 
-load('E:\Dropbox\Lab_mwjung\P2_Track\myParameters.mat');
+load('D:\Dropbox\Lab_mwjung\P2_Track\myParameters.mat');
 formatOut = 'yymmdd';
-load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_novel_190301.mat');
+load('D:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_novel_190301.mat');
 PN = T.neuronType == 'PN';
 tt_ca3bc = ((T.mouseID == 'rbp005' & (T.tetrode == 'TT1' | T.tetrode == 'TT5')) | (T.mouseID == 'rbp006' & T.tetrode == 'TT2') | (T.mouseID == 'rbp010' & T.tetrode == 'TT6'));
 PN_ca3bc = PN & tt_ca3bc;

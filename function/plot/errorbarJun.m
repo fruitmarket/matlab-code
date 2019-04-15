@@ -9,24 +9,23 @@ function h=errorbarJun(xData,yData,sem,barLength,lineWidth,lineColor)
 
 xptH = NaN(length(xData)*6,1);
 yptH = NaN(length(xData)*6,1);
+
 for index = 1:length(xData)
     xptH(6*index-5) = xData(index)-barLength/2;
     xptH(6*index-4) = xData(index)+barLength/2;
     xptH(6*index-2) = xData(index)-barLength/2;
     xptH(6*index-1) = xData(index)+barLength/2;
-    
     yptH(6*index-5) = yData(index)-sem(index);
     yptH(6*index-4) = yData(index)-sem(index);
     yptH(6*index-2) = yData(index)+sem(index);
     yptH(6*index-1) = yData(index)+sem(index);
 end
-
 xptV = NaN(length(xData)*3,1);
 yptV = NaN(length(yData)*3,1);
+
 for index = 1:length(xData)
     xptV(3*index-2) = xData(index);
     xptV(3*index-1) = xData(index);
-    
     yptV(3*index-2) = yData(index)-sem(index);
     yptV(3*index-1) = yData(index)+sem(index);
 end

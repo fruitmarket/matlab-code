@@ -1,4 +1,4 @@
-function axesPosition = axpt(nX, nY, xPos, yPos, positionVector, interval)
+function axesPosition = axpt(nX, nY, xPos, yPos, positionVector, space)
 %axpt gives position vector for the function axes
 %
 %   nX: number of column
@@ -15,20 +15,17 @@ function axesPosition = axpt(nX, nY, xPos, yPos, positionVector, interval)
 
 narginchk(4,6);
 if nargin <= 5
-    interval = [0.05 0.05];
+    space = [0.05 0.05];
     if nargin <= 4
-%         positionVector = [0.1 0.1 0.85 0.85]; %default
-        positionVector = [0.1 0.1 0.95 0.85];
+        positionVector = [0.1 0.1 0.85 0.85]; %default
     end  
 end
 if isempty(positionVector)
-%     positionVector = [0.1 0.1 0.85 0.85]; %default
-    positionVector = [0.1 0.1 0.85 0.85];
-
+    positionVector = [0.1 0.1 0.85 0.85]; %default
 end
 
-xInterval = interval(1)*positionVector(3);
-yInterval = interval(2)*positionVector(4);
+xInterval = space(1)*positionVector(3);
+yInterval = space(2)*positionVector(4);
 dX = (positionVector(3) - (nX-1)*xInterval) / nX;
 dY = (positionVector(4) - (nY-1)*yInterval) / nY;
 

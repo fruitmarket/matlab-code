@@ -120,6 +120,9 @@ for iCell = 1:nCell
             'xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
 
 % Align on 1st light of each burst
+        winDist = [-22 102];        
+        binStep = 1;
+        binWin = 1;
         lightOnStm = lightTime([1; (find(diff(lightTime)>50)+1)]);
         lightOnPre = psdlightPre([1; (find(diff(psdlightPre)>50)+1)]);
         lightOnPost = psdlightPost([1; (find(diff(psdlightPost)>50)+1)]);
@@ -131,10 +134,12 @@ for iCell = 1:nCell
         spikeTimePost = spikeWin(tData{iCell},lightOnPost,winBurst);
         [xpt1stBPost, ypt1stBPost, pethtime1stBPost, peth1stBPost, pethConv1stBPost, pethConvZ1stBPost] = rasterPETH(spikeTimePost, true(size(lightOnPost)), winBurst, binSize, resolution, dot);
         
+        [~,spikeBStim] = spikeBin(spikeTimeStm,winDist,binWin,binStep);
+        
         save([cellName, '.mat'],...
             'xpt1stBStm','ypt1stBStm','pethtime1stBStm','peth1stBStm','pethConv1stBStm','pethConvZ1stBStm',...
             'xpt1stBPre','ypt1stBPre','pethtime1stBPre','peth1stBPre','pethConv1stBPre','pethConvZ1stBPre',...
-            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','-append');
+            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBStim','-append');
         
 % Align on 1st light of each lap
         lightOnStm = lightTime([1; (find(diff(lightTime)>1000)+1)]);
@@ -175,6 +180,9 @@ for iCell = 1:nCell
             'xptPsdPost','yptPsdPost','pethtimePsdPost','psdPostSpk','pethPsdPostConv','pethPsdPostConvZ','-append');
 
 % Align on 1st light of each burst
+        winDist = [-22 102];
+        binStep = 1;
+        binWin = 1;
         lightOnStm = lightTime([1; (find(diff(lightTime)>50)+1)]);
         lightOnPre = psdlightPre([1; (find(diff(psdlightPre)>50)+1)]);
         lightOnPost = psdlightPost([1; (find(diff(psdlightPost)>50)+1)]);
@@ -186,10 +194,12 @@ for iCell = 1:nCell
         spikeTimePost = spikeWin(tData{iCell},lightOnPost,winBurst);
         [xpt1stBPost, ypt1stBPost, pethtime1stBPost, peth1stBPost, pethConv1stBPost, pethConvZ1stBPost] = rasterPETH(spikeTimePost, true(size(lightOnPost)), winBurst, binSize, resolution, dot);
         
+        [~,spikeBStim] = spikeBin(spikeTimeStm,winDist,binWin,binStep);
+        
         save([cellName, '.mat'],...
             'xpt1stBStm','ypt1stBStm','pethtime1stBStm','peth1stBStm','pethConv1stBStm','pethConvZ1stBStm',...
             'xpt1stBPre','ypt1stBPre','pethtime1stBPre','peth1stBPre','pethConv1stBPre','pethConvZ1stBPre',...
-            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','-append');
+            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBStim','-append');
         
 % Align on 1st light of each lap
         lightOnStm = lightTime([1; (find(diff(lightTime)>1000)+1)]);

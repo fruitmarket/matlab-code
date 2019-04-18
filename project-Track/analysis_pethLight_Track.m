@@ -134,6 +134,10 @@ for iCell = 1:nCell
         spikeTimePost = spikeWin(tData{iCell},lightOnPost,winBurst);
         [xpt1stBPost, ypt1stBPost, pethtime1stBPost, peth1stBPost, pethConv1stBPost, pethConvZ1stBPost] = rasterPETH(spikeTimePost, true(size(lightOnPost)), winBurst, binSize, resolution, dot);
         
+        temp_spikeBPreD = spikeWin(tData{iCell},lightOnPre,winDist);
+        [~,spikeBPreD] = spikeBin(temp_spikeBPreD,winDist,binWin,binStep);
+        spikeBPreD = sum(spikeBPreD,1);
+        
         temp_spikeBStimD = spikeWin(tData{iCell},lightOnStm,winDist);
         [~,spikeBStimD] = spikeBin(temp_spikeBStimD,winDist,binWin,binStep);
         spikeBStimD = sum(spikeBStimD,1);
@@ -141,7 +145,7 @@ for iCell = 1:nCell
         save([cellName, '.mat'],...
             'xpt1stBStm','ypt1stBStm','pethtime1stBStm','peth1stBStm','pethConv1stBStm','pethConvZ1stBStm',...
             'xpt1stBPre','ypt1stBPre','pethtime1stBPre','peth1stBPre','pethConv1stBPre','pethConvZ1stBPre',...
-            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBStimD','-append');
+            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBPreD','spikeBStimD','-append');
         
 % Align on 1st light of each lap
         lightOnStm = lightTime([1; (find(diff(lightTime)>1000)+1)]);
@@ -196,6 +200,10 @@ for iCell = 1:nCell
         spikeTimePost = spikeWin(tData{iCell},lightOnPost,winBurst);
         [xpt1stBPost, ypt1stBPost, pethtime1stBPost, peth1stBPost, pethConv1stBPost, pethConvZ1stBPost] = rasterPETH(spikeTimePost, true(size(lightOnPost)), winBurst, binSize, resolution, dot);
         
+        temp_spikeBPreD = spikeWin(tData{iCell},lightOnPre,winDist);
+        [~,spikeBPreD] = spikeBin(temp_spikeBPreD,winDist,binWin,binStep);
+        spikeBPreD = sum(spikeBPreD,1);
+        
         temp_spikeBStimD = spikeWin(tData{iCell},lightOnStm,winDist);
         [~,spikeBStimD] = spikeBin(temp_spikeBStimD,winDist,binWin,binStep);
         spikeBStimD = sum(spikeBStimD,1);
@@ -203,7 +211,7 @@ for iCell = 1:nCell
         save([cellName, '.mat'],...
             'xpt1stBStm','ypt1stBStm','pethtime1stBStm','peth1stBStm','pethConv1stBStm','pethConvZ1stBStm',...
             'xpt1stBPre','ypt1stBPre','pethtime1stBPre','peth1stBPre','pethConv1stBPre','pethConvZ1stBPre',...
-            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBStimD','-append');
+            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBPreD','spikeBStimD','-append');
         
 % Align on 1st light of each lap
         lightOnStm = lightTime([1; (find(diff(lightTime)>1000)+1)]);

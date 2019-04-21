@@ -55,7 +55,7 @@ for iPath = 1:nPath
             event2mat_trackNovel;
             analysis_behaviorTrack;
         case 't'
-            analysis_pethSensor_novel;
+%             analysis_pethSensor_novel;
             analysis_pethLight_Track;
             analysis_waveform;
             analysis_wvformCrosscorNovel;

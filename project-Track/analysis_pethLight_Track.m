@@ -142,10 +142,15 @@ for iCell = 1:nCell
         [~,spikeBStimD] = spikeBin(temp_spikeBStimD,winDist,binWin,binStep);
         spikeBStimD = sum(spikeBStimD,1);
         
+        temp_spikeNumPre = spikeWin(tData{iCell},lightOnPre,[0 80]);
+        [spikeNumPre,~,~,~,~,~,~] = rasterPETH(temp_spikeNumPre,true(size(lightOnPre)),[0 80],binSize,resolution,1);
+        temp_spikeNumStim = spikeWin(tData{iCell},lightOnStm,[0 80]);
+        [spikeNumStim,~,~,~,~,~,~] = rasterPETH(temp_spikeNumStim,true(size(lightOnStm)),[0 80],binSize,resolution,1);
+        
         save([cellName, '.mat'],...
             'xpt1stBStm','ypt1stBStm','pethtime1stBStm','peth1stBStm','pethConv1stBStm','pethConvZ1stBStm',...
             'xpt1stBPre','ypt1stBPre','pethtime1stBPre','peth1stBPre','pethConv1stBPre','pethConvZ1stBPre',...
-            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBPreD','spikeBStimD','-append');
+            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBPreD','spikeBStimD','spikeNumPre','spikeNumStim','-append');
         
 % Align on 1st light of each lap
         lightOnStm = lightTime([1; (find(diff(lightTime)>1000)+1)]);
@@ -208,10 +213,14 @@ for iCell = 1:nCell
         [~,spikeBStimD] = spikeBin(temp_spikeBStimD,winDist,binWin,binStep);
         spikeBStimD = sum(spikeBStimD,1);
         
+        temp_spikeNumPre = spikeWin(tData{iCell},lightOnPre,[0 80]);
+        [spikeNumPre,~,~,~,~,~,~] = rasterPETH(temp_spikeNumPre,true(size(lightOnPre)),[0 80],binSize,resolution,1);
+        temp_spikeNumStim = spikeWin(tData{iCell},lightOnStm,[0 80]);
+        [spikeNumStim,~,~,~,~,~,~] = rasterPETH(temp_spikeNumStim,true(size(lightOnStm)),[0 80],binSize,resolution,1);
         save([cellName, '.mat'],...
             'xpt1stBStm','ypt1stBStm','pethtime1stBStm','peth1stBStm','pethConv1stBStm','pethConvZ1stBStm',...
             'xpt1stBPre','ypt1stBPre','pethtime1stBPre','peth1stBPre','pethConv1stBPre','pethConvZ1stBPre',...
-            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBPreD','spikeBStimD','-append');
+            'xpt1stBPost','ypt1stBPost','pethtime1stBPost','peth1stBPost','pethConv1stBPost','pethConvZ1stBPost','spikeBPreD','spikeBStimD','spikeNumPre','spikeNumStim','-append');
         
 % Align on 1st light of each lap
         lightOnStm = lightTime([1; (find(diff(lightTime)>1000)+1)]);

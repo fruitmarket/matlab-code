@@ -143,9 +143,9 @@ for iCell = 1:nCell
         spikeBStimD = sum(spikeBStimD,1);
         
         temp_spikeNumPre = spikeWin(tData{iCell},lightOnPre,[0 80]);
-        [spikeNumPre,~,~,~,~,~,~] = rasterPETH(temp_spikeNumPre,true(size(lightOnPre)),[0 80],binSize,resolution,1);
+        [spikeNumPre,~,~,~,~,~] = rasterPETH(temp_spikeNumPre,true(size(lightOnPre)),[0 80],binSize,resolution,1);
         temp_spikeNumStim = spikeWin(tData{iCell},lightOnStm,[0 80]);
-        [spikeNumStim,~,~,~,~,~,~] = rasterPETH(temp_spikeNumStim,true(size(lightOnStm)),[0 80],binSize,resolution,1);
+        [spikeNumStim,~,~,~,~,~] = rasterPETH(temp_spikeNumStim,true(size(lightOnStm)),[0 80],binSize,resolution,1);
         
         save([cellName, '.mat'],...
             'xpt1stBStm','ypt1stBStm','pethtime1stBStm','peth1stBStm','pethConv1stBStm','pethConvZ1stBStm',...
@@ -214,9 +214,9 @@ for iCell = 1:nCell
         spikeBStimD = sum(spikeBStimD,1);
         
         temp_spikeNumPre = spikeWin(tData{iCell},lightOnPre,[0 80]);
-        [spikeNumPre,~,~,~,~,~,~] = rasterPETH(temp_spikeNumPre,true(size(lightOnPre)),[0 80],binSize,resolution,1);
+        [spikeNumPre,~,~,~,~,~] = rasterPETH(temp_spikeNumPre,true(size(lightOnPre)),[0 80],binSize,resolution,1);
         temp_spikeNumStim = spikeWin(tData{iCell},lightOnStm,[0 80]);
-        [spikeNumStim,~,~,~,~,~,~] = rasterPETH(temp_spikeNumStim,true(size(lightOnStm)),[0 80],binSize,resolution,1);
+        [spikeNumStim,~,~,~,~,~] = rasterPETH(temp_spikeNumStim,true(size(lightOnStm)),[0 80],binSize,resolution,1);
         save([cellName, '.mat'],...
             'xpt1stBStm','ypt1stBStm','pethtime1stBStm','peth1stBStm','pethConv1stBStm','pethConvZ1stBStm',...
             'xpt1stBPre','ypt1stBPre','pethtime1stBPre','peth1stBPre','pethConv1stBPre','pethConvZ1stBPre',...

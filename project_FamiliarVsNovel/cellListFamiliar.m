@@ -121,6 +121,10 @@ for iFile = 1:nFile
     peth1stBPre = {peth1stBPre};
     peth1stBStm = {peth1stBStm};
     peth1stBPost = {peth1stBPost};
+    spikeBPreD = {spikeBPreD};
+    spikeBStimD = {spikeBStimD};
+    spikeNumPre = {spikeNumPre};
+    spikeNumStim = {spikeNumStim};
 
 % analysis_pethLight_Plfm
     xptPlfm1stBStm = {xptPlfm1stBStm};
@@ -151,7 +155,7 @@ for iFile = 1:nFile
         rCorrConvMov1D,... % analysis_spatialRaster50hz_pvCorr
         rateMap1D_PRE,rateMap1D_STM,rateMap1D_POST,...
         inzoneSpike,sum_inzoneSpike, m_inzoneSpike, sem_inzoneSpike, totalSpike, sum_totalSpike, m_totalSpike, sem_totalSpike, outzoneSpike, sum_outzoneSpike, m_outzoneSpike, sem_outzoneSpike,m_lapFrInzone,m_lapFrOutzone,m_lapFrTotalzone,p_ttestFr,inzoneSpike_half,outzoneSpike_half,lapFrInzone,lapFrOutzone,... % analysis_stmzoneSpike_novel
-        xpt1stBStm, ypt1stBStm, pethtime1stBPre, pethtime1stBStm, pethtime1stBPost, peth1stBPre, peth1stBStm, peth1stBPost,...
+        xpt1stBStm, ypt1stBStm, pethtime1stBPre, pethtime1stBStm, pethtime1stBPost, peth1stBPre, peth1stBStm, peth1stBPost,spikeBPreD,spikeBStimD,spikeNumPre,spikeNumStim,...
         xptPlfm1stBStm, yptPlfm1stBStm, pethtimePlfm1stBStm, peth1stPlfmBStm,...    
         peakloci_Total, peakloci_PRE, peakloci_STIM, peakloci_POST, fieldArea_total,... % analysis_findPeakLoci_novel
         idxPeakFR, idxPlaceField, idxOverLap, overLapLength, idxTotalSpikeNum, idxZoneInOut, idxpLR_Track, idxmFrIn, idxmFrOut, idxmFrTotal, idxmSpkIn, idxmSpkOut, idxmSpkTotal);

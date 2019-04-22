@@ -1,24 +1,22 @@
 % supple1. Light responses of all activated CA3 neurons from novel environments.
 clearvars;
 
-load('E:\Dropbox\Lab_mwjung\P2_Track\myParameters.mat');
+load('D:\Dropbox\Lab_mwjung\P2_Track\myParameters.mat');
 formatOut = 'yymmdd';
-load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_novel_190301.mat');
+load('D:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_novel_190301.mat');
 PN = T.neuronType == 'PN';
 tt_ca3bc = ((T.mouseID == 'rbp005' & (T.tetrode == 'TT1' | T.tetrode == 'TT5')) | (T.mouseID == 'rbp006' & T.tetrode == 'TT2') | (T.mouseID == 'rbp010' & T.tetrode == 'TT6')); % | (T.mouseID == 'rbp015' & T.tetrode == 'TT7')
 PN_ca3bc = PN & tt_ca3bc;
 PN_ca3a = PN & ~tt_ca3bc;
 
-saveDir = 'E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_supple1';
+saveDir = 'D:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_supple1';
 %%%% spike number %%%%
-ca3_act = PN & T.idxmSpkIn == 1;
-ca3_dir = PN & T.idxmSpkIn == 1 & T.latencyTrack1st<10 & isnan(T.latencyTrack2nd);
-ca3_ind = PN & T.idxmSpkIn == 1 & T.latencyTrack1st>=10 & isnan(T.latencyTrack2nd);
+ca3_act = PN & T.idxLight == 1;
 
 n_PN_ca3a = sum(double(PN_ca3a));
 n_ca3_act = sum(double(ca3_act));
 
-xpt = T.pethtime1stBStm(ca3_dir);
+xpt = T.pethtime1stBStm(ca3_act);
 xpt = xpt{1};
 
 peth_act = T.peth1stBStm(ca3_act);
@@ -32,6 +30,9 @@ figSpace = [0.04 0.08];
 path = T.path(ca3_act);
 nCell = length(path);
 fontS = 7;
+
+nCell = 2;
+path = [T.path(T.cellID==21); T.path(T.cellID==48)];
 
 for iCell = 1:nCell
     [cellDir, cellName, ~] = fileparts(path{iCell});

@@ -10,9 +10,9 @@ PN_ca3bc = PN & tt_ca3bc;
 PN_ca3a = PN & ~tt_ca3bc;
 
 %%%% spike number %%%%
-ca3a_act = PN_ca3a & T.idxmSpkIn == 1;
-ca3a_inh = PN_ca3a & T.idxmSpkIn == -1;
-ca3a_non = PN_ca3a & T.idxmSpkIn == 0;
+ca3a_act = PN_ca3a & T.idxLight == 1;
+ca3a_inh = PN_ca3a & T.idxLight == -1;
+ca3a_non = PN_ca3a & T.idxLight == 0;
 
 n_PN_ca3a = sum(double(PN_ca3a));
 n_ca3a_act = sum(double(ca3a_act));
@@ -34,8 +34,8 @@ peth_non = T.peth1stBStm(ca3a_non);
 m_ca3a_non = mean(cell2mat(peth_non),1);
 sem_ca3a_non = std(cell2mat(peth_non),0,1)/sqrt(n_ca3a_non);
 
-ca3bc_act = PN_ca3bc & T.idxmSpkIn == 1;
-ca3bc_non = PN_ca3bc & T.idxmSpkIn == 0;
+ca3bc_act = PN_ca3bc &  T.idxLight == 1;
+ca3bc_non = PN_ca3bc &  T.idxLight == 0;
 
 n_PN_ca3bc = sum(double(PN_ca3bc));
 n_ca3bc_act = sum(double(ca3bc_act));
@@ -120,9 +120,9 @@ norm_m_ca3bcNon = m_spikeCa3bcNon./repmat(mean(m_spikeCa3bcNon(1:20),2),1,120);
 % sigArea_ca3aNon = statCBP_v3(spikeSmthStimCa3aNon,spikeSmthPreCa3aNon);
 % sigArea_ca3bcAct = statCBP_v3(spikeSmthStimCa3bcAct,spikeSmthPreCa3bcAct);
 % sigArea_ca3bcNon = statCBP_v3(spikeSmthStimCa3bcNon,spikeSmthPreCa3bcNon);
-sigArea_ca3aAct = [2:17,23:33,40:55,61:75];
-sigArea_ca3aInh = [13:45,49:66,70:88];
-sigArea_ca3aNon = [0,0];
+sigArea_ca3aAct = [2:19,23:34,37:55,61:76];
+sigArea_ca3aInh = [11:44,49:88];
+sigArea_ca3aNon = [53:63,72:86];
 sigArea_ca3bcAct = [0,0];
 sigArea_ca3bcNon = [0,0];
 
@@ -134,7 +134,7 @@ spaceFig = [0.12 0.2 0.80 0.75];
 wideInterval = [0.25 0.11];
 
 fHandle = figure('PaperUnits','centimeters','PaperPosition',[0 0 12 15]);
-yLim = [40, 5, 5];
+yLim = [40, 7, 5];
 
 % activated (all)
 hPlot(1) = axes('Position',axpt(nCol,nRow,1,1,spaceFig,wideInterval));
@@ -213,20 +213,21 @@ plot(xptTrace,norm_m_ca3aInh,'-o','color',colorBlue,'MarkerFaceColor',colorDarkB
 hold on;
 plot(xptTrace,norm_m_ca3aNon,'-o','color',colorBlack,'MarkerFaceColor',colorDarkGray,'markerSize',markerSS,'LineWidth',lineM);
 hold on
-line([2,17],[35,35],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
+line([2,19],[35,35],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
 hold on;
-line([23,33],[35,35],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
+line([23,34],[35,35],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
 hold on;
-line([40,55],[35,35],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
+line([37,55],[35,35],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
 hold on;
-line([61,75],[35,35],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
+line([61,76],[35,35],'color',colorRed,'lineWidth', 2, 'lineStyle','-');
 hold on;
-line([13,45],[32,32],'color',colorBlue,'lineWidth', 2, 'lineStyle','-');
+line([11,44],[32,32],'color',colorBlue,'lineWidth', 2, 'lineStyle','-');
 hold on;
-line([49,66],[32,32],'color',colorBlue,'lineWidth', 2, 'lineStyle','-');
+line([49,88],[32,32],'color',colorBlue,'lineWidth', 2, 'lineStyle','-');
 hold on;
-line([70,88],[32,32],'color',colorBlue,'lineWidth', 2, 'lineStyle','-');
-
+line([53,63],[29,29],'color',colorDarkGray,'lineWidth', 2, 'lineStyle','-');
+hold on;
+line([72,86],[29,29],'color',colorDarkGray,'lineWidth', 2, 'lineStyle','-');
 xlabel('Time (ms)','fontSize',fontM);
 ylabel('Normalized mean spike','fontSize',fontM);
 
@@ -242,9 +243,9 @@ set(hBar,'faceColor',colorDarkGray);
 set(hPlot(4),'YLim',[0 yLim_bc(1)],'YTick',[0:50:yLim_bc(1)]);
 set(hPlot(5),'YLim',[0 yLim_bc(2)]);
 set(hPlot(6),'YLim',[0 40]);
-set(hPlot(7),'YLim',[0 120]);
+set(hPlot(7),'YLim',[0 80],'YTick',[0:20:80]);
 set(hPlot,'Box','off','TickDir','out','XLim',[-20 100],'XTick',[-20,0:20:100],'fontSize',fontM);
 
-print('-painters','-r300','-dtiff',['fig3_PSTH_novel_',datestr(now,formatOut),'.tif']);
-print('-painters','-r300','-depsc',['fig3_PSTH_novel_',datestr(now,formatOut),'.ai']);
+print('-painters','-r300','-dtiff',['fig3_PSTH_novel_v4_',datestr(now,formatOut),'.tif']);
+print('-painters','-r300','-depsc',['fig3_PSTH_novel_v4_',datestr(now,formatOut),'.ai']);
 close all;

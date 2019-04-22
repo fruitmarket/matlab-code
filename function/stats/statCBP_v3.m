@@ -1,9 +1,14 @@
-function [areaSig] = statCBP(data)
+function [areaSig] = statCBP_v3(data,base)
 
 %% Data loading
 %load('data.mat'); % Subject x Time
-ref = ones(size(data, 1), size(data, 2));
-time = -0.02:0.001:0.099; % [-20 ms, 99 ms]   %% -0.9:0.01:6.9; 
+narginchk(1,2);
+if nargin == 1
+    ref = 1+randn(size(data));
+else
+    ref = base;
+end
+time = -0.02:0.001:0.099; % [-20 ms, 99 ms]   %% -0.9:0.01:6.9;  must be equal to the size of data
 NoS  = size(data, 1); % Number of NoSect
 
 %% Parameter setting
@@ -31,7 +36,6 @@ Cond2Mat.dimord     = 'subj_chan_time';
 
 cfg                  = [];
 cfg.channel          = 1; 
-% cfg.latency          = [-0.02 0.099]; %[0 6]; % Time of interest
 cfg.latency          = [0 0.090]; %[0 6]; % Time of interest
 cfg.parameter        = 'individual';
 cfg.method           = 'montecarlo';
@@ -45,7 +49,7 @@ cfg.clustertail      = 0;
 cfg.alpha            = 0.05;
 cfg.correcttail      = 'alpha';
 cfg.tail             = 0;
-cfg.numrandomization = 1000; %200;
+cfg.numrandomization = 10000; %200;
 
 % Design matrix
 design = zeros(2,2*NoS);

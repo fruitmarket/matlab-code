@@ -1,15 +1,15 @@
 % supple1. Light responses of all activated CA3 neurons from novel environments.
 clearvars;
 
-load('D:\Dropbox\Lab_mwjung\P2_Track\myParameters.mat');
+load('E:\Dropbox\Lab_mwjung\P2_Track\myParameters.mat');
 formatOut = 'yymmdd';
-load('D:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_novel_190301.mat');
+load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_novel_190301.mat');
 PN = T.neuronType == 'PN';
 tt_ca3bc = ((T.mouseID == 'rbp005' & (T.tetrode == 'TT1' | T.tetrode == 'TT5')) | (T.mouseID == 'rbp006' & T.tetrode == 'TT2') | (T.mouseID == 'rbp010' & T.tetrode == 'TT6')); % | (T.mouseID == 'rbp015' & T.tetrode == 'TT7')
 PN_ca3bc = PN & tt_ca3bc;
 PN_ca3a = PN & ~tt_ca3bc;
 
-saveDir = 'D:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_supple1';
+saveDir = 'E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_supple1';
 %%%% spike number %%%%
 ca3_act = PN & T.idxLight == 1;
 

@@ -49,7 +49,7 @@ for iPath = 1:nPath
     cd(filePath{iPath});
     switch typeName
         case 'e'
-%             event2mat_trackFamiliar;
+            event2mat_trackFamiliar;
             analysis_behaviorTrack;
         case 't'
 %             analysis_pethSensor_familiar;
@@ -64,7 +64,7 @@ for iPath = 1:nPath
 %             analysis_plfm_laserIntTest;
 %             analysis_laserSpikeChange_familiar;
 %             analysis_findPeakLoci;
-%             analysis_burstFacilitation_familiar
+            analysis_burstFacilitation_familiar
 % code not using
 %             analysis_detoSpikeBurst;
 %             analysis_spatialRaster_mapCorr;

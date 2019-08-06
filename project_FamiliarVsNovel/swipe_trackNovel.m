@@ -66,6 +66,7 @@ for iPath = 1:nPath
 %             analysis_laserSpikeChange_novel;
 %             analysis_findPeakLoci_novel;
 %             analysis_burstFacilitation_novel;
+            analysis_spikeAutoCorr_FamNov;
 % code not using
 %             analysis_detoSpikeBurst;
 %             laserFreqCheck50hz;

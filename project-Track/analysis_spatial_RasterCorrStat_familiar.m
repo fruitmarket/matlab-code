@@ -235,6 +235,14 @@ for iCell = 1:nCell
     outzoneSpike_half = totalSpike - inzoneSpike_half;
     sum_inzoneSpike_half = sum(inzoneSpike_half);
     sum_outzoneSpike_half = sum(outzoneSpike_half);
+
+% Additional analysis (pre+post inzone/outzone firing rate)
+    timePrePostInzone = sum([lapTimeInzone(1:30);lapTimeInzone(61:90)]);
+    timePrePostOutzone = sum([lapTimeOutzone(1:30);lapTimeOutzone(61:90)]);
+    spikePrePostInzone = sum([inzoneSpike(1:30);inzoneSpike(61:90)]);
+    spikePrePostOutzone = sum([outzoneSpike(1:30);outzoneSpike(61:90)]);
+    fr_PrePostInzone = spikePrePostInzone/timePrePostInzone*1000;
+    fr_PrePostOutzone = spikePrePostOutzone/timePrePostOutzone*1000;
     
     save([cellName,'.mat'],...
         'inzoneSpike','sum_inzoneSpike','m_inzoneSpike','sem_inzoneSpike',...
@@ -245,6 +253,7 @@ for iCell = 1:nCell
         'lapTime','lapTimeInzone','lapTimeOutzone',...    
         'p_ttestFr','p_ttestSpk',...
         'inzoneSpike_half','sum_inzoneSpike_half','outzoneSpike_half','sum_outzoneSpike_half',...
+        'fr_PrePostInzone','fr_PrePostOutzone',...
         '-append');
 end
 disp('### rate map & correlation calculation is done! ###')

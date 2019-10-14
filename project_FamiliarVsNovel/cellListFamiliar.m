@@ -144,6 +144,13 @@ for iFile = 1:nFile
     
     idxOverLap = {idxOverLap};
     idxZoneInOut = {idxZoneInOut};
+
+    xpt_acorr_PRE = {xpt_acorr_PRE};
+    xpt_acorr_STIM = {xpt_acorr_STIM};
+    xpt_acorr_POST = {xpt_acorr_POST};
+    histAcorr_PRE = {histAcorr_PRE};
+    histAcorr_STIM = {histAcorr_STIM};
+    histAcorr_POST = {histAcorr_POST};
     
     temT = table(path, cellID, mouseID, tetLocation, tetrode, neuronType, meanFR_PlfmPre, meanFR_PlfmPost, meanFR_Pre, meanFR_Stim, meanFR_Post, meanFR_Task, sensorMeanFR_Run, burstIdx,...    % pethSensor
         xptTrackLight, yptTrackLight, lightSpk, lightProbTrack, xptPsdPre, xptPsdPost,... % analysis_pethLight_Track
@@ -155,10 +162,12 @@ for iFile = 1:nFile
         rCorrConvMov1D,... % analysis_spatialRaster50hz_pvCorr
         rateMap1D_PRE,rateMap1D_STM,rateMap1D_POST,...
         inzoneSpike,sum_inzoneSpike, m_inzoneSpike, sem_inzoneSpike, totalSpike, sum_totalSpike, m_totalSpike, sem_totalSpike, outzoneSpike, sum_outzoneSpike, m_outzoneSpike, sem_outzoneSpike,m_lapFrInzone,m_lapFrOutzone,m_lapFrTotalzone,p_ttestFr,inzoneSpike_half,outzoneSpike_half,lapFrInzone,lapFrOutzone,... % analysis_stmzoneSpike_novel
+        fr_PrePostInzone,fr_PrePostOutzone,...
         xpt1stBStm, ypt1stBStm, pethtime1stBPre, pethtime1stBStm, pethtime1stBPost, peth1stBPre, peth1stBStm, peth1stBPost,spikeBPreD,spikeBStimD,spikeNumPre,spikeNumStim,...
         xptPlfm1stBStm, yptPlfm1stBStm, pethtimePlfm1stBStm, peth1stPlfmBStm,...    
         peakloci_Total, peakloci_PRE, peakloci_STIM, peakloci_POST, fieldArea_total,... % analysis_findPeakLoci_novel
-        idxPeakFR, idxPlaceField, idxOverLap, overLapLength, idxTotalSpikeNum, idxZoneInOut, idxpLR_Track, idxmFrIn, idxmFrOut, idxmFrTotal, idxmSpkIn, idxmSpkOut, idxmSpkTotal);
+        idxPeakFR, idxPlaceField, idxOverLap, overLapLength, idxTotalSpikeNum, idxZoneInOut, idxpLR_Track, idxmFrIn, idxmFrOut, idxmFrTotal, idxmSpkIn, idxmSpkOut, idxmSpkTotal,...
+        xpt_acorr_PRE,xpt_acorr_STIM,xpt_acorr_POST,histAcorr_PRE,histAcorr_STIM,histAcorr_POST);
     T = [T; temT];
     
     temp_Txls = table(path, cellID, mouseID, fileSeg(6), taskType, tetLocation,...

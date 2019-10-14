@@ -56,17 +56,17 @@ for iPath = 1:nPath
             analysis_behaviorTrack;
         case 't'
 %             analysis_pethSensor_novel;
-            analysis_pethLight_Track;
+%             analysis_pethLight_Track;
 %             analysis_waveform;
 %             analysis_wvformCrosscorNovel;
 %             analysis_burst6ms;
 %             analysis_LRatioID;
 %             analysis_lightstat_novel; % newest version
-%             analysis_spatial_RasterCorrStat_novel;
+            analysis_spatial_RasterCorrStat_novel;
 %             analysis_laserSpikeChange_novel;
 %             analysis_findPeakLoci_novel;
 %             analysis_burstFacilitation_novel;
-            analysis_spikeAutoCorr_FamNov;
+%             analysis_spikeAutoCorr_FamNov;
 % code not using
 %             analysis_detoSpikeBurst;
 %             laserFreqCheck50hz;

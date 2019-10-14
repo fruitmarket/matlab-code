@@ -5,9 +5,11 @@ formatOut = 'yymmdd';
 fontM = 8;
 markerS = 0.5;
 
-saveDir = 'E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_supple4';
+% saveDir = 'E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_supple4';
+saveDir = 'E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_fig6_fam';
 load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_familiar_190301.mat');
-cellID = [122 102 58 38 39 43];
+% cellID = [122 102 58 38 39 43]; % original
+cellID = [6,51]; % list_fam_in_POST no neurons for out zone
 
 nCell = length(cellID);
 for iCell = 1:nCell
@@ -85,7 +87,7 @@ rewardLoc2 = [20*pi*9/6 20*pi*10/6]+[2, -2];
     set(pRw,'LineStyle','none','FaceAlpha',0.2);
     
     cd(saveDir);
-%     print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_cellID_',num2str(cellID(iCell)),'.tif']);
-    print('-painters','-r300','-depsc',[datestr(now,formatOut),'_cellID_',num2str(cellID(iCell)),'.ai']);
+    print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_cellID_',num2str(cellID(iCell)),'.tif']);
+%     print('-painters','-r300','-depsc',[datestr(now,formatOut),'_cellID_',num2str(cellID(iCell)),'.ai']);
     close;
 end

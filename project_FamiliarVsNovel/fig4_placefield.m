@@ -5,12 +5,11 @@ formatOut = 'yymmdd';
 fontM = 8;
 markerS = 0.5;
 % saveDir = 'E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_fig5';
-% load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_novel_190301.mat');
-% cellID = [18 65 40, 14, 17, 21];
-
-saveDir = 'E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_supple4';
-load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_familiar_190301.mat');
-cellID = [122 102 58 38 39 43];
+saveDir = 'E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\example_fig6_nov';
+load('E:\Dropbox\Lab_mwjung\P4_FamiliarNovel\neuronList_novel_190301.mat');
+% cellID = [18 65 40, 14, 17, 21]; % original
+% cellID = [5,7,11,12,20,23,42,45,62,66,67,69,71,82,86,92]; % list_nov_in_POST
+% cellID = [5,7,8,48,62,86]; % list_nov_out_POST
 
 nCell = length(cellID);
 for iCell = 1:nCell
@@ -88,7 +87,7 @@ rewardLoc2 = [20*pi*9/6 20*pi*10/6]+[2, -2];
     set(pRw,'LineStyle','none','FaceAlpha',0.2);
     
     cd(saveDir);
-%     print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_cellID_',num2str(cellID(iCell)),'.tif']);
-    print('-painters','-r300','-depsc',[datestr(now,formatOut),'_cellID_',num2str(cellID(iCell)),'.ai']);
+    print('-painters','-r300','-dtiff',[datestr(now,formatOut),'_cellID_',num2str(cellID(iCell)),'.tif']);
+%     print('-painters','-r300','-depsc',[datestr(now,formatOut),'_cellID_',num2str(cellID(iCell)),'.ai']);
     close;
 end
